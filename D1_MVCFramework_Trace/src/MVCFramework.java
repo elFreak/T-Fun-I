@@ -5,6 +5,8 @@ import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.UIManager;
+
 public class MVCFramework extends Frame {
 	private Trace trace = new Trace(this);
 	private static final long serialVersionUID = 1L;
