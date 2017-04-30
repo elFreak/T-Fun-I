@@ -33,6 +33,8 @@ public class View extends JPanel implements Observer, ActionListener{
 		 * new Button[5];
 		 * 
 		 */
+		
+		Speicher speicher = new Speicher();
 
 		// ---------------------------------------------------------//
 		// Hauptaufteilung
