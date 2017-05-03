@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import projectTfunI.GlobalSettings;
+import projectTfunI.Utility;
 
 public class OutputPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -23,6 +24,9 @@ public class OutputPanel extends JPanel {
 			componentsValid[i] = false;
 		}
 		reorganisePanel();
+		
+		Utility.setAllBackgrounds(this, GlobalSettings.colorBackground);
+		this.setBackground(GlobalSettings.colorBackgroundBlueBright);
 	}
 
 	public int addComponent(Component component) {

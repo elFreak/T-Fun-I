@@ -11,6 +11,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import projectTfunI.GlobalSettings;
+import projectTfunI.Utility;
 
 public class StatusBar extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -38,6 +39,10 @@ public class StatusBar extends JPanel implements ActionListener {
 		menuItem.setOpaque(true);
 		menuItem.setBackground(GlobalSettings.colorBackgroundGrey);
 		menuItem.setFont(GlobalSettings.fontText);
+		
+		Utility.setAllBackgrounds(this, GlobalSettings.colorBackgroundBlueBright);
+		Utility.setAllBackgrounds(textArea, GlobalSettings.colorBackground);
+		
 		
 	}
 

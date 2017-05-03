@@ -45,11 +45,14 @@ public class View extends JPanel {
 
 		Utility.setAllForegrounds(this, GlobalSettings.colorText);
 		Utility.setAllForegrounds(statusBar, GlobalSettings.colorTextGrey);
-
-		Utility.setAllBackgrounds(this, GlobalSettings.colorBackground);
-		statusBar.setBackground(GlobalSettings.colorBackgroundBlueBright);
-		inputPanel.setBackground(GlobalSettings.colorBackgroundBlueBright);
-		outputPanel.setBackground(GlobalSettings.colorBackgroundBlueBright);
+		
+		Plot plot1 = new Plot();
+		plot1.addSubplot();
+		plot1.connectSubplots();
+		plot1.setAxisLabel(Plot.XAXIS, "Test","", "V");
+		Plot plot2 = new Plot();
+		outputPanel.addComponent(plot1);
+		outputPanel.addComponent(plot2);
 
 	}
 

@@ -1,48 +1,75 @@
 package userInterface;
 
 import java.awt.GridBagLayout;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import java.awt.GridLayout;
+import java.awt.Label;
 
-public class InputPanel extends JTabbedPane {
+import javax.swing.JPanel;
+
+import projectTfunI.GlobalSettings;
+import projectTfunI.Utility;
+
+public class InputPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	// --------------------------------------------------------------------
-	// Tab and Card Messwerte:
-	private JPanel cardMesswerte = new JPanel(new GridBagLayout());
-	private String textMesswerte = " Messwerte ";
+	// General:
+	private Controller controller;
 
 	// --------------------------------------------------------------------
-	// Tab and Card Signalbearbearbeitung:
-	private JPanel cardBearbeitung = new JPanel(new GridBagLayout());
-	private String textBearbeitung = " Bearbeiten ";
+	// Tab and Card Messwerte Einlesen:
+	private JPanel cardEinlesen = new JPanel(new GridBagLayout());
 
 	// --------------------------------------------------------------------
-	// Tab and Card Berechnung:
-	private JPanel cardBerechnung = new JPanel(new GridBagLayout());
-	private String textBerechnung = " Berechnen ";
+	// Tab and Card Messwerte Bearbeiten:
+	private JPanel cardBearbeiten = new JPanel(new GridBagLayout());
 
 	// --------------------------------------------------------------------
-	// Tab and Card Prüfung:
-	private JPanel cardPruefung = new JPanel(new GridBagLayout());
-	private String textPruefung = " Überprüfen ";
+	// Tab and Card Übertragungsfunktion Berechnen:
+	private JPanel cardBerechnen = new JPanel(new GridBagLayout());
 
-	public InputPanel() {
+	// --------------------------------------------------------------------
+	// Tab and Card Übertragungsfunktion Vertifizieren:
+	private JPanel cardVertifizieren = new JPanel(new GridBagLayout());
+
+	public InputPanel(Controller controller) {
+		this.controller = controller;
+		setLayout(new GridLayout(1,1));
 		setOpaque(true);
 		setBorder(MyBorderFactory.createMyBorder("  Eingabe  "));
-		setFocusable(true);
 
-		// Tab and Card - Messwerte:
-		addTab(textMesswerte, cardMesswerte);
+		Utility.setAllBackgrounds(this, GlobalSettings.colorBackground);
+		this.setBackground(GlobalSettings.colorBackgroundBlueBright);
+		cardEinlesen.setBackground(GlobalSettings.colorBackground);
+		cardEinlesen.add(new Label("TestEinlesen"));
+		cardBearbeiten.setBackground(GlobalSettings.colorBackground);
+		cardBearbeiten.add(new Label("TestBearbeiten"));
+		cardBerechnen.setBackground(GlobalSettings.colorBackground);
+		cardBerechnen.add(new Label("TestBerechnen"));
+		cardVertifizieren.setBackground(GlobalSettings.colorBackground);
+		cardVertifizieren.add(new Label("TestVertifizieren"));
 
-		// Tab and Card - Bearbeiten:
-		addTab(textBearbeitung, cardBearbeitung);
-
-		// Tab and Card - Berechnung:
-		addTab(textBerechnung, cardBerechnung);
-
-		// Tab and Card - Prüfung:
-		addTab(textPruefung, cardPruefung);
 	}
 
+	public void setActualMode(int mode) {
+		removeAll();
+		switch (mode) {
+
+		case Controller.EINLESEN:
+			add(cardEinlesen);
+			break;
+		case Controller.BEARBEITEN:
+			add(cardBearbeiten);
+			break;
+		case Controller.BERECHNEN:
+			add(cardBerechnen);
+			break;
+		case Controller.VERTIFIZIEREN:
+			add(cardVertifizieren);
+			break;
+		}
+		
+		
+		repaint();
+	}
 }
