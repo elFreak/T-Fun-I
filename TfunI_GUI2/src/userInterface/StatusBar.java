@@ -46,7 +46,7 @@ public class StatusBar extends JPanel implements ActionListener {
 		
 	}
 
-	public void showStatus(String text) {
+	public static void showStatus(String text) {
 		textArea.setText(textArea.getText() + "  " + text + "\n");
 	}
 

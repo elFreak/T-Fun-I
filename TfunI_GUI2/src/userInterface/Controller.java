@@ -1,5 +1,10 @@
 package userInterface;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import model.Approximation;
+
 public class Controller {
 	// --------------------------------------------------------------------
 	// General:
@@ -13,9 +18,12 @@ public class Controller {
 	public final static int BEARBEITEN = 1;
 	public final static int BERECHNEN = 2;
 	public final static int VERTIFIZIEREN = 3;
+	
+	//Test$$$$$$$$$$$$$$$$$$$$$$$$$
+	public Approximation approximation = new Approximation();
 
 	public Controller() {
-		
+
 	}
 
 	public void setView(View view) {
@@ -25,5 +33,9 @@ public class Controller {
 
 	public void setActualMode(int mode) {
 		view.inputPanel.setActualMode(mode);
+		
+		if(mode == VERTIFIZIEREN) {
+			approximation.zaeler();
+		}
 	}
 }

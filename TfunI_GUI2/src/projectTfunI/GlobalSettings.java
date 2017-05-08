@@ -11,7 +11,7 @@ public class GlobalSettings {
 	public static Color colorBackgroundGrey = UIManager.getColor("menu");
 	public static Color colorBackgroundGreyBright = new Color(240, 240, 240);
 	public static Color colorBackgroundBlueBright = new Color(170, 200, 230);
-	public static Color colorBackgroundBlueDark = new Color(150, 180, 210);
+	public static Color colorBackgroundBlueDark = new Color(140, 170, 200);
 	public static Color colorBackgroundGreen = new Color(170, 210, 140);
 	public static Color colorBackgroundBlack = new Color(80, 80, 80);
 	public static Color colorBackgroundWhite = new Color(250, 250, 250);

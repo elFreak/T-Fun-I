@@ -2,6 +2,7 @@ package projectTfunI;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JRootPane;
@@ -31,7 +32,7 @@ public class TfunIFrame extends JFrame {
 	private View view;
 	private Controller controller;
 
-	public void init() {
+	public void init() {		
 		pack();
 
 		GlobalSettings.init();

@@ -45,7 +45,7 @@ public class ProgramFlow extends JPanel implements ActionListener {
 		btBerechnen.setFont(getFont());
 		btVertifizieren.setFont(getFont());
 
-		Utility.setAllBackgrounds(this, GlobalSettings.colorBackgroundGreyBright);
+		Utility.setAllBackgrounds(this, GlobalSettings.colorBackgroundBlueDark);
 
 		// User-Interface:
 		btEinlesen.setEnabled(true);
@@ -57,7 +57,7 @@ public class ProgramFlow extends JPanel implements ActionListener {
 		add(btBearbeiten);
 		add(btBerechnen);
 		add(btVertifizieren);
-		
+
 		btEinlesen.addActionListener(this);
 		btBearbeiten.addActionListener(this);
 		btBerechnen.addActionListener(this);
@@ -99,13 +99,18 @@ public class ProgramFlow extends JPanel implements ActionListener {
 		btVertifizieren.setBounds((int) (centerX + blockDistance * 1.5 - blockWidth / 2), centerY - blockHight / 2,
 				blockWidth, blockHight);
 
-		// Paint Arrows
+		// Paint Arrows:
 		paintArrow(g, (int) (centerX - blockDistance * 1.5 + blockWidth / 2), centerY,
 				(int) (centerX - blockDistance * 0.5 - blockWidth / 2), centerY);
 		paintArrow(g, (int) (centerX - blockDistance * 0.5 + blockWidth / 2), centerY,
 				(int) (centerX + blockDistance * 0.5 - blockWidth / 2), centerY);
 		paintArrow(g, (int) (centerX + blockDistance * 0.5 + blockWidth / 2), centerY,
 				(int) (centerX + blockDistance * 1.5 - blockWidth / 2), centerY);
+
+		// Paint Frame:
+		g2.setColor(GlobalSettings.colorBackgroundGreyBright);
+		g2.setStroke(new BasicStroke(actualHeight / 15));
+		g2.draw(new Line2D.Float(0, actualHeight, actualWidth, actualHeight));
 	}
 
 	private void paintArrow(Graphics g, int x1, int y1, int x2, int y2) {
@@ -120,6 +125,25 @@ public class ProgramFlow extends JPanel implements ActionListener {
 		polygon.addPoint(x2 - (int) (textHight * 2), y2 - (int) (textHight * 1));
 		polygon.addPoint(x2 - (int) (textHight * 2), y2 + (int) (textHight * 1));
 		g2.fillPolygon(polygon);
+	}
+
+	public void setActualMode(int mode) {
+		switch (mode) {
+		case Controller.EINLESEN:
+
+			break;
+		case Controller.BEARBEITEN:
+			break;
+
+		case Controller.BERECHNEN:
+
+			break;
+		case Controller.VERTIFIZIEREN:
+
+			break;
+
+		}
+
 	}
 
 	@Override
