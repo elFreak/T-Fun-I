@@ -121,10 +121,15 @@ public class MeasurementData extends Observable{
 		
 		super.hasChanged();
 		super.notifyObservers();
-
 	}
 
-	
+	/**
+	 * 
+	 * @param y
+	 * @param n
+	 * @param q
+	 * @return
+	 */
 	private double[][] cutFront(double y [][], int n, double q){
 		double m = meanData[MEASUREMENTS][0];
 		int c = 1;
@@ -145,6 +150,13 @@ public class MeasurementData extends Observable{
 		}
 		return y;
 	}
+	/**
+	 * 
+	 * @param y
+	 * @param n
+	 * @param q
+	 * @return
+	 */
 	private double[][] cutTail(double y [][], int n, double q){
 		double m = meanData[MEASUREMENTS][meanData.length-1];
 		int c = 1;
