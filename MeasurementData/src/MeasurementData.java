@@ -17,8 +17,22 @@ public class MeasurementData {
 	public MeasurementData(double data[][][]) {
 
 	}
-
-	public void setMovingMean(double n) {
+	/**
+	 * Methode um mit dem Mittelwert zu filtern. Mit dem Parameter n kann man bestimmen
+	 * über wie viele Werte gemittelt wird.
+	 * @param n
+	 */
+	public void setMovingMean(int n) {
+		for (int i = 0; i < rawData[1].length; i++) {
+			int count = 0;
+			for (int j = i-n; j <= i+n; j++) {
+				if (j > 0 && j <= rawData[1].length) {
+					rawData[1][i]+= rawData[1][j];
+					count=count+1;
+				}	
+			}
+			rawData[1][i] /= count;
+		}
 
 	}
 
