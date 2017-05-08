@@ -116,7 +116,8 @@ public class MeasurementData extends Observable{
 	 * Sets the dead time, offset, tail automatically
 	 */
 	public void autoLimits() {
-		
+		cutFront(rawData, 20, 0.2);
+		cutTail(rawData, 10, 0.002);
 		
 		super.hasChanged();
 		super.notifyObservers();
@@ -124,27 +125,46 @@ public class MeasurementData extends Observable{
 	}
 
 	
-//	private double[][] abschneiden(double y [][], int n, double q){
-//		double m[][] = new double [2][10];
-//		int c = 1;
-//		m[1][1]=0;
-////		while (y[1][1]-m[1][1]) {
-////			for (int i = 0; i < n; i++) {
-////				m[][] +=y[][]	
-////			}
-////			for (int j = 0; j < m.length; j++) {
-////				m[1][j] /= n;
-////			}
-////			c++;	
-////		}
-////		for (int i = 0; i < y.length-c; i++) {
-////			y[1][i]=y[1][i+c];
-////		}
-////		for (int i = 0; i < y.length-c; i++) {
-////			y[0][i]=y[0][i+c];
-////		}
-//		return y;
-//	}
+	private double[][] cutFront(double y [][], int n, double q){
+		double m = meanData[MEASUREMENTS][0];
+		int c = 1;
+		while (Math.abs((y[MEASUREMENTS][c]-m)/y[MEASUREMENTS][c]) < q && y.length >= c+n) {
+			m=0;
+			for (int i = 0; i < n; i++) {
+				m +=y[MEASUREMENTS][c+n];	
+			}
+			m /= n;
+			c++;	
+		}
+		c=c-1;
+		for (int i = 0; i < y.length-c; i++) {
+			y[1][i]=y[1][i+c];
+		}
+		for (int i = 0; i < y.length-c; i++) {
+			y[0][i]=y[0][i+c];
+		}
+		return y;
+	}
+	private double[][] cutTail(double y [][], int n, double q){
+		double m = meanData[MEASUREMENTS][meanData.length-1];
+		int c = 1;
+		while (Math.abs((y[MEASUREMENTS][meanData.length-1-c]-m)/y[MEASUREMENTS][meanData.length-1-c]) < q && y.length >= c+n) {
+			m=0;
+			for (int i = 0; i < n; i++) {
+				m +=y[MEASUREMENTS][meanData.length-1-c-n];	
+			}
+			m /= n;
+			c++;	
+		}
+		c=c-1;
+		for (int i = 0; i < y.length-c; i++) {
+			y[1][i]=y[1][i];
+		}
+		for (int i = 0; i < y.length-c; i++) {
+			y[0][i]=y[0][i];
+		}
+		return y;
+	}
 	
 	/**
 	 * 
