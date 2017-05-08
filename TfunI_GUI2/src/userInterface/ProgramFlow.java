@@ -130,7 +130,6 @@ public class ProgramFlow extends JPanel implements ActionListener {
 	public void setActualMode(int mode) {
 		switch (mode) {
 		case Controller.EINLESEN:
-
 			break;
 		case Controller.BEARBEITEN:
 			break;

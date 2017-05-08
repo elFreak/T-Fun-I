@@ -32,8 +32,5 @@ public class Controller {
 	public void setActualMode(int mode) {
 		view.inputPanel.setActualMode(mode);
 		
-		if(mode == VERTIFIZIEREN) {
-			approximation.execute();
-		}
 	}
 }
