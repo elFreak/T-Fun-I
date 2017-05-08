@@ -5,14 +5,14 @@ public class MeasurementData {
 	private double meanData[][];
 	private double finalData[][];
 
-	private double deadTime;
-	private double offset;
-	private double tail;
-	private double stepTime;
-	private double stepHeight;
+	private double deadTime = 0;
+	private double offset = 0;
+	private double tail = 0;
+	private double stepTime = 0;
+	private double stepHeight = 1;
 	private double step[][];
 	private double originalStep[][];
-	private double n;
+	private double n = 0;
 
 	public MeasurementData(double data[][][]) {
 
@@ -43,12 +43,31 @@ public class MeasurementData {
 	public void autoLimits() {
 
 	}
-
+	/**
+	 * 
+	 * @param stepTime
+	 */
 	public void setStepTime(double stepTime) {
-
+		this.stepTime = stepTime;
+		for (int i = 0; i < rawData[0].length; i++) {
+			if (rawData[0][i] < stepTime) {
+				step[1][i] = 0;	
+			}else{
+				step[1][i] = stepHeight;	
+			}	
+		}
 	}
-
+	/**
+	 * 
+	 * @param stepHeight
+	 */
 	public void setStepHeight(double stepHeight) {
+		this.stepHeight = stepHeight;
+		for (int i = 0; i < step[1].length; i++) {
+			if (step[1][i] != 0) {
+				step[1][i] = stepHeight;	
+			}	
+		}
 
 	}
 	
