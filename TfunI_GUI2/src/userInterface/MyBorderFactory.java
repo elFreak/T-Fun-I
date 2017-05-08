@@ -10,7 +10,7 @@ public class MyBorderFactory {
 
 	public static Border createMyBorder(String title) {
 		Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
-		Border titled = BorderFactory.createTitledBorder(loweredetched, title, 2, 1, GlobalSettings.fontText,
+		Border titled = BorderFactory.createTitledBorder(loweredetched, title, 2, 2, GlobalSettings.fontText,
 				GlobalSettings.colorText);
 		return titled;
 	}
