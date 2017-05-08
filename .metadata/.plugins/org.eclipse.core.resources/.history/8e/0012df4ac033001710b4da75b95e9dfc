@@ -1,0 +1,35 @@
+
+public class MeasurementData {
+	
+	private double rawData[][];
+	private double meanData[][];
+	private double finalData[][];
+	
+	private double deadTime;
+	private double offset;
+	private double tail;
+	private double stepTime;
+	private double stepHeight;
+	private double step[][];
+	private double n;
+	
+	public MeasurementData(double data[][][]){
+		
+	}
+	
+	public void setMovingMean(double n){
+		
+	}
+	
+	public void setLimits(double deadTime, double offset, double tail){
+		
+	}
+	
+	public void setSteptime(double stepTime){
+		
+	}
+	
+	
+	
+
+}
