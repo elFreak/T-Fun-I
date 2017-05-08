@@ -1,6 +1,7 @@
 import java.util.Observable;
 
 public class MeasurementData extends Observable{
+//	Constants for accessing data arrays
 	public static final int XAXIS = 0;
 	public static final int MEASUREMENTS = 1;
 	public static final int STEP = 2;
