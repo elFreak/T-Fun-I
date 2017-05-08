@@ -1,15 +1,14 @@
+import java.util.Observable;
 
-public class MeasurementData {
+public class MeasurementData extends Observable{
 	public static final int XAXIS = 0;
 	public static final int MEASUREMENTS = 1;
 	public static final int STEP = 2;
 
 	private double rawData[][];
 	private double meanData[][];
-
 	private double finalData[][]; // Data for calculation
 	
-
 	private double deadTime = 0;
 	private double offset = 0;
 	private double tail = 0;
@@ -39,15 +38,15 @@ public class MeasurementData {
 		stepData = new double[data.length][data[XAXIS].length];
 		originalStep = new double[data.length][data[XAXIS].length];
 		for (int i = 0; i < data[XAXIS].length; i++) {
-			rawData[0][i] = data[XAXIS][i];
-			meanData[0][i] = data[XAXIS][i];
-			finalData[0][i] = data[XAXIS][i];
-			stepData[0][i] = data[XAXIS][i];
-			originalStep[0][i] = data[XAXIS][i];
+			rawData[XAXIS][i] = data[XAXIS][i];
+			meanData[XAXIS][i] = data[XAXIS][i];
+			finalData[XAXIS][i] = data[XAXIS][i];
+			stepData[XAXIS][i] = data[XAXIS][i];
+			originalStep[XAXIS][i] = data[XAXIS][i];
 
-			rawData[1][i] = data[MEASUREMENTS][i];
-			meanData[1][i] = data[MEASUREMENTS][i];
-			finalData[1][i] = data[MEASUREMENTS][i];
+			rawData[MEASUREMENTS][i] = data[MEASUREMENTS][i];
+			meanData[MEASUREMENTS][i] = data[MEASUREMENTS][i];
+			finalData[MEASUREMENTS][i] = data[MEASUREMENTS][i];
 
 			// Update Step
 			if (data.length == 3) {
@@ -67,26 +66,32 @@ public class MeasurementData {
 			}
 
 		}
+		
+		super.hasChanged();
+		super.notifyObservers();
 
 	}
 
 
 	/**
 	 * Methode um mit dem Mittelwert zu filtern. Mit dem Parameter n kann man bestimmen
-	 * Ã¼ber wie viele Werte gemittelt wird.
+	 * über wie viele Werte gemittelt wird.
 	 * @param n
 	 */
 	public void setMovingMean(int n) {
-		for (int i = 0; i < rawData[1].length; i++) {
+		for (int i = 0; i < rawData[MEASUREMENTS].length; i++) {
 			int count = 0;
 			for (int j = i-n; j <= i+n; j++) {
-				if (j > 0 && j <= rawData[1].length) {
-					rawData[1][i]+= rawData[1][j];
+				if (j >= 0 && j < rawData[MEASUREMENTS].length) {
+					meanData[1][i]+= rawData[MEASUREMENTS][j];
 					count=count+1;
-				}	
+				}
 			}
-			rawData[1][i] /= count;
+			meanData[MEASUREMENTS][i] /= count;
 		}
+		
+		super.hasChanged();
+		super.notifyObservers();
 
 	}
 
@@ -98,7 +103,12 @@ public class MeasurementData {
 	 * @param tail
 	 */
 	public void setLimits(double deadTime, double offset, double tail) {
-
+		this.deadTime = deadTime;
+		this.offset = offset;
+		this.tail = tail;
+		
+		super.hasChanged();
+		super.notifyObservers();
 	}
 	 
 
@@ -106,31 +116,35 @@ public class MeasurementData {
 	 * Sets the dead time, offset, tail automatically
 	 */
 	public void autoLimits() {
+		
+		
+		super.hasChanged();
+		super.notifyObservers();
 
 	}
 
 	
-	private double[][] abschneiden(double y [][], int n, double q){
-		double m[][] = new double [2][10];
-		int c = 1;
-		m[1][1]=0;
-		while (y[1][1]-m[1][1]) {
-			for (int i = 0; i < n; i++) {
-				m[][] +=y[][]	
-			}
-			for (int j = 0; j < m.length; j++) {
-				m[1][j] /= n;
-			}
-			c++;	
-		}
-		for (int i = 0; i < y.length-c; i++) {
-			y[1][i]=y[1][i+c];
-		}
-		for (int i = 0; i < y.length-c; i++) {
-			y[0][i]=y[0][i+c];
-		}
-		return y;
-	}
+//	private double[][] abschneiden(double y [][], int n, double q){
+//		double m[][] = new double [2][10];
+//		int c = 1;
+//		m[1][1]=0;
+////		while (y[1][1]-m[1][1]) {
+////			for (int i = 0; i < n; i++) {
+////				m[][] +=y[][]	
+////			}
+////			for (int j = 0; j < m.length; j++) {
+////				m[1][j] /= n;
+////			}
+////			c++;	
+////		}
+////		for (int i = 0; i < y.length-c; i++) {
+////			y[1][i]=y[1][i+c];
+////		}
+////		for (int i = 0; i < y.length-c; i++) {
+////			y[0][i]=y[0][i+c];
+////		}
+//		return y;
+//	}
 	
 	/**
 	 * 
@@ -138,13 +152,16 @@ public class MeasurementData {
 	 */
 	public void setStepTime(double stepTime) {
 		this.stepTime = stepTime;
-		for (int i = 0; i < rawData[0].length; i++) {
-			if (rawData[0][i] < stepTime) {
-				step[1][i] = 0;	
+		for (int i = 0; i < rawData[XAXIS].length; i++) {
+			if (rawData[XAXIS][i] < stepTime) {
+				stepData[MEASUREMENTS][i] = 0;	
 			}else{
-				step[1][i] = stepHeight;	
+				stepData[MEASUREMENTS][i] = stepHeight;	
 			}	
 		}
+		
+		super.hasChanged();
+		super.notifyObservers();
 	}
 	/**
 	 * 
@@ -152,11 +169,14 @@ public class MeasurementData {
 	 */
 	public void setStepHeight(double stepHeight) {
 		this.stepHeight = stepHeight;
-		for (int i = 0; i < step[1].length; i++) {
-			if (step[1][i] != 0) {
-				step[1][i] = stepHeight;	
+		for (int i = 0; i < stepData[MEASUREMENTS].length; i++) {
+			if (stepData[MEASUREMENTS][i] != 0) {
+				stepData[MEASUREMENTS][i] = stepHeight;	
 			}	
 		}
+		
+		super.hasChanged();
+		super.notifyObservers();
 
 	}
 
@@ -165,7 +185,12 @@ public class MeasurementData {
 	 * the step will be set at t = 0;
 	 */
 	public void setOriginalStep() {
-
+		for (int i = 0; i < stepData[MEASUREMENTS].length; i++) {
+			stepData[MEASUREMENTS][i]=originalStep[MEASUREMENTS][i];
+		}
+		
+		super.hasChanged();
+		super.notifyObservers();
 	}
 
 	/**
