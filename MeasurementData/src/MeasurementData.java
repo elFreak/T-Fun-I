@@ -125,7 +125,7 @@ public class MeasurementData extends Observable{
 	}
 
 	/**
-	 * 
+	 * cut in the front
 	 * @param y
 	 * @param n
 	 * @param q
@@ -152,7 +152,7 @@ public class MeasurementData extends Observable{
 		return y;
 	}
 	/**
-	 * 
+	 * cut in the tail
 	 * @param y
 	 * @param n
 	 * @param q
