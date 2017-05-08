@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.metal.OceanTheme;
@@ -81,7 +82,6 @@ public class TfunIFrame extends JFrame {
 
 	public static void main(String args[]) {
 		SwingUtilities.invokeLater(new Runnable() {
-
 			public void run() {
 				try {
 					switch (laf) {

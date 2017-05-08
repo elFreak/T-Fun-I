@@ -1,7 +1,5 @@
 package userInterface;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import model.Approximation;
 
@@ -35,7 +33,7 @@ public class Controller {
 		view.inputPanel.setActualMode(mode);
 		
 		if(mode == VERTIFIZIEREN) {
-			approximation.zaeler();
+			approximation.execute();
 		}
 	}
 }

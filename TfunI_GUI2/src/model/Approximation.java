@@ -1,27 +1,43 @@
 package model;
 
-import com.sun.org.apache.xerces.internal.util.Status;
+import java.util.List;
+
+import javax.swing.SwingWorker;
 
 import userInterface.StatusBar;
 
-public class Approximation implements Runnable {
+public class Approximation extends SwingWorker<Object, Integer> {
+
+	public Approximation() {
+	}
+
+	public void stopp() {
+	}
 
 	@Override
-	public void run() {
-		
-		int i = 0;
+	public Object doInBackground() {
+		int zaeler = 0;
 		try {
-			for (i = 0; i < 2; i++) {
-				Thread.sleep(1000);
+			for(zaeler=1;zaeler<=10;zaeler++){
+				Thread.sleep(500);
+				publish(zaeler);
 			}
+			
 		} catch (InterruptedException e) {
 		}
+
+		return 0;
 	}
 	
-	public void zaeler(){
-		StatusBar.showStatus("Zähler-Start");
-		run();
-		StatusBar.showStatus("Zähler-Ende");
+	@Override
+	protected void process(List<Integer> zaeler) {
+		super.process(zaeler);
+		StatusBar.showStatus("Zähler: "+zaeler.get(0));
 	}
-
+	
+	@Override
+	public void done() {
+		super.done();
+		StatusBar.showStatus("Fertig ");
+	}
 }
