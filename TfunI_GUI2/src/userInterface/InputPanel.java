@@ -39,7 +39,6 @@ public class InputPanel extends JPanel {
 
 	
 //	 Card "Bearbeiten"
-	 
 	private InputCardBearbeiten inputCardBearbeiten = new InputCardBearbeiten(this.controller);
 	
 

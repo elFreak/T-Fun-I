@@ -85,8 +85,6 @@ public class View extends JPanel implements Observer{
 		outputPanel.plotEinlesen.setRangeIdeal();
 		JavaPlot.Trace traceRaw = new JavaPlot.Trace();
 		traceRaw.data = ((Model)obs).measurementData.getRawData();
-		outputPanel.plotEinlesen.addSubplot();
-		outputPanel.plotEinlesen.connectSubplots();
 		outputPanel.plotEinlesen.addTrace(traceRaw);
 		outputPanel.plotEinlesen.setRangeIdeal();
 		revalidate();
