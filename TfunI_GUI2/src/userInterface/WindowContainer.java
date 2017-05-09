@@ -16,7 +16,6 @@ public class WindowContainer extends JPanel {
 
 	public WindowContainer() {
 		setOpaque(true);
-		setBorder(MyBorderFactory.createMyBorder("  Ausgabe  "));
 		
 		setLayout(new GridLayout(1, 1));
 		// Initialize:
@@ -26,7 +25,6 @@ public class WindowContainer extends JPanel {
 		reorganisePanel();
 		
 		Utility.setAllBackgrounds(this, GlobalSettings.colorBackground);
-		this.setBackground(GlobalSettings.colorBackgroundBlueBright);
 	}
 
 	public int addComponent(Component component) {

@@ -5,7 +5,6 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import projectTfunI.GlobalSettings;
@@ -36,8 +35,7 @@ public class View extends JPanel {
 		menuBar = new MenuBar(this.controller, this.frame);
 		statusBar = new StatusBar();
 		inputPanel = new InputPanel(this.controller);
-		outputPanelEinlesenInit();
-		outputPanelBearbeitenInit();
+		outputPanel = new OutputPanel(this.controller);
 		programFlow = new ProgramFlow(this.controller);
 
 		// Add MenuBar and ProgramFlow:
@@ -53,7 +51,7 @@ public class View extends JPanel {
 				GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		// Add the rest of the GUI (SplitPane-Area):
 		add(new SplitPaneContainer(JSplitPane.HORIZONTAL_SPLIT, inputPanel,
-				new SplitPaneContainer(JSplitPane.VERTICAL_SPLIT, outputPanel[Controller.EINLESEN], statusBar, 1.0,
+				new SplitPaneContainer(JSplitPane.VERTICAL_SPLIT, outputPanel, statusBar, 1.0,
 						0.0),
 				0.0, 1.0),
 				new GridBagConstraints(0, 2, 1, 1, 1.0, 1.0, GridBagConstraints.FIRST_LINE_START,
@@ -66,15 +64,6 @@ public class View extends JPanel {
 		Utility.setAllForegrounds(this, GlobalSettings.colorText);
 		Utility.setAllForegrounds(statusBar, GlobalSettings.colorTextGrey);
 
-	}
-
-	private void outputPanelEinlesenInit() {
-		outputPanel[Controller.EINLESEN] = new OutputPanel();
-		outputPanel[Controller.EINLESEN].addComponent(new JLabel("Test"));
-	}
-
-	private void outputPanelBearbeitenInit() {
-		outputPanel[Controller.BEARBEITEN] = new OutputPanel();
 	}
 
 }

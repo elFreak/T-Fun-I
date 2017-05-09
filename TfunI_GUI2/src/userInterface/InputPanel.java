@@ -35,14 +35,12 @@ public class InputPanel extends JPanel {
 	 * Card "Einlesen"
 	 */
 	private JPanel cardEinlesen = new JPanel(new GridBagLayout());
-	private final String KEY_EINLESEN = "EINLESEN";
 	private JButton btEinlesen = new JButton("Öffnen");
 
 	/**
 	 * Card "Bearbeiten"
 	 */
 	private JPanel cardBearbeiten = new JPanel(new GridBagLayout());
-	private final String KEY_BEARBEITEN = "BEARBEITEN";
 	private JTextField tfFilter = new JTextField();
 	private JLabel lbFilter = new JLabel("  ");
 	private JTextField tfOffset = new JTextField();
@@ -58,13 +56,11 @@ public class InputPanel extends JPanel {
 	 * Card "Berechnen"
 	 */
 	private JPanel cardBerechnen = new JPanel(new GridBagLayout());
-	private final String KEY_BERECHNEN = "BERECHNEN";
 
 	/**
 	 * Card "Verifizieren"
 	 */
 	private JPanel cardVertifizieren = new JPanel(new GridBagLayout());
-	private final String KEY_VERTIFIZIEREN = "VERTIFIZIEREN";
 
 	/**
 	 * 
@@ -83,10 +79,10 @@ public class InputPanel extends JPanel {
 		setBackground(GlobalSettings.colorBackgroundBlueBright);
 		// Input-Panel Layout:
 		setLayout(cardLayout);
-		add(cardEinlesen, KEY_EINLESEN);
-		add(cardBearbeiten, KEY_BEARBEITEN);
-		add(cardBerechnen, KEY_BERECHNEN);
-		add(cardVertifizieren, KEY_VERTIFIZIEREN);
+		add(cardEinlesen, Controller.KEY_EINLESEN);
+		add(cardBearbeiten, Controller.KEY_BEARBEITEN);
+		add(cardBerechnen, Controller.KEY_BERECHNEN);
+		add(cardVertifizieren, Controller.KEY_VERTIFIZIEREN);
 
 		// Init Cards:
 		cardEinlesenInit();
@@ -214,16 +210,16 @@ public class InputPanel extends JPanel {
 	public void setActualMode(int mode) {
 		switch (mode) {
 		case Controller.EINLESEN:
-			cardLayout.show(this, KEY_EINLESEN);
+			cardLayout.show(this, Controller.KEY_EINLESEN);
 			break;
 		case Controller.BEARBEITEN:
-			cardLayout.show(this, KEY_BEARBEITEN);
+			cardLayout.show(this, Controller.KEY_BEARBEITEN);
 			break;
 		case Controller.BERECHNEN:
-			cardLayout.show(this, KEY_BERECHNEN);
+			cardLayout.show(this, Controller.KEY_BERECHNEN);
 			break;
 		case Controller.VERTIFIZIEREN:
-			cardLayout.show(this, KEY_VERTIFIZIEREN);
+			cardLayout.show(this, Controller.KEY_VERTIFIZIEREN);
 			break;
 		}
 	}

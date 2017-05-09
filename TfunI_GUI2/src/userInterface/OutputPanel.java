@@ -1,99 +1,119 @@
 package userInterface;
 
-import java.awt.Component;
+import java.awt.CardLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
+import javax.swing.JTextField;
+
+import JavaPlot.Plot;
 import projectTfunI.GlobalSettings;
 import projectTfunI.Utility;
 
 public class OutputPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private Component[] components = new Component[4];
-	private boolean[] componentsValid = new boolean[4];
-	private int componentsnumber = 0;
+	/**
+	 * General
+	 */
+	private Controller controller;
+	private CardLayout cardLayout = new CardLayout();
 
-	public OutputPanel() {
-		setOpaque(true);
+	/**
+	 * Card "Einlesen"
+	 */
+	private JPanel cardEinlesen = new WindowContainer();
+	public Plot plotEinlesen = new Plot();
+
+	/**
+	 * Card "Bearbeiten"
+	 */
+	private JPanel cardBearbeiten = new WindowContainer();
+
+	/**
+	 * Card "Berechnen"
+	 */
+	private JPanel cardBerechnen = new WindowContainer();
+
+	/**
+	 * Card "Verifizieren"
+	 */
+	private JPanel cardVertifizieren = new WindowContainer();
+
+	public OutputPanel(Controller controller) {
+		// ------------------------------------------------------------------
+		// Output-Panel
+		// ------------------------------------------------------------------
+		// Output-Panel Design:
 		setBorder(MyBorderFactory.createMyBorder("  Ausgabe  "));
-		
-		setLayout(new GridLayout(1, 1));
-		// Initialize:
-		for (int i = 0; i < componentsValid.length; i++) {
-			componentsValid[i] = false;
-		}
-		reorganisePanel();
-		
 		Utility.setAllBackgrounds(this, GlobalSettings.colorBackground);
-		this.setBackground(GlobalSettings.colorBackgroundBlueBright);
+		setOpaque(true);
+		setBackground(GlobalSettings.colorBackgroundBlueBright);
+		// Input-Panel Layout:
+		setLayout(cardLayout);
+		add(cardEinlesen, Controller.KEY_EINLESEN);
+		add(cardBearbeiten, Controller.KEY_BEARBEITEN);
+		add(cardBerechnen, Controller.KEY_BERECHNEN);
+		add(cardVertifizieren, Controller.KEY_VERTIFIZIEREN);
+
+		// Init Cards:
+		cardEinlesenInit();
+		cardBearbeitenInit();
+		cardBerechnenInit();
+		cardVertifizierenInit();
 	}
 
-	public int addComponent(Component component) {
-		for (int i = 0; i < componentsValid.length; i++) {
-			if (componentsValid[i] == false) {
-				this.components[i] = component;
-				componentsValid[i] = true;
-				componentsnumber++;
-				reorganisePanel();
-				return i;
-			}
-		}
-		return -1;
+	/**
+	 * 
+	 */
+	private void cardEinlesenInit() {
+
 	}
 
-	public void clearComponent(int index) {
-		componentsValid[index] = false;
-		componentsnumber--;
-		reorganisePanel();
+	/**
+	 * 
+	 */
+	private void cardBearbeitenInit() {
 	}
 
-	private void reorganisePanel() {
-		removeAll();
-		Component[] validComps = new Component[4];
-		int j = 0;
-		switch (componentsnumber) {
-		case 0:
-			JPanel jPanel = new JPanel();
-			jPanel.setBackground(GlobalSettings.colorBackgroundGrey);
-			add(jPanel);
-			repaint();
-			break;
-		case 1:
-			for (int i = 0; i < componentsValid.length; i++) {
-				if (componentsValid[i] == true) {
-					add(components[i]);
-				}
-			}
-			break;
-		case 2:
-			for (int i = 0; i < componentsValid.length; i++) {
-				if (componentsValid[i] == true) {
-					validComps[j]=components[i];
-					j++;
-				}
-			}
-			add(new SplitPaneContainer(JSplitPane.HORIZONTAL_SPLIT, validComps[0], validComps[1], 1.0, 1.0));
-			break;
-		case 3:
-			for (int i = 0; i < componentsValid.length; i++) {
-				if (componentsValid[i] == true) {
-					validComps[j]=components[i];
-					j++;
-				}
-			}
-			add(new SplitPaneContainer(JSplitPane.HORIZONTAL_SPLIT, new SplitPaneContainer(JSplitPane.VERTICAL_SPLIT, validComps[1], validComps[2], 1.0, 1.0), validComps[0], 1.0, 1.0));
-			break;
-		case 4:
-			for (int i = 0; i < componentsValid.length; i++) {
-				if (componentsValid[i] == true) {
-					validComps[j]=components[i];
-					j++;
-				}
-			}
-			add(new SplitPaneContainer(JSplitPane.HORIZONTAL_SPLIT, new SplitPaneContainer(JSplitPane.VERTICAL_SPLIT, validComps[1], validComps[2], 1.0, 1.0), new SplitPaneContainer(JSplitPane.VERTICAL_SPLIT, validComps[0], validComps[3], 1.0, 1.0), 1.0, 1.0));
-			break;
+	/**
+	 * 
+	 */
+	private void cardBerechnenInit() {
 
+	}
+
+	/**
+	 * 
+	 */
+	private void cardVertifizierenInit() {
+
+	}
+
+	public void setActualMode(int mode) {
+		switch (mode) {
+		case Controller.EINLESEN:
+			cardLayout.show(this, Controller.KEY_EINLESEN);
+			break;
+		case Controller.BEARBEITEN:
+			cardLayout.show(this, Controller.KEY_BEARBEITEN);
+			break;
+		case Controller.BERECHNEN:
+			cardLayout.show(this, Controller.KEY_BERECHNEN);
+			break;
+		case Controller.VERTIFIZIEREN:
+			cardLayout.show(this, Controller.KEY_VERTIFIZIEREN);
+			break;
 		}
 	}
 }

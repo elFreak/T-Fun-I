@@ -16,9 +16,13 @@ public class Controller {
 	// --------------------------------------------------------------------
 	// ProgrammFlow:
 	public final static int EINLESEN = 0;
+	public final static String KEY_EINLESEN = "EINLESEN";
 	public final static int BEARBEITEN = 1;
+	public final static String KEY_BEARBEITEN = "BEARBEITEN";
 	public final static int BERECHNEN = 2;
+	public final static String KEY_BERECHNEN = "BERECHNEN";
 	public final static int VERTIFIZIEREN = 3;
+	public final static String KEY_VERTIFIZIEREN = "VERTIFIZIEREN";
 
 	public Controller() {
 
