@@ -40,11 +40,11 @@ public class MeasurementData {
 			throw new IllegalArgumentException(data.length + " " + data[1].length);
 
 		// update data
-		rawData = new double[data.length][data[XAXIS].length];
-		meanData = new double[data.length][data[XAXIS].length];
-		finalData = new double[data.length][data[XAXIS].length];
-		stepData = new double[data.length][data[XAXIS].length];
-		originalStep = new double[data.length][data[XAXIS].length];
+		rawData = new double[2][data[XAXIS].length];
+		meanData = new double[2][data[XAXIS].length];
+		finalData = new double[2][data[XAXIS].length];
+		stepData = new double[2][data[XAXIS].length];
+		originalStep = new double[2][data[XAXIS].length];
 		for (int i = 0; i < data[XAXIS].length; i++) {
 			rawData[XAXIS][i] = data[XAXIS][i];
 			meanData[XAXIS][i] = data[XAXIS][i];
@@ -74,6 +74,7 @@ public class MeasurementData {
 			}
 
 		}
+		System.out.println("hey");
 	}
 
 	/**
