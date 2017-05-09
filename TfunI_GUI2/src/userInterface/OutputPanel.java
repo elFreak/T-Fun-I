@@ -17,11 +17,16 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import JavaPlot.Plot;
+import model.Model;
 import projectTfunI.GlobalSettings;
 import projectTfunI.Utility;
 
 public class OutputPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
+	
+	JavaPlot.Trace traceStep = new JavaPlot.Trace();	
+	JavaPlot.Trace traceRaw = new JavaPlot.Trace();
+
 
 	/**
 	 * General
@@ -79,6 +84,12 @@ public class OutputPanel extends JPanel {
 	 */
 	private void cardEinlesenInit() {
 		cardEinlesen.addComponent(plotEinlesen);
+		
+		this.plotEinlesen.addTrace(traceStep);
+		traceStep.dataValid = false;
+
+		this.plotEinlesen.addTrace(traceRaw);
+		traceRaw.dataValid = false;
 	}
 
 	/**
@@ -86,8 +97,13 @@ public class OutputPanel extends JPanel {
 	 */
 	private void cardBearbeitenInit() {
 		cardBearbeiten.addComponent(plotBearbeiten);
-		plotBearbeiten.addSubplot();
-		plotBearbeiten.connectSubplots();
+		
+		this.plotBearbeiten.addTrace(traceStep);
+		
+
+
+		this.plotBearbeiten.addTrace(traceRaw);
+		traceRaw.dataValid = false;
 	}
 
 	/**
