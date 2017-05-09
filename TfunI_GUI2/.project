@@ -36,6 +36,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/JavaPlot/Trace.java</locationURI>
 		</link>
 		<link>
+			<name>src/model/MeasurementData.java</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/MeasurementData/src/MeasurementData.java</locationURI>
+		</link>
+		<link>
 			<name>src/userInterface/DataRead.java</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/DataRead/DataRead.java</locationURI>

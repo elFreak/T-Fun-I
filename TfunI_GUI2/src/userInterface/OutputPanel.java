@@ -32,23 +32,24 @@ public class OutputPanel extends JPanel {
 	/**
 	 * Card "Einlesen"
 	 */
-	private JPanel cardEinlesen = new WindowContainer();
+	private WindowContainer cardEinlesen = new WindowContainer();
 	public Plot plotEinlesen = new Plot();
 
 	/**
 	 * Card "Bearbeiten"
 	 */
-	private JPanel cardBearbeiten = new WindowContainer();
-
+	private WindowContainer cardBearbeiten = new WindowContainer();
+	public Plot plotBearbeiten = new Plot();
+	
 	/**
 	 * Card "Berechnen"
 	 */
-	private JPanel cardBerechnen = new WindowContainer();
+	private WindowContainer cardBerechnen = new WindowContainer();
 
 	/**
 	 * Card "Verifizieren"
 	 */
-	private JPanel cardVertifizieren = new WindowContainer();
+	private WindowContainer cardVertifizieren = new WindowContainer();
 
 	public OutputPanel(Controller controller) {
 		// ------------------------------------------------------------------
@@ -77,13 +78,16 @@ public class OutputPanel extends JPanel {
 	 * 
 	 */
 	private void cardEinlesenInit() {
-
+		cardEinlesen.addComponent(plotEinlesen);
 	}
 
 	/**
 	 * 
 	 */
 	private void cardBearbeitenInit() {
+		cardBearbeiten.addComponent(plotBearbeiten);
+		plotBearbeiten.addSubplot();
+		plotBearbeiten.connectSubplots();
 	}
 
 	/**

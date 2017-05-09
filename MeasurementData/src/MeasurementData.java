@@ -1,3 +1,5 @@
+package model;
+
 import java.util.Observable;
 
 public class MeasurementData extends Observable {

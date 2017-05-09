@@ -35,6 +35,7 @@ public class Controller {
 	public void setView(View view) {
 		this.view = view;
 		view.inputPanel.setActualMode(EINLESEN);
+		view.outputPanel.setActualMode(EINLESEN);
 	}
 
 	/**
@@ -43,6 +44,7 @@ public class Controller {
 	 */
 	public void setActualMode(int mode) {
 		view.inputPanel.setActualMode(mode);
+		view.outputPanel.setActualMode(mode);
 
 		switch (mode) {
 		case Controller.EINLESEN:
@@ -62,6 +64,6 @@ public class Controller {
 	}
 
 	public void setMesuredData(double[][] data) {
-
+		
 	}
 }
