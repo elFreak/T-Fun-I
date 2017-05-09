@@ -19,7 +19,7 @@ import model.Model;
 import projectTfunI.GlobalSettings;
 import projectTfunI.Utility;
 
-public class View extends JPanel implements Observer{
+public class View extends JPanel implements Observer {
 	private static final long serialVersionUID = 1L;
 
 	// --------------------------------------------------------------------
@@ -41,7 +41,7 @@ public class View extends JPanel implements Observer{
 		super(new GridBagLayout());
 		this.controller = controller;
 		this.frame = frame;
-		
+
 		menuBar = new MenuBar(this.controller, this.frame);
 		statusBar = new StatusBar();
 		inputPanel = new InputPanel(this.controller);
@@ -61,9 +61,7 @@ public class View extends JPanel implements Observer{
 				GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		// Add the rest of the GUI (SplitPane-Area):
 		add(new SplitPaneContainer(JSplitPane.HORIZONTAL_SPLIT, inputPanel,
-				new SplitPaneContainer(JSplitPane.VERTICAL_SPLIT, outputPanel, statusBar, 1.0,
-						0.0),
-				0.0, 1.0),
+				new SplitPaneContainer(JSplitPane.VERTICAL_SPLIT, outputPanel, statusBar, 1.0, 0.0), 0.0, 1.0),
 				new GridBagConstraints(0, 2, 1, 1, 1.0, 1.0, GridBagConstraints.FIRST_LINE_START,
 						GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
@@ -78,28 +76,25 @@ public class View extends JPanel implements Observer{
 
 	@Override
 	public void update(java.util.Observable obs, Object obj) {
-		
-		
-			
+
 		// Traces Aktualisieren:
-		outputPanel.traceStep.data = ((Model)obs).measurementData.getstep();
-		outputPanel.traceRaw.data = ((Model)obs).measurementData.getRawData();
-		outputPanel.traceMean.data = ((Model)obs).measurementData.getMeanData();
-		
-		if(outputPanel.traceRaw.dataValid == false) {
+		outputPanel.traceStep.data = ((Model) obs).measurementData.getstep();
+		outputPanel.traceRaw.data = ((Model) obs).measurementData.getRawData();
+		outputPanel.traceMean.data = ((Model) obs).measurementData.getMeanData();
+
+		if (outputPanel.traceRaw.dataValid == false) {
 			outputPanel.plotEinlesen.setRangeIdeal();
 			outputPanel.plotBearbeiten.setRangeIdeal();
 		}
-		
+
 		outputPanel.traceStep.dataValid = true;
 		outputPanel.traceRaw.dataValid = true;
 		outputPanel.traceMean.dataValid = true;
-		
-		//Update:
+
+		// Update:
 		revalidate();
 		repaint();
-		
-		
+
 	}
 
 }
