@@ -55,6 +55,7 @@ public class InputCardBearbeiten extends JPanel {
 					tempValue = 0;
 				}
 				tfFilter.setText(String.valueOf(tempValue));
+				controller.filterChanged(tempValue);
 			}
 		});
 
@@ -67,6 +68,7 @@ public class InputCardBearbeiten extends JPanel {
 					tempValue = 0;
 				}
 				tfFilter.setText(String.valueOf(tempValue));
+				controller.filterChanged(tempValue);
 			}
 		});
 

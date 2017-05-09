@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import JavaPlot.Plot;
+import model.Model;
 import projectTfunI.GlobalSettings;
 import projectTfunI.Utility;
 
@@ -30,6 +31,13 @@ public class OutputPanel extends JPanel {
 	private CardLayout cardLayout = new CardLayout();
 
 	/**
+	 * Traces
+	 */
+	JavaPlot.Trace traceStep = new JavaPlot.Trace();
+	JavaPlot.Trace traceRaw = new JavaPlot.Trace();
+	JavaPlot.Trace traceMean = new JavaPlot.Trace();
+
+	/**
 	 * Card "Einlesen"
 	 */
 	public WindowContainer cardEinlesen = new WindowContainer();
@@ -40,7 +48,7 @@ public class OutputPanel extends JPanel {
 	 */
 	public WindowContainer cardBearbeiten = new WindowContainer();
 	public Plot plotBearbeiten = new Plot();
-	
+
 	/**
 	 * Card "Berechnen"
 	 */
@@ -79,6 +87,12 @@ public class OutputPanel extends JPanel {
 	 */
 	private void cardEinlesenInit() {
 		cardEinlesen.addComponent(plotEinlesen);
+
+		this.plotEinlesen.addTrace(traceStep);
+		traceStep.dataValid = false;
+
+		this.plotEinlesen.addTrace(traceRaw);
+		traceRaw.dataValid = false;
 	}
 
 	/**
@@ -86,8 +100,17 @@ public class OutputPanel extends JPanel {
 	 */
 	private void cardBearbeitenInit() {
 		cardBearbeiten.addComponent(plotBearbeiten);
+	
+		this.plotBearbeiten.addTrace(traceRaw);
+		traceStep.dataValid = false;
+		this.plotBearbeiten.addTrace(traceStep);
+		traceRaw.dataValid = false;
+		
 		plotBearbeiten.addSubplot();
 		plotBearbeiten.connectSubplots();
+
+		this.plotBearbeiten.addTrace(traceMean);
+		traceRaw.dataValid = false;
 	}
 
 	/**

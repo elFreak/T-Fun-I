@@ -34,27 +34,24 @@ public class InputPanel extends JPanel {
 	/**
 	 * Card "Einlesen"
 	 */
-	private InputCardEinlesen inputCardEinlesen = new InputCardEinlesen(this.controller);
+	private InputCardEinlesen inputCardEinlesen;
 	
 	
 	private JPanel cardEinlesen = new JPanel(new GridBagLayout());
 	private JButton btEinlesen = new JButton("Öffnen");
 
-	
-//	 Card "Bearbeiten"
-	 
-	private InputCardBearbeiten inputCardBearbeiten = new InputCardBearbeiten(this.controller);
-	
+	// Card "Bearbeiten"
+	private InputCardBearbeiten inputCardBearbeiten;
 
 	/**
 	 * Card "Berechnen"
 	 */
-	private InputCardBerechnen inputCardBerechnen = new InputCardBerechnen(this.controller);
+	private InputCardBerechnen inputCardBerechnen;
 
 	/**
 	 * Card "Verifizieren"
 	 */
-	private InputCardVertifizieren inputCardVertifizieren = new InputCardVertifizieren(this.controller);
+	private InputCardVertifizieren inputCardVertifizieren;
 
 	/**
 	 * 
@@ -71,6 +68,13 @@ public class InputPanel extends JPanel {
 		Utility.setAllBackgrounds(this, GlobalSettings.colorBackground);
 		setOpaque(true);
 		setBackground(GlobalSettings.colorBackgroundBlueBright);
+
+		// Init Cards:
+		inputCardEinlesen = new InputCardEinlesen(this.controller);
+		inputCardBearbeiten = new InputCardBearbeiten(this.controller);
+		inputCardBerechnen = new InputCardBerechnen(this.controller);
+		inputCardVertifizieren = new InputCardVertifizieren(this.controller);
+
 		// Input-Panel Layout:
 		setLayout(cardLayout);
 		add(inputCardEinlesen, Controller.KEY_EINLESEN);
@@ -79,13 +83,6 @@ public class InputPanel extends JPanel {
 		add(inputCardVertifizieren, Controller.KEY_VERTIFIZIEREN);
 	}
 
-
-	
-
-	
-	
-	
-	
 	/**
 	 * 
 	 * @param mode

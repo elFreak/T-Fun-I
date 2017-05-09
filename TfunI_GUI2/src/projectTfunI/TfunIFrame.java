@@ -21,7 +21,7 @@ public class TfunIFrame extends JFrame {
 		FIXED, PACKED, FIXEDRESIZABLE, PACKEDRESIZABLE
 	};
 
-	private Mode mode = Mode.PACKEDRESIZABLE;
+	private Mode mode = Mode.FIXEDRESIZABLE;
 	private int width = 1200, height = 800;
 
 	private static enum LAF {
@@ -34,7 +34,10 @@ public class TfunIFrame extends JFrame {
 	private View view;
 	private Controller controller;
 
-	public void init() {		
+	/**
+	 * init
+	 */
+	public void init() {
 		pack();
 
 		GlobalSettings.init();
@@ -83,6 +86,10 @@ public class TfunIFrame extends JFrame {
 
 	}
 
+	/**
+	 * Main
+	 * @param args
+	 */
 	public static void main(String args[]) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -103,7 +110,7 @@ public class TfunIFrame extends JFrame {
 
 						// Customise LAF for TappedPane:
 						UIManager.put("TabbedPane.tabRunOverlay", 0);
-						
+
 						break;
 					}
 				} catch (Exception exception) {

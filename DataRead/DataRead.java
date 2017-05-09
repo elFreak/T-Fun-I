@@ -21,18 +21,29 @@ public class DataRead {
 			//File auswählen und Pfad bestimmen
 			chooser.showOpenDialog(chooser);
 			String Filepath = chooser.getSelectedFile().getPath();
-			// Anzahl Zeilen und Anzahl Kolonnen festlegen:
+			// Anzahl Zeilen und Anzahl Kolonnen festlegen und festlegen ob Spalten oder Zeilenvektor vorhanden ist:
 			BufferedReader eingabeDatei = new BufferedReader(new FileReader(Filepath));
 			String[] s = eingabeDatei.readLine().split("[, ]+");
-			nColumns = s.length;
-			while (eingabeDatei.readLine() != null) {
+			int t = s.length;
+			if (t<=3) {
+				nColumns = s.length;
 				nLines++;
+				while (eingabeDatei.readLine() != null) {
+					nLines++;
+				}
+			}
+			else {
+				nLines = s.length;
+				nColumns++;
+				while (eingabeDatei.readLine() != null) {
+					nColumns++;
+				}
 			}
 			eingabeDatei.close();
 
 			// Gezählte Anzahl Zeilen und Kolonnen lesen:
 			eingabeDatei = new BufferedReader(new FileReader(Filepath));
-			data = new double[nLines][nColumns];
+			data = new double[nColumns][nLines];
 			for (int i = 0; i < data.length; i++) {
 				s = eingabeDatei.readLine().split("[, ]+");
 				for (int k = 0; k < s.length; k++) {
