@@ -6,14 +6,14 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Label;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import com.sun.javafx.geom.Rectangle;
-
 import projectTfunI.GlobalSettings;
 import projectTfunI.Utility;
 
@@ -88,31 +88,74 @@ public class InputPanel extends JPanel {
 		add(cardBerechnen, KEY_BERECHNEN);
 		add(cardVertifizieren, KEY_VERTIFIZIEREN);
 
-		// ------------------------------------------------------------------
-		// Card "Einlesen"
-		// ------------------------------------------------------------------
+		// Init Cards:
+		cardEinlesenInit();
+		cardBearbeitenInit();
+		cardBerechnenInit();
+		cardVertifizierenInit();
+	}
+
+	
+	/**
+	 * 
+	 */
+	private void cardEinlesenInit() {
 		cardEinlesen.setBackground(GlobalSettings.colorBackground);
 		JPanel panelEinlesen = new JPanel(new GridLayout(1, 1, 10, 10));
 		panelEinlesen.setBackground(GlobalSettings.colorBackground);
 		panelEinlesen.setBorder(MyBorderFactory.createMyBorder("Aus CSV-Datei einlesen"));
 		panelEinlesen.add(btEinlesen);
+		btEinlesen.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.setMesuredData(DataRead.csvread());				
+			}
+		});
 		cardEinlesen.add(panelEinlesen, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 		JPanel panelBackground = new JPanel();
 		panelBackground.setBackground(GlobalSettings.colorBackground);
 		cardEinlesen.add(panelBackground, new GridBagConstraints(0, 1, 1, 1, 1.0, 1.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.BOTH, new Insets(00, 00, 00, 00), 0, 0));
-
-		// ------------------------------------------------------------------
-		// Card "Bearbeiten"
-		// ------------------------------------------------------------------
+	}
+	
+	
+	/**
+	 * 
+	 */
+	private void cardBearbeitenInit() {
 		cardBearbeiten.setBackground(GlobalSettings.colorBackground);
 		JPanel panelFiltern = new JPanel(new GridLayout(1, 3,10,10));
 		panelFiltern.setBackground(GlobalSettings.colorBackground);
 		panelFiltern.setBorder(MyBorderFactory.createMyBorder("Mittelwertfilter"));
 		panelFiltern.add(new JLabel("Intensit.:"));
 		panelFiltern.add(tfFilter);
-		panelBackground = new JPanel();
+		tfFilter.setText("10");
+		tfFilter.addMouseWheelListener(new MouseWheelListener() {
+			
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				int tempValue = (int)Double.parseDouble(tfFilter.getText());
+				tempValue+=(int)(e.getWheelRotation()*1);
+				if(tempValue<0) {
+					tempValue = 0;
+				}
+				tfFilter.setText(String.valueOf(tempValue));				
+			}
+		});
+		tfFilter.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int tempValue = (int)Double.parseDouble(tfFilter.getText());
+				if(tempValue<0) {
+					tempValue = 0;
+				}
+				tfFilter.setText(String.valueOf(tempValue));	
+			}
+		});
+		JPanel panelBackground = new JPanel();
 		panelBackground.setBackground(GlobalSettings.colorBackground);
 		panelFiltern.add(panelBackground);
 		JPanel panelOffset = new JPanel(new GridLayout(1, 3,10,10));
@@ -146,19 +189,28 @@ public class InputPanel extends JPanel {
 		panelBackground.setBackground(GlobalSettings.colorBackground);
 		cardBearbeiten.add(panelBackground, new GridBagConstraints(0, 3, 1, 1, 1.0, 1.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.BOTH, new Insets(00, 00, 00, 00), 0, 0));
-
-		// ------------------------------------------------------------------
-		// Card "Berechnen"
-		// ------------------------------------------------------------------
-		cardBerechnen.setBackground(GlobalSettings.colorBackground);
-
-		// ------------------------------------------------------------------
-		// Card "Vertifizieren"
-		// ------------------------------------------------------------------
-		cardVertifizieren.setBackground(GlobalSettings.colorBackground);
-
 	}
-
+	
+	/**
+	 * 
+	 */
+	private void cardBerechnenInit() {
+		cardBerechnen.setBackground(GlobalSettings.colorBackground);
+	}
+	
+	
+	/**
+	 * 
+	 */
+	private void cardVertifizierenInit() {
+		cardVertifizieren.setBackground(GlobalSettings.colorBackground);
+	}
+	
+	
+	/**
+	 * 
+	 * @param mode
+	 */
 	public void setActualMode(int mode) {
 		switch (mode) {
 		case Controller.EINLESEN:

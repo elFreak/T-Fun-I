@@ -229,25 +229,25 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 				}
 				g2.setStroke(new BasicStroke(traceThickness));
 
-				for (int j = 0; j < trace[i].data.length; j++) {
+				for (int j = 0; j < trace[i].data[0].length; j++) {
 					int x1, y1, x2, y2;
-					x1 = (int) ((double) (trace[i].data[j][Trace.X] - axisRangeSector[XAXIS][0])
+					x1 = (int) ((double) (trace[i].data[Trace.X][j] - axisRangeSector[XAXIS][0])
 							* (double) (boardCorner[2][X] - boardCorner[1][X])
 							/ (double) (axisRangeSector[XAXIS][axisRangeActualSectorNumber[XAXIS] - 1]
 									- axisRangeSector[XAXIS][0]));
-					y1 = (int) ((double) (trace[i].data[j][Trace.Y] - axisRangeSector[trace[i].yaxis][0])
+					y1 = (int) ((double) (trace[i].data[Trace.Y][j] - axisRangeSector[trace[i].yaxis][0])
 							* (double) (boardCorner[1][Y] - boardCorner[0][Y])
 							/ (double) (axisRangeSector[trace[i].yaxis][yAxisActualNumber - 1]
 									- axisRangeSector[trace[i].yaxis][0]));
 					x1 = boardCorner[1][X] + x1;
 					y1 = boardCorner[1][Y] - y1;
 
-					if (j < trace[i].data.length - 1 && trace[i].lineType == Trace.LINE_CONTINOUS) {
-						x2 = (int) ((double) (trace[i].data[j + 1][Trace.X] - axisRangeSector[XAXIS][0])
+					if (j < trace[i].data[0].length - 1 && trace[i].lineType == Trace.LINE_CONTINOUS) {
+						x2 = (int) ((double) (trace[i].data[Trace.X][j + 1] - axisRangeSector[XAXIS][0])
 								* (double) (boardCorner[2][X] - boardCorner[1][X])
 								/ (double) (axisRangeSector[XAXIS][axisRangeActualSectorNumber[XAXIS] - 1]
 										- axisRangeSector[XAXIS][0]));
-						y2 = (int) ((double) (trace[i].data[j + 1][Trace.Y] - axisRangeSector[trace[i].yaxis][0])
+						y2 = (int) ((double) (trace[i].data[Trace.Y][j + 1] - axisRangeSector[trace[i].yaxis][0])
 								* (double) (boardCorner[1][Y] - boardCorner[0][Y])
 								/ (double) (axisRangeSector[trace[i].yaxis][yAxisActualNumber - 1]
 										- axisRangeSector[trace[i].yaxis][0]));
@@ -777,41 +777,41 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 		double y2Max = 100;
 		for (int iTrace = 0; iTrace < trace.length; iTrace++) {
 			if (trace[iTrace].dataValid) {
-				xMin = trace[iTrace].data[0][X];
-				xMax = trace[iTrace].data[0][X];
+				xMin = trace[iTrace].data[X][0];
+				xMax = trace[iTrace].data[X][0];
 				if (trace[iTrace].yaxis == Y1AXIS) {
-					y1Min = trace[iTrace].data[0][Y];
-					y1Max = trace[iTrace].data[0][Y];
+					y1Min = trace[iTrace].data[Y][0];
+					y1Max = trace[iTrace].data[Y][0];
 				}
 				if (trace[iTrace].yaxis == Y2AXIS) {
-					y2Min = trace[iTrace].data[0][Y];
-					y2Max = trace[iTrace].data[0][Y];
+					y2Min = trace[iTrace].data[Y][0];
+					y2Max = trace[iTrace].data[Y][0];
 				}
 			}
 		}
 		for (int iTrace = 0; iTrace < trace.length; iTrace++) {
 			if (trace[iTrace].dataValid) {
-				for (int i = 0; i < trace[iTrace].data.length; i++) {
-					if (trace[iTrace].data[i][X] < xMin) {
-						xMin = trace[iTrace].data[i][X];
+				for (int i = 0; i < trace[iTrace].data[0].length; i++) {
+					if (trace[iTrace].data[X][i] < xMin) {
+						xMin = trace[iTrace].data[X][i];
 					}
-					if (trace[iTrace].data[i][X] > xMax) {
-						xMax = trace[iTrace].data[i][X];
+					if (trace[iTrace].data[X][i] > xMax) {
+						xMax = trace[iTrace].data[X][i];
 					}
 					if (trace[iTrace].yaxis == Y1AXIS) {
-						if (trace[iTrace].data[i][Y] < y1Min) {
-							y1Min = trace[iTrace].data[i][Y];
+						if (trace[iTrace].data[Y][i] < y1Min) {
+							y1Min = trace[iTrace].data[Y][i];
 						}
-						if (trace[iTrace].data[i][Y] > y1Max) {
-							y1Max = trace[iTrace].data[i][Y];
+						if (trace[iTrace].data[Y][i] > y1Max) {
+							y1Max = trace[iTrace].data[Y][i];
 						}
 					}
 					if (trace[iTrace].yaxis == Y2AXIS) {
-						if (trace[iTrace].data[i][Y] < y2Min) {
-							y2Min = trace[iTrace].data[i][Y];
+						if (trace[iTrace].data[Y][i] < y2Min) {
+							y2Min = trace[iTrace].data[Y][i];
 						}
-						if (trace[iTrace].data[i][Y] > y2Max) {
-							y2Max = trace[iTrace].data[i][Y];
+						if (trace[iTrace].data[Y][i] > y2Max) {
+							y2Max = trace[iTrace].data[Y][i];
 						}
 					}
 				}

@@ -1,9 +1,12 @@
 package userInterface;
 
-
-import model.Approximation;
-
+/**
+ * 
+ * @author Team 1
+ *
+ */
 public class Controller {
+
 	// --------------------------------------------------------------------
 	// General:
 	private View view;
@@ -16,21 +19,45 @@ public class Controller {
 	public final static int BEARBEITEN = 1;
 	public final static int BERECHNEN = 2;
 	public final static int VERTIFIZIEREN = 3;
-	
-	//Test$$$$$$$$$$$$$$$$$$$$$$$$$
-	public Approximation approximation = new Approximation();
 
 	public Controller() {
 
 	}
 
+	/**
+	 * 
+	 * @param view
+	 */
 	public void setView(View view) {
 		this.view = view;
 		view.inputPanel.setActualMode(EINLESEN);
 	}
 
+	/**
+	 * 
+	 * @param mode
+	 */
 	public void setActualMode(int mode) {
 		view.inputPanel.setActualMode(mode);
-		
+
+		switch (mode) {
+		case Controller.EINLESEN:
+			
+			break;
+
+		case Controller.BEARBEITEN:
+
+			break;
+		case Controller.BERECHNEN:
+
+			break;
+		case Controller.VERTIFIZIEREN:
+
+			break;
+		}
+	}
+
+	public void setMesuredData(double[][] data) {
+
 	}
 }

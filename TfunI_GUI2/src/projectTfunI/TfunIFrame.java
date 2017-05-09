@@ -2,12 +2,10 @@ package projectTfunI;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.metal.OceanTheme;
