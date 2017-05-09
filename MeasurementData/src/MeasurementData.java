@@ -20,6 +20,7 @@ public class MeasurementData extends Observable{
 	private double n = 0;
 
 	/**
+	 * Speichert die übergebenen Daten in die entsprechenden Attribute.
 	 * 
 	 * @param data
 	 *            data[0] = x-axis(time), data[1] = measurements(measurement
@@ -97,7 +98,7 @@ public class MeasurementData extends Observable{
 	}
 
 	/**
-	 * sets the respective limits
+	 * Setzt den Rahmen. Setzt die jeweilige Parameter.
 	 * 
 	 * @param deadTime
 	 * @param offset
@@ -114,7 +115,8 @@ public class MeasurementData extends Observable{
 	 
 
 	/**
-	 * Sets the dead time, offset, tail automatically
+	 * Setzt die jeweiligen Parameter automatisch.
+	 * 
 	 */
 	public void autoLimits() {
 		cutFront(rawData, 20, 0.2);
@@ -125,7 +127,8 @@ public class MeasurementData extends Observable{
 	}
 
 	/**
-	 * cut in the front
+	 * Schneidet den Anfang ab.
+	 * 
 	 * @param y
 	 * @param n
 	 * @param q
@@ -152,7 +155,8 @@ public class MeasurementData extends Observable{
 		return y;
 	}
 	/**
-	 * cut in the tail
+	 * Schneidet das Ende ab.
+	 * 
 	 * @param y
 	 * @param n
 	 * @param q
@@ -180,6 +184,7 @@ public class MeasurementData extends Observable{
 	}
 	
 	/**
+	 * Erstellt einene neue Schrittantwort mit der gesetzten stepTime.
 	 * 
 	 * @param stepTime
 	 */
@@ -197,6 +202,7 @@ public class MeasurementData extends Observable{
 		super.notifyObservers();
 	}
 	/**
+	 * Erstellt einene neue Schrittantwort mit der gesetzten stepHeight.
 	 * 
 	 * @param stepHeight
 	 */
@@ -214,8 +220,9 @@ public class MeasurementData extends Observable{
 	}
 
 	/**
-	 * sets the step back to the initial time. If there wasn't an initial time
-	 * the step will be set at t = 0;
+	 * Setzt den Schritt zurück mit der Anfangszeit. Wenn keine Anfangszeit vorhanden ist
+	 * wird der Schrit mit t = 0 gesetzt.
+	 * 
 	 */
 	public void setOriginalStep() {
 		for (int i = 0; i < stepData[MEASUREMENTS].length; i++) {
@@ -227,6 +234,7 @@ public class MeasurementData extends Observable{
 	}
 
 	/**
+	 * Gibt die Rohdaten zurück.
 	 * 
 	 * @return The raw data; rawData[0][]: Measurement time (t), rawData[1][]:
 	 *         measurement values (y)
@@ -236,6 +244,7 @@ public class MeasurementData extends Observable{
 	}
 
 	/**
+	 * Gibt die Finalendaten zurück.
 	 * 
 	 * @return The data ready for the calculations finalData[0][]: Measurement
 	 *         time (t), finalData[1][]: measurement values (y)
@@ -245,6 +254,7 @@ public class MeasurementData extends Observable{
 	}
 
 	/**
+	 * Gibt die gefilterten Daten zurück.
 	 * 
 	 * @return the moving average of the raw data meanData[0][]: Measurement
 	 *         time (t), meanData[1][]: averaged measurement values (y)
@@ -254,14 +264,16 @@ public class MeasurementData extends Observable{
 	}
 
 	/**
+	 * Gibt die Totzeit zurück.
 	 * 
-	 * @return dead time
+	 * @return deadTime
 	 */
 	public double getDeadTime() {
 		return deadTime;
 	}
 
 	/**
+	 * Gibt die Offset zurück.
 	 * 
 	 * @return offset
 	 */
@@ -270,14 +282,16 @@ public class MeasurementData extends Observable{
 	}
 
 	/**
+	 * Gibt die uninteresante Ende zurück.
 	 * 
-	 * @return The uninteresting end/tail
+	 * @return tail
 	 */
 	public double getTail() {
 		return tail;
 	}
 
 	/**
+	 * Gibt den Schritt zurück.
 	 * 
 	 * @return step[0][]: Measurement time (t), step[1][]: Step value (s)
 	 */
@@ -286,6 +300,7 @@ public class MeasurementData extends Observable{
 	}
 
 	/**
+	 * Gibt die Schrittzeit zurück.
 	 * 
 	 * @return step time
 	 */
@@ -294,6 +309,7 @@ public class MeasurementData extends Observable{
 	}
 
 	/**
+	 * Gibt die Schritthöhe zurück.
 	 * 
 	 * @return step height
 	 */
