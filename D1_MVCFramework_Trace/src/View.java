@@ -16,6 +16,7 @@ public class View extends JPanel implements Observer, ActionListener{
 	private Controller controller;
 	
 	public TextField label = new TextField();
+	public String string = "asdf";
 
 	public View(Controller controller) {
 		
@@ -34,7 +35,7 @@ public class View extends JPanel implements Observer, ActionListener{
 		 * 
 		 */
 		
-		Speicher speicher = new Speicher();
+		//Speicher speicher = new Speicher(string);
 
 		// ---------------------------------------------------------//
 		// Hauptaufteilung

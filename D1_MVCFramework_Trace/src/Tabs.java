@@ -38,10 +38,10 @@ public class Tabs extends JTabbedPane implements Observer, ActionListener {
 		// --------------------------------------------------------//
 		// Erstellen der Tabs
 
-		addTab("  Eingaben   ", tabInput);
-		addTab("Filteroptionen", tabPlot);
-		addTab("Einstellungen", tabEinstellungen);
-		addTab("  Fenster    ", tabFenster);
+		addTab("   Einlesen   ", tabInput);
+		addTab("   Bearbeiten ", tabPlot);		//Marc 2
+		addTab("   Tab Adi    ", tabEinstellungen);
+		addTab("  Fenster     ", tabFenster);
 		
 		
 		// --------------------------------------------------------//
