@@ -9,6 +9,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.metal.OceanTheme;
+
+import model.Model;
 import userInterface.Controller;
 import userInterface.View;
 
@@ -28,6 +30,7 @@ public class TfunIFrame extends JFrame {
 
 	private static LAF laf = LAF.WINDOWS_TFUNI;
 
+	private Model model;
 	private View view;
 	private Controller controller;
 
@@ -36,8 +39,10 @@ public class TfunIFrame extends JFrame {
 
 		GlobalSettings.init();
 
-		controller = new Controller();
+		model = new Model();
+		controller = new Controller(model);
 		view = new View(controller, this);
+		model.addObserver(view);
 		controller.setView(view);
 
 		this.add(view);

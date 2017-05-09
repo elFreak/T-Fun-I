@@ -1,5 +1,7 @@
 package userInterface;
 
+import model.Model;
+
 /**
  * 
  * @author Team 1
@@ -10,6 +12,7 @@ public class Controller {
 	// --------------------------------------------------------------------
 	// General:
 	private View view;
+	private Model model;
 
 	// --------------------------------------------------------------------
 	// Programm-Flow:
@@ -24,8 +27,8 @@ public class Controller {
 	public final static int VERTIFIZIEREN = 3;
 	public final static String KEY_VERTIFIZIEREN = "VERTIFIZIEREN";
 
-	public Controller() {
-
+	public Controller(Model model) {
+		this.model = model;
 	}
 
 	/**
@@ -48,7 +51,7 @@ public class Controller {
 
 		switch (mode) {
 		case Controller.EINLESEN:
-			
+
 			break;
 
 		case Controller.BEARBEITEN:
@@ -64,6 +67,6 @@ public class Controller {
 	}
 
 	public void setMesuredData(double[][] data) {
-		
+		model.setMesuredData(data);
 	}
 }
