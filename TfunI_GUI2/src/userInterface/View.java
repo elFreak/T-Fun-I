@@ -4,13 +4,22 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.util.Observer;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+
+import com.sun.management.jmx.Trace;
+import com.sun.org.apache.xpath.internal.operations.Mod;
+
+import javafx.beans.Observable;
+import model.MeasurementData;
+import model.Model;
 import projectTfunI.GlobalSettings;
 import projectTfunI.Utility;
 
-public class View extends JPanel {
+public class View extends JPanel implements Observer{
 	private static final long serialVersionUID = 1L;
 
 	// --------------------------------------------------------------------
@@ -64,6 +73,25 @@ public class View extends JPanel {
 		Utility.setAllForegrounds(this, GlobalSettings.colorText);
 		Utility.setAllForegrounds(statusBar, GlobalSettings.colorTextGrey);
 
+	}
+
+	@Override
+	public void update(java.util.Observable obs, Object obj) {
+		
+		//Outputpanel Einlesen aktualisieren:
+		JavaPlot.Trace traceStep = new JavaPlot.Trace();
+		traceStep.data = ((Model)obs).measurementData.getstep();
+		outputPanel.plotEinlesen.addTrace(traceStep);
+		outputPanel.plotEinlesen.setRangeIdeal();
+		JavaPlot.Trace traceRaw = new JavaPlot.Trace();
+		traceRaw.data = ((Model)obs).measurementData.getRawData();
+		outputPanel.plotEinlesen.addSubplot();
+		outputPanel.plotEinlesen.connectSubplots();
+		outputPanel.plotEinlesen.addTrace(traceRaw);
+		outputPanel.plotEinlesen.setRangeIdeal();
+		revalidate();
+		repaint();
+		
 	}
 
 }

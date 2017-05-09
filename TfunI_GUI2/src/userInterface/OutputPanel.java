@@ -32,24 +32,24 @@ public class OutputPanel extends JPanel {
 	/**
 	 * Card "Einlesen"
 	 */
-	private WindowContainer cardEinlesen = new WindowContainer();
+	public WindowContainer cardEinlesen = new WindowContainer();
 	public Plot plotEinlesen = new Plot();
 
 	/**
 	 * Card "Bearbeiten"
 	 */
-	private WindowContainer cardBearbeiten = new WindowContainer();
+	public WindowContainer cardBearbeiten = new WindowContainer();
 	public Plot plotBearbeiten = new Plot();
 	
 	/**
 	 * Card "Berechnen"
 	 */
-	private WindowContainer cardBerechnen = new WindowContainer();
+	public WindowContainer cardBerechnen = new WindowContainer();
 
 	/**
 	 * Card "Verifizieren"
 	 */
-	private WindowContainer cardVertifizieren = new WindowContainer();
+	public WindowContainer cardVertifizieren = new WindowContainer();
 
 	public OutputPanel(Controller controller) {
 		// ------------------------------------------------------------------
