@@ -69,4 +69,8 @@ public class Controller {
 	public void setMesuredData(double[][] data) {
 		model.setMesuredData(data);
 	}
+	
+	public void filterChanged(int n) {
+		model.measurementData.setMovingMean(n);
+	}
 }

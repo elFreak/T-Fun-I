@@ -78,23 +78,26 @@ public class View extends JPanel implements Observer{
 	@Override
 	public void update(java.util.Observable obs, Object obj) {
 		
-		// Traces Aktualisieren
-		JavaPlot.Trace traceStep = new JavaPlot.Trace();
-		traceStep.data = ((Model)obs).measurementData.getstep();
+		//if((int)obj == Model.UPDATE_MEASUREMENT_TRACES) {
+			
+		// Traces Aktualisieren:
+		outputPanel.traceStep.data = ((Model)obs).measurementData.getstep();
+		outputPanel.traceStep.dataValid = true;
+		outputPanel.traceRaw.data = ((Model)obs).measurementData.getRawData();
+		outputPanel.traceRaw.dataValid = true;
+		outputPanel.traceMean.data = ((Model)obs).measurementData.getMeanData();
+		outputPanel.traceMean.dataValid = true;
 		
-		JavaPlot.Trace traceRaw = new JavaPlot.Trace();
-		traceRaw.data = ((Model)obs).measurementData.getRawData();
+		// Plots Aktualisieren:
+		outputPanel.plotEinlesen.setRangeIdeal();
+		outputPanel.plotBearbeiten.setRangeIdeal();
 		
-		//Einlesen aktualisieren:
+		//}
 		
-
+		//Update:
 		revalidate();
 		repaint();
 		
-//		Bearbeiten aktualisieren
-		
-		outputPanel.plotBearbeiten.addTrace(traceStep);
-		outputPanel.plotBearbeiten.setRangeIdeal();
 		
 	}
 

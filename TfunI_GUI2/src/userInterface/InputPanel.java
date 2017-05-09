@@ -37,10 +37,8 @@ public class InputPanel extends JPanel {
 	private JPanel cardEinlesen = new JPanel(new GridBagLayout());
 	private JButton btEinlesen = new JButton("Öffnen");
 
-	
-//	 Card "Bearbeiten"
-	private InputCardBearbeiten inputCardBearbeiten = new InputCardBearbeiten(this.controller);
-	
+	// Card "Bearbeiten"
+	private InputCardBearbeiten inputCardBearbeiten;
 
 	/**
 	 * Card "Berechnen"
@@ -67,6 +65,13 @@ public class InputPanel extends JPanel {
 		Utility.setAllBackgrounds(this, GlobalSettings.colorBackground);
 		setOpaque(true);
 		setBackground(GlobalSettings.colorBackgroundBlueBright);
+
+		// Init Cards:
+		cardEinlesenInit();
+		inputCardBearbeiten = new InputCardBearbeiten(this.controller);
+		cardBerechnenInit();
+		cardVertifizierenInit();
+
 		// Input-Panel Layout:
 		setLayout(cardLayout);
 		add(cardEinlesen, Controller.KEY_EINLESEN);
@@ -74,13 +79,8 @@ public class InputPanel extends JPanel {
 		add(cardBerechnen, Controller.KEY_BERECHNEN);
 		add(cardVertifizieren, Controller.KEY_VERTIFIZIEREN);
 
-		// Init Cards:
-		cardEinlesenInit();
-		cardBerechnenInit();
-		cardVertifizierenInit();
 	}
 
-	
 	/**
 	 * 
 	 */
@@ -91,10 +91,10 @@ public class InputPanel extends JPanel {
 		panelEinlesen.setBorder(MyBorderFactory.createMyBorder("Aus CSV-Datei einlesen"));
 		panelEinlesen.add(btEinlesen);
 		btEinlesen.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.setMesuredData(DataRead.csvread());				
+				controller.setMesuredData(DataRead.csvread());
 			}
 		});
 		cardEinlesen.add(panelEinlesen, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
@@ -104,26 +104,21 @@ public class InputPanel extends JPanel {
 		cardEinlesen.add(panelBackground, new GridBagConstraints(0, 1, 1, 1, 1.0, 1.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.BOTH, new Insets(00, 00, 00, 00), 0, 0));
 	}
-	
-	
-	
-	
+
 	/**
 	 * 
 	 */
 	private void cardBerechnenInit() {
 		cardBerechnen.setBackground(GlobalSettings.colorBackground);
 	}
-	
-	
+
 	/**
 	 * 
 	 */
 	private void cardVertifizierenInit() {
 		cardVertifizieren.setBackground(GlobalSettings.colorBackground);
 	}
-	
-	
+
 	/**
 	 * 
 	 * @param mode

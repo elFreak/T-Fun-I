@@ -2,11 +2,13 @@ package model;
 
 import java.util.Observable;
 
-public class MeasurementData extends Observable {
+public class MeasurementData {
 	// Constants for accessing data arrays
 	public static final int XAXIS = 0;
 	public static final int MEASUREMENTS = 1;
 	public static final int STEP = 2;
+
+	private Model model;
 
 	private double rawData[][];
 	private double meanData[][];
@@ -24,12 +26,15 @@ public class MeasurementData extends Observable {
 	/**
 	 * Speichert die übergebenen Daten in die entsprechenden Attribute.
 	 * 
+	 * @param model
 	 * @param data
 	 *            data[0] = x-axis(time), data[1] = measurements(measurement
 	 *            values), data[3] = step(step response values)
 	 * @throws IllegalArgumentException
 	 */
-	public MeasurementData(double data[][]) throws IllegalArgumentException {
+	public MeasurementData(Model model, double data[][]) throws IllegalArgumentException {
+		this.model = model;
+
 		// check for exceptions
 		if (data.length > 3 || data.length < 1 || data[0].length < 1)
 			throw new IllegalArgumentException(data.length + " " + data[1].length);
@@ -69,10 +74,6 @@ public class MeasurementData extends Observable {
 			}
 
 		}
-
-		super.hasChanged();
-		super.notifyObservers();
-
 	}
 
 	/**
@@ -82,19 +83,25 @@ public class MeasurementData extends Observable {
 	 * @param n
 	 */
 	public void setMovingMean(int n) {
-		for (int i = 0; i < rawData[MEASUREMENTS].length; i++) {
-			int count = 0;
-			for (int j = i - n; j <= i + n; j++) {
-				if (j >= 0 && j < rawData[MEASUREMENTS].length) {
-					meanData[1][i] += rawData[MEASUREMENTS][j];
-					count = count + 1;
-				}
+		if (n == 0) {
+			for (int i = 0; i < rawData[MEASUREMENTS].length; i++) {
+				meanData[MEASUREMENTS][i] = rawData[MEASUREMENTS][i];
 			}
-			meanData[MEASUREMENTS][i] /= count;
+		} else {
+			for (int i = 0; i < rawData[MEASUREMENTS].length; i++) {
+				int count = 0;
+				meanData[MEASUREMENTS][i] = 0;
+				for (int j = i - n; j <= i + n; j++) {
+					if (j >= 0 && j < rawData[MEASUREMENTS].length) {
+						meanData[MEASUREMENTS][i] += rawData[MEASUREMENTS][j];
+						count = count + 1;
+					}
+				}
+				meanData[MEASUREMENTS][i] /= count;
+			}
 		}
 
-		super.hasChanged();
-		super.notifyObservers();
+		model.notifyObservers();
 
 	}
 
@@ -110,8 +117,7 @@ public class MeasurementData extends Observable {
 		this.offset = offset;
 		this.tail = tail;
 
-		super.hasChanged();
-		super.notifyObservers();
+		model.notifyObservers();
 	}
 
 	/**
@@ -122,8 +128,7 @@ public class MeasurementData extends Observable {
 		cutFront(rawData, 20, 0.2);
 		cutTail(rawData, 10, 0.002);
 
-		super.hasChanged();
-		super.notifyObservers();
+		model.notifyObservers();
 	}
 
 	/**
@@ -200,8 +205,7 @@ public class MeasurementData extends Observable {
 			}
 		}
 
-		super.hasChanged();
-		super.notifyObservers();
+		model.notifyObservers();
 	}
 
 	/**
@@ -217,14 +221,13 @@ public class MeasurementData extends Observable {
 			}
 		}
 
-		super.hasChanged();
-		super.notifyObservers();
+		model.notifyObservers();
 
 	}
 
 	/**
-	 * Setzt den Schritt zurück mit der Anfangszeit. Wenn keine Anfangszeit vorhanden ist
-	 * wird der Schrit mit t = 0 gesetzt.
+	 * Setzt den Schritt zurück mit der Anfangszeit. Wenn keine Anfangszeit
+	 * vorhanden ist wird der Schrit mit t = 0 gesetzt.
 	 * 
 	 */
 	public void setOriginalStep() {
@@ -232,8 +235,7 @@ public class MeasurementData extends Observable {
 			stepData[MEASUREMENTS][i] = originalStep[MEASUREMENTS][i];
 		}
 
-		super.hasChanged();
-		super.notifyObservers();
+		model.notifyObservers();
 	}
 
 	/**
