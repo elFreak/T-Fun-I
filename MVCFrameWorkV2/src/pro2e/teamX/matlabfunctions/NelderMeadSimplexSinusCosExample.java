@@ -21,7 +21,7 @@ import org.apache.commons.math3.util.FastMath;
 public class NelderMeadSimplexSinusCosExample {
 
 	public static void main(String[] args) {
-		Filter filter = FilterFactory.createButter(3, 1.0);
+		Filter filter = FilterFactory.createButter(6, 1.0);
 		double[] t = Matlab.linspace(0, 15.0, 100);
 		
 		double[] step_soll = (double[])SVTools.step(filter.B, filter.A, t)[0];
@@ -32,21 +32,29 @@ public class NelderMeadSimplexSinusCosExample {
 		
 		Target target = new Target(t, step_soll, 3);
 		
-		SimplexOptimizer optimizer = new SimplexOptimizer(1e-4, 1e-6);
+		SimplexOptimizer optimizer = new SimplexOptimizer(1e-10, 1e-6);
 
 		Complex[] rA = Matlab.roots(filter.A);
+		
+		//double[] startwerte = new double[] {1.0, rA[0].abs(), (rA[0].abs()/(-2.0*rA[0].getReal())), rA[0].getReal(),1.0,1.0,1.0  };
+		double[] startwerte = new double[] {1.0, 1.0, -1.0, 1.0 ,1.0,1.0 ,1.0};
 		
 		double[] s = target.omega2polstep(3, new double[] {1.0, rA[0].abs(), (rA[0].abs()/(-2.0*rA[0].getReal())), rA[0].getReal()}, t);
 		
 		//		//FourExtrema fourExtrema = new FourExtrema();
 //
 		PointValuePair optimum = optimizer.optimize(new MaxEval(1000), new ObjectiveFunction(target), GoalType.MINIMIZE,
-				new InitialGuess(new double[] {1.0, rA[0].abs(), (rA[0].abs()/(-2.0*rA[0].getReal())), rA[0].getReal()  }), new NelderMeadSimplex(new double[] { 0.2, 0.2, 0.2, 0.2 }));
+				new InitialGuess(startwerte), new NelderMeadSimplex(new double[] { 0.2, 0.2, 0.2, 0.2,0.2,0.2,0.2 }));
 //
 		System.out.println(Arrays.toString(optimum.getPoint()) + " : " + optimum.getSecond());
 		System.out.println(""+rA[0].abs());
 		System.out.println(""+rA[0].abs()/(-2.0*rA[0].getReal()));
 		System.out.println(""+rA[0].getReal());
+		
+		double[] step_approx = target.omega2polstep(6, optimum.getPoint(), t);
+		for (int i = 0; i < step_soll.length; i++) {
+			System.out.println(""+step_approx[i]);
+		}
 	}
 
 	//	private static class Target implements MultivariateFunction {
@@ -79,7 +87,11 @@ class Target implements MultivariateFunction {
 		final double x1 = variables[1];
 		final double x2 = variables[2];
 		final double x3 = variables[3];
-		//final double x4 = variables[4];
+		final double x4 = variables[4];
+		final double x5 = variables[5];
+		final double x6 = variables[6];
+		//final double x7 = variables[7];
+		
 
 
 		return failuresum(step_soll, omega2polstep(ord, variables, t));
