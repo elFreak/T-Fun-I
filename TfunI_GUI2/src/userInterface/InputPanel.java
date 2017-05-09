@@ -34,6 +34,9 @@ public class InputPanel extends JPanel {
 	/**
 	 * Card "Einlesen"
 	 */
+	private InputCardEinlesen inputCardEinlesen = new InputCardEinlesen(this.controller);
+	
+	
 	private JPanel cardEinlesen = new JPanel(new GridBagLayout());
 	private JButton btEinlesen = new JButton("Öffnen");
 
@@ -45,12 +48,12 @@ public class InputPanel extends JPanel {
 	/**
 	 * Card "Berechnen"
 	 */
-	private JPanel cardBerechnen = new JPanel(new GridBagLayout());
+	private InputCardBerechnen inputCardBerechnen = new InputCardBerechnen(this.controller);
 
 	/**
 	 * Card "Verifizieren"
 	 */
-	private JPanel cardVertifizieren = new JPanel(new GridBagLayout());
+	private InputCardVertifizieren inputCardVertifizieren = new InputCardVertifizieren(this.controller);
 
 	/**
 	 * 
@@ -69,59 +72,17 @@ public class InputPanel extends JPanel {
 		setBackground(GlobalSettings.colorBackgroundBlueBright);
 		// Input-Panel Layout:
 		setLayout(cardLayout);
-		add(cardEinlesen, Controller.KEY_EINLESEN);
+		add(inputCardEinlesen, Controller.KEY_EINLESEN);
 		add(inputCardBearbeiten, Controller.KEY_BEARBEITEN);
-		add(cardBerechnen, Controller.KEY_BERECHNEN);
-		add(cardVertifizieren, Controller.KEY_VERTIFIZIEREN);
-
-		// Init Cards:
-		cardEinlesenInit();
-		cardBerechnenInit();
-		cardVertifizierenInit();
+		add(inputCardBerechnen, Controller.KEY_BERECHNEN);
+		add(inputCardVertifizieren, Controller.KEY_VERTIFIZIEREN);
 	}
 
+
 	
-	/**
-	 * 
-	 */
-	private void cardEinlesenInit() {
-		cardEinlesen.setBackground(GlobalSettings.colorBackground);
-		JPanel panelEinlesen = new JPanel(new GridLayout(1, 1, 10, 10));
-		panelEinlesen.setBackground(GlobalSettings.colorBackground);
-		panelEinlesen.setBorder(MyBorderFactory.createMyBorder("Aus CSV-Datei einlesen"));
-		panelEinlesen.add(btEinlesen);
-		btEinlesen.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setMesuredData(DataRead.csvread());				
-			}
-		});
-		cardEinlesen.add(panelEinlesen, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
-		JPanel panelBackground = new JPanel();
-		panelBackground.setBackground(GlobalSettings.colorBackground);
-		cardEinlesen.add(panelBackground, new GridBagConstraints(0, 1, 1, 1, 1.0, 1.0,
-				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.BOTH, new Insets(00, 00, 00, 00), 0, 0));
-	}
+
 	
 	
-	
-	
-	/**
-	 * 
-	 */
-	private void cardBerechnenInit() {
-		cardBerechnen.setBackground(GlobalSettings.colorBackground);
-	}
-	
-	
-	/**
-	 * 
-	 */
-	private void cardVertifizierenInit() {
-		cardVertifizieren.setBackground(GlobalSettings.colorBackground);
-	}
 	
 	
 	/**
