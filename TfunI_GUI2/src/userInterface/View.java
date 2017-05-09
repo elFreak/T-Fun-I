@@ -41,6 +41,7 @@ public class View extends JPanel implements Observer{
 		super(new GridBagLayout());
 		this.controller = controller;
 		this.frame = frame;
+		
 		menuBar = new MenuBar(this.controller, this.frame);
 		statusBar = new StatusBar();
 		inputPanel = new InputPanel(this.controller);
@@ -48,7 +49,7 @@ public class View extends JPanel implements Observer{
 		programFlow = new ProgramFlow(this.controller);
 
 		// Add MenuBar and ProgramFlow:
-		add(menuBar, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
+		this.add(menuBar, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 
 		JPanel panelFlow = new JPanel(new GridLayout(1, 1));
