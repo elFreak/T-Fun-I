@@ -1,9 +1,7 @@
-package userInterface;
+package IOCard;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
@@ -17,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import projectTfunI.GlobalSettings;
+import userInterface.Controller;
+import userInterface.MyBorderFactory;
 
 /**
  * 
@@ -25,6 +25,8 @@ import projectTfunI.GlobalSettings;
  */
 
 public class InputCardBearbeiten extends JPanel {
+	private static final long serialVersionUID = 1L;
+
 	Controller controller;
 
 	private JPanel panelFiltern = new JPanel(new GridBagLayout());
@@ -83,18 +85,18 @@ public class InputCardBearbeiten extends JPanel {
 
 		// Panel Rahmen konfigurieren
 		panelRahmen.setBackground(GlobalSettings.colorBackground);
-		panelRahmen.setBorder(MyBorderFactory.createMyBorder("Offset"));
+		panelRahmen.setBorder(MyBorderFactory.createMyBorder("Offset und Bereich"));
 
 		panelRahmen.add(new JLabel("Offset:"), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 		panelRahmen.add(tfOffset, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 20, 0));
 
-		panelRahmen.add(new Label("Oben: "), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+		panelRahmen.add(new Label("Beginn: "), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 		panelRahmen.add(tfBereichOben, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 20, 0));
-		panelRahmen.add(new Label("Unten: "), new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
+		panelRahmen.add(new Label("Ende: "), new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 		panelRahmen.add(tfBereichUnten, new GridBagConstraints(1, 2, 1, 1, 1.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 20, 0));
@@ -105,7 +107,6 @@ public class InputCardBearbeiten extends JPanel {
 		// Cardpanel konfigurieren
 		this.setLayout(new GridBagLayout());
 		this.setBackground(GlobalSettings.colorBackground);
-		this.setBorder(MyBorderFactory.createMyBorder("Signal bearbeiten"));
 
 		this.add(panelFiltern, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.NORTH,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));

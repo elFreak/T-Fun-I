@@ -137,7 +137,7 @@ public class ProgramFlow extends JPanel implements ActionListener {
 		case Controller.BERECHNEN:
 
 			break;
-		case Controller.VERTIFIZIEREN:
+		case Controller.VERIFIZIEREN:
 
 			break;
 
@@ -157,7 +157,7 @@ public class ProgramFlow extends JPanel implements ActionListener {
 			controller.setActualMode(Controller.BERECHNEN);
 		}
 		if (e.getSource().equals(btVertifizieren)) {
-			controller.setActualMode(Controller.VERTIFIZIEREN);
+			controller.setActualMode(Controller.VERIFIZIEREN);
 		}
 	}
 }

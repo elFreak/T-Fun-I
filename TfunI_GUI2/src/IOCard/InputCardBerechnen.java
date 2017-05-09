@@ -1,4 +1,4 @@
-package userInterface;
+package IOCard;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,8 +11,12 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 
 import projectTfunI.GlobalSettings;
+import userInterface.Controller;
+import userInterface.MyBorderFactory;
 
 public class InputCardBerechnen extends JPanel {
+	private static final long serialVersionUID = 1L;
+
 Controller controller;
 	
 	private JPanel panelOrdnung = new JPanel(new GridBagLayout());
@@ -112,7 +116,6 @@ Controller controller;
 		// Cardpanel konfigurieren
 		this.setLayout(new GridBagLayout());
 		this.setBackground(GlobalSettings.colorBackground);
-		this.setBorder(MyBorderFactory.createMyBorder("Gütebestimmung"));
 
 		this.add(panelOrdnung, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.NORTH,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));

@@ -10,16 +10,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
-import com.sun.management.jmx.Trace;
-import com.sun.org.apache.xpath.internal.operations.Mod;
-
-import javafx.beans.Observable;
-import model.MeasurementData;
 import model.Model;
 import projectTfunI.GlobalSettings;
 import projectTfunI.Utility;
 
-public class View extends JPanel implements Observer{
+public class View extends JPanel implements Observer {
 	private static final long serialVersionUID = 1L;
 
 	// --------------------------------------------------------------------
@@ -60,9 +55,7 @@ public class View extends JPanel implements Observer{
 				GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		// Add the rest of the GUI (SplitPane-Area):
 		add(new SplitPaneContainer(JSplitPane.HORIZONTAL_SPLIT, inputPanel,
-				new SplitPaneContainer(JSplitPane.VERTICAL_SPLIT, outputPanel, statusBar, 1.0,
-						0.0),
-				0.0, 1.0),
+				new SplitPaneContainer(JSplitPane.VERTICAL_SPLIT, outputPanel, statusBar, 1.0, 0.0), 0.0, 1.0),
 				new GridBagConstraints(0, 2, 1, 1, 1.0, 1.0, GridBagConstraints.FIRST_LINE_START,
 						GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
@@ -77,28 +70,28 @@ public class View extends JPanel implements Observer{
 
 	@Override
 	public void update(java.util.Observable obs, Object obj) {
-		
-		
-			
+
 		// Traces Aktualisieren:
-		outputPanel.traceStep.data = ((Model)obs).measurementData.getstep();
-		outputPanel.traceRaw.data = ((Model)obs).measurementData.getRawData();
-		outputPanel.traceMean.data = ((Model)obs).measurementData.getMeanData();
-		
-		if(outputPanel.traceRaw.dataValid == false) {
-			outputPanel.plotEinlesen.setRangeIdeal();
-			outputPanel.plotBearbeiten.setRangeIdeal();
+		outputPanel.traceStep.data = ((Model) obs).measurementData.getstep();
+		outputPanel.traceRaw.data = ((Model) obs).measurementData.getRawData();
+		outputPanel.traceMean.data = ((Model) obs).measurementData.getMeanData();
+
+		if (outputPanel.traceRaw.dataValid == false) {
+			outputPanel.traceStep.dataValid = true;
+			outputPanel.traceRaw.dataValid = true;
+			outputPanel.traceMean.dataValid = true;
+			outputPanel.cardEinlesen.plotEinlesen.setRangeIdeal();
+			outputPanel.cardBearbeiten.plotBearbeiten.setRangeIdeal();
+		} else {
+			outputPanel.traceStep.dataValid = true;
+			outputPanel.traceRaw.dataValid = true;
+			outputPanel.traceMean.dataValid = true;
 		}
-		
-		outputPanel.traceStep.dataValid = true;
-		outputPanel.traceRaw.dataValid = true;
-		outputPanel.traceMean.dataValid = true;
-		
-		//Update:
+
+		// Update:
 		revalidate();
 		repaint();
-		
-		
+
 	}
 
 }

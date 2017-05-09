@@ -1,4 +1,4 @@
-package userInterface;
+package IOCard;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import projectTfunI.GlobalSettings;
+import userInterface.Controller;
+import userInterface.MyBorderFactory;
 
 /**
  * 
@@ -20,7 +22,7 @@ import projectTfunI.GlobalSettings;
  *
  */
 
-public class InputCardVertifizieren extends JPanel {
+public class InputCardVerifizieren extends JPanel {
 	Controller controller;
 	
 	private JPanel panelFilter = new JPanel(new GridBagLayout());
@@ -31,7 +33,7 @@ public class InputCardVertifizieren extends JPanel {
 	private JCheckBox cb4 = new JCheckBox();
 	private JCheckBox cb6 = new JCheckBox();
 	
-	public InputCardVertifizieren (Controller controller){
+	public InputCardVerifizieren (Controller controller){
 		this.controller = controller;
 
 		// Textfeld Filter konfigurieren
@@ -73,7 +75,6 @@ public class InputCardVertifizieren extends JPanel {
 		// Cardpanel konfigurieren
 		this.setLayout(new GridBagLayout());
 		this.setBackground(GlobalSettings.colorBackground);
-		this.setBorder(MyBorderFactory.createMyBorder("Gütebestimmung"));
 
 		this.add(panelFilter, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.NORTH,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
