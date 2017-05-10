@@ -39,15 +39,18 @@ public class Slider extends JPanel {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				if(orientation == HORIZONTAL) {
-					positionPixel+=e.getY();
+					positionPixel+=e.getY()-getHeight()/2;
 				}
 				else {
-					positionPixel+=e.getX();
+					positionPixel+=e.getX()-getWidth()/2;
 				}
 				repaint();
 				subplot.repaint();
 			}
 		});
+		
+		repaint();
+		subplot.repaint();
 	}
 	
 	protected void paintComponent(Graphics g) {
