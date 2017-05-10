@@ -35,5 +35,8 @@ public class OutputCardBearbeiten extends WindowContainer {
 		plotBearbeiten.setSliderPosition(KEY_OFFSET, 0);
 		plotBearbeiten.setSliderPosition(KEY_START, -1000);
 		plotBearbeiten.setSliderPosition(KEY_END, 1000);
+		plotBearbeiten.setSubplot(1);
+		plotBearbeiten.addSlider(Slider.HORIZONTAL,KEY_OFFSET);
+		plotBearbeiten.setSliderPosition(KEY_OFFSET, 0);
 	}
 }

@@ -277,8 +277,40 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			}
 		}
 
+		// Paint Cursor-X:
+		if (connected) {
+			if (plot.mouseIsPressed) {
+				g2.setColor(zoomFrameColor);
+				g2.setStroke(new BasicStroke(zoomFrameThickness));
+				g2.draw(new Line2D.Float(cursorX, 0, (int) cursorX, height * 10));
+			}
+		}
+		// Paint Zoom-Frame:^
+		Polygon polygon;
+		if (mouseIsPressed) {
+			g2.setColor(zoomFrameColor);
+			g2.setStroke(new BasicStroke(zoomFrameThickness));
+			polygon = new Polygon();
+			polygon.addPoint((int) zoomTopLeft[PIXEL][X], (int) zoomTopLeft[PIXEL][Y]);
+			polygon.addPoint((int) zoomTopLeft[PIXEL][X], (int) zoomDownRight[PIXEL][Y]);
+			polygon.addPoint((int) zoomDownRight[PIXEL][X], (int) zoomDownRight[PIXEL][Y]);
+			polygon.addPoint((int) zoomDownRight[PIXEL][X], (int) zoomTopLeft[PIXEL][Y]);
+			g2.drawPolygon(polygon);
+
+			g2.setColor(zoomFrameColor);
+			g2.setStroke(new BasicStroke(zoomFrameThickness));
+			g2.draw(new Line2D.Float((int) zoomDownRight[PIXEL][X], (int) zoomDownRight[PIXEL][Y],
+					(int) zoomDownRight[PIXEL][X] + width, (int) zoomDownRight[PIXEL][Y]));
+			g2.draw(new Line2D.Float((int) zoomDownRight[PIXEL][X], (int) zoomDownRight[PIXEL][Y],
+					(int) zoomDownRight[PIXEL][X] - width, (int) zoomDownRight[PIXEL][Y]));
+			g2.draw(new Line2D.Float((int) zoomDownRight[PIXEL][X], (int) zoomDownRight[PIXEL][Y],
+					(int) zoomDownRight[PIXEL][X], (int) zoomDownRight[PIXEL][Y] + height));
+			g2.draw(new Line2D.Float((int) zoomDownRight[PIXEL][X], (int) zoomDownRight[PIXEL][Y],
+					(int) zoomDownRight[PIXEL][X], (int) zoomDownRight[PIXEL][Y] - height));
+		}
+
 		// Paint border:
-		Polygon polygon = new Polygon();
+		polygon = new Polygon();
 		polygon.addPoint(0, boardCorner[0][Y]);
 		polygon.addPoint(0, height);
 		polygon.addPoint(width, height);
@@ -302,38 +334,6 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 		paintNummeration(g2, Y1AXIS, scaleFactor);
 		if (yAxis2Availabe) {
 			paintNummeration(g2, Y2AXIS, scaleFactor);
-		}
-
-		// Paint Zoom-Frame:
-		if (mouseIsPressed) {
-			g2.setColor(zoomFrameColor);
-			g2.setStroke(new BasicStroke(zoomFrameThickness));
-			polygon = new Polygon();
-			polygon.addPoint((int) zoomTopLeft[PIXEL][X], (int) zoomTopLeft[PIXEL][Y]);
-			polygon.addPoint((int) zoomTopLeft[PIXEL][X], (int) zoomDownRight[PIXEL][Y]);
-			polygon.addPoint((int) zoomDownRight[PIXEL][X], (int) zoomDownRight[PIXEL][Y]);
-			polygon.addPoint((int) zoomDownRight[PIXEL][X], (int) zoomTopLeft[PIXEL][Y]);
-			g2.drawPolygon(polygon);
-
-			g2.setColor(zoomFrameColor);
-			g2.setStroke(new BasicStroke(zoomFrameThickness));
-			g2.draw(new Line2D.Float((int) zoomDownRight[PIXEL][X], (int) zoomDownRight[PIXEL][Y],
-					(int) zoomDownRight[PIXEL][X] + width, (int) zoomDownRight[PIXEL][Y]));
-			g2.draw(new Line2D.Float((int) zoomDownRight[PIXEL][X], (int) zoomDownRight[PIXEL][Y],
-					(int) zoomDownRight[PIXEL][X] - width, (int) zoomDownRight[PIXEL][Y]));
-			g2.draw(new Line2D.Float((int) zoomDownRight[PIXEL][X], (int) zoomDownRight[PIXEL][Y],
-					(int) zoomDownRight[PIXEL][X], (int) zoomDownRight[PIXEL][Y] + height));
-			g2.draw(new Line2D.Float((int) zoomDownRight[PIXEL][X], (int) zoomDownRight[PIXEL][Y],
-					(int) zoomDownRight[PIXEL][X], (int) zoomDownRight[PIXEL][Y] - height));
-		}
-
-		// Paint Cursor-X:
-		if (connected) {
-			if (plot.mouseIsPressed) {
-				g2.setColor(zoomFrameColor);
-				g2.setStroke(new BasicStroke(zoomFrameThickness));
-				g2.draw(new Line2D.Float(cursorX, 0, (int) cursorX, height));
-			}
 		}
 
 		// Paint Axes-Label (X):

@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.SwingWorker;
 
-import org.apache.commons.math3.complex.Complex;
+
 import org.apache.commons.math3.optim.InitialGuess;
 import org.apache.commons.math3.optim.MaxEval;
 import org.apache.commons.math3.optim.PointValuePair;
@@ -14,10 +14,6 @@ import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.NelderMeadSimplex;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizer;
 
-import matlabfunction.Matlab;
-import matlabfunction.Filter;
-import matlabfunction.FilterFactory;
-import matlabfunction.SVTools;
 import userInterface.StatusBar;
 
 public class Approximation extends SwingWorker<Object, Integer> {
