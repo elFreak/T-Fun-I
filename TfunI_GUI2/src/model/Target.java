@@ -73,6 +73,7 @@ public class Target implements MultivariateFunction {
 		for (int i = 0; i < is.length; i++) {
 			failuresum = failuresum + Math.pow(should[i] - is[i], 2);
 		}
-		return failuresum;
+
+		return failuresum/is[is.length-1];
 	}
 }
