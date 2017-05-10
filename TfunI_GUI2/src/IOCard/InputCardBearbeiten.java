@@ -62,26 +62,6 @@ public class InputCardBearbeiten extends JPanel {
 		// Filtern
 		// -----------------------------------------------------
 
-		// Anonymer MouseWheelListener für Textfeld Filtern
-		tfFilter.addMouseWheelListener(new MouseWheelListener() {
-			@Override
-			public void mouseWheelMoved(MouseWheelEvent e) {
-				int tempValue = (int) Double.parseDouble(tfFilter.getText());
-				tempValue += (int) (e.getWheelRotation() * 1);
-				if (tempValue < 0) {
-					tempValue = 0;
-				}
-				tfFilter.setText(String.valueOf(tempValue));
-				if (tempValue > sFilter.getMaximum()) {
-					ChangeListener[] changeListener = sFilter.getChangeListeners();
-					sFilter.removeChangeListener(changeListener[0]);
-					sFilter.setValue(tempValue);
-					sFilter.addChangeListener(changeListener[0]);
-				} else
-					sFilter.setValue(tempValue);
-				controller.filterChanged(tempValue);
-			}
-		});
 		// Anonymer ActionListener für Textfeld Filter bei Enter
 		tfFilter.addActionListener(new ActionListener() {
 			@Override
@@ -125,6 +105,28 @@ public class InputCardBearbeiten extends JPanel {
 		});
 
 		// Panel Filtern Konfigurieren
+
+		// Anonymer MouseWheelListener für Textfeld Filtern
+		panelFiltern.addMouseWheelListener(new MouseWheelListener() {
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				int tempValue = (int) Double.parseDouble(tfFilter.getText());
+				tempValue += (int) (e.getWheelRotation() * 1);
+				if (tempValue < 0) {
+					tempValue = 0;
+				}
+				tfFilter.setText(String.valueOf(tempValue));
+				if (tempValue > sFilter.getMaximum()) {
+					ChangeListener[] changeListener = sFilter.getChangeListeners();
+					sFilter.removeChangeListener(changeListener[0]);
+					sFilter.setValue(tempValue);
+					sFilter.addChangeListener(changeListener[0]);
+				} else
+					sFilter.setValue(tempValue); 
+				controller.filterChanged(tempValue);
+			}
+		});
+		
 		panelFiltern.setBackground(GlobalSettings.colorBackground);
 		panelFiltern.setBorder(MyBorderFactory.createMyBorder("Mittelwertfilter"));
 
