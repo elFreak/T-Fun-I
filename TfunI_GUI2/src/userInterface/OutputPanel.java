@@ -27,6 +27,7 @@ public class OutputPanel extends JPanel {
 	public JavaPlot.Trace traceStep;
 	public JavaPlot.Trace traceRaw;
 	public JavaPlot.Trace traceMean;
+	public JavaPlot.Trace traceSolution;
 
 	/**
 	 * Cards:
@@ -54,6 +55,7 @@ public class OutputPanel extends JPanel {
 		traceMean = new Trace();
 		traceMean.usePreferedColor = true;
 		traceMean.preferedColor = GlobalSettings.colorTraceGreen;
+		traceSolution=new Trace();
 
 		// Init Cards:
 		cardEinlesen = new OutputCardEinlesen(this);

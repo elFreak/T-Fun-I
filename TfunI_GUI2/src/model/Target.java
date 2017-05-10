@@ -1,8 +1,11 @@
-package pro2e.teamX.matlabfunctions;
+package model;
 
 import org.apache.commons.math3.analysis.MultivariateFunction;
 
-class Target implements MultivariateFunction {
+import pro2e.teamX.matlabfunctions.Matlab;
+import pro2e.teamX.matlabfunctions.SVTools;
+
+public class Target implements MultivariateFunction {
 
 	private double[] t;
 	private double[] step_soll;

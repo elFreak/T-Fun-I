@@ -1,7 +1,9 @@
 package pro2e.teamX.matlabfunctions;
 
+import java.applet.Applet;
 import java.util.Arrays;
 
+import javax.swing.JApplet;
 import javax.xml.bind.ParseConversionEvent;
 
 import org.apache.commons.math3.analysis.MultivariateFunction;
@@ -15,16 +17,31 @@ import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.NelderMeadSimplex
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizer;
 import org.apache.commons.math3.util.FastMath;
 
+import JavaPlot.Plot;
+import JavaPlot.Trace;
+import model.Target;
+
 //import oli_test.Approximation;
 //import oli_test.ApproximationSettings;
 
-public class NelderMeadSimplexSinusCosExample {
+public class NelderMeadSimplexSinusCosExample extends JApplet {
 
 	public static void main(String[] args) {
 		Filter filter = FilterFactory.createButter(3, 1.0);
 		double[] t = Matlab.linspace(0, 15.0, 100);
 		
 		double[] step_soll = (double[])SVTools.step(filter.B, filter.A, t)[0];
+		
+		double [][] soll_plot = new double[][]{t,step_soll};
+		
+		
+		Plot plot = new Plot();
+		
+		Trace trace = new Trace();
+		trace.data=soll_plot;
+		plot.addTrace(trace);
+		
+		
 		
 		for (int i = 0; i < step_soll.length; i++) {
 			System.out.println(""+step_soll[i]);
