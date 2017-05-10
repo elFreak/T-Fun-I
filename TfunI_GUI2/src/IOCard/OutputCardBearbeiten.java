@@ -9,6 +9,10 @@ import userInterface.WindowContainer;
 public class OutputCardBearbeiten extends WindowContainer {
 	private static final long serialVersionUID = 1L;
 	
+	public final static String KEY_START = "Start";
+	public final static String KEY_END = "End";
+	public final static String KEY_OFFSET = "Offset";
+	
 	private Controller controller;
 	public Plot plotBearbeiten;
 	
@@ -25,8 +29,11 @@ public class OutputCardBearbeiten extends WindowContainer {
 		outputPanel.traceRaw.dataValid = false;
 		outputPanel.traceMean.dataValid = false;
 		plotBearbeiten.setSubplot(0);
-		plotBearbeiten.addSlider(Slider.HORIZONTAL,"Offset");
-		plotBearbeiten.addSlider(Slider.VERTICAL,"Start");
-		plotBearbeiten.addSlider(Slider.VERTICAL,"End");
+		plotBearbeiten.addSlider(Slider.HORIZONTAL,KEY_OFFSET);
+		plotBearbeiten.addSlider(Slider.VERTICAL,KEY_START);
+		plotBearbeiten.addSlider(Slider.VERTICAL,KEY_END);
+		plotBearbeiten.setSliderPosition(KEY_OFFSET, 0);
+		plotBearbeiten.setSliderPosition(KEY_START, -1000);
+		plotBearbeiten.setSliderPosition(KEY_END, 1000);
 	}
 }

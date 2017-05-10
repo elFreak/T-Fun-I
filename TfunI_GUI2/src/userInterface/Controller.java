@@ -11,6 +11,7 @@ import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.NelderMeadSimplex;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizer;
 
+import IOCard.OutputCardBearbeiten;
 import JavaPlot.Plot;
 import JavaPlot.Trace;
 import matlabfunction.Filter;
@@ -80,9 +81,10 @@ public class Controller {
 			break;
 		case Controller.VERIFIZIEREN:
 
-			view.outputPanel.cardBearbeiten.plotBearbeiten.setSliderPosition("Offset", 2.5);
-			view.outputPanel.cardBearbeiten.plotBearbeiten.setSliderPosition("Start", 0.0005);
-			view.outputPanel.cardBearbeiten.plotBearbeiten.setSliderPosition("End", 0.00035);
+			view.outputPanel.cardBearbeiten.plotBearbeiten.setSubplot(0);
+			view.outputPanel.cardBearbeiten.plotBearbeiten.setSliderPosition(OutputCardBearbeiten.KEY_OFFSET, 2.5);
+			view.outputPanel.cardBearbeiten.plotBearbeiten.setSliderPosition(OutputCardBearbeiten.KEY_START, 0.0005);
+			view.outputPanel.cardBearbeiten.plotBearbeiten.setSliderPosition(OutputCardBearbeiten.KEY_END, 0.00035);
 			
 			
 			break;

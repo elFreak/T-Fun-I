@@ -19,6 +19,8 @@ import projectT_Fun_I.GlobalSettings;
 
 import javax.swing.JPanel;
 
+import IOCard.OutputCardBearbeiten;
+
 public class Subplot extends JPanel implements MouseMotionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 
@@ -65,6 +67,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	public static final int Y = Trace.Y;
 	private int[][] boardCorner = new int[4][2];
 	private Color boardColor = new Color(45, 45, 45); // @Approach
+	private boolean doScale = false; // @Approach
 
 	// --------------------------------------------------------------------
 	// Grid:
@@ -147,7 +150,16 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 		// Calculate general Values:
 		double scaleFactor = Math.min(Math.min(width / 35, height / 35), 20);
-		int border = (int) (scaleFactor * boardBorderFactor);
+		int border;
+		if (doScale) {
+			border = (int) (scaleFactor * boardBorderFactor);
+		} else {
+			FontMetrics fm = g2.getFontMetrics();
+			g2.setFont(GlobalSettings.fontTextSmall);
+			fm = g2.getFontMetrics();
+			int widthSymbol = (fm.stringWidth("00000"));
+			border = widthSymbol;
+		}
 
 		// Calculate ... Y2-Axis
 		int yAxisActualNumber = axisRangeActualSectorNumber[Y1AXIS];
@@ -330,10 +342,18 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			String unitWithPrefix = "[" + getPrefix((int) (axisRangeScaleFactor[XAXIS])) + axisLabelUnit[XAXIS] + "]";
 
 			g2.setColor(nummerationColor);
-			int heightSymbol = (int) (nummerationTextHeight * 1.4 * scaleFactor);
-			int heightIndex = (int) (nummerationTextHeight * 1 * scaleFactor);
-			Font fontSymbol = new Font(Font.DIALOG_INPUT, Font.CENTER_BASELINE, heightSymbol);
-			Font fontIndex = new Font(Font.DIALOG_INPUT, Font.CENTER_BASELINE, heightIndex);
+			Font fontSymbol;
+			Font fontIndex;
+			if (doScale) {
+				int heightSymbol = (int) (nummerationTextHeight * 1.4 * scaleFactor);
+				int heightIndex = (int) (nummerationTextHeight * 1 * scaleFactor);
+				fontSymbol = new Font(Font.DIALOG_INPUT, Font.CENTER_BASELINE, heightSymbol);
+				fontIndex = new Font(Font.DIALOG_INPUT, Font.CENTER_BASELINE, heightIndex);
+			} else {
+				fontSymbol = GlobalSettings.fontTextSmall;
+				fontIndex = new Font(fontSymbol.getName(), fontSymbol.getStyle(), (int) (fontSymbol.getSize() * 0.8));
+			}
+
 			FontMetrics fm = g2.getFontMetrics();
 			g2.setFont(fontSymbol);
 			fm = g2.getFontMetrics();
@@ -357,6 +377,10 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 		}
 
 		// Paint Slider:
+		setSliderPosition(OutputCardBearbeiten.KEY_START);
+		setSliderPosition(OutputCardBearbeiten.KEY_END);
+		setSliderPosition(OutputCardBearbeiten.KEY_OFFSET);
+
 		for (int i = 0; i < sliderActualNumber; i++) {
 			if (sliders[i].orienation == Slider.HORIZONTAL) {
 				if (sliders[i].positionPixel < boardCorner[0][Y]) {
@@ -365,8 +389,8 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 				if (sliders[i].positionPixel > boardCorner[1][Y]) {
 					sliders[i].positionPixel = boardCorner[1][Y];
 				}
-				sliders[i].setBounds(0, sliders[i].positionPixel - Slider.sliderThickness / 2, getWidth(),
-						Slider.sliderThickness);
+				sliders[i].setBounds(boardCorner[0][X], sliders[i].positionPixel - Slider.sliderThickness / 2,
+						boardCorner[2][X] - boardCorner[0][X], Slider.sliderThickness);
 			} else {
 				if (sliders[i].positionPixel < boardCorner[0][X]) {
 					sliders[i].positionPixel = boardCorner[0][X];
@@ -374,8 +398,8 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 				if (sliders[i].positionPixel > boardCorner[2][X]) {
 					sliders[i].positionPixel = boardCorner[2][X];
 				}
-				sliders[i].setBounds(sliders[i].positionPixel - Slider.sliderThickness / 2, 0, Slider.sliderThickness,
-						getHeight());
+				sliders[i].setBounds(sliders[i].positionPixel - Slider.sliderThickness / 2, boardCorner[0][Y],
+						Slider.sliderThickness, boardCorner[2][Y] - boardCorner[0][Y]);
 			}
 		}
 	}
@@ -502,8 +526,15 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	private void paintNummeration(Graphics2D g2, int axis, double scaleFactor) {
 
 		g2.setColor(nummerationColor);
-		int nummerationTestHeightNormed = (int) (nummerationTextHeight * scaleFactor);
-		Font font = new Font(Font.DIALOG_INPUT, Font.CENTER_BASELINE, nummerationTestHeightNormed);
+		int nummerationTestHeightNormed = 0;
+		if (doScale == true) {
+			nummerationTestHeightNormed = (int) (nummerationTextHeight * scaleFactor);
+		} else {
+			nummerationTestHeightNormed = GlobalSettings.fontTextSmall.getSize();
+		}
+		Font font = new Font(GlobalSettings.fontTextSmall.getName(), GlobalSettings.fontTextSmall.getStyle(),
+				nummerationTestHeightNormed);
+
 		g2.setFont(font);
 
 		int axisIsAYAxis = (int) Math.ceil(axis / 2.0);
@@ -586,7 +617,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 				g2.drawString(text, boardCorner[1][X] + i * deltaGrid - stringWidth / 2,
 						boardCorner[1][Y] + nummerationTestHeightNormed + nummberationDistance);
 			}
-			if (connected && !connectedHighSubplot && i == axisRangeActualSectorNumber[axis] - 1) {
+			if (i == axisRangeActualSectorNumber[axis] - 1) {
 				if (axis == Y1AXIS) {
 					g2.drawString(text, boardCorner[1][X] - stringWidth - nummberationDistance * 2,
 							boardCorner[1][Y] - i * deltaGrid + nummerationTestHeightNormed / 2);
@@ -958,7 +989,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	}
 
 	// --------------------------------------------------------------------
-	// Get Value of Slider:
+	// Update Value of Slider:
 	public void updateSliderValue(Slider slider) {
 		double actualValue;
 		if (slider.orienation == Slider.HORIZONTAL) {
@@ -1007,13 +1038,53 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	public void setSliderPosition(String tag, double value) {
 		for (int i = 0; i < sliderActualNumber; i++) {
 			if (sliders[i].tag == tag) {
+
+				switch (sliders[i].tag) {
+				case OutputCardBearbeiten.KEY_START:
+					sliderStartValue = value;
+					break;
+				case OutputCardBearbeiten.KEY_END:
+					sliderEndValue = value;
+					break;
+				case OutputCardBearbeiten.KEY_OFFSET:
+					sliderOffsetValue = value;
+					break;
+				}
+			}
+		}
+	}
+
+	// --------------------------------------------------------------------
+	// Set Slider Position:
+	private void setSliderPosition(String tag) {
+		for (int i = 0; i < sliderActualNumber; i++) {
+			if (sliders[i].tag == tag) {
+
+				double value = 0;
+				switch (sliders[i].tag) {
+				case OutputCardBearbeiten.KEY_START:
+					value = sliderStartValue;
+					break;
+				case OutputCardBearbeiten.KEY_END:
+					value = sliderEndValue;
+					break;
+				case OutputCardBearbeiten.KEY_OFFSET:
+					value = sliderOffsetValue;
+					break;
+				}
+
 				if (sliders[i].orienation == Slider.HORIZONTAL) {
 					sliders[i].positionPixel = -(int) ((((value - axisRangeSector[Y1AXIS][0])
 							/ (axisRangeSector[Y1AXIS][axisRangeActualSectorNumber[Y1AXIS] - 1]
 									- axisRangeSector[Y1AXIS][0]))
 							* ((double) (boardCorner[1][Y] - boardCorner[0][Y]))) - boardCorner[1][Y]);
 				} else {
-					sliders[i].positionPixel = (int) ((((value - axisRangeSector[XAXIS][0])/ (axisRangeSector[XAXIS][axisRangeActualSectorNumber[XAXIS] - 1]- axisRangeSector[XAXIS][0]))* ((double) (boardCorner[2][X] - boardCorner[0][X]))) - boardCorner[1][X]);
+
+					sliders[i].positionPixel = (int) ((value - axisRangeSector[XAXIS][0])
+							/ (axisRangeSector[XAXIS][axisRangeActualSectorNumber[XAXIS] - 1]
+									- axisRangeSector[XAXIS][0])
+							* ((double) (boardCorner[3][X] - boardCorner[0][X])) + boardCorner[0][X]);
+
 				}
 			}
 		}

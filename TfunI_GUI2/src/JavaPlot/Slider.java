@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Line2D;
 
@@ -25,13 +26,48 @@ public class Slider extends JPanel {
 	public Slider slider;
 	public int orienation;
 	public String tag;
+	private boolean highlight = false;
 	
 
 	public Slider(int orientation, Subplot subplot, String tag) {
 		this.tag = tag;
 		this.orienation = orientation;
-		this.setBackground(new Color(0, 0, 0, 0));
+		this.setOpaque(false);
 		this.slider = this;
+		
+		this.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				highlight = false;
+				repaint();
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				highlight = true;
+				repaint();
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 		this.addMouseMotionListener(new MouseMotionListener() {
 
@@ -53,16 +89,22 @@ public class Slider extends JPanel {
 				subplot.updateSliderValue(slider);
 			}
 		});
-
-		repaint();
-		subplot.repaint();
 	}
 
 	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
+		
+		Stroke dashed;
+		if(highlight) {
+			dashed = new BasicStroke(GlobalSettings.traceThinkness*2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
+					new float[] { GlobalSettings.traceThinkness * 3, GlobalSettings.traceThinkness }, 0);
+		}else
+		{
+			dashed = new BasicStroke(GlobalSettings.traceThinkness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
+					new float[] { GlobalSettings.traceThinkness * 3, GlobalSettings.traceThinkness }, 0);
+		}
 
-		Stroke dashed = new BasicStroke(GlobalSettings.traceThinkness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
-				new float[] { GlobalSettings.traceThinkness * 3, GlobalSettings.traceThinkness }, 0);
 		g2.setStroke(dashed);
 		if (orienation == HORIZONTAL) {
 			g2.setColor(GlobalSettings.colorSliderBlue);

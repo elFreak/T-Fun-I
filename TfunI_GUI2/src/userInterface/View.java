@@ -85,8 +85,9 @@ public class View extends JPanel implements Observer {
 			outputPanel.traceMean.dataValid = true;
 			outputPanel.traceSolution.dataValid = true;
 			outputPanel.cardEinlesen.plotEinlesen.setRangeIdeal();
-			outputPanel.cardBearbeiten.plotBearbeiten.setRangeIdeal();
 			outputPanel.cardBearbeiten.plotBearbeiten.setSubplot(0);
+			outputPanel.cardBearbeiten.plotBearbeiten.setRangeIdeal();
+			outputPanel.cardBearbeiten.plotBearbeiten.setSubplot(1);
 			outputPanel.cardBearbeiten.plotBearbeiten.setRangeIdeal();
 		} else {
 			outputPanel.traceStep.dataValid = true;
