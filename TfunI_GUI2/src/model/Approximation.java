@@ -39,7 +39,8 @@ public class Approximation extends SwingWorker<Object, Integer> {
 		// double[] step_soll = (double[])matlabfunction.SVTools.step(filter.B,
 		// filter.A, t)[0];
 
-		Target target = new Target(scalingTime(measurementData.getMeanData())[0], measurementData.getMeanData()[1], 3);
+		//Target target = new Target(scalingTime(measurementData.getMeanData())[0], measurementData.getMeanData()[1], 3);
+		Target target = new Target(measurementData.getMeanData()[0],measurementData.getMeanData()[1],3);
 		// for (int i = 0; i < step_soll.length; i++) {
 		// System.out.println(""+step_soll[i]);
 		// }
@@ -50,11 +51,17 @@ public class Approximation extends SwingWorker<Object, Integer> {
 		PointValuePair optimum = optimizer.optimize(new MaxEval(10000), new ObjectiveFunction(target),
 				GoalType.MINIMIZE, new InitialGuess(getStartingValues()),
 				new NelderMeadSimplex(new double[] { 0.2, 0.2, 0.2, 0.2 }));
+		
+		SimplexOptimizer optimizer2 = new SimplexOptimizer(1e-15, 1e-16);
+		PointValuePair optimum2 = optimizer.optimize(new MaxEval(10000), new ObjectiveFunction(target),
+				GoalType.MINIMIZE, new InitialGuess(optimum.getPoint()),
+				new NelderMeadSimplex(new double[] { 0.2, 0.2, 0.2, 0.2 }));
 
 		// double[] step_approx = target.omega2polstep(4, optimum.getPoint(),
 		// measurementData.getMeanData()[0]);
 
 		System.out.println(Arrays.toString(optimum.getPoint()) + " : " + optimum.getSecond());
+		System.out.println(Arrays.toString(optimum2.getPoint()) + " : " + optimum2.getSecond());
 		// double[] step_approx = target.omega2polstep(3, optimum.getPoint(),
 		// t);
 		// for (int i = 0; i < step_approx.length; i++) {
@@ -62,7 +69,7 @@ public class Approximation extends SwingWorker<Object, Integer> {
 		// }
 
 		stepAnswer = new double[][] { measurementData.getMeanData()[0],
-				target.omega2polstep(3, optimum.getPoint(), measurementData.getMeanData()[0]) };
+				target.omega2polstep(3, optimum2.getPoint(), measurementData.getMeanData()[0]) };
 		// stepAnswer = new double[][]{t,step_approx};
 		model.notifyObservers();
 	}
