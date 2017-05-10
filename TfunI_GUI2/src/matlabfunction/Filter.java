@@ -1,4 +1,4 @@
-package pro2e.teamX.matlabfunctions;
+package matlabfunction;
 
 import org.apache.commons.math3.complex.Complex;
 

@@ -2,8 +2,8 @@ package model;
 
 import org.apache.commons.math3.analysis.MultivariateFunction;
 
-import pro2e.teamX.matlabfunctions.Matlab;
-import pro2e.teamX.matlabfunctions.SVTools;
+import matlabfunction.Matlab;
+import matlabfunction.SVTools;
 
 public class Target implements MultivariateFunction {
 

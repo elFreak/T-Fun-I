@@ -1,4 +1,4 @@
-package pro2e.teamX.matlabfunctions;
+package matlabfunction;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

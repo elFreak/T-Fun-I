@@ -13,12 +13,12 @@ import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizer;
 
 import JavaPlot.Plot;
 import JavaPlot.Trace;
+import matlabfunction.Filter;
+import matlabfunction.FilterFactory;
+import matlabfunction.Matlab;
+import matlabfunction.SVTools;
 import model.Model;
 import model.Target;
-import pro2e.teamX.matlabfunctions.Filter;
-import pro2e.teamX.matlabfunctions.FilterFactory;
-import pro2e.teamX.matlabfunctions.Matlab;
-import pro2e.teamX.matlabfunctions.SVTools;
 
 /**
  * 
