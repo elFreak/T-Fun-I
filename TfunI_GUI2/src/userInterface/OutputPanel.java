@@ -40,8 +40,10 @@ public class OutputPanel extends JPanel {
 	/**
 	 * Card "Einlesen"
 	 */
-	public WindowContainer cardEinlesen = new WindowContainer();
-	public Plot plotEinlesen = new Plot();
+	private OutputCardEinlesen outputCardEinlesen;
+	
+//	public WindowContainer cardEinlesen = new WindowContainer();
+//	public Plot plotEinlesen = new Plot();
 
 	/**
 	 * Card "Bearbeiten"

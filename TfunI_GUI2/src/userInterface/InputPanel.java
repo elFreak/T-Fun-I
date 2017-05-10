@@ -35,12 +35,10 @@ public class InputPanel extends JPanel {
 	 * Card "Einlesen"
 	 */
 	private InputCardEinlesen inputCardEinlesen;
-	
-	
-	private JPanel cardEinlesen = new JPanel(new GridBagLayout());
-	private JButton btEinlesen = new JButton("Öffnen");
 
-	// Card "Bearbeiten"
+	/**
+	 * Card "Bearbeiten
+	 */
 	private InputCardBearbeiten inputCardBearbeiten;
 
 	/**
