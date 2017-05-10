@@ -22,8 +22,8 @@ public class OutputCardBearbeiten extends WindowContainer {
 		outputPanel.traceRaw.dataValid = false;
 		outputPanel.traceMean.dataValid = false;
 		plotBearbeiten.setSubplot(0);
-		plotBearbeiten.addSlider(Slider.HORIZONTAL);
-		plotBearbeiten.addSlider(Slider.VERTICAL);
-		plotBearbeiten.addSlider(Slider.VERTICAL);
+		plotBearbeiten.addSlider(Slider.HORIZONTAL,"1");
+		plotBearbeiten.addSlider(Slider.VERTICAL,"2");
+		plotBearbeiten.addSlider(Slider.VERTICAL,"3");
 	}
 }

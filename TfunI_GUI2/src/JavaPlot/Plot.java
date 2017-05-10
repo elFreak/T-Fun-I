@@ -6,8 +6,14 @@ import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 
+import userInterface.Controller;
+
 public class Plot extends JPanel {
 	private static final long serialVersionUID = 1L;
+
+	// --------------------------------------------------------------------
+	// General:
+	private Controller controller;
 
 	// --------------------------------------------------------------------
 	// Background:
@@ -38,12 +44,19 @@ public class Plot extends JPanel {
 	// --------------------------------------------------------------------
 	// Connecting:
 	private boolean connected = false;
-	
 
 	// --------------------------------------------------------------------
 	// Initialize:
 	public Plot() {
 		super(new GridLayout());
+
+		// Generate first subplot:
+		addSubplot();
+	}
+	
+	public Plot(Controller controller) {
+		super(new GridLayout());
+		this.controller = controller;
 
 		// Generate first subplot:
 		addSubplot();
@@ -179,7 +192,13 @@ public class Plot extends JPanel {
 
 	// --------------------------------------------------------------------
 	// Add new Slider:
-	public void addSlider(int orientation) {
-		subplot[subplotSelected].addSlider(orientation);
+	public void addSlider(int orientation, String tag) {
+		subplot[subplotSelected].addSlider(orientation, tag);
+	}
+
+	// --------------------------------------------------------------------
+	// Update for Slider:
+	public void updateSliderValue(double value, String tag) {
+		controller.setRange(value, 0, 0);
 	}
 }

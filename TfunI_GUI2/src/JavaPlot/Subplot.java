@@ -942,13 +942,25 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 	// --------------------------------------------------------------------
 	// Add new Slider:
-	public void addSlider(int orientation) {
+	public void addSlider(int orientation,String tag) {
 		if (sliderActualNumber < MAX_SLIDER) {
-			sliders[sliderActualNumber] = new Slider(orientation, this);
+			sliders[sliderActualNumber] = new Slider(orientation, this, tag);
 			this.add(sliders[sliderActualNumber]);
 			sliderActualNumber++;
+			repaint();
 		}
 	}
-
+	
+	// --------------------------------------------------------------------
+	// Get Value of Slider:
+	public void updateSliderValue(Slider slider){
+		double actualValue;
+		if(slider.orienation == Slider.HORIZONTAL) {
+			actualValue = axisRangeSector[Y1AXIS][0] + ((boardCorner[1][Y] - slider.positionPixel)/ (double) (boardCorner[1][Y] - boardCorner[0][Y])* (axisRangeSector[Y1AXIS][axisRangeActualSectorNumber[Y1AXIS] - 1] - axisRangeSector[Y1AXIS][0]));
+		} else{
+			actualValue = axisRangeSector[XAXIS][0]+ ((slider.positionPixel - boardCorner[0][X]) / (double) (boardCorner[3][X] - boardCorner[0][X])* (axisRangeSector[XAXIS][axisRangeActualSectorNumber[XAXIS] - 1] - axisRangeSector[XAXIS][0]));
+		}
+		plot.updateSliderValue(actualValue,slider.tag);
+	}
 	
 }
