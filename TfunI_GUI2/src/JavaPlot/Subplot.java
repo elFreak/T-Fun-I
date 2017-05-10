@@ -353,18 +353,25 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 					boardCorner[1][Y] + (int) (borderSouth * 0.9));
 		}
 
-		// Paint Slider:
-		paintSlider(g2);
-	}
-
-	private void paintSlider(Graphics2D g2) {
-		for (int i = 0; i < sliderActualNumber; i++) {
+		// Paint Slider:		
+		for (int i = 0; i < sliderActualNumber; i++) {			
 			if (sliders[i].orienation == Slider.HORIZONTAL) {
-				sliders[i].setBounds(0, sliders[i].positionPixel, getWidth(), Slider.sliderThickness);
+				if(sliders[i].positionPixel<boardCorner[0][Y]){
+					sliders[i].positionPixel=boardCorner[0][Y];
+				}
+				if(sliders[i].positionPixel>boardCorner[1][Y]){
+					sliders[i].positionPixel=boardCorner[1][Y];
+				}
+				sliders[i].setBounds(0, sliders[i].positionPixel-Slider.sliderThickness/2, getWidth(), Slider.sliderThickness);
 			} else {
-				sliders[i].setBounds(sliders[i].positionPixel, 0, Slider.sliderThickness, getHeight());
+				if(sliders[i].positionPixel<boardCorner[0][X]){
+					sliders[i].positionPixel=boardCorner[0][X];
+				}
+				if(sliders[i].positionPixel>boardCorner[2][X]){
+					sliders[i].positionPixel=boardCorner[2][X];
+				}
+				sliders[i].setBounds(sliders[i].positionPixel-Slider.sliderThickness/2, 0, Slider.sliderThickness, getHeight());
 			}
-
 		}
 	}
 

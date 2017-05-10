@@ -1,6 +1,7 @@
 package IOCard;
 
 import JavaPlot.Plot;
+import JavaPlot.Slider;
 import userInterface.OutputPanel;
 import userInterface.WindowContainer;
 
@@ -20,5 +21,9 @@ public class OutputCardBearbeiten extends WindowContainer {
 		outputPanel.traceStep.dataValid = false;
 		outputPanel.traceRaw.dataValid = false;
 		outputPanel.traceMean.dataValid = false;
+		plotBearbeiten.setSubplot(0);
+		plotBearbeiten.addSlider(Slider.HORIZONTAL);
+		plotBearbeiten.addSlider(Slider.VERTICAL);
+		plotBearbeiten.addSlider(Slider.VERTICAL);
 	}
 }
