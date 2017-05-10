@@ -4,12 +4,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import JavaPlot.Plot;
-import projectTfunI.GlobalSettings;
+import projectT_Fun_I.GlobalSettings;
 import userInterface.MyBorderFactory;
 import userInterface.OutputPanel;
 import userInterface.WindowContainer;
