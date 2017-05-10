@@ -8,7 +8,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import projectTfunI.GlobalSettings;
+import projectT_Fun_I.GlobalSettings;
 import userInterface.Controller;
 import userInterface.MyBorderFactory;
 

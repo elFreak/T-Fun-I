@@ -12,8 +12,9 @@ import java.awt.geom.Line2D;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import projectTfunI.GlobalSettings;
-import projectTfunI.Utility;
+
+import projectT_Fun_I.GlobalSettings;
+import projectT_Fun_I.Utility;
 
 public class ProgramFlow extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;

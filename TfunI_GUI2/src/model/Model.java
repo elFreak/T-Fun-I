@@ -4,13 +4,16 @@ import java.util.Observable;
 
 public class Model extends Observable{
 		
+	public Approximation approximation;
 	public MeasurementData measurementData;
 	
 	public Model() {
+		
 	}
 
 	public void setMesuredData(double[][] data) {
 		measurementData = new MeasurementData(this, data);
+		approximation = new Approximation(measurementData, this);
 		notifyObservers();
 	}
 	

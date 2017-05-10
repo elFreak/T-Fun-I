@@ -4,8 +4,9 @@ import java.awt.Component;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
-import projectTfunI.GlobalSettings;
-import projectTfunI.Utility;
+
+import projectT_Fun_I.GlobalSettings;
+import projectT_Fun_I.Utility;
 
 public class WindowContainer extends JPanel {
 	private static final long serialVersionUID = 1L;

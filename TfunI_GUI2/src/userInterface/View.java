@@ -11,8 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import model.Model;
-import projectTfunI.GlobalSettings;
-import projectTfunI.Utility;
+import projectT_Fun_I.GlobalSettings;
+import projectT_Fun_I.Utility;
 
 public class View extends JPanel implements Observer {
 	private static final long serialVersionUID = 1L;
@@ -75,19 +75,24 @@ public class View extends JPanel implements Observer {
 		// Traces Aktualisieren:
 		outputPanel.traceStep.data = ((Model) obs).measurementData.getstep();
 		outputPanel.traceRaw.data = ((Model) obs).measurementData.getRawData();
-		outputPanel.traceMean.data = ((Model) obs).measurementData.getMeanData();
+		outputPanel.traceMean.data = ((Model) obs).measurementData.getFinalData();
+		outputPanel.traceSolution.data = ((Model) obs).approximation.stepAnswer;
 
 		if (outputPanel.traceRaw.dataValid == false) {
 
 			outputPanel.traceStep.dataValid = true;
 			outputPanel.traceRaw.dataValid = true;
 			outputPanel.traceMean.dataValid = true;
+			outputPanel.traceSolution.dataValid = true;
 			outputPanel.cardEinlesen.plotEinlesen.setRangeIdeal();
+			outputPanel.cardBearbeiten.plotBearbeiten.setRangeIdeal();
+			outputPanel.cardBearbeiten.plotBearbeiten.setSubplot(0);
 			outputPanel.cardBearbeiten.plotBearbeiten.setRangeIdeal();
 		} else {
 			outputPanel.traceStep.dataValid = true;
 			outputPanel.traceRaw.dataValid = true;
 			outputPanel.traceMean.dataValid = true;
+			outputPanel.traceSolution.dataValid = true;
 		}
 
 		// Update:

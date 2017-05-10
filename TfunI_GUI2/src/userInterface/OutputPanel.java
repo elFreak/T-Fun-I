@@ -9,8 +9,8 @@ import IOCard.OutputCardBerechnen;
 import IOCard.OutputCardEinlesen;
 import IOCard.OutputCardVerifizieren;
 import JavaPlot.Trace;
-import projectTfunI.GlobalSettings;
-import projectTfunI.Utility;
+import projectT_Fun_I.GlobalSettings;
+import projectT_Fun_I.Utility;
 
 public class OutputPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -27,6 +27,7 @@ public class OutputPanel extends JPanel {
 	public JavaPlot.Trace traceStep;
 	public JavaPlot.Trace traceRaw;
 	public JavaPlot.Trace traceMean;
+	public JavaPlot.Trace traceSolution;
 
 	/**
 	 * Cards:
@@ -54,6 +55,7 @@ public class OutputPanel extends JPanel {
 		traceMean = new Trace();
 		traceMean.usePreferedColor = true;
 		traceMean.preferedColor = GlobalSettings.colorTraceGreen;
+		traceSolution=new Trace();
 
 		// Init Cards:
 		cardEinlesen = new OutputCardEinlesen(this);

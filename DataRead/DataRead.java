@@ -31,6 +31,15 @@ public class DataRead {
 				while (eingabeDatei.readLine() != null) {
 					nLines++;
 				}
+				// Gezählte Anzahl Zeilen und Kolonnen lesen:
+				eingabeDatei = new BufferedReader(new FileReader(Filepath));
+				data = new double[nColumns][nLines];
+				for (int i = 0; i < data[0].length; i++) {
+					s = eingabeDatei.readLine().split("[, ]+");
+					for (int k = 0; k < s.length; k++) {
+						data[k][i] = Double.parseDouble(s[k]);
+					}
+				}
 			}
 			else {
 				nLines = s.length;
@@ -38,19 +47,22 @@ public class DataRead {
 				while (eingabeDatei.readLine() != null) {
 					nColumns++;
 				}
+				
+
+				// Gezählte Anzahl Zeilen und Kolonnen lesen:
+				eingabeDatei = new BufferedReader(new FileReader(Filepath));
+				data = new double[nColumns][nLines];
+				for (int i = 0; i < nColumns; i++) {
+					s = eingabeDatei.readLine().split("[, ]+");
+					for (int k = 0; k < data[0].length; k++) {
+						data[i][k] = Double.parseDouble(s[k]);
+					}
+				}
+				
 			}
 			eingabeDatei.close();
 
-			// Gezählte Anzahl Zeilen und Kolonnen lesen:
-			eingabeDatei = new BufferedReader(new FileReader(Filepath));
-			data = new double[nColumns][nLines];
-			for (int i = 0; i < data.length; i++) {
-				s = eingabeDatei.readLine().split("[, ]+");
-				for (int k = 0; k < s.length; k++) {
-					data[i][k] = Double.parseDouble(s[k]);
-				}
-			}
-			eingabeDatei.close();
+			
 		} catch (IOException exc) {
 			System.err.println("Dateifehler: " + exc.toString());
 		}

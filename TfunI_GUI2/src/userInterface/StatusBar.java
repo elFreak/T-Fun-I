@@ -10,8 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import projectTfunI.GlobalSettings;
-import projectTfunI.Utility;
+
+import projectT_Fun_I.GlobalSettings;
+import projectT_Fun_I.Utility;
 
 public class StatusBar extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
