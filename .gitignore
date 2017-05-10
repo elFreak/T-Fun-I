@@ -5,7 +5,7 @@
 
 # Package Files #
 *.jar
-!TfunI_GUI2/lib/*.jar
+!TfunI_GUI2/lib/**/*.jar
 *.war
 *.ear
 
