@@ -937,7 +937,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	// Add new Slider:
 	public void addSlider(int orientation) {
 		if (sliderActualNumber < MAX_SLIDER) {
-			sliders[sliderActualNumber] = new Slider(orientation);
+			sliders[sliderActualNumber] = new Slider(orientation,this);
 			this.add(sliders[sliderActualNumber]);
 			sliderActualNumber++;
 		}
