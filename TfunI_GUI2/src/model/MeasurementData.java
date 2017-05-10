@@ -1,6 +1,5 @@
 package model;
 
-import java.util.Observable;
 /**
  * 
  * @author Marc de Bever
