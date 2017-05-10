@@ -1,9 +1,16 @@
 package model;
 
 import java.util.Observable;
-
+/**
+ * 
+ * @author Marc de Bever
+ *
+ */
 public class MeasurementData {
-	// Constants for accessing data arrays
+
+	// ---Atribute
+	// -------------------------------------------------------------------------------------------------------
+	// Konstanten um auf die entsprechenden Daten zuzugreiffen
 	public static final int XAXIS = 0;
 	public static final int MEASUREMENTS = 1;
 	public static final int STEP = 2;
@@ -12,7 +19,7 @@ public class MeasurementData {
 
 	private double rawData[][];
 	private double meanData[][];
-	private double finalData[][]; // Data for calculation
+	private double finalData[][]; // Data für weitere Berechnungen
 
 	private double deadTime = 0;
 	private double offset = 0;
@@ -22,7 +29,10 @@ public class MeasurementData {
 	private double stepData[][];
 	private double originalStep[][];
 	private double n = 0;
+	// -------------------------------------------------------------------------------------------------------
 
+	// Konstruktor
+	// -------------------------------------------------------------------------------------------------------
 	/**
 	 * Speichert die übergebenen Daten in die entsprechenden Attribute.
 	 * 
@@ -56,26 +66,32 @@ public class MeasurementData {
 			meanData[MEASUREMENTS][i] = data[MEASUREMENTS][i];
 			finalData[MEASUREMENTS][i] = data[MEASUREMENTS][i];
 
-			// Update Step
+			// Sprung berechnen
+			// Wenn Sprung voranden
 			if (data.length == 3) {
 				stepData[MEASUREMENTS][i] = data[STEP][i];
 				originalStep[MEASUREMENTS][i] = data[STEP][i];
 
-				// Calculate step time from step array
-				if (data[STEP][i] != 0 && data[STEP][i ] == 0) {
-					stepTime = data[XAXIS][i ];
+				// stepTime und stepHeight berechnen
+				if (data[STEP][i] != 0 && data[STEP][i] == 0) {
+					stepTime = data[XAXIS][i];
 					stepHeight = data[STEP][i];
 				}
-
-			} else {
+			}
+			// Wenn kein Sprung vorhanden
+			else {
 				stepData[MEASUREMENTS][i] = 1;
 				originalStep[MEASUREMENTS][i] = 1;
 
 			}
 
 		}
-	
+
 	}
+	// -------------------------------------------------------------------------------------------------------
+
+	// Set Methoden
+	// -------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Methode um mit dem Mittelwert zu filtern. Mit dem Parameter n kann man
@@ -84,11 +100,15 @@ public class MeasurementData {
 	 * @param n
 	 */
 	public void setMovingMean(int n) {
+		// Kein Mittelwert bilden
 		if (n == 0) {
 			for (int i = 0; i < rawData[MEASUREMENTS].length; i++) {
 				meanData[MEASUREMENTS][i] = rawData[MEASUREMENTS][i];
+				finalData[MEASUREMENTS][i] = rawData[MEASUREMENTS][i];
 			}
-		} else {
+		}
+		// Mittelwert bilden
+		else {
 			for (int i = 0; i < rawData[MEASUREMENTS].length; i++) {
 				int count = 0;
 				meanData[MEASUREMENTS][i] = 0;
@@ -102,12 +122,16 @@ public class MeasurementData {
 			}
 		}
 
+		// finalData aktualisieren
+		updateFinalData();
+
 		model.notifyObservers();
 
 	}
 
 	/**
-	 * Setzt den Rahmen. Setzt die jeweilige Parameter.
+	 * Setzt den Rahmen. Setzt die jeweilige Parameter. Und aktualisiert
+	 * finalData
 	 * 
 	 * @param deadTime
 	 * @param offset
@@ -118,14 +142,19 @@ public class MeasurementData {
 		this.offset = offset;
 		this.tail = tail;
 
+		// finalData aktualisieren
+		updateFinalData();
+
 		model.notifyObservers();
 	}
 
 	/**
-	 * Setzt die jeweiligen Parameter automatisch.
+	 * Setzt die jeweiligen Parameter automatisch. Und aktuallisiert die
+	 * jeweiligen Daten
 	 * 
 	 */
 	public void autoLimits() {
+
 		cutFront(rawData, 20, 0.2);
 		cutTail(rawData, 10, 0.002);
 
@@ -141,6 +170,7 @@ public class MeasurementData {
 	 * @return
 	 */
 	private double[][] cutFront(double y[][], int n, double q) {
+		// Automatische Erkennung
 		double m = meanData[MEASUREMENTS][0];
 		int c = 1;
 		while (Math.abs((y[MEASUREMENTS][c] - m) / y[MEASUREMENTS][c]) < q && y.length >= c + n) {
@@ -152,6 +182,8 @@ public class MeasurementData {
 			c++;
 		}
 		c = c - 1;
+
+		// Abschneiden
 		for (int i = 0; i < y.length - c; i++) {
 			y[1][i] = y[1][i + c];
 		}
@@ -198,6 +230,8 @@ public class MeasurementData {
 	 */
 	public void setStepTime(double stepTime) {
 		this.stepTime = stepTime;
+
+		// stepData aktuallisieren
 		for (int i = 0; i < rawData[XAXIS].length; i++) {
 			if (rawData[XAXIS][i] < stepTime) {
 				stepData[MEASUREMENTS][i] = 0;
@@ -216,6 +250,8 @@ public class MeasurementData {
 	 */
 	public void setStepHeight(double stepHeight) {
 		this.stepHeight = stepHeight;
+
+		// stepData aktuallisieren
 		for (int i = 0; i < stepData[MEASUREMENTS].length; i++) {
 			if (stepData[MEASUREMENTS][i] != 0) {
 				stepData[MEASUREMENTS][i] = stepHeight;
@@ -240,6 +276,16 @@ public class MeasurementData {
 	}
 
 	/**
+	 * Aktualisiert finalData aus den gemittelten Daten und dem Rahmen.
+	 */
+	private void updateFinalData() {
+
+	}
+	// -------------------------------------------------------------------------------------------------------
+
+	// Get Methoden
+	// -------------------------------------------------------------------------------------------------------
+	/**
 	 * Gibt die Rohdaten zurück.
 	 * 
 	 * @return The raw data; rawData[0][]: Measurement time (t), rawData[1][]:
@@ -256,7 +302,7 @@ public class MeasurementData {
 	}
 
 	/**
-	 * Gibt die Finalendaten zurück.
+	 * Gibt die Finalen daten zurück.
 	 * 
 	 * @return The data ready for the calculations finalData[0][]: Measurement
 	 *         time (t), finalData[1][]: measurement values (y)
@@ -305,7 +351,7 @@ public class MeasurementData {
 	}
 
 	/**
-	 * Gibt die uninteresante Ende zurück.
+	 * Gibt die länge des uninteresanten Endes zurück.
 	 * 
 	 * @return tail
 	 */
@@ -328,7 +374,7 @@ public class MeasurementData {
 	}
 
 	/**
-	 * Gibt die Schrittzeit zurück.
+	 * Gibt den Schrittzeitpunkt zurück.
 	 * 
 	 * @return step time
 	 */
@@ -344,5 +390,7 @@ public class MeasurementData {
 	public double getstepHeight() {
 		return stepHeight;
 	}
+	// -------------------------------------------------------------------------------------------------------
+
 
 }
