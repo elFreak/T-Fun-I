@@ -11,12 +11,17 @@ public class OutputCardVerifizieren extends WindowContainer {
 	
 	public OutputCardVerifizieren(OutputPanel outputPanel) {
 		addComponent(plotVerifizieren);
-	
-		plotVerifizieren.addTrace(outputPanel.traceSolution);
+
+		plotVerifizieren.addTrace(outputPanel.traceRaw);
+		plotVerifizieren.addTrace(outputPanel.traceStep);
 		plotVerifizieren.addSubplot();
+		plotVerifizieren.addTrace(outputPanel.traceRaw);
 		plotVerifizieren.addTrace(outputPanel.traceMean);
-		outputPanel.traceSolution.dataValid = false;
+		outputPanel.traceStep.dataValid = false;
+		outputPanel.traceRaw.dataValid = false;
 		outputPanel.traceMean.dataValid = false;
+		
+
 	}
 
 }

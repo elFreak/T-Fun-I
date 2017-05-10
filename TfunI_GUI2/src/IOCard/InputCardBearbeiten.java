@@ -12,6 +12,7 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 
 import projectT_Fun_I.GlobalSettings;
@@ -31,12 +32,21 @@ public class InputCardBearbeiten extends JPanel {
 
 	private JPanel panelFiltern = new JPanel(new GridBagLayout());
 	private JTextField tfFilter = new JTextField("10");
+	private JSlider sFilter = new JSlider();
+
 
 	private JPanel panelRahmen = new JPanel(new GridBagLayout());
 	private JTextField tfOffset = new JTextField("0");
 	private JTextField tfBereichUnten = new JTextField("0");
 	private JTextField tfBereichOben = new JTextField("0");
 	private JButton btAutoRahmen = new JButton("Auto");
+	
+	private JPanel panelSprung = new JPanel(new GridBagLayout());
+	private JTextField tfSprungzeit = new JTextField("10");
+	private JTextField tfSprunghöhe = new JTextField("10");
+	private JButton btSprung = new JButton("Sprung zurücksetzen");
+
+
 
 	/**
 	 * Konstructor
@@ -167,11 +177,23 @@ public class InputCardBearbeiten extends JPanel {
 		// Panel Filtern konfigurieren
 		panelFiltern.setBackground(GlobalSettings.colorBackground);
 		panelFiltern.setBorder(MyBorderFactory.createMyBorder("Mittelwertfilter"));
+		sFilter.setMinimum(0);
+		sFilter.setMaximum(30);
+		sFilter.setValue(0);
+		sFilter.setMinorTickSpacing(10);
+		sFilter.setMajorTickSpacing(10);
+		sFilter.setPaintTicks(true);    //Striche werden angezeigt
+		sFilter.setPaintLabels(true);   //Zahlen werden angezeigt
+		sFilter.setPaintTrack(true);    //Balken wird angezeigt
+		sFilter.setOpaque(false);
 
 		panelFiltern.add(new JLabel("Intensit.:"), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 		panelFiltern.add(tfFilter, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+		panelFiltern.add(sFilter, new GridBagConstraints(0, 1, 2, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
+				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+		
 
 		// Panel Rahmen konfigurieren
 		panelRahmen.setBackground(GlobalSettings.colorBackground);
@@ -181,18 +203,48 @@ public class InputCardBearbeiten extends JPanel {
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 		panelRahmen.add(tfOffset, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 20, 0));
+		panelRahmen.add(new JLabel("V"), new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 
-		panelRahmen.add(new Label("Beginn: "), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+		panelRahmen.add(new Label("Beginn:"), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 		panelRahmen.add(tfBereichOben, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 20, 0));
-		panelRahmen.add(new Label("Ende: "), new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
+		panelRahmen.add(new JLabel("s"), new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
+				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+		
+		panelRahmen.add(new Label("Ende:"), new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 		panelRahmen.add(tfBereichUnten, new GridBagConstraints(1, 2, 1, 1, 1.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 20, 0));
+		panelRahmen.add(new JLabel("s"), new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0,
+				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 
-		panelRahmen.add(btAutoRahmen, new GridBagConstraints(2, 0, 1, 3, 0.0, 0.0, GridBagConstraints.CENTER,
+		panelRahmen.add(btAutoRahmen, new GridBagConstraints(0, 3, 3, 1, 0.0, 0.0, GridBagConstraints.CENTER,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+		
+		// Panel Sprung konfigurieren
+		panelSprung.setBackground(GlobalSettings.colorBackground);
+		panelSprung.setBorder(MyBorderFactory.createMyBorder("Sprung"));
+		
+
+		panelSprung.add(new JLabel("Sprungzeit:"), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+		panelSprung.add(tfSprungzeit, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
+				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+		panelSprung.add(new JLabel("s"), new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+		panelSprung.add(new JLabel("Sprunghöhe:"), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+		panelSprung.add(tfSprunghöhe, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
+				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+		panelSprung.add(new JLabel("V"), new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
+				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+		panelSprung.add(btSprung, new GridBagConstraints(0, 2, 3, 1, 1.0, 0.0,
+				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 20, 0));
+		
+		
+		
 
 		// Cardpanel konfigurieren
 		this.setLayout(new GridBagLayout());
@@ -202,7 +254,9 @@ public class InputCardBearbeiten extends JPanel {
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 		this.add(panelRahmen, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
-		this.add(new JPanel(), new GridBagConstraints(0, 1, 1, 1, 1.0, 1.0, GridBagConstraints.FIRST_LINE_START,
+		this.add(panelSprung, new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
+				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+		this.add(new JPanel(), new GridBagConstraints(0, 2, 1, 1, 1.0, 1.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 
 	}

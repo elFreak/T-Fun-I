@@ -99,9 +99,19 @@ Controller controller;
 		// Exponent		
 		panelExponent.setBackground(GlobalSettings.colorBackground);
 		panelExponent.setBorder(MyBorderFactory.createMyBorder("Exponent"));
-						
-		panelExponent.add(sExponent, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-							GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+		
+		sExponent.setMinimum(0);
+		sExponent.setMaximum(10);
+		sExponent.setValue(2);
+		sExponent.setMinorTickSpacing(10);
+		sExponent.setMajorTickSpacing(2);
+		sExponent.setPaintTicks(true);    //Striche werden angezeigt
+		sExponent.setPaintLabels(true);   //Zahlen werden angezeigt
+		sExponent.setPaintTrack(true);    //Balken wird angezeigt
+		sExponent.setOpaque(false);
+		
+		panelExponent.add(sExponent, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
+				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 		
 		// Startwert		
 		panelStartwert.setBackground(GlobalSettings.colorBackground);
