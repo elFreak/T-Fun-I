@@ -7,6 +7,7 @@ import java.awt.Insets;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 
 import projectTfunI.GlobalSettings;
 import userInterface.Controller;
@@ -44,18 +45,20 @@ public class InputCardVerifizieren extends JPanel {
 		panelFilter.setBackground(GlobalSettings.colorBackground);
 		panelFilter.setBorder(MyBorderFactory.createMyBorder("Filter"));
 		cbMitFilter.setOpaque(false);
-		cb2.setOpaque(false);
-		cb4.setOpaque(false);
-		cb6.setOpaque(false);
+		
 		
 		panelFilter.add(new JLabel("Mit Filter"), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 		panelFilter.add(cbMitFilter, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+			
 		
-		// Gütebestimmung Filter		
+		// Gütebestimmung Fehlersumme		
 		panelExponent.setBackground(GlobalSettings.colorBackground);
 		panelExponent.setBorder(MyBorderFactory.createMyBorder("Exponent Fehlersumme"));
+		cb2.setOpaque(false);
+		cb4.setOpaque(false);
+		cb6.setOpaque(false);
 				
 		panelExponent.add(new JLabel("2"), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 					GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
