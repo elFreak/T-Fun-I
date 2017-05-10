@@ -15,6 +15,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 import JavaPlot.Trace;
+import projectT_Fun_I.GlobalSettings;
 
 import javax.swing.JPanel;
 
@@ -32,7 +33,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	private static final Color[] traceColors = new Color[traceColorsNumber];
 	private Trace[] trace = new Trace[traceMaxNumber];
 	public static final int NOT_ENOUGHT_SPACE = -1;
-	private int traceThickness = 5;
+	private int traceThickness = GlobalSettings.traceThinkness;
 
 	// --------------------------------------------------------------------
 	// Axes:
@@ -98,7 +99,6 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	private final static int MAX_SLIDER = 3;
 	private Slider[] sliders = new Slider[MAX_SLIDER];
 	private int sliderActualNumber = 0;
-	private int sliderThickness = 4;
 
 	// --------------------------------------------------------------------
 	// Axis Label:
@@ -360,9 +360,9 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	private void paintSlider(Graphics2D g2) {
 		for (int i = 0; i < sliderActualNumber; i++) {
 			if (sliders[i].orienation == Slider.HORIZONTAL) {
-				sliders[i].setBounds(0, 20, getWidth(), sliderThickness);
+				sliders[i].setBounds(0, sliders[i].positionPixel, getWidth(), Slider.sliderThickness);
 			} else {
-				sliders[i].setBounds(20, 0, sliderThickness, getHeight());
+				sliders[i].setBounds(sliders[i].positionPixel, 0, Slider.sliderThickness, getHeight());
 			}
 
 		}
@@ -937,9 +937,11 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	// Add new Slider:
 	public void addSlider(int orientation) {
 		if (sliderActualNumber < MAX_SLIDER) {
-			sliders[sliderActualNumber] = new Slider(orientation,this);
+			sliders[sliderActualNumber] = new Slider(orientation, this);
 			this.add(sliders[sliderActualNumber]);
 			sliderActualNumber++;
 		}
 	}
+
+	
 }
