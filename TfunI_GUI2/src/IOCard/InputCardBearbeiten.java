@@ -46,7 +46,7 @@ public class InputCardBearbeiten extends JPanel {
 	public InputCardBearbeiten(Controller controller) {
 		this.controller = controller;
 
-		// Textfeld Filter konfigurieren
+		// Textfelder werden konfiguriert:
 		// Anonymer MouseWheelListener für Testfeld
 		tfFilter.addMouseWheelListener(new MouseWheelListener() {
 			@Override
@@ -61,6 +61,51 @@ public class InputCardBearbeiten extends JPanel {
 			}
 		});
 
+		// Anonymer MouseWheelListener für Testfeld
+		tfOffset.addMouseWheelListener(new MouseWheelListener() {
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				double tempValue = Double.parseDouble(tfOffset.getText());
+				tempValue += (e.getWheelRotation() * (0.05 * tempValue + 0.05));
+				if (tempValue < 0) {
+					tempValue = 0;
+				}
+				tfOffset.setText(String.valueOf(tempValue));
+				controller.setRange(Double.parseDouble(tfBereichOben.getText()),
+						Double.parseDouble(tfBereichUnten.getText()), Double.parseDouble(tfOffset.getText()));
+			}
+		});
+
+		// Anonymer MouseWheelListener für Testfeld
+		tfBereichUnten.addMouseWheelListener(new MouseWheelListener() {
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				double tempValue = Double.parseDouble(tfBereichUnten.getText());
+				tempValue += (e.getWheelRotation() * (0.05 * tempValue + 0.05));
+				if (tempValue < 0) {
+					tempValue = 0;
+				}
+				tfBereichUnten.setText(String.valueOf(tempValue));
+				controller.setRange(Double.parseDouble(tfBereichOben.getText()),
+						Double.parseDouble(tfBereichUnten.getText()), Double.parseDouble(tfOffset.getText()));
+			}
+		});
+
+		// Anonymer MouseWheelListener für Testfeld
+		tfBereichOben.addMouseWheelListener(new MouseWheelListener() {
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				double tempValue = Double.parseDouble(tfBereichOben.getText());
+				tempValue += (e.getWheelRotation() * (0.05 * tempValue + 0.05));
+				if (tempValue < 0) {
+					tempValue = 0;
+				}
+				tfBereichOben.setText(String.valueOf(tempValue));
+				controller.setRange(Double.parseDouble(tfBereichOben.getText()),
+						Double.parseDouble(tfBereichUnten.getText()), Double.parseDouble(tfOffset.getText()));
+			}
+		});
+
 		// Anonymer ActionListener für Textfeld bei Enter
 		tfFilter.addActionListener(new ActionListener() {
 			@Override
@@ -71,6 +116,51 @@ public class InputCardBearbeiten extends JPanel {
 				}
 				tfFilter.setText(String.valueOf(tempValue));
 				controller.filterChanged(tempValue);
+			}
+		});
+
+		// Anonymer ActionListener für Textfeld bei Enter
+		tfOffset.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				double tempValue = Double.parseDouble(tfOffset.getText());
+				if (tempValue < 0) {
+					tempValue = 0;
+					tfOffset.setText("" + tempValue);
+				}
+
+				controller.setRange(Double.parseDouble(tfBereichUnten.getText()),
+						Double.parseDouble(tfBereichOben.getText()), Double.parseDouble(tfOffset.getText()));
+			}
+		});
+
+		// Anonymer ActionListener für Textfeld bei Enter
+		tfBereichUnten.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				double tempValue = Double.parseDouble(tfBereichUnten.getText());
+				if (tempValue < 0) {
+					tempValue = 0;
+					tfBereichUnten.setText("" + tempValue);
+				}
+
+				controller.setRange(Double.parseDouble(tfBereichUnten.getText()),
+						Double.parseDouble(tfBereichOben.getText()), Double.parseDouble(tfOffset.getText()));
+			}
+		});
+
+		// Anonymer ActionListener für Textfeld bei Enter
+		tfBereichOben.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				double tempValue = Double.parseDouble(tfBereichOben.getText());
+				if (tempValue < 0) {
+					tempValue = 0;
+					tfBereichOben.setText("" + tempValue);
+				}
+
+				controller.setRange(Double.parseDouble(tfBereichUnten.getText()),
+						Double.parseDouble(tfBereichOben.getText()), Double.parseDouble(tfOffset.getText()));
 			}
 		});
 

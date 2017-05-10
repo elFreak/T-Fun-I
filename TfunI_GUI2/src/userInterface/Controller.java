@@ -73,4 +73,8 @@ public class Controller {
 	public void filterChanged(int n) {
 		model.measurementData.setMovingMean(n);
 	}
+	
+	public void setRange(double start, double end, double offset) {
+		model.measurementData.setLimits(start, offset, end);
+	}
 }
