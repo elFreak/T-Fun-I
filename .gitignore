@@ -79,4 +79,4 @@ local.properties
 #.classpath
 
 # End of https://www.gitignore.io/api/
-!lib/
+!./**/lib/
