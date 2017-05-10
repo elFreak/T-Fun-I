@@ -5,6 +5,7 @@
 
 # Package Files #
 *.jar
+!TfunI_GUI2/lib/*.jar
 *.war
 *.ear
 
@@ -79,4 +80,4 @@ local.properties
 #.classpath
 
 # End of https://www.gitignore.io/api/
-!./**/lib/
+
