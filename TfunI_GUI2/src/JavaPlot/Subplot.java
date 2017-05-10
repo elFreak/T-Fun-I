@@ -15,7 +15,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 import JavaPlot.Trace;
-import projectTfunI.GlobalSettings;
 
 import javax.swing.JPanel;
 
@@ -24,7 +23,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 	// --------------------------------------------------------------------
 	// Background:
-	private Color backgroundColor = GlobalSettings.colorBackground; // @Apprach
+	private Color backgroundColor = new Color(250, 250, 250); // @Apprach
 
 	// --------------------------------------------------------------------
 	// Trace:
@@ -54,9 +53,9 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	// Axis Range Nummeration:
 	private double[] axisRangeScaleFactor = new double[3];
 	private int[] axisRangeRoundFactor = new int[3];
-	private Color nummerationColor = GlobalSettings.colorText; // @Approach
+	private Color nummerationColor = new Color(20, 20, 20); // @Approach
 	private double nummerationTextHeight = 1.6; // @Approach
-	private int nummberationDistance = 5; // @Approach
+	private int nummberationDistance = 7; // @Approach
 
 	// --------------------------------------------------------------------
 	// Board for the Plot:
@@ -64,15 +63,14 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	public static final int X = Trace.X;
 	public static final int Y = Trace.Y;
 	private int[][] boardCorner = new int[4][2];
-	private Color boardColor = GlobalSettings.colorBackgroundBlack; // @Approach
-	private boolean doScale = false; // @Approach
+	private Color boardColor = new Color(45, 45, 45); // @Approach
 
 	// --------------------------------------------------------------------
 	// Grid:
-	private Color gridColor = GlobalSettings.colorGridBright; // @Approach
+	private Color gridColor = new Color(245, 245, 245); // @Approach
 	private int gridThickness = 1;
 	private int gridMainGridThickness = 3;
-	private Color gridHelpGridColor = gridColor; // @Approach
+	private Color gridHelpGridColor = new Color(150, 150, 150); // @Approach
 
 	// --------------------------------------------------------------------
 	// Marker-Dashes:
@@ -88,7 +86,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	// --------------------------------------------------------------------
 	// Zoom:
 	private boolean mouseIsPressed = false;
-	private Color zoomFrameColor = GlobalSettings.colorGridYellow; // @Approach
+	private Color zoomFrameColor = new Color(250, 250, 20);
 	private final static int PIXEL = 0;
 	private final static int VALUE = 1;
 	private double[][] zoomTopLeft = new double[2][3];
@@ -96,17 +94,18 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	private int zoomFrameThickness = 2; // @Approach
 
 	// --------------------------------------------------------------------
+	// Slider:
+	private final static int MAX_SLIDER = 3;
+	private Slider[] sliders = new Slider[MAX_SLIDER];
+	private int sliderActualNumber = 0;
+	private int sliderThickness = 4;
+
+	// --------------------------------------------------------------------
 	// Axis Label:
 	private boolean axisLabelValid[] = { false, false, false };
 	public String axisLabelSymbol[] = { "", "", "" };
 	public String axisLabelIndex[] = { "", "", "" };
 	public String axisLabelUnit[] = { "", "", "" };
-	
-	// --------------------------------------------------------------------
-	// Slider:
-	private final static int HORIZONTAL = 1;
-	private final static int VERTICAL = 2;
-	
 
 	// --------------------------------------------------------------------
 	// Cursor:
@@ -135,7 +134,6 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 	// --------------------------------------------------------------------
 	// Paint:
-	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
@@ -146,16 +144,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 		// Calculate general Values:
 		double scaleFactor = Math.min(Math.min(width / 35, height / 35), 20);
-		int border;
-		if (doScale) {
-			border = (int) (scaleFactor * boardBorderFactor);
-		} else {
-			FontMetrics fm = g2.getFontMetrics();
-			g2.setFont(GlobalSettings.fontTextSmall);
-			fm = g2.getFontMetrics();
-			int widthSymbol = (fm.stringWidth("00000"));
-			border = widthSymbol;
-		}
+		int border = (int) (scaleFactor * boardBorderFactor);
 
 		// Calculate ... Y2-Axis
 		int yAxisActualNumber = axisRangeActualSectorNumber[Y1AXIS];
@@ -181,9 +170,6 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			borderSouth = markerDasheslenght;
 		} else {
 			borderSouth = border / 2;
-		}
-		if (axisLabelValid[XAXIS]) {
-			borderSouth = (int) (borderSouth * 1.7);
 		}
 
 		// calculate boardCorners:
@@ -235,25 +221,25 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 				}
 				g2.setStroke(new BasicStroke(traceThickness));
 
-				for (int j = 0; j < trace[i].data[0].length; j++) {
+				for (int j = 0; j < trace[i].data.length; j++) {
 					int x1, y1, x2, y2;
-					x1 = (int) ((double) (trace[i].data[Trace.X][j] - axisRangeSector[XAXIS][0])
+					x1 = (int) ((double) (trace[i].data[j][Trace.X] - axisRangeSector[XAXIS][0])
 							* (double) (boardCorner[2][X] - boardCorner[1][X])
 							/ (double) (axisRangeSector[XAXIS][axisRangeActualSectorNumber[XAXIS] - 1]
 									- axisRangeSector[XAXIS][0]));
-					y1 = (int) ((double) (trace[i].data[Trace.Y][j] - axisRangeSector[trace[i].yaxis][0])
+					y1 = (int) ((double) (trace[i].data[j][Trace.Y] - axisRangeSector[trace[i].yaxis][0])
 							* (double) (boardCorner[1][Y] - boardCorner[0][Y])
 							/ (double) (axisRangeSector[trace[i].yaxis][yAxisActualNumber - 1]
 									- axisRangeSector[trace[i].yaxis][0]));
 					x1 = boardCorner[1][X] + x1;
 					y1 = boardCorner[1][Y] - y1;
 
-					if (j < trace[i].data[0].length - 1 && trace[i].lineType == Trace.LINE_CONTINOUS) {
-						x2 = (int) ((double) (trace[i].data[Trace.X][j + 1] - axisRangeSector[XAXIS][0])
+					if (j < trace[i].data.length - 1 && trace[i].lineType == Trace.LINE_CONTINOUS) {
+						x2 = (int) ((double) (trace[i].data[j + 1][Trace.X] - axisRangeSector[XAXIS][0])
 								* (double) (boardCorner[2][X] - boardCorner[1][X])
 								/ (double) (axisRangeSector[XAXIS][axisRangeActualSectorNumber[XAXIS] - 1]
 										- axisRangeSector[XAXIS][0]));
-						y2 = (int) ((double) (trace[i].data[Trace.Y][j + 1] - axisRangeSector[trace[i].yaxis][0])
+						y2 = (int) ((double) (trace[i].data[j + 1][Trace.Y] - axisRangeSector[trace[i].yaxis][0])
 								* (double) (boardCorner[1][Y] - boardCorner[0][Y])
 								/ (double) (axisRangeSector[trace[i].yaxis][yAxisActualNumber - 1]
 										- axisRangeSector[trace[i].yaxis][0]));
@@ -341,18 +327,10 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			String unitWithPrefix = "[" + getPrefix((int) (axisRangeScaleFactor[XAXIS])) + axisLabelUnit[XAXIS] + "]";
 
 			g2.setColor(nummerationColor);
-			Font fontSymbol;
-			Font fontIndex;
-			if (doScale) {
-				int heightSymbol = (int) (nummerationTextHeight * 1.4 * scaleFactor);
-				int heightIndex = (int) (nummerationTextHeight * 1 * scaleFactor);
-				fontSymbol = new Font(Font.DIALOG_INPUT, Font.CENTER_BASELINE, heightSymbol);
-				fontIndex = new Font(Font.DIALOG_INPUT, Font.CENTER_BASELINE, heightIndex);
-			} else {
-				fontSymbol = GlobalSettings.fontTextSmall;
-				fontIndex = new Font(fontSymbol.getName(), fontSymbol.getStyle(), (int) (fontSymbol.getSize() * 0.8));
-			}
-
+			int heightSymbol = (int) (nummerationTextHeight * 1.4 * scaleFactor);
+			int heightIndex = (int) (nummerationTextHeight * 1 * scaleFactor);
+			Font fontSymbol = new Font(Font.DIALOG_INPUT, Font.CENTER_BASELINE, heightSymbol);
+			Font fontIndex = new Font(Font.DIALOG_INPUT, Font.CENTER_BASELINE, heightIndex);
 			FontMetrics fm = g2.getFontMetrics();
 			g2.setFont(fontSymbol);
 			fm = g2.getFontMetrics();
@@ -375,6 +353,19 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 					boardCorner[1][Y] + (int) (borderSouth * 0.9));
 		}
 
+		// Paint Slider:
+		paintSlider(g2);
+	}
+
+	private void paintSlider(Graphics2D g2) {
+		for (int i = 0; i < sliderActualNumber; i++) {
+			if (sliders[i].orienation == Slider.HORIZONTAL) {
+				sliders[i].setBounds(0, 20, getWidth(), sliderThickness);
+			} else {
+				sliders[i].setBounds(20, 0, sliderThickness, getHeight());
+			}
+
+		}
 	}
 
 	// --------------------------------------------------------------------
@@ -409,28 +400,24 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			// Paint Main-Grid:
 			g2.setColor(gridColor);
 			g2.setStroke(new BasicStroke(gridMainGridThickness));
-			if (axisRangeActualSectorNumber[axis] - 1 - i == axisRangeSectorZeroPoint[axis] && !yAxis2Available
-					&& axis != XAXIS) {
+			if (axisRangeActualSectorNumber[axis] - 1 - i == axisRangeSectorZeroPoint[axis] && !yAxis2Available) {
 				if (i < axisRangeActualSectorNumber[axis] - 1) {
-					g2.draw(new Line2D.Float(boardCorner[0][X], boardCorner[0][Y] + i * deltaGrid, boardCorner[3][X],
-							boardCorner[3][Y] + i * deltaGrid));
-				}
-
-			} else {
-
-				g2.draw(new Line2D.Float(boardCorner[1][X], boardCorner[1][Y], boardCorner[2][X], boardCorner[2][Y]));
-
-			}
-			if (i == axisRangeSectorZeroPoint[axis] && !yAxis2Available && axis == XAXIS) {
-				if (i < axisRangeActualSectorNumber[axis] - 1) {
-
-					g2.draw(new Line2D.Float(boardCorner[0][X] + i * deltaGrid, boardCorner[0][Y],
-							boardCorner[1][X] + i * deltaGrid, boardCorner[1][Y]));
+					if (axis == XAXIS) {
+						g2.draw(new Line2D.Float(boardCorner[0][X] + i * deltaGrid, boardCorner[0][Y],
+								boardCorner[1][X] + i * deltaGrid, boardCorner[1][Y]));
+					} else {
+						g2.draw(new Line2D.Float(boardCorner[0][X], boardCorner[0][Y] + i * deltaGrid,
+								boardCorner[3][X], boardCorner[3][Y] + i * deltaGrid));
+					}
 
 				} else {
-
-					g2.draw(new Line2D.Float(boardCorner[3][X], boardCorner[3][Y], boardCorner[2][X],
-							boardCorner[2][Y]));
+					if (axis == XAXIS) {
+						g2.draw(new Line2D.Float(boardCorner[3][X], boardCorner[3][Y], boardCorner[2][X],
+								boardCorner[2][Y]));
+					} else {
+						g2.draw(new Line2D.Float(boardCorner[1][X], boardCorner[1][Y], boardCorner[2][X],
+								boardCorner[2][Y]));
+					}
 				}
 			}
 
@@ -451,7 +438,6 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 			}
 		}
-
 	}
 
 	// --------------------------------------------------------------------
@@ -504,15 +490,8 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	private void paintNummeration(Graphics2D g2, int axis, double scaleFactor) {
 
 		g2.setColor(nummerationColor);
-		int nummerationTestHeightNormed = 0;
-		if (doScale == true) {
-			nummerationTestHeightNormed = (int) (nummerationTextHeight * scaleFactor);
-		} else {
-			nummerationTestHeightNormed = GlobalSettings.fontTextSmall.getSize();
-		}
-		Font font = new Font(GlobalSettings.fontTextSmall.getName(), GlobalSettings.fontTextSmall.getStyle(),
-				nummerationTestHeightNormed);
-
+		int nummerationTestHeightNormed = (int) (nummerationTextHeight * scaleFactor);
+		Font font = new Font(Font.DIALOG_INPUT, Font.CENTER_BASELINE, nummerationTestHeightNormed);
 		g2.setFont(font);
 
 		int axisIsAYAxis = (int) Math.ceil(axis / 2.0);
@@ -595,7 +574,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 				g2.drawString(text, boardCorner[1][X] + i * deltaGrid - stringWidth / 2,
 						boardCorner[1][Y] + nummerationTestHeightNormed + nummberationDistance);
 			}
-			if (i == axisRangeActualSectorNumber[axis] - 1) {
+			if (connected && !connectedHighSubplot && i == axisRangeActualSectorNumber[axis] - 1) {
 				if (axis == Y1AXIS) {
 					g2.drawString(text, boardCorner[1][X] - stringWidth - nummberationDistance * 2,
 							boardCorner[1][Y] - i * deltaGrid + nummerationTestHeightNormed / 2);
@@ -615,12 +594,6 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 				}
 			}
 		}
-	}
-
-	// --------------------------------------------------------------------
-	// Add new Slider:
-	public void addSlider(int orientation){
-		
 	}
 
 	// --------------------------------------------------------------------
@@ -789,41 +762,41 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 		double y2Max = 100;
 		for (int iTrace = 0; iTrace < trace.length; iTrace++) {
 			if (trace[iTrace].dataValid) {
-				xMin = trace[iTrace].data[X][0];
-				xMax = trace[iTrace].data[X][0];
+				xMin = trace[iTrace].data[0][X];
+				xMax = trace[iTrace].data[0][X];
 				if (trace[iTrace].yaxis == Y1AXIS) {
-					y1Min = trace[iTrace].data[Y][0];
-					y1Max = trace[iTrace].data[Y][0];
+					y1Min = trace[iTrace].data[0][Y];
+					y1Max = trace[iTrace].data[0][Y];
 				}
 				if (trace[iTrace].yaxis == Y2AXIS) {
-					y2Min = trace[iTrace].data[Y][0];
-					y2Max = trace[iTrace].data[Y][0];
+					y2Min = trace[iTrace].data[0][Y];
+					y2Max = trace[iTrace].data[0][Y];
 				}
 			}
 		}
 		for (int iTrace = 0; iTrace < trace.length; iTrace++) {
 			if (trace[iTrace].dataValid) {
-				for (int i = 0; i < trace[iTrace].data[0].length; i++) {
-					if (trace[iTrace].data[X][i] < xMin) {
-						xMin = trace[iTrace].data[X][i];
+				for (int i = 0; i < trace[iTrace].data.length; i++) {
+					if (trace[iTrace].data[i][X] < xMin) {
+						xMin = trace[iTrace].data[i][X];
 					}
-					if (trace[iTrace].data[X][i] > xMax) {
-						xMax = trace[iTrace].data[X][i];
+					if (trace[iTrace].data[i][X] > xMax) {
+						xMax = trace[iTrace].data[i][X];
 					}
 					if (trace[iTrace].yaxis == Y1AXIS) {
-						if (trace[iTrace].data[Y][i] < y1Min) {
-							y1Min = trace[iTrace].data[Y][i];
+						if (trace[iTrace].data[i][Y] < y1Min) {
+							y1Min = trace[iTrace].data[i][Y];
 						}
-						if (trace[iTrace].data[Y][i] > y1Max) {
-							y1Max = trace[iTrace].data[Y][i];
+						if (trace[iTrace].data[i][Y] > y1Max) {
+							y1Max = trace[iTrace].data[i][Y];
 						}
 					}
 					if (trace[iTrace].yaxis == Y2AXIS) {
-						if (trace[iTrace].data[Y][i] < y2Min) {
-							y2Min = trace[iTrace].data[Y][i];
+						if (trace[iTrace].data[i][Y] < y2Min) {
+							y2Min = trace[iTrace].data[i][Y];
 						}
-						if (trace[iTrace].data[Y][i] > y2Max) {
-							y2Max = trace[iTrace].data[Y][i];
+						if (trace[iTrace].data[i][Y] > y2Max) {
+							y2Max = trace[iTrace].data[i][Y];
 						}
 					}
 				}
@@ -958,5 +931,15 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	@Override
 	public void mouseMoved(MouseEvent e) {
 
+	}
+
+	// --------------------------------------------------------------------
+	// Add new Slider:
+	public void addSlider(int orientation) {
+		if (sliderActualNumber < MAX_SLIDER) {
+			sliders[sliderActualNumber] = new Slider(orientation);
+			this.add(sliders[sliderActualNumber]);
+			sliderActualNumber++;
+		}
 	}
 }

@@ -16,26 +16,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>src/JavaPlot</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>src/JavaPlot/Plot.java</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/JavaPlot/Plot.java</locationURI>
-		</link>
-		<link>
-			<name>src/JavaPlot/Subplot.java</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/JavaPlot/Subplot.java</locationURI>
-		</link>
-		<link>
-			<name>src/JavaPlot/Trace.java</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/JavaPlot/Trace.java</locationURI>
-		</link>
-		<link>
 			<name>src/userInterface/DataRead.java</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/DataRead/DataRead.java</locationURI>

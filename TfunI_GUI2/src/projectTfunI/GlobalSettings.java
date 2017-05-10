@@ -30,6 +30,8 @@ public class GlobalSettings {
 	public static Color colorTraceGreen = new Color(169,209,142);
 	public static Color colorTraceYellow = new Color(255, 217, 102);
 	public static Color colorTraceOrange = new Color(197, 90, 17);
+	
+	public static Color colorSliderBlue = new Color(0, 180, 240);
 
 	public static void init() {
 		// Fonts:

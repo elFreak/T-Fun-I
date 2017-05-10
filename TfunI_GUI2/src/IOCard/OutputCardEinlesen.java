@@ -1,6 +1,7 @@
 package IOCard;
 
 import JavaPlot.Plot;
+import JavaPlot.Slider;
 import userInterface.OutputPanel;
 import userInterface.WindowContainer;
 
@@ -16,6 +17,8 @@ public class OutputCardEinlesen extends WindowContainer {
 		plotEinlesen.addTrace(outputPanel.traceRaw);
 		outputPanel.traceStep.dataValid = false;
 		outputPanel.traceRaw.dataValid = false;
+		plotEinlesen.addSlider(Slider.HORIZONTAL);
+		plotEinlesen.addSlider(Slider.VERTICAL);
 	}
 
 }
