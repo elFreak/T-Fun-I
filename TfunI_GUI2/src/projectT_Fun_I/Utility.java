@@ -1,4 +1,4 @@
-package projectTfunI;
+package projectT_Fun_I;
 
 import java.awt.Color;
 import java.awt.Component;

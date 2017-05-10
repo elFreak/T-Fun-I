@@ -6,7 +6,7 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 
-import projectTfunI.GlobalSettings;
+import projectT_Fun_I.GlobalSettings;
 
 public class Slider extends JPanel {
 	private static final long serialVersionUID = 1L;

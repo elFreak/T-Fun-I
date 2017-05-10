@@ -11,8 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import model.Model;
-import projectTfunI.GlobalSettings;
-import projectTfunI.Utility;
+import projectT_Fun_I.GlobalSettings;
+import projectT_Fun_I.Utility;
 
 public class View extends JPanel implements Observer {
 	private static final long serialVersionUID = 1L;

@@ -4,7 +4,7 @@ import javax.swing.BorderFactory;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
-import projectTfunI.GlobalSettings;
+import projectT_Fun_I.GlobalSettings;
 
 public class MyBorderFactory {
 

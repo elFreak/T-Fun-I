@@ -9,8 +9,8 @@ import IOCard.OutputCardBerechnen;
 import IOCard.OutputCardEinlesen;
 import IOCard.OutputCardVerifizieren;
 import JavaPlot.Trace;
-import projectTfunI.GlobalSettings;
-import projectTfunI.Utility;
+import projectT_Fun_I.GlobalSettings;
+import projectT_Fun_I.Utility;
 
 public class OutputPanel extends JPanel {
 	private static final long serialVersionUID = 1L;

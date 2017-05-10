@@ -7,8 +7,8 @@ import IOCard.InputCardBearbeiten;
 import IOCard.InputCardBerechnen;
 import IOCard.InputCardEinlesen;
 import IOCard.InputCardVerifizieren;
-import projectTfunI.GlobalSettings;
-import projectTfunI.Utility;
+import projectT_Fun_I.GlobalSettings;
+import projectT_Fun_I.Utility;
 
 /**
  * 

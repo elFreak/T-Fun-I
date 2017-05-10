@@ -1,4 +1,4 @@
-package projectTfunI;
+package projectT_Fun_I;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -23,7 +23,7 @@ public class TfunIFrame extends JFrame {
 
 	private Mode mode = Mode.FIXEDRESIZABLE;
 	private int width = 1200, height = 800;
-
+ 
 	private static enum LAF {
 		METAL, OCEAN, SYSTEM, WINDOWS_TFUNI
 	}
