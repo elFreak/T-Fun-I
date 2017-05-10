@@ -75,7 +75,7 @@ public class View extends JPanel implements Observer {
 		// Traces Aktualisieren:
 		outputPanel.traceStep.data = ((Model) obs).measurementData.getstep();
 		outputPanel.traceRaw.data = ((Model) obs).measurementData.getRawData();
-		outputPanel.traceMean.data = ((Model) obs).measurementData.getMeanData();
+		outputPanel.traceMean.data = ((Model) obs).measurementData.getFinalData();
 
 		if (outputPanel.traceRaw.dataValid == false) {
 
