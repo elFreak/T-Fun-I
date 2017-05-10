@@ -10,11 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
-import com.sun.management.jmx.Trace;
-import com.sun.org.apache.xpath.internal.operations.Mod;
-
-import javafx.beans.Observable;
-import model.MeasurementData;
 import model.Model;
 import projectTfunI.GlobalSettings;
 import projectTfunI.Utility;
@@ -83,13 +78,17 @@ public class View extends JPanel implements Observer {
 		outputPanel.traceMean.data = ((Model) obs).measurementData.getMeanData();
 
 		if (outputPanel.traceRaw.dataValid == false) {
-			outputPanel.plotEinlesen.setRangeIdeal();
-			outputPanel.plotBearbeiten.setRangeIdeal();
-		}
 
-		outputPanel.traceStep.dataValid = true;
-		outputPanel.traceRaw.dataValid = true;
-		outputPanel.traceMean.dataValid = true;
+			outputPanel.traceStep.dataValid = true;
+			outputPanel.traceRaw.dataValid = true;
+			outputPanel.traceMean.dataValid = true;
+			outputPanel.cardEinlesen.plotEinlesen.setRangeIdeal();
+			outputPanel.cardBearbeiten.plotBearbeiten.setRangeIdeal();
+		} else {
+			outputPanel.traceStep.dataValid = true;
+			outputPanel.traceRaw.dataValid = true;
+			outputPanel.traceMean.dataValid = true;
+		}
 
 		// Update:
 		revalidate();

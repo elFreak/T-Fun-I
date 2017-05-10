@@ -1,19 +1,12 @@
 package userInterface;
 
 import java.awt.CardLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.Label;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+
+import IOCard.InputCardBearbeiten;
+import IOCard.InputCardBerechnen;
+import IOCard.InputCardEinlesen;
+import IOCard.InputCardVerifizieren;
 import projectTfunI.GlobalSettings;
 import projectTfunI.Utility;
 
@@ -32,26 +25,12 @@ public class InputPanel extends JPanel {
 	private CardLayout cardLayout = new CardLayout();
 
 	/**
-	 * Card "Einlesen"
+	 * Cards
 	 */
 	private InputCardEinlesen inputCardEinlesen;
-	
-	
-	private JPanel cardEinlesen = new JPanel(new GridBagLayout());
-	private JButton btEinlesen = new JButton("Öffnen");
-
-	// Card "Bearbeiten"
 	private InputCardBearbeiten inputCardBearbeiten;
-
-	/**
-	 * Card "Berechnen"
-	 */
 	private InputCardBerechnen inputCardBerechnen;
-
-	/**
-	 * Card "Verifizieren"
-	 */
-	private InputCardVertifizieren inputCardVertifizieren;
+	private InputCardVerifizieren inputCardVerifizieren;
 
 	/**
 	 * 
@@ -73,14 +52,14 @@ public class InputPanel extends JPanel {
 		inputCardEinlesen = new InputCardEinlesen(this.controller);
 		inputCardBearbeiten = new InputCardBearbeiten(this.controller);
 		inputCardBerechnen = new InputCardBerechnen(this.controller);
-		inputCardVertifizieren = new InputCardVertifizieren(this.controller);
+		inputCardVerifizieren = new InputCardVerifizieren(this.controller);
 
 		// Input-Panel Layout:
 		setLayout(cardLayout);
 		add(inputCardEinlesen, Controller.KEY_EINLESEN);
 		add(inputCardBearbeiten, Controller.KEY_BEARBEITEN);
 		add(inputCardBerechnen, Controller.KEY_BERECHNEN);
-		add(inputCardVertifizieren, Controller.KEY_VERTIFIZIEREN);
+		add(inputCardVerifizieren, Controller.KEY_VERIFIZIEREN);
 	}
 
 	/**
@@ -98,8 +77,8 @@ public class InputPanel extends JPanel {
 		case Controller.BERECHNEN:
 			cardLayout.show(this, Controller.KEY_BERECHNEN);
 			break;
-		case Controller.VERTIFIZIEREN:
-			cardLayout.show(this, Controller.KEY_VERTIFIZIEREN);
+		case Controller.VERIFIZIEREN:
+			cardLayout.show(this, Controller.KEY_VERIFIZIEREN);
 			break;
 		}
 	}

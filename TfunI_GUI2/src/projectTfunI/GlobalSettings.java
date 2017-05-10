@@ -10,8 +10,8 @@ public class GlobalSettings {
 	public static Color colorBackground = UIManager.getColor("window");
 	public static Color colorBackgroundGrey = UIManager.getColor("menu");
 	public static Color colorBackgroundGreyBright = new Color(240, 240, 240);
-	public static Color colorBackgroundBlueBright = new Color(170, 200, 230);
-	public static Color colorBackgroundBlueDark = new Color(140, 170, 200);
+	public static Color colorBackgroundBlueBright = new Color(218, 227, 243);
+	public static Color colorBackgroundBlueDark = new Color(143, 170, 220);
 	public static Color colorBackgroundGreen = new Color(170, 210, 140);
 	public static Color colorBackgroundBlack = new Color(80, 80, 80);
 	public static Color colorBackgroundWhite = new Color(250, 250, 250);
@@ -26,6 +26,10 @@ public class GlobalSettings {
 
 	public static Font fontText;
 	public static Font fontTextSmall;
+	
+	public static Color colorTraceGreen = new Color(169,209,142);
+	public static Color colorTraceYellow = new Color(255, 217, 102);
+	public static Color colorTraceOrange = new Color(197, 90, 17);
 
 	public static void init() {
 		// Fonts:

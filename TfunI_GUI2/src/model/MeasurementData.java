@@ -62,8 +62,8 @@ public class MeasurementData {
 				originalStep[MEASUREMENTS][i] = data[STEP][i];
 
 				// Calculate step time from step array
-				if (data[STEP][i] != 0 && data[STEP][i - 1] == 0) {
-					stepTime = data[XAXIS][i - 1];
+				if (data[STEP][i] != 0 && data[STEP][i ] == 0) {
+					stepTime = data[XAXIS][i ];
 					stepHeight = data[STEP][i];
 				}
 
@@ -74,7 +74,7 @@ public class MeasurementData {
 			}
 
 		}
-		System.out.println("hey");
+	
 	}
 
 	/**

@@ -24,8 +24,8 @@ public class Controller {
 	public final static String KEY_BEARBEITEN = "BEARBEITEN";
 	public final static int BERECHNEN = 2;
 	public final static String KEY_BERECHNEN = "BERECHNEN";
-	public final static int VERTIFIZIEREN = 3;
-	public final static String KEY_VERTIFIZIEREN = "VERTIFIZIEREN";
+	public final static int VERIFIZIEREN = 3;
+	public final static String KEY_VERIFIZIEREN = "VERTIFIZIEREN";
 
 	public Controller(Model model) {
 		this.model = model;
@@ -60,7 +60,7 @@ public class Controller {
 		case Controller.BERECHNEN:
 
 			break;
-		case Controller.VERTIFIZIEREN:
+		case Controller.VERIFIZIEREN:
 
 			break;
 		}
@@ -72,5 +72,9 @@ public class Controller {
 	
 	public void filterChanged(int n) {
 		model.measurementData.setMovingMean(n);
+	}
+	
+	public void setRange(double start, double end, double offset) {
+		model.measurementData.setLimits(start, offset, end);
 	}
 }
