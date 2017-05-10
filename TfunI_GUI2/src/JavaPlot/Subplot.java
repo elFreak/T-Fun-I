@@ -99,6 +99,9 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	private final static int MAX_SLIDER = 3;
 	private Slider[] sliders = new Slider[MAX_SLIDER];
 	private int sliderActualNumber = 0;
+	private double sliderStartValue = 0;
+	private double sliderEndValue = 0;
+	private double sliderOffsetValue = 0;
 
 	// --------------------------------------------------------------------
 	// Axis Label:
@@ -353,24 +356,26 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 					boardCorner[1][Y] + (int) (borderSouth * 0.9));
 		}
 
-		// Paint Slider:		
-		for (int i = 0; i < sliderActualNumber; i++) {			
+		// Paint Slider:
+		for (int i = 0; i < sliderActualNumber; i++) {
 			if (sliders[i].orienation == Slider.HORIZONTAL) {
-				if(sliders[i].positionPixel<boardCorner[0][Y]){
-					sliders[i].positionPixel=boardCorner[0][Y];
+				if (sliders[i].positionPixel < boardCorner[0][Y]) {
+					sliders[i].positionPixel = boardCorner[0][Y];
 				}
-				if(sliders[i].positionPixel>boardCorner[1][Y]){
-					sliders[i].positionPixel=boardCorner[1][Y];
+				if (sliders[i].positionPixel > boardCorner[1][Y]) {
+					sliders[i].positionPixel = boardCorner[1][Y];
 				}
-				sliders[i].setBounds(0, sliders[i].positionPixel-Slider.sliderThickness/2, getWidth(), Slider.sliderThickness);
+				sliders[i].setBounds(0, sliders[i].positionPixel - Slider.sliderThickness / 2, getWidth(),
+						Slider.sliderThickness);
 			} else {
-				if(sliders[i].positionPixel<boardCorner[0][X]){
-					sliders[i].positionPixel=boardCorner[0][X];
+				if (sliders[i].positionPixel < boardCorner[0][X]) {
+					sliders[i].positionPixel = boardCorner[0][X];
 				}
-				if(sliders[i].positionPixel>boardCorner[2][X]){
-					sliders[i].positionPixel=boardCorner[2][X];
+				if (sliders[i].positionPixel > boardCorner[2][X]) {
+					sliders[i].positionPixel = boardCorner[2][X];
 				}
-				sliders[i].setBounds(sliders[i].positionPixel-Slider.sliderThickness/2, 0, Slider.sliderThickness, getHeight());
+				sliders[i].setBounds(sliders[i].positionPixel - Slider.sliderThickness / 2, 0, Slider.sliderThickness,
+						getHeight());
 			}
 		}
 	}
@@ -942,7 +947,8 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 	// --------------------------------------------------------------------
 	// Add new Slider:
-	public void addSlider(int orientation,String tag) {
+	public void addSlider(int orientation, String tag, Plot plot) {
+		this.plot = plot;
 		if (sliderActualNumber < MAX_SLIDER) {
 			sliders[sliderActualNumber] = new Slider(orientation, this, tag);
 			this.add(sliders[sliderActualNumber]);
@@ -950,17 +956,66 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			repaint();
 		}
 	}
-	
+
 	// --------------------------------------------------------------------
 	// Get Value of Slider:
-	public void updateSliderValue(Slider slider){
+	public void updateSliderValue(Slider slider) {
 		double actualValue;
-		if(slider.orienation == Slider.HORIZONTAL) {
-			actualValue = axisRangeSector[Y1AXIS][0] + ((boardCorner[1][Y] - slider.positionPixel)/ (double) (boardCorner[1][Y] - boardCorner[0][Y])* (axisRangeSector[Y1AXIS][axisRangeActualSectorNumber[Y1AXIS] - 1] - axisRangeSector[Y1AXIS][0]));
-		} else{
-			actualValue = axisRangeSector[XAXIS][0]+ ((slider.positionPixel - boardCorner[0][X]) / (double) (boardCorner[3][X] - boardCorner[0][X])* (axisRangeSector[XAXIS][axisRangeActualSectorNumber[XAXIS] - 1] - axisRangeSector[XAXIS][0]));
+		if (slider.orienation == Slider.HORIZONTAL) {
+			actualValue = axisRangeSector[Y1AXIS][0] + ((boardCorner[1][Y] - slider.positionPixel)
+					/ (double) (boardCorner[1][Y] - boardCorner[0][Y])
+					* (axisRangeSector[Y1AXIS][axisRangeActualSectorNumber[Y1AXIS] - 1] - axisRangeSector[Y1AXIS][0]));
+
+			if (actualValue < axisRangeSector[Y1AXIS][0]) {
+				actualValue = axisRangeSector[Y1AXIS][0];
+			}
+			if (actualValue > axisRangeSector[Y1AXIS][axisRangeActualSectorNumber[Y1AXIS] - 1]) {
+				actualValue = axisRangeSector[Y1AXIS][axisRangeActualSectorNumber[Y1AXIS] - 1];
+			}
+
+		} else {
+			actualValue = axisRangeSector[XAXIS][0] + ((slider.positionPixel - boardCorner[0][X])
+					/ (double) (boardCorner[3][X] - boardCorner[0][X])
+					* (axisRangeSector[XAXIS][axisRangeActualSectorNumber[XAXIS] - 1] - axisRangeSector[XAXIS][0]));
+
+			if (actualValue < axisRangeSector[XAXIS][0]) {
+				actualValue = axisRangeSector[XAXIS][0];
+			}
+			if (actualValue > axisRangeSector[XAXIS][axisRangeActualSectorNumber[XAXIS] - 1]) {
+				actualValue = axisRangeSector[XAXIS][axisRangeActualSectorNumber[XAXIS] - 1];
+			}
 		}
-		plot.updateSliderValue(actualValue,slider.tag);
+
+		switch (slider.tag) {
+		case "Start":
+			sliderStartValue = actualValue;
+			break;
+		case "End":
+			sliderEndValue = actualValue;
+			break;
+		case "Offset":
+			sliderOffsetValue = actualValue;
+			break;
+		}
+
+		plot.updateSliderValue(sliderStartValue, sliderEndValue, sliderOffsetValue);
+
 	}
-	
+
+	// --------------------------------------------------------------------
+	// Set Slider Position:
+	public void setSliderPosition(String tag, double value) {
+		for (int i = 0; i < sliderActualNumber; i++) {
+			if (sliders[i].tag == tag) {
+				if (sliders[i].orienation == Slider.HORIZONTAL) {
+					sliders[i].positionPixel = -(int) ((((value - axisRangeSector[Y1AXIS][0])
+							/ (axisRangeSector[Y1AXIS][axisRangeActualSectorNumber[Y1AXIS] - 1]
+									- axisRangeSector[Y1AXIS][0]))
+							* ((double) (boardCorner[1][Y] - boardCorner[0][Y]))) - boardCorner[1][Y]);
+				} else {
+					sliders[i].positionPixel = (int) ((((value - axisRangeSector[XAXIS][0])/ (axisRangeSector[XAXIS][axisRangeActualSectorNumber[XAXIS] - 1]- axisRangeSector[XAXIS][0]))* ((double) (boardCorner[2][X] - boardCorner[0][X]))) - boardCorner[1][X]);
+				}
+			}
+		}
+	}
 }

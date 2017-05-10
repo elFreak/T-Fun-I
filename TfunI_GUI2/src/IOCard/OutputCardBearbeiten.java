@@ -2,15 +2,18 @@ package IOCard;
 
 import JavaPlot.Plot;
 import JavaPlot.Slider;
+import userInterface.Controller;
 import userInterface.OutputPanel;
 import userInterface.WindowContainer;
 
 public class OutputCardBearbeiten extends WindowContainer {
 	private static final long serialVersionUID = 1L;
 	
-	public Plot plotBearbeiten = new Plot();
+	private Controller controller;
+	public Plot plotBearbeiten;
 	
-	public OutputCardBearbeiten(OutputPanel outputPanel) {
+	public OutputCardBearbeiten(OutputPanel outputPanel, Controller controller) {
+		plotBearbeiten = new Plot(controller);
 		addComponent(plotBearbeiten);
 
 		plotBearbeiten.addTrace(outputPanel.traceRaw);
@@ -22,8 +25,8 @@ public class OutputCardBearbeiten extends WindowContainer {
 		outputPanel.traceRaw.dataValid = false;
 		outputPanel.traceMean.dataValid = false;
 		plotBearbeiten.setSubplot(0);
-		plotBearbeiten.addSlider(Slider.HORIZONTAL,"1");
-		plotBearbeiten.addSlider(Slider.VERTICAL,"2");
-		plotBearbeiten.addSlider(Slider.VERTICAL,"3");
+		plotBearbeiten.addSlider(Slider.HORIZONTAL,"Offset");
+		plotBearbeiten.addSlider(Slider.VERTICAL,"Start");
+		plotBearbeiten.addSlider(Slider.VERTICAL,"End");
 	}
 }

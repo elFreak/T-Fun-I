@@ -193,12 +193,18 @@ public class Plot extends JPanel {
 	// --------------------------------------------------------------------
 	// Add new Slider:
 	public void addSlider(int orientation, String tag) {
-		subplot[subplotSelected].addSlider(orientation, tag);
+		subplot[subplotSelected].addSlider(orientation, tag, this);
 	}
 
 	// --------------------------------------------------------------------
 	// Update for Slider:
-	public void updateSliderValue(double value, String tag) {
-		controller.setRange(value, 0, 0);
+	public void updateSliderValue(double start, double end, double offset) {
+		controller.setRange(start, end, offset);
+	}
+	
+	// --------------------------------------------------------------------
+	// Set Slider Position:
+	public void setSliderPosition(String tag, double value) {
+		subplot[subplotSelected].setSliderPosition(tag, value);
 	}
 }

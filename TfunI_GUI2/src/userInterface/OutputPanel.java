@@ -59,7 +59,7 @@ public class OutputPanel extends JPanel {
 
 		// Init Cards:
 		cardEinlesen = new OutputCardEinlesen(this);
-		cardBearbeiten = new OutputCardBearbeiten(this);
+		cardBearbeiten = new OutputCardBearbeiten(this,controller);
 		cardBerechnen = new OutputCardBerechnen(this);
 		cardVerifizieren = new OutputCardVerifizieren(this);
 

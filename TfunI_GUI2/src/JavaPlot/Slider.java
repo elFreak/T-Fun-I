@@ -31,6 +31,7 @@ public class Slider extends JPanel {
 		this.tag = tag;
 		this.orienation = orientation;
 		this.setBackground(new Color(0, 0, 0, 0));
+		this.slider = this;
 		
 		this.addMouseMotionListener(new MouseMotionListener() {
 
@@ -47,9 +48,9 @@ public class Slider extends JPanel {
 					positionPixel += e.getX() - getWidth() / 2;
 				}
 				
-				subplot.updateSliderValue(slider);
 				repaint();
 				subplot.repaint();
+				subplot.updateSliderValue(slider);
 			}
 		});
 

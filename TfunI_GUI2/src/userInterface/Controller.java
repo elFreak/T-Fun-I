@@ -79,51 +79,11 @@ public class Controller {
 
 			break;
 		case Controller.VERIFIZIEREN:
-//			Filter filter = FilterFactory.createButter(3, 2.0);
-//			double[] t = Matlab.linspace(0, 15.0, 1000);
-//			
-//			double[] step_soll = (double[])SVTools.step(filter.B, filter.A, t)[0];
-//			
-//			double [][] soll_plot = new double[][]{t,step_soll};
-//			
-//			
-//			Plot plot = new Plot();
-//			Trace trace = new Trace();
-//			trace.data=soll_plot;
-//			view.outputPanel.cardVerifizieren.plot.addTrace(trace);
-//
-//			
-//			for (int i = 0; i < step_soll.length; i++) {
-//				System.out.println(""+step_soll[i]);
-//			}
-//			
-//			Target target = new Target(t, step_soll, 3);
-//			
-//			SimplexOptimizer optimizer = new SimplexOptimizer(1e-3, 1e-2);
-//
-//			Complex[] rA = Matlab.roots(filter.A);
-//			
-//			double[] startwerte = new double[] {1.0, rA[0].abs(), (rA[0].abs()/(-2.0*rA[0].getReal())), rA[0].getReal() };
-//
-//			PointValuePair optimum = optimizer.optimize(new MaxEval(10000), new ObjectiveFunction(target), GoalType.MINIMIZE,
-//					new InitialGuess(startwerte), new NelderMeadSimplex(new double[] { 0.02, 0.02, 0.02, 0.02 }));
-//			
-//			System.out.println(Arrays.toString(optimum.getPoint()) + " : " + optimum.getSecond());
-//			System.out.println(""+rA[0].abs());
-//			System.out.println(""+rA[0].abs()/(-2.0*rA[0].getReal()));
-//			System.out.println(""+rA[0].getReal());
-//			
-//			double[] step_approx = target.omega2polstep(3, optimum.getPoint(), t);
-//			for (int i = 0; i < step_approx.length; i++) {
-//				System.out.println(""+step_approx[i]);
-//			}
-//			
-//			double [][] approx_plot = new double[][]{t,step_approx};
-//			
-//			Trace traceapprox = new Trace();
-//			traceapprox.data=approx_plot;
-//			view.outputPanel.cardVerifizieren.plot.addTrace(traceapprox);
-			model.approximation.berechne();
+
+			view.outputPanel.cardBearbeiten.plotBearbeiten.setSliderPosition("Offset", 2.5);
+			view.outputPanel.cardBearbeiten.plotBearbeiten.setSliderPosition("Start", 0.0005);
+			view.outputPanel.cardBearbeiten.plotBearbeiten.setSliderPosition("End", 0.00035);
+			
 			
 			break;
 		}
