@@ -12,7 +12,6 @@ public class OutputCardBearbeiten extends WindowContainer {
 	public final static String KEY_END = "End";
 	public final static String KEY_OFFSET = "Offset";
 	
-	private Controller controller;
 	public Plot plotBearbeiten;
 	
 	public OutputCardBearbeiten(OutputPanel outputPanel, Controller controller) {
@@ -22,7 +21,7 @@ public class OutputCardBearbeiten extends WindowContainer {
 		plotBearbeiten.addTrace(outputPanel.traceRaw);
 		plotBearbeiten.addTrace(outputPanel.traceStep);
 		plotBearbeiten.addSubplot();
-		plotBearbeiten.addTrace(outputPanel.traceRaw);
+		plotBearbeiten.addTrace(outputPanel.tracePreprocessed);
 		outputPanel.traceStep.dataValid = false;
 		outputPanel.traceRaw.dataValid = false;
 		outputPanel.tracePreprocessed.dataValid = false;

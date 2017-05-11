@@ -17,7 +17,6 @@ public class OutputPanel extends JPanel {
 	/**
 	 * General
 	 */
-	private Controller controller;
 	private CardLayout cardLayout = new CardLayout();
 
 	/**
@@ -37,7 +36,7 @@ public class OutputPanel extends JPanel {
 	public OutputCardVerifizieren cardVerifizieren;
 
 	public OutputPanel(Controller controller) {
-		
+
 		// Output-Panel Design:
 		setBorder(MyBorderFactory.createMyBorder("  Ausgabe  "));
 		Utility.setAllBackgrounds(this, GlobalSettings.colorBackground);
@@ -54,11 +53,11 @@ public class OutputPanel extends JPanel {
 		tracePreprocessed = new Trace();
 		tracePreprocessed.usePreferedColor = true;
 		tracePreprocessed.preferedColor = GlobalSettings.colorTraceOrange;
-		traceSolution=new Trace();
+		traceSolution = new Trace();
 
 		// Init Cards:
 		cardEinlesen = new OutputCardEinlesen(this);
-		cardBearbeiten = new OutputCardBearbeiten(this,controller);
+		cardBearbeiten = new OutputCardBearbeiten(this, controller);
 		cardBerechnen = new OutputCardBerechnen(this);
 		cardVerifizieren = new OutputCardVerifizieren(this);
 
@@ -87,30 +86,30 @@ public class OutputPanel extends JPanel {
 			break;
 		}
 	}
-	
+
 	public void update(java.util.Observable obs, Object obj) {
 		// Traces Aktualisieren:
-				traceStep.data = ((Model) obs).measurementData.getstep();
-				traceRaw.data = ((Model) obs).measurementData.getRawData();
-				tracePreprocessed.data = ((Model) obs).measurementData.getFinalData();
-				traceSolution.data = ((Model) obs).approximation.stepAnswer;
+		traceStep.data = ((Model) obs).measurementData.getstep();
+		traceRaw.data = ((Model) obs).measurementData.getRawData();
+		tracePreprocessed.data = ((Model) obs).measurementData.getFinalData();
+		traceSolution.data = ((Model) obs).approximation.stepAnswer;
 
-				if (traceRaw.dataValid == false) {
+		if (traceRaw.dataValid == false) {
 
-					traceStep.dataValid = true;
-					traceRaw.dataValid = true;
-					tracePreprocessed.dataValid = true;
-					traceSolution.dataValid = true;
-					cardEinlesen.plotEinlesen.setRangeIdeal();
-					cardBearbeiten.plotBearbeiten.setSubplot(0);
-					cardBearbeiten.plotBearbeiten.setRangeIdeal();
-					cardBearbeiten.plotBearbeiten.setSubplot(1);
-					cardBearbeiten.plotBearbeiten.setRangeIdeal();
-				} else {
-					traceStep.dataValid = true;
-					traceRaw.dataValid = true;
-					tracePreprocessed.dataValid = true;
-					traceSolution.dataValid = true;
-				}
+			traceStep.dataValid = true;
+			traceRaw.dataValid = true;
+			tracePreprocessed.dataValid = true;
+			traceSolution.dataValid = true;
+			cardEinlesen.plotEinlesen.setRangeIdeal();
+			cardBearbeiten.plotBearbeiten.setSubplot(0);
+			cardBearbeiten.plotBearbeiten.setRangeIdeal();
+		} else {
+			traceStep.dataValid = true;
+			traceRaw.dataValid = true;
+			tracePreprocessed.dataValid = true;
+			traceSolution.dataValid = true;
+			cardBearbeiten.plotBearbeiten.setSubplot(1);
+			cardBearbeiten.plotBearbeiten.setRangeIdeal();
+		}
 	}
 }
