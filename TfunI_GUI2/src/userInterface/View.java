@@ -77,14 +77,14 @@ public class View extends JPanel implements Observer {
 		// Traces Aktualisieren:
 		outputPanel.traceStep.data = ((Model) obs).measurementData.getstep();
 		outputPanel.traceRaw.data = ((Model) obs).measurementData.getRawData();
-		outputPanel.traceMean.data = ((Model) obs).measurementData.getMeanData();
+		outputPanel.tracePreprocessed.data = ((Model) obs).measurementData.getFinalData();
 		outputPanel.traceSolution.data = ((Model) obs).approximation.stepAnswer;
 
 		if (outputPanel.traceRaw.dataValid == false) {
 
 			outputPanel.traceStep.dataValid = true;
 			outputPanel.traceRaw.dataValid = true;
-			outputPanel.traceMean.dataValid = true;
+			outputPanel.tracePreprocessed.dataValid = true;
 			outputPanel.traceSolution.dataValid = true;
 			outputPanel.cardEinlesen.plotEinlesen.setRangeIdeal();
 			outputPanel.cardBearbeiten.plotBearbeiten.setSubplot(0);
@@ -94,7 +94,7 @@ public class View extends JPanel implements Observer {
 		} else {
 			outputPanel.traceStep.dataValid = true;
 			outputPanel.traceRaw.dataValid = true;
-			outputPanel.traceMean.dataValid = true;
+			outputPanel.tracePreprocessed.dataValid = true;
 			outputPanel.traceSolution.dataValid = true;
 		}
 

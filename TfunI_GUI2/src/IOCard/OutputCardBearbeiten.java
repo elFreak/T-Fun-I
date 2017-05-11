@@ -23,10 +23,10 @@ public class OutputCardBearbeiten extends WindowContainer {
 		plotBearbeiten.addTrace(outputPanel.traceStep);
 		plotBearbeiten.addSubplot();
 		plotBearbeiten.addTrace(outputPanel.traceRaw);
-		plotBearbeiten.addTrace(outputPanel.traceMean);
+		plotBearbeiten.addTrace(outputPanel.tracePreprocessed);
 		outputPanel.traceStep.dataValid = false;
 		outputPanel.traceRaw.dataValid = false;
-		outputPanel.traceMean.dataValid = false;
+		outputPanel.tracePreprocessed.dataValid = false;
 		plotBearbeiten.setSubplot(0);
 		plotBearbeiten.addSlider(Slider.HORIZONTAL,KEY_OFFSET);
 		plotBearbeiten.addSlider(Slider.VERTICAL,KEY_START);

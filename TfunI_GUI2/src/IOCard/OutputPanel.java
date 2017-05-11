@@ -24,7 +24,7 @@ public class OutputPanel extends JPanel {
 	 */
 	public JavaPlot.Trace traceStep;
 	public JavaPlot.Trace traceRaw;
-	public JavaPlot.Trace traceMean;
+	public JavaPlot.Trace tracePreprocessed;
 	public JavaPlot.Trace traceSolution;
 
 	/**
@@ -50,9 +50,9 @@ public class OutputPanel extends JPanel {
 		traceRaw = new Trace();
 		traceRaw.usePreferedColor = true;
 		traceRaw.preferedColor = GlobalSettings.colorTraceYellow;
-		traceMean = new Trace();
-		traceMean.usePreferedColor = true;
-		traceMean.preferedColor = GlobalSettings.colorTraceOrange;
+		tracePreprocessed = new Trace();
+		tracePreprocessed.usePreferedColor = true;
+		tracePreprocessed.preferedColor = GlobalSettings.colorTraceOrange;
 		traceSolution=new Trace();
 
 		// Init Cards:

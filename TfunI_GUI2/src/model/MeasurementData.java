@@ -105,7 +105,6 @@ public class MeasurementData {
 		if (n == 0) {
 			for (int i = 0; i < rawData[MEASUREMENTS].length; i++) {
 				meanData[MEASUREMENTS][i] = rawData[MEASUREMENTS][i];
-				finalData[MEASUREMENTS][i] = rawData[MEASUREMENTS][i];
 			}
 		}
 		// Mittelwert bilden
@@ -141,7 +140,8 @@ public class MeasurementData {
 	public void setLimits(double deadTime, double offset, double tail) {
 		this.deadTime = deadTime;
 		this.offset = offset;
-		this.tail = meanData[XAXIS].length - tail; // tail vom hintersten Datenpunkt aus
+		this.tail = meanData[XAXIS].length - tail; // tail vom hintersten
+													// Datenpunkt aus
 
 		// finalData aktualisieren
 		updateFinalData();
@@ -289,13 +289,13 @@ public class MeasurementData {
 				frontIndex++;
 			}
 			// Index des Tails bestimmen
-			if (meanData[XAXIS][i] < meanData[XAXIS].length - tail) {
+			if (meanData[XAXIS][i] < meanData[XAXIS][meanData[XAXIS].length - 1] - tail) {
 				tailIndex++;
 			}
 		}
-		//finalData aktualisieren
+		// finalData aktualisieren
 		finalData = new double[meanData.length][tailIndex - frontIndex + 1];
-		for (int i = 0; i < meanData[XAXIS].length; i++) {
+		for (int i = 0; i < finalData[XAXIS].length; i++) {
 			finalData[XAXIS][i] = meanData[XAXIS][i + frontIndex];
 			finalData[MEASUREMENTS][i] = meanData[MEASUREMENTS][i + frontIndex] - offset;
 		}
