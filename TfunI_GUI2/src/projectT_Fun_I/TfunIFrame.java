@@ -122,7 +122,7 @@ public class TfunIFrame extends JFrame {
 					frame.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 				}
 
-				ImageIcon imageIcon = new ImageIcon(getClass().getClassLoader().getResource("bilder/logo2.png"));
+				ImageIcon imageIcon = new ImageIcon(getClass().getClassLoader().getResource("bilder/logo.png"));
 				frame.setIconImage(imageIcon.getImage());
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setTitle("TfunI - Transfer Function Identifier");
