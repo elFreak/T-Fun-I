@@ -61,7 +61,7 @@ public class StartValueSaver {
 	 * @return
 	 */
 
-	private static UTFDatatype getSimilarUTF(double[][] plot, boolean[] ordnung) {
+	public static UTFDatatype getSimilarUTF(double[][] plot, boolean[] ordnung) {
 
 		// Plot auf 2500 werte normen.
 		double[] plotn = plotnorm(plot);

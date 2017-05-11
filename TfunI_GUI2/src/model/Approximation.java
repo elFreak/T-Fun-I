@@ -13,6 +13,8 @@ import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.NelderMeadSimplex;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizer;
 
+import com.sun.swing.internal.plaf.metal.resources.metal;
+
 import speicher.StartValueSaver;
 import userInterface.StatusBar;
 
@@ -44,8 +46,11 @@ public class Approximation extends SwingWorker<Object, Integer> {
 		// (relativer Threshold, absoluter Threshold)
 		SimplexOptimizer optimizer = new SimplexOptimizer(1e-10, 1e-6);
 
-		PointValuePair optimum = optimizer.optimize(new MaxEval(10000), new ObjectiveFunction(target), GoalType.MINIMIZE,
-				new InitialGuess(getStartingValues()), new NelderMeadSimplex(new double[] { 0.2, 0.2, 0.2, 0.2, 0.2 }));
+		PointValuePair optimum = optimizer.optimize(new MaxEval(10000), new ObjectiveFunction(target),
+				GoalType.MINIMIZE,
+				new InitialGuess(getStartingValues(measurementData.getFinalData(),
+						new boolean[] { false, false, false, false, true, false, false, false, false, false })),
+				new NelderMeadSimplex(new double[] { 0.2, 0.2, 0.2, 0.2, 0.2}));
 
 		SimplexOptimizer optimizer2 = new SimplexOptimizer(1e-15, 1e-16);
 		PointValuePair optimum2 = optimizer.optimize(new MaxEval(10000), new ObjectiveFunction(target),
@@ -107,8 +112,16 @@ public class Approximation extends SwingWorker<Object, Integer> {
 		return step_response_scaled_m;
 	}
 
-	private static double[] getStartingValues() {
+	private static double[] getStartingValues(double[][] plot, boolean[] ordnung) {
 		double[] startingValues = new double[] { 0.1, 2.3, 2.3, 2.2, 0.5 };
+//		UTFDatatype utfDatatype = new UTFDatatype();
+//		double[] startingValues = new double[5];
+//		utfDatatype = StartValueSaver.getSimilarUTF(plot, ordnung);
+//		startingValues[0] = utfDatatype.zaehler;
+//		for (int i = 1; i < 5; i++) {
+//			startingValues[i] = utfDatatype.koeffWQ[i - 1];
+//		}
+		// startingValues[11]=utfDatatype.sigma;
 		return startingValues;
 	}
 
