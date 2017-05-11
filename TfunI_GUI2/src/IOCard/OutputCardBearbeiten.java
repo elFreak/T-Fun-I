@@ -3,7 +3,6 @@ package IOCard;
 import JavaPlot.Plot;
 import JavaPlot.Slider;
 import userInterface.Controller;
-import userInterface.OutputPanel;
 import userInterface.WindowContainer;
 
 public class OutputCardBearbeiten extends WindowContainer {

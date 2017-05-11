@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 import JavaPlot.Plot;
 import projectT_Fun_I.GlobalSettings;
 import userInterface.MyBorderFactory;
-import userInterface.OutputPanel;
 import userInterface.WindowContainer;
 
 public class OutputCardBerechnen extends WindowContainer {

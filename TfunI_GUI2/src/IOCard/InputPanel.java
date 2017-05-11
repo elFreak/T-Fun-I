@@ -1,14 +1,12 @@
-package userInterface;
+package IOCard;
 
 import java.awt.CardLayout;
 import javax.swing.JPanel;
 
-import IOCard.InputCardBearbeiten;
-import IOCard.InputCardBerechnen;
-import IOCard.InputCardEinlesen;
-import IOCard.InputCardVerifizieren;
 import projectT_Fun_I.GlobalSettings;
 import projectT_Fun_I.Utility;
+import userInterface.Controller;
+import userInterface.MyBorderFactory;
 
 /**
  * 

@@ -80,12 +80,6 @@ public class Controller {
 
 			break;
 		case Controller.VERIFIZIEREN:
-
-			view.outputPanel.cardBearbeiten.plotBearbeiten.setSubplot(0);
-			view.outputPanel.cardBearbeiten.plotBearbeiten.setSliderPosition(OutputCardBearbeiten.KEY_OFFSET, 2.5);
-			view.outputPanel.cardBearbeiten.plotBearbeiten.setSliderPosition(OutputCardBearbeiten.KEY_START, 0.0005);
-			view.outputPanel.cardBearbeiten.plotBearbeiten.setSliderPosition(OutputCardBearbeiten.KEY_END, 0.00035);
-			
 			
 			break;
 		}

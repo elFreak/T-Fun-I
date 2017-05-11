@@ -2,7 +2,6 @@ package IOCard;
 
 import JavaPlot.Plot;
 import JavaPlot.Slider;
-import userInterface.OutputPanel;
 import userInterface.WindowContainer;
 
 public class OutputCardEinlesen extends WindowContainer {

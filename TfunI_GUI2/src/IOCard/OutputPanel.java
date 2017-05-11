@@ -1,16 +1,14 @@
-package userInterface;
+package IOCard;
 
 import java.awt.CardLayout;
 
 import javax.swing.JPanel;
 
-import IOCard.OutputCardBearbeiten;
-import IOCard.OutputCardBerechnen;
-import IOCard.OutputCardEinlesen;
-import IOCard.OutputCardVerifizieren;
 import JavaPlot.Trace;
 import projectT_Fun_I.GlobalSettings;
 import projectT_Fun_I.Utility;
+import userInterface.Controller;
+import userInterface.MyBorderFactory;
 
 public class OutputPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -48,13 +46,13 @@ public class OutputPanel extends JPanel {
 		// Init Traces:
 		traceStep = new Trace();
 		traceStep.usePreferedColor = true;
-		traceStep.preferedColor = GlobalSettings.colorTraceOrange;
+		traceStep.preferedColor = GlobalSettings.colorTraceGreen;
 		traceRaw = new Trace();
 		traceRaw.usePreferedColor = true;
 		traceRaw.preferedColor = GlobalSettings.colorTraceYellow;
 		traceMean = new Trace();
 		traceMean.usePreferedColor = true;
-		traceMean.preferedColor = GlobalSettings.colorTraceGreen;
+		traceMean.preferedColor = GlobalSettings.colorTraceOrange;
 		traceSolution=new Trace();
 
 		// Init Cards:

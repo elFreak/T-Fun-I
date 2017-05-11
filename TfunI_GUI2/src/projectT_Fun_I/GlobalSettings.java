@@ -27,7 +27,7 @@ public class GlobalSettings {
 	public static Font fontText;
 	public static Font fontTextSmall;
 	
-	public static Color colorTraceGreen = new Color(169,209,142);
+	public static Color colorTraceGreen = new Color(20,250,20);
 	public static Color colorTraceYellow = new Color(255, 217, 102);
 	public static Color colorTraceOrange = new Color(197, 90, 17);
 	

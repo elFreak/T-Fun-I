@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+import IOCard.InputPanel;
+import IOCard.OutputPanel;
 import model.Model;
 import projectT_Fun_I.GlobalSettings;
 import projectT_Fun_I.Utility;

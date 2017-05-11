@@ -1,7 +1,6 @@
 package IOCard;
 
 import JavaPlot.Plot;
-import userInterface.OutputPanel;
 import userInterface.WindowContainer;
 
 public class OutputCardVerifizieren extends WindowContainer {
