@@ -357,5 +357,9 @@ public class InputCardBearbeiten extends JPanel {
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 
 	}
+	
+	public void update(Object obj){
+		
+	}
 
 }
