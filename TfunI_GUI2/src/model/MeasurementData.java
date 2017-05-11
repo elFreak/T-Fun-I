@@ -146,7 +146,7 @@ public class MeasurementData {
 		if (tail > meanData[XAXIS][meanData[XAXIS].length-1])
 			this.tail = 0;
 		else
-			this.tail = /*meanData[XAXIS][meanData[XAXIS].length - 1] -*/ tail;
+			this.tail = meanData[XAXIS][meanData[XAXIS].length - 1] - tail;
 
 		// finalData aktualisieren
 		updateFinalData();
