@@ -74,29 +74,7 @@ public class View extends JPanel implements Observer {
 	@Override
 	public void update(java.util.Observable obs, Object obj) {
 
-		// Traces Aktualisieren:
-		outputPanel.traceStep.data = ((Model) obs).measurementData.getstep();
-		outputPanel.traceRaw.data = ((Model) obs).measurementData.getRawData();
-		outputPanel.tracePreprocessed.data = ((Model) obs).measurementData.getFinalData();
-		outputPanel.traceSolution.data = ((Model) obs).approximation.stepAnswer;
-
-		if (outputPanel.traceRaw.dataValid == false) {
-
-			outputPanel.traceStep.dataValid = true;
-			outputPanel.traceRaw.dataValid = true;
-			outputPanel.tracePreprocessed.dataValid = true;
-			outputPanel.traceSolution.dataValid = true;
-			outputPanel.cardEinlesen.plotEinlesen.setRangeIdeal();
-			outputPanel.cardBearbeiten.plotBearbeiten.setSubplot(0);
-			outputPanel.cardBearbeiten.plotBearbeiten.setRangeIdeal();
-			outputPanel.cardBearbeiten.plotBearbeiten.setSubplot(1);
-			outputPanel.cardBearbeiten.plotBearbeiten.setRangeIdeal();
-		} else {
-			outputPanel.traceStep.dataValid = true;
-			outputPanel.traceRaw.dataValid = true;
-			outputPanel.tracePreprocessed.dataValid = true;
-			outputPanel.traceSolution.dataValid = true;
-		}
+		
 
 		// Update:
 		revalidate();

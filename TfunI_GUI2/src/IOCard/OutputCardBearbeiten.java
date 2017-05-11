@@ -23,7 +23,6 @@ public class OutputCardBearbeiten extends WindowContainer {
 		plotBearbeiten.addTrace(outputPanel.traceStep);
 		plotBearbeiten.addSubplot();
 		plotBearbeiten.addTrace(outputPanel.traceRaw);
-		plotBearbeiten.addTrace(outputPanel.tracePreprocessed);
 		outputPanel.traceStep.dataValid = false;
 		outputPanel.traceRaw.dataValid = false;
 		outputPanel.tracePreprocessed.dataValid = false;
@@ -34,8 +33,5 @@ public class OutputCardBearbeiten extends WindowContainer {
 		plotBearbeiten.setSliderPosition(KEY_OFFSET, 0);
 		plotBearbeiten.setSliderPosition(KEY_START, -1000);
 		plotBearbeiten.setSliderPosition(KEY_END, 1000);
-		plotBearbeiten.setSubplot(1);
-		plotBearbeiten.addSlider(Slider.HORIZONTAL,KEY_OFFSET);
-		plotBearbeiten.setSliderPosition(KEY_OFFSET, 0);
 	}
 }

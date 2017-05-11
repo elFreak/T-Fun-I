@@ -5,6 +5,7 @@ import java.awt.CardLayout;
 import javax.swing.JPanel;
 
 import JavaPlot.Trace;
+import model.Model;
 import projectT_Fun_I.GlobalSettings;
 import projectT_Fun_I.Utility;
 import userInterface.Controller;
@@ -85,5 +86,31 @@ public class OutputPanel extends JPanel {
 			cardLayout.show(this, Controller.KEY_VERIFIZIEREN);
 			break;
 		}
+	}
+	
+	public void update(java.util.Observable obs, Object obj) {
+		// Traces Aktualisieren:
+				traceStep.data = ((Model) obs).measurementData.getstep();
+				traceRaw.data = ((Model) obs).measurementData.getRawData();
+				tracePreprocessed.data = ((Model) obs).measurementData.getFinalData();
+				traceSolution.data = ((Model) obs).approximation.stepAnswer;
+
+				if (traceRaw.dataValid == false) {
+
+					traceStep.dataValid = true;
+					traceRaw.dataValid = true;
+					tracePreprocessed.dataValid = true;
+					traceSolution.dataValid = true;
+					cardEinlesen.plotEinlesen.setRangeIdeal();
+					cardBearbeiten.plotBearbeiten.setSubplot(0);
+					cardBearbeiten.plotBearbeiten.setRangeIdeal();
+					cardBearbeiten.plotBearbeiten.setSubplot(1);
+					cardBearbeiten.plotBearbeiten.setRangeIdeal();
+				} else {
+					traceStep.dataValid = true;
+					traceRaw.dataValid = true;
+					tracePreprocessed.dataValid = true;
+					traceSolution.dataValid = true;
+				}
 	}
 }
