@@ -5,7 +5,7 @@ import model.UTFDatatype;
 import projectT_Fun_I.GlobalSettings;
 
 public class StartValueSaver {
-
+	
 	/**
 	 * Fügt dem Speicherfile einen neuen Trace mit der dazuberechneten
 	 * Übertragungsfunktion hinzu.
@@ -16,6 +16,8 @@ public class StartValueSaver {
 	 * @param sigma
 	 * @param messwerte
 	 */
+	
+	
 	public static void addUTF(byte ordnung, UTFDatatype utf, double[][] messwerte) {
 		FilePackageDatatype save = new FilePackageDatatype();
 		double korrKoeff = 0.0;

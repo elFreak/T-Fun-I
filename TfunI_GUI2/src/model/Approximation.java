@@ -43,19 +43,19 @@ public class Approximation extends SwingWorker<Object, Integer> {
 		for (int i = 0; i < time_normiert.length; i++) {
 			System.out.println("" + time_normiert[i]);
 		}
-		// (relativer Threshold, absoluter Threshold)
-		SimplexOptimizer optimizer = new SimplexOptimizer(1e-10, 1e-6);
 
+		SimplexOptimizer optimizer = new SimplexOptimizer(1e-10, 1e-6); // (relativer Threshold,absoluter Threshold)
+																																		
 		PointValuePair optimum = optimizer.optimize(new MaxEval(10000), new ObjectiveFunction(target),
 				GoalType.MINIMIZE,
 				new InitialGuess(getStartingValues(measurementData.getFinalData(),
 						new boolean[] { false, false, false, false, true, false, false, false, false, false })),
-				new NelderMeadSimplex(new double[] { 0.2, 0.2, 0.2, 0.2, 0.2}));
+				new NelderMeadSimplex(new double[] { 0.2, 0.2, 0.2, 0.2, 0.2, 0.2 }));
 
-		SimplexOptimizer optimizer2 = new SimplexOptimizer(1e-15, 1e-16);
+		SimplexOptimizer optimizer2 = new SimplexOptimizer(1e-20, 1e-16);
 		PointValuePair optimum2 = optimizer.optimize(new MaxEval(10000), new ObjectiveFunction(target),
 				GoalType.MINIMIZE, new InitialGuess(optimum.getPoint()),
-				new NelderMeadSimplex(new double[] { 0.2, 0.2, 0.2, 0.2, 0.2 }));
+				new NelderMeadSimplex(new double[] { 0.2, 0.2, 0.2, 0.2, 0.2, 0.2 }));
 
 		// double[] step_approx = target.omega2polstep(4, optimum.getPoint(),
 		// measurementData.getMeanData()[0]);
@@ -64,6 +64,7 @@ public class Approximation extends SwingWorker<Object, Integer> {
 		System.out.println(Arrays.toString(optimum2.getPoint()) + " : " + optimum2.getSecond());
 
 		stepAnswer = new double[][] { time_normiert, target.omega2polstep(optimum2.getPoint(), time_normiert) };
+		//saveFuckOff(stepAnswer);
 
 		model.notifyObservers();
 	}
@@ -108,20 +109,32 @@ public class Approximation extends SwingWorker<Object, Integer> {
 			t_scaled[i] = t_old[i] * Math.pow(10.0, -scalefactor);
 			step_response_scaled_m[0][i] = t_scaled[i];
 		}
-
 		return step_response_scaled_m;
 	}
 
+	private static void storeData(double[][] store) {
+		byte ordnung = 5;
+		UTFDatatype utfDatatype = new UTFDatatype();
+		utfDatatype.zaehler = 0.1;
+		double[] h1 = new double[] { 2.2, 2, 4.2, 1, -1, -1, -1, -1, -1, -1 };
+		double[] h2 = new double[10];
+		utfDatatype.koeffWQ = h1;
+		utfDatatype.sigma = -2.3;
+		double[][] saveIt = new double[2][2500];
+		saveIt = store;
+		StartValueSaver.addUTF(ordnung, utfDatatype, saveIt);
+	}
+
 	private static double[] getStartingValues(double[][] plot, boolean[] ordnung) {
-		double[] startingValues = new double[] { 0.1, 2.3, 2.3, 2.2, 0.5 };
-//		UTFDatatype utfDatatype = new UTFDatatype();
-//		double[] startingValues = new double[5];
-//		utfDatatype = StartValueSaver.getSimilarUTF(plot, ordnung);
-//		startingValues[0] = utfDatatype.zaehler;
-//		for (int i = 1; i < 5; i++) {
-//			startingValues[i] = utfDatatype.koeffWQ[i - 1];
-//		}
-		// startingValues[11]=utfDatatype.sigma;
+		double[] startingValues = new double[] { 0.1, 2.2, 2.0, 4.2, 1.0, -2.3 };
+		// UTFDatatype utfDatatype = new UTFDatatype();
+		// double[] startingValues = new double[5];
+		// utfDatatype = StartValueSaver.getSimilarUTF(plot, ordnung);
+		// startingValues[0] = utfDatatype.zaehler;
+		// for (int i = 1; i < 5; i++) {
+		// startingValues[i] = utfDatatype.koeffWQ[i - 1]/10.0;
+		// }
+		// startingValues[4]=utfDatatype.sigma;
 		return startingValues;
 	}
 
