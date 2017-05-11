@@ -139,11 +139,11 @@ public class MeasurementData {
 	 */
 	public void setLimits(double deadTime, double offset, double tail) {
 		this.deadTime = deadTime;
-		
+
 		this.offset = offset;
-		
+
 		// tail vom hintersten Datenpunkt aus
-		if (tail > meanData[XAXIS][meanData[XAXIS].length-1])
+		if (tail > meanData[XAXIS][meanData[XAXIS].length - 1])
 			this.tail = 0;
 		else
 			this.tail = meanData[XAXIS][meanData[XAXIS].length - 1] - tail;
@@ -155,14 +155,36 @@ public class MeasurementData {
 	}
 
 	/**
-	 * Setzt die jeweiligen Parameter automatisch. Und aktuallisiert die
+	 * Setzt die jeweiligen Parameter automatisch. Und aktualisiert die
 	 * jeweiligen Daten
 	 * 
 	 */
 	public void autoLimits() {
 
-		cutFront(rawData, 20, 0.2);
-		cutTail(rawData, 10, 0.002);
+		// Automatische Erkennung der Totzeit
+//		int n = 50;
+//
+//		double m = meanData[MEASUREMENTS][0];
+//		int frontIndex = 1;
+//		while (Math.abs((y[MEASUREMENTS][frontIndex] - m) / y[MEASUREMENTS][frontIndex]) < q
+//				&& y.length >= frontIndex + n) {
+//			m = 0;
+//			for (int i = 0; i < n; i++) {
+//				m += y[MEASUREMENTS][frontIndex + n];
+//			}
+//			m /= n;
+//			frontIndex++;
+//		}
+//		frontIndex = frontIndex - 1;
+//
+//		// Abschneiden
+//		for (int i = 0; i < y.length - frontIndex; i++) {
+//			y[1][i] = y[1][i + frontIndex];
+//		}
+//		for (int i = 0; i < y.length - frontIndex; i++) {
+//			y[0][i] = y[0][i + frontIndex];
+//		}
+//		cutTail(rawData, 10, 0.002);
 
 		model.notifyObservers();
 	}
@@ -176,26 +198,7 @@ public class MeasurementData {
 	 * @return
 	 */
 	private double[][] cutFront(double y[][], int n, double q) {
-		// Automatische Erkennung
-		double m = meanData[MEASUREMENTS][0];
-		int c = 1;
-		while (Math.abs((y[MEASUREMENTS][c] - m) / y[MEASUREMENTS][c]) < q && y.length >= c + n) {
-			m = 0;
-			for (int i = 0; i < n; i++) {
-				m += y[MEASUREMENTS][c + n];
-			}
-			m /= n;
-			c++;
-		}
-		c = c - 1;
 
-		// Abschneiden
-		for (int i = 0; i < y.length - c; i++) {
-			y[1][i] = y[1][i + c];
-		}
-		for (int i = 0; i < y.length - c; i++) {
-			y[0][i] = y[0][i + c];
-		}
 		return y;
 	}
 
@@ -301,7 +304,7 @@ public class MeasurementData {
 		// finalData aktualisieren
 		finalData = new double[meanData.length][tailIndex - frontIndex + 1];
 		for (int i = 0; i < finalData[XAXIS].length; i++) {
-			finalData[XAXIS][i] = meanData[XAXIS][i + frontIndex]-meanData[XAXIS][frontIndex];
+			finalData[XAXIS][i] = meanData[XAXIS][i + frontIndex] - meanData[XAXIS][frontIndex];
 			finalData[MEASUREMENTS][i] = meanData[MEASUREMENTS][i + frontIndex] - offset;
 		}
 
