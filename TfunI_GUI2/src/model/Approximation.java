@@ -32,7 +32,7 @@ public class Approximation extends SwingWorker<Object, Integer> {
 		// Target target = new
 		// Target(scalingTime(measurementData.getMeanData())[0],
 		// measurementData.getMeanData()[1], 3);
-		Target target = new Target(measurementData.getMeanData()[0], measurementData.getMeanData()[1]);
+		Target target = new Target(measurementData.getFinalData()[0], measurementData.getFinalData()[1]);
 		// for (int i = 0; i < step_soll.length; i++) {
 		// System.out.println(""+step_soll[i]);
 		// }
@@ -54,8 +54,8 @@ public class Approximation extends SwingWorker<Object, Integer> {
 		System.out.println(Arrays.toString(optimum.getPoint()) + " : " + optimum.getSecond());
 		System.out.println(Arrays.toString(optimum2.getPoint()) + " : " + optimum2.getSecond());
 
-		stepAnswer = new double[][] { measurementData.getMeanData()[0],
-				target.omega2polstep(optimum2.getPoint(), measurementData.getMeanData()[0]) };
+		stepAnswer = new double[][] { measurementData.getFinalData()[0],
+				target.omega2polstep(optimum2.getPoint(), measurementData.getFinalData()[0]) };
 				
 		model.notifyObservers();
 	}
