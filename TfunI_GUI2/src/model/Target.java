@@ -9,6 +9,7 @@ public class Target implements MultivariateFunction {
 
 	private double[] t;
 	private double[] step_soll;
+	public double[] error = {};
 
 	public Target(double[] t, double[] step_soll) {
 		this.t = t;
@@ -16,16 +17,11 @@ public class Target implements MultivariateFunction {
 	}
 
 	public double value(double[] variables) {
-		//final double x0 = variables[0];
-		//final double x1 = variables[1];
-		//final double x2 = variables[2];
-		//final double x3 = variables[3];
-		//final double x4 = variables[4];
-		//final double x5 = variables[5];
-		//final double x6 = variables[6];
-		//final double x7 = variables[7];
-		
-		return failuresum(step_soll, omega2polstep(variables, t));
+
+		double error = 0.0;
+		error=failuresum(step_soll, omega2polstep(variables, t));
+		this.error=Matlab.concat(this.error, error/t.length);
+		return error;
 
 	}
 
@@ -33,7 +29,7 @@ public class Target implements MultivariateFunction {
 	// x0=[K wp1 qp1 wp2 qp2 wp3 qp3 sig]    n=odd
 	
 /**
- * Schrittanwort aus wp und qp berechnen.
+ * Schrittanwort aus K, wp und qp berechnen.
  * @param ordnung
  * @param data
  * @param time
@@ -68,7 +64,12 @@ public class Target implements MultivariateFunction {
 		data2 = (double[]) SVTools.step(zaehler1, nenner1, time)[0];
 		return data2;
 	}
-
+/**
+ * Fehlersumme berechnen
+ * @param should
+ * @param is
+ * @return
+ */
 	private static double failuresum(double[] should, double[] is) {
 
 		double failuresum = 0;
