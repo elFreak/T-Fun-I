@@ -12,7 +12,6 @@ import javax.swing.JSplitPane;
 
 import IOCard.InputPanel;
 import IOCard.OutputPanel;
-import model.Model;
 import projectT_Fun_I.GlobalSettings;
 import projectT_Fun_I.Utility;
 
@@ -74,7 +73,7 @@ public class View extends JPanel implements Observer {
 	@Override
 	public void update(java.util.Observable obs, Object obj) {
 
-		
+		outputPanel.update(obs, obj);
 
 		// Update:
 		revalidate();

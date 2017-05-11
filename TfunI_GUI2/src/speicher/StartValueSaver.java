@@ -75,9 +75,12 @@ public class StartValueSaver {
 
 		// Ordnung überprüfen und Korrelationskoeffizient überprüfen
 		for (int i = 0; i < plotpack.length; i++) {
-			if (ordnung[4] == (plotpack[i].ordnung == 5) || ordnung[5] == (plotpack[i].ordnung == 6)
-					|| ordnung[6] == (plotpack[i].ordnung == 7) || ordnung[7] == (plotpack[i].ordnung == 8)
-					|| ordnung[8] == (plotpack[i].ordnung == 9) || ordnung[9] == (plotpack[i].ordnung == 10)) {
+			if ((ordnung[4] == true && true == (plotpack[i].ordnung == 5))
+					|| (ordnung[5] == true && true == (plotpack[i].ordnung == 6))
+					|| (ordnung[6] == true && true == (plotpack[i].ordnung == 7))
+					|| (ordnung[7] == true && true == (plotpack[i].ordnung == 8))
+					|| (ordnung[8] == true && true == (plotpack[i].ordnung == 9))
+					|| (ordnung[9] == true && true == (plotpack[i].ordnung == 10))) {
 				korrKoeffa[i] = Korrelation.korrKoeff(plotn, plotpack[i].doubl);
 
 				// Wenn Korrelationskoeffizient grösser als 0.8, berechnung

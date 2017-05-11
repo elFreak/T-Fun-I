@@ -358,7 +358,12 @@ public class InputCardBearbeiten extends JPanel {
 
 	}
 	
-	public void update(Object obj){
+	/**
+	 * 
+	 * @param obs
+	 * @param obj
+	 */
+	public void update(java.util.Observable obs, Object obj) {
 		
 	}
 
