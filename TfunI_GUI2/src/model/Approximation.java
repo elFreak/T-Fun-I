@@ -33,10 +33,11 @@ public class Approximation extends SwingWorker<Object, Integer> {
 		// Target(scalingTime(measurementData.getMeanData())[0],
 		// measurementData.getMeanData()[1], 3);
 		Target target = new Target(measurementData.getFinalData()[0], measurementData.getFinalData()[1]);
-		// for (int i = 0; i < step_soll.length; i++) {
-		// System.out.println(""+step_soll[i]);
-		// }
-
+		System.out.println(""+measurementData.getFinalData()[0].length);
+		 for (int i = 0; i < measurementData.getFinalData()[0].length; i++) {
+		 System.out.println(""+measurementData.getFinalData()[0][i]);
+		 }
+		 // (relativer Threshold, absoluter Threshold)
 		SimplexOptimizer optimizer = new SimplexOptimizer(1e-10, 1e-6);
 
 		PointValuePair optimum = optimizer.optimize(new MaxEval(10000), new ObjectiveFunction(target),
