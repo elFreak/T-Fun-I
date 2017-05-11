@@ -82,7 +82,7 @@ public class InputCardBearbeiten extends JPanel {
 						sFilter.setValue(tempValue);
 					controller.filterChanged(tempValue);
 				} catch (NumberFormatException exp) {
-					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben");
+					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben",StatusBar.FEHLER);
 				}
 			}
 		});
@@ -180,7 +180,7 @@ public class InputCardBearbeiten extends JPanel {
 					controller.setRange(Double.parseDouble(tfBereichUnten.getText()),
 							Double.parseDouble(tfBereichOben.getText()), Double.parseDouble(tfOffset.getText()));
 				} catch (NumberFormatException exp) {
-					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben");
+					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben",StatusBar.FEHLER);
 				}
 			}
 		});
@@ -217,7 +217,7 @@ public class InputCardBearbeiten extends JPanel {
 					controller.setRange(Double.parseDouble(tfBereichUnten.getText()),
 							Double.parseDouble(tfBereichOben.getText()), Double.parseDouble(tfOffset.getText()));
 				} catch (NumberFormatException exp) {
-					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben");
+					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben",StatusBar.FEHLER);
 				}
 			}
 		});
@@ -254,7 +254,7 @@ public class InputCardBearbeiten extends JPanel {
 					controller.setRange(Double.parseDouble(tfBereichUnten.getText()),
 							Double.parseDouble(tfBereichOben.getText()), Double.parseDouble(tfOffset.getText()));
 				} catch (NumberFormatException exp) {
-					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben");
+					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben",StatusBar.FEHLER);
 				}
 			}
 		});
@@ -303,7 +303,7 @@ public class InputCardBearbeiten extends JPanel {
 					controller.setStep(Double.parseDouble(tfSprungzeit.getText()),
 							Double.parseDouble(tfSprunghöhe.getText()));
 				} catch (NumberFormatException exp) {
-					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben");
+					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben",StatusBar.FEHLER);
 				}
 
 			}
@@ -323,7 +323,7 @@ public class InputCardBearbeiten extends JPanel {
 				controller.setStep(Double.parseDouble(tfSprungzeit.getText()),
 						Double.parseDouble(tfSprunghöhe.getText()));
 				} catch (NumberFormatException exp) {
-					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben");
+					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben",StatusBar.FEHLER);
 				}
 			}
 		});

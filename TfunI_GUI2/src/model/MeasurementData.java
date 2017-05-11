@@ -140,8 +140,8 @@ public class MeasurementData {
 	public void setLimits(double deadTime, double offset, double tail) {
 		this.deadTime = deadTime;
 		this.offset = offset;
-		this.tail = meanData[XAXIS].length - tail; // tail vom hintersten
-													// Datenpunkt aus
+		// tail vom hintersten Datenpunkt aus
+		this.tail = meanData[XAXIS][meanData[XAXIS].length - 1] - tail;
 
 		// finalData aktualisieren
 		updateFinalData();
@@ -285,7 +285,7 @@ public class MeasurementData {
 		// Indexe der Zeiten berechnen
 		for (int i = 0; i < meanData[XAXIS].length; i++) {
 			// Index der Totzeit + stepTime bestimmen
-			if (meanData[XAXIS][i] > stepTime + deadTime) {
+			if (meanData[XAXIS][i] < stepTime + deadTime) {
 				frontIndex++;
 			}
 			// Index des Tails bestimmen
