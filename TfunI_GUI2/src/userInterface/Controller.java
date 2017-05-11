@@ -80,7 +80,7 @@ public class Controller {
 
 			break;
 		case Controller.VERIFIZIEREN:
-			
+			model.approximation.berechne();
 			break;
 		}
 	}

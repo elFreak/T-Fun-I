@@ -1,4 +1,5 @@
 package speicher;
+
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -19,13 +20,24 @@ public class DataFile {
 	public static void setdata(FilePackageDatatype data) {
 
 		String filename = "datafile.bin";
-		
+
 		try {
 			// Datenfluss öffnen
 			// Speichert: Ordnung, zaehler, omegaqs, sigma und messwerte
 			// Datenfluss schliessen
 			FileOutputStream fileos = new FileOutputStream(filename, true);
 			DataOutputStream os = new DataOutputStream(fileos);
+			if (data.utf.zaehler == 0) {
+				data.utf.zaehler = -1;
+			}
+			for (int i = 0; i < 10; i++) {
+				if (data.utf.koeffWQ[i] == 0) {
+					data.utf.koeffWQ[i] = -1;
+				}
+			}
+			if (data.utf.sigma == 0) {
+				data.utf.sigma = -1;
+			}
 
 			os.writeByte(data.ordnung);
 
@@ -61,7 +73,8 @@ public class DataFile {
 		try {
 			// Datenfluss öffnen
 			// Auslesen: Ordnung, zaehler, omegaqs, sigma und messwerte
-			// Ausgelesene Daten werden in ein FilePackageDatatype-Array gespeichert.
+			// Ausgelesene Daten werden in ein FilePackageDatatype-Array
+			// gespeichert.
 			// Datenfluss schliessen
 			FileInputStream fileis = new FileInputStream(filename);
 			DataInputStream is = new DataInputStream(fileis);

@@ -30,7 +30,7 @@ public class ProgramFlow extends JPanel implements ActionListener {
 	private JButton btBerechnen = new JButton(
 			"<html><center> <b>Berechnen</b> <p/> " + "(Übertragungsfunktion)</html>");
 	private JButton btVertifizieren = new JButton(
-			"<html><center><b>Vertifizieren</b> <p/> " + "(Übertragungsfunktion)</html>");
+			"<html><center><b>Verifizieren</b> <p/> " + "(Übertragungsfunktion)</html>");
 
 	// --------------------------------------------------------------------
 	// Initialize:
@@ -79,7 +79,7 @@ public class ProgramFlow extends JPanel implements ActionListener {
 		FontMetrics fm = g2.getFontMetrics();
 		g2.setFont(GlobalSettings.fontText);
 		fm = g2.getFontMetrics();
-		int textWidthMax = (fm.stringWidth(" (Übertragungsfunktion) "));
+		int textWidthMax = (fm.stringWidth(" (ï¿½bertragungsfunktion) "));
 		int textHighMax = 3 * getFont().getSize();
 
 		// Calculate Positions:
