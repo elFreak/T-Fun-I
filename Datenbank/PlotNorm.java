@@ -8,8 +8,9 @@ public class PlotNorm {
 		final int value = 2500;
 		double plotn[]=new double[value];
 		
+		
 		//Anzahl Messwerte, durch verdoppeln einzelner Messwerte, auf den Wert value setzen.
-		if (plot[1].length <value & (value/2)<=plot.length) {
+		if (plot[1].length <value && (value/2)<=plot[1].length) {
 			
 			int k[] = new int[value-plot[1].length];
 			
