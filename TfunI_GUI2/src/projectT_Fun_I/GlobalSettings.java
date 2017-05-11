@@ -18,6 +18,8 @@ public class GlobalSettings {
 
 	public static Color colorText = new Color(40, 40, 40);
 	public static Color colorTextGrey = new Color(75, 75, 75);
+	public static Color colorTextInfo = colorTextGrey;
+	public static Color colorTextFehler = new Color(240, 20, 20);
 	
 	public static Color colorGridBright = new Color(250, 250, 250);
 	public static Color colorGridDark = new Color(70,70,70);
