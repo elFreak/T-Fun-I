@@ -35,6 +35,8 @@ public class GlobalSettings {
 	public static Color colorSliderViolet = new Color(204, 153, 255);
 	
 	public static int traceThinkness = 4;
+	
+	public static double korrKoeffMin = 0.9;
 
 	public static void init() {
 		// Fonts:
