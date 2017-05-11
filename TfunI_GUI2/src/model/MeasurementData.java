@@ -141,7 +141,7 @@ public class MeasurementData {
 		this.deadTime = deadTime;
 		this.offset = offset;
 		// tail vom hintersten Datenpunkt aus
-		this.tail = /*meanData[XAXIS][meanData[XAXIS].length - 1] -*/ tail;
+		this.tail = meanData[XAXIS][meanData[XAXIS].length - 1] - tail;
 
 		// finalData aktualisieren
 		updateFinalData();
