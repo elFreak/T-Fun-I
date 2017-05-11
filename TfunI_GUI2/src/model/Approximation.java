@@ -13,6 +13,7 @@ import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.NelderMeadSimplex;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizer;
 
+import speicher.StartValueSaver;
 import userInterface.StatusBar;
 
 public class Approximation extends SwingWorker<Object, Integer> {
@@ -32,22 +33,24 @@ public class Approximation extends SwingWorker<Object, Integer> {
 		// Target target = new
 		// Target(scalingTime(measurementData.getMeanData())[0],
 		// measurementData.getMeanData()[1], 3);
-		Target target = new Target(measurementData.getFinalData()[0], measurementData.getFinalData()[1]);
-		System.out.println(""+measurementData.getFinalData()[0].length);
-		 for (int i = 0; i < measurementData.getFinalData()[0].length; i++) {
-		 System.out.println(""+measurementData.getFinalData()[0][i]);
-		 }
-		 // (relativer Threshold, absoluter Threshold)
+
+		double[] time_normiert = scalingTime(measurementData.getFinalData())[0];
+
+		Target target = new Target(time_normiert, measurementData.getFinalData()[1]);
+		System.out.println("" + time_normiert.length);
+		for (int i = 0; i < time_normiert.length; i++) {
+			System.out.println("" + time_normiert[i]);
+		}
+		// (relativer Threshold, absoluter Threshold)
 		SimplexOptimizer optimizer = new SimplexOptimizer(1e-10, 1e-6);
 
-		PointValuePair optimum = optimizer.optimize(new MaxEval(10000), new ObjectiveFunction(target),
-				GoalType.MINIMIZE, new InitialGuess(getStartingValues()),
-				new NelderMeadSimplex(new double[] { 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2 }));
+		PointValuePair optimum = optimizer.optimize(new MaxEval(10000), new ObjectiveFunction(target), GoalType.MINIMIZE,
+				new InitialGuess(getStartingValues()), new NelderMeadSimplex(new double[] { 0.2, 0.2, 0.2, 0.2, 0.2 }));
 
 		SimplexOptimizer optimizer2 = new SimplexOptimizer(1e-15, 1e-16);
 		PointValuePair optimum2 = optimizer.optimize(new MaxEval(10000), new ObjectiveFunction(target),
 				GoalType.MINIMIZE, new InitialGuess(optimum.getPoint()),
-				new NelderMeadSimplex(new double[] { 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2 }));
+				new NelderMeadSimplex(new double[] { 0.2, 0.2, 0.2, 0.2, 0.2 }));
 
 		// double[] step_approx = target.omega2polstep(4, optimum.getPoint(),
 		// measurementData.getMeanData()[0]);
@@ -55,9 +58,8 @@ public class Approximation extends SwingWorker<Object, Integer> {
 		System.out.println(Arrays.toString(optimum.getPoint()) + " : " + optimum.getSecond());
 		System.out.println(Arrays.toString(optimum2.getPoint()) + " : " + optimum2.getSecond());
 
-		stepAnswer = new double[][] { measurementData.getFinalData()[0],
-				target.omega2polstep(optimum2.getPoint(), measurementData.getFinalData()[0]) };
-				
+		stepAnswer = new double[][] { time_normiert, target.omega2polstep(optimum2.getPoint(), time_normiert) };
+
 		model.notifyObservers();
 	}
 
@@ -82,13 +84,13 @@ public class Approximation extends SwingWorker<Object, Integer> {
 	@Override
 	protected void process(List<Integer> zaeler) {
 		super.process(zaeler);
-		StatusBar.showStatus("Zähler: " + zaeler.get(0),StatusBar.INFO);
+		StatusBar.showStatus("Zähler: " + zaeler.get(0), StatusBar.INFO);
 	}
 
 	@Override
 	public void done() {
 		super.done();
-		StatusBar.showStatus("Fertig ",StatusBar.INFO);
+		StatusBar.showStatus("Fertig ", StatusBar.INFO);
 	}
 
 	private static double[][] scalingTime(double[][] step_response_m) {
@@ -106,29 +108,8 @@ public class Approximation extends SwingWorker<Object, Integer> {
 	}
 
 	private static double[] getStartingValues() {
-		double[] startingValues = new double[] { 0.8, 22.0, 4.1, 6.7, 1.5, 20.5, 20.0, 5.0, 2.0, 10.0, 0.5 };
+		double[] startingValues = new double[] { 0.1, 2.3, 2.3, 2.2, 0.5 };
 		return startingValues;
 	}
 
-	private static double[] removeOffset(double[] a) {
-		double[] b = new double[a.length];
-		for (int i = 0; i < b.length; i++) {
-			b[i] = a[i] - a[0];
-		}
-		return b;
-	}
-
-	private static double[][] removeVorsprungzeit(double[] t, double[] x, double[] y) {
-
-		int index = 2;
-		while (x[index - 1] <= (index - 1)) {
-			index++;
-		}
-		double[] a = new double[t.length - index];
-		for (int i = index - 1; i < a.length; i++) {
-			a[i] = t[i] - t[index];
-		}
-
-		return null;
-	}
 }
