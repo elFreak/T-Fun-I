@@ -24,7 +24,7 @@ public class MeasurementData {
 
 	private double deadTime = 0;
 	private double offset = 0;
-	private double tail = 0;
+	private double tail;
 	private double stepTime = 0;
 	private double stepHeight = 1;
 	private double stepData[][];
@@ -139,9 +139,14 @@ public class MeasurementData {
 	 */
 	public void setLimits(double deadTime, double offset, double tail) {
 		this.deadTime = deadTime;
+		
 		this.offset = offset;
+		
 		// tail vom hintersten Datenpunkt aus
-		this.tail = meanData[XAXIS][meanData[XAXIS].length - 1] - tail;
+		if (tail > meanData[XAXIS][meanData[XAXIS].length-1])
+			this.tail = 0;
+		else
+			this.tail = /*meanData[XAXIS][meanData[XAXIS].length - 1] -*/ tail;
 
 		// finalData aktualisieren
 		updateFinalData();
