@@ -301,7 +301,7 @@ public class MeasurementData {
 		// finalData aktualisieren
 		finalData = new double[meanData.length][tailIndex - frontIndex + 1];
 		for (int i = 0; i < finalData[XAXIS].length; i++) {
-			finalData[XAXIS][i] = meanData[XAXIS][i + frontIndex];
+			finalData[XAXIS][i] = meanData[XAXIS][i + frontIndex]-meanData[XAXIS][frontIndex];
 			finalData[MEASUREMENTS][i] = meanData[MEASUREMENTS][i + frontIndex] - offset;
 		}
 
