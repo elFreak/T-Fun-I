@@ -28,9 +28,9 @@ public class ProgramFlow extends JPanel implements ActionListener {
 	private JButton btEinlesen = new JButton("<html><center> <b>Einlesen</b> <p/> " + "(Messwerte)</html>");
 	private JButton btBearbeiten = new JButton("<html><center> <b>Bearbeiten</b> <p/> " + "(Messwerte)</html>");
 	private JButton btBerechnen = new JButton(
-			"<html><center> <b>Berechnen</b> <p/> " + "(ï¿½bertragungsfunktion)</html>");
+			"<html><center> <b>Berechnen</b> <p/> " + "(Übertragungsfunktion)</html>");
 	private JButton btVertifizieren = new JButton(
-			"<html><center><b>Verifizieren</b> <p/> " + "(ï¿½bertragungsfunktion)</html>");
+			"<html><center><b>Verifizieren</b> <p/> " + "(Übertragungsfunktion)</html>");
 
 	// --------------------------------------------------------------------
 	// Initialize:
