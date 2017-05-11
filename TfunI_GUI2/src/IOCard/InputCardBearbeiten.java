@@ -20,6 +20,7 @@ import javax.swing.event.ChangeListener;
 import projectT_Fun_I.GlobalSettings;
 import userInterface.Controller;
 import userInterface.MyBorderFactory;
+import userInterface.StatusBar;
 
 /**
  * 
@@ -62,23 +63,27 @@ public class InputCardBearbeiten extends JPanel {
 		// Filtern
 		// -----------------------------------------------------
 
-		// Anonymer ActionListener für Textfeld Filter bei Enter
+		// Anonymer ActionListener für Textfeld Filtern bei Enter
 		tfFilter.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				int tempValue = (int) Double.parseDouble(tfFilter.getText());
-				if (tempValue < 0) {
-					tempValue = 0;
+				try {
+					int tempValue = (int) Double.parseDouble(tfFilter.getText());
+					if (tempValue < 0) {
+						tempValue = 0;
+					}
+					tfFilter.setText(String.valueOf(tempValue));
+					if (tempValue > sFilter.getMaximum()) {
+						ChangeListener[] changeListener = sFilter.getChangeListeners();
+						sFilter.removeChangeListener(changeListener[0]);
+						sFilter.setValue(tempValue);
+						sFilter.addChangeListener(changeListener[0]);
+					} else
+						sFilter.setValue(tempValue);
+					controller.filterChanged(tempValue);
+				} catch (NumberFormatException exp) {
+					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben");
 				}
-				tfFilter.setText(String.valueOf(tempValue));
-				if (tempValue > sFilter.getMaximum()) {
-					ChangeListener[] changeListener = sFilter.getChangeListeners();
-					sFilter.removeChangeListener(changeListener[0]);
-					sFilter.setValue(tempValue);
-					sFilter.addChangeListener(changeListener[0]);
-				} else
-					sFilter.setValue(tempValue);
-				controller.filterChanged(tempValue);
 			}
 		});
 
@@ -106,10 +111,13 @@ public class InputCardBearbeiten extends JPanel {
 
 		// Panel Filtern Konfigurieren
 
-		// Anonymer MouseWheelListener für Textfeld Filtern
+		// Anonymer MouseWheelListener für tfFiltern
 		panelFiltern.addMouseWheelListener(new MouseWheelListener() {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
+				if(tfFilter.getText().isEmpty())
+					tfFilter.setText("0");
+				
 				int tempValue = (int) Double.parseDouble(tfFilter.getText());
 				tempValue += (int) (e.getWheelRotation() * 1);
 				if (tempValue < 0) {
@@ -122,11 +130,11 @@ public class InputCardBearbeiten extends JPanel {
 					sFilter.setValue(tempValue);
 					sFilter.addChangeListener(changeListener[0]);
 				} else
-					sFilter.setValue(tempValue); 
+					sFilter.setValue(tempValue);
 				controller.filterChanged(tempValue);
 			}
 		});
-		
+
 		panelFiltern.setBackground(GlobalSettings.colorBackground);
 		panelFiltern.setBorder(MyBorderFactory.createMyBorder("Mittelwertfilter"));
 
@@ -144,6 +152,9 @@ public class InputCardBearbeiten extends JPanel {
 		tfOffset.addMouseWheelListener(new MouseWheelListener() {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
+				if(tfOffset.getText().isEmpty())
+					tfOffset.setText("0");
+
 				double tempValue = Double.parseDouble(tfOffset.getText());
 				tempValue += (e.getWheelRotation() * (0.05 * tempValue + 0.05));
 				if (tempValue < 0) {
@@ -159,14 +170,18 @@ public class InputCardBearbeiten extends JPanel {
 		tfOffset.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				double tempValue = Double.parseDouble(tfOffset.getText());
-				if (tempValue < 0) {
-					tempValue = 0;
-					tfOffset.setText("" + tempValue);
-				}
+				try {
+					double tempValue = Double.parseDouble(tfOffset.getText());
+					if (tempValue < 0) {
+						tempValue = 0;
+						tfOffset.setText("" + tempValue);
+					}
 
-				controller.setRange(Double.parseDouble(tfBereichUnten.getText()),
-						Double.parseDouble(tfBereichOben.getText()), Double.parseDouble(tfOffset.getText()));
+					controller.setRange(Double.parseDouble(tfBereichUnten.getText()),
+							Double.parseDouble(tfBereichOben.getText()), Double.parseDouble(tfOffset.getText()));
+				} catch (NumberFormatException exp) {
+					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben");
+				}
 			}
 		});
 
@@ -174,6 +189,9 @@ public class InputCardBearbeiten extends JPanel {
 		tfBereichUnten.addMouseWheelListener(new MouseWheelListener() {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
+				if(tfBereichUnten.getText().isEmpty())
+					tfBereichUnten.setText("0");
+
 				double tempValue = Double.parseDouble(tfBereichUnten.getText());
 				tempValue += (e.getWheelRotation() * (0.05 * tempValue + 0.05));
 				if (tempValue < 0) {
@@ -189,14 +207,18 @@ public class InputCardBearbeiten extends JPanel {
 		tfBereichUnten.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				double tempValue = Double.parseDouble(tfBereichUnten.getText());
-				if (tempValue < 0) {
-					tempValue = 0;
-					tfBereichUnten.setText("" + tempValue);
-				}
+				try {
+					double tempValue = Double.parseDouble(tfBereichUnten.getText());
+					if (tempValue < 0) {
+						tempValue = 0;
+						tfBereichUnten.setText("" + tempValue);
+					}
 
-				controller.setRange(Double.parseDouble(tfBereichUnten.getText()),
-						Double.parseDouble(tfBereichOben.getText()), Double.parseDouble(tfOffset.getText()));
+					controller.setRange(Double.parseDouble(tfBereichUnten.getText()),
+							Double.parseDouble(tfBereichOben.getText()), Double.parseDouble(tfOffset.getText()));
+				} catch (NumberFormatException exp) {
+					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben");
+				}
 			}
 		});
 
@@ -204,6 +226,9 @@ public class InputCardBearbeiten extends JPanel {
 		tfBereichOben.addMouseWheelListener(new MouseWheelListener() {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
+				if(tfBereichOben.getText().isEmpty())
+					tfBereichOben.setText("0");
+
 				double tempValue = Double.parseDouble(tfBereichOben.getText());
 				tempValue += (e.getWheelRotation() * (0.05 * tempValue + 0.05));
 				if (tempValue < 0) {
@@ -219,14 +244,18 @@ public class InputCardBearbeiten extends JPanel {
 		tfBereichOben.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				double tempValue = Double.parseDouble(tfBereichOben.getText());
-				if (tempValue < 0) {
-					tempValue = 0;
-					tfBereichOben.setText("" + tempValue);
-				}
+				try {
+					double tempValue = Double.parseDouble(tfBereichOben.getText());
+					if (tempValue < 0) {
+						tempValue = 0;
+						tfBereichOben.setText("" + tempValue);
+					}
 
-				controller.setRange(Double.parseDouble(tfBereichUnten.getText()),
-						Double.parseDouble(tfBereichOben.getText()), Double.parseDouble(tfOffset.getText()));
+					controller.setRange(Double.parseDouble(tfBereichUnten.getText()),
+							Double.parseDouble(tfBereichOben.getText()), Double.parseDouble(tfOffset.getText()));
+				} catch (NumberFormatException exp) {
+					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben");
+				}
 			}
 		});
 
@@ -241,7 +270,7 @@ public class InputCardBearbeiten extends JPanel {
 		panelRahmen.add(new JLabel("V"), new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 
-		panelRahmen.add(new Label("Beginn:"), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+		panelRahmen.add(new Label("Totzeit:"), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 		panelRahmen.add(tfBereichOben, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 20, 0));
@@ -260,6 +289,45 @@ public class InputCardBearbeiten extends JPanel {
 
 		// Sprung
 		// --------------------------------------------------------
+		// Anonymer ActionListener für Textfeld bei Enter
+		tfSprungzeit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					double tempValue = Double.parseDouble(tfBereichOben.getText());
+					if (tempValue < 0) {
+						tempValue = 0;
+						tfSprungzeit.setText("" + tempValue);
+					}
+
+					controller.setStep(Double.parseDouble(tfSprungzeit.getText()),
+							Double.parseDouble(tfSprunghöhe.getText()));
+				} catch (NumberFormatException exp) {
+					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben");
+				}
+
+			}
+		});
+
+		// Anonymer ActionListener für Textfeld bei Enter
+		tfSprunghöhe.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try{
+				double tempValue = Double.parseDouble(tfSprunghöhe.getText());
+				if (tempValue < 0) {
+					tempValue = 0;
+					tfSprunghöhe.setText("" + tempValue);
+				}
+
+				controller.setStep(Double.parseDouble(tfSprungzeit.getText()),
+						Double.parseDouble(tfSprunghöhe.getText()));
+				} catch (NumberFormatException exp) {
+					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben");
+				}
+			}
+		});
+
 		// Panel Sprung konfigurieren
 		panelSprung.setBackground(GlobalSettings.colorBackground);
 		panelSprung.setBorder(MyBorderFactory.createMyBorder("Sprung"));

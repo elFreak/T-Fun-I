@@ -93,7 +93,12 @@ public class Controller {
 		model.measurementData.setMovingMean(n);
 	}
 	
-	public void setRange(double start, double end, double offset) {
-		model.measurementData.setLimits(start, offset, end);
+	public void setRange(double deadTime, double end, double offset) {
+		model.measurementData.setLimits(deadTime, offset, end);
+	}
+	
+	public void setStep(double stepTime, double stepHeight){
+		model.measurementData.setStepHeight(stepHeight);
+		model.measurementData.setStepTime(stepTime);
 	}
 }
