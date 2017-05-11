@@ -11,9 +11,6 @@ public class Target implements MultivariateFunction {
 	private double[] step_soll;
 	private int ord;
 
-	//Approximation approximation;
-	//ApproximationSettings approximationsettings = new ApproximationSettings();
-
 	public Target(double[] t, double[] step_soll, int ord) {
 		this.t = t;
 		this.step_soll = step_soll;
@@ -30,13 +27,20 @@ public class Target implements MultivariateFunction {
 		//final double x6 = variables[6];
 		//final double x7 = variables[7];
 		
-
 		return failuresum(step_soll, omega2polstep(ord, variables, t));
 
 	}
 
 	//x0=[K wp1 qp1 wp2 qp2 wp3 qp3]        n=even
 	// x0=[K wp1 qp1 wp2 qp2 wp3 qp3 sig]    n=odd
+	
+/**
+ * Schrittanwort aus wp und qp berechnen.
+ * @param ordnung
+ * @param data
+ * @param time
+ * @return
+ */
 
 	public static double[] omega2polstep(int ordnung, double[] data, double[] time) {
 		double[] zaehler1 = new double[1];
@@ -73,8 +77,8 @@ public class Target implements MultivariateFunction {
 		for (int i = 0; i < is.length; i++) {
 			failuresum = failuresum + Math.pow(should[i] - is[i], 2);
 		}
+		System.out.println(""+failuresum);
 
-		//return failuresum/is[is.length-1];
 		return failuresum;
 	}
 }
