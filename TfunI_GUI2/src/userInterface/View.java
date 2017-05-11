@@ -73,8 +73,9 @@ public class View extends JPanel implements Observer {
 	@Override
 	public void update(java.util.Observable obs, Object obj) {
 
+		inputPanel.update(obs, obj);
 		outputPanel.update(obs, obj);
-
+		
 		// Update:
 		revalidate();
 		repaint();

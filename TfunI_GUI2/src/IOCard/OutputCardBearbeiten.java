@@ -2,6 +2,7 @@ package IOCard;
 
 import JavaPlot.Plot;
 import JavaPlot.Slider;
+import model.Model;
 import userInterface.Controller;
 import userInterface.WindowContainer;
 
@@ -32,5 +33,12 @@ public class OutputCardBearbeiten extends WindowContainer {
 		plotBearbeiten.setSliderPosition(KEY_OFFSET, 0);
 		plotBearbeiten.setSliderPosition(KEY_START, -1000);
 		plotBearbeiten.setSliderPosition(KEY_END, 1000);
+	}
+	
+	
+	public void update(java.util.Observable obs, Object obj) {
+		plotBearbeiten.setSliderPosition(KEY_OFFSET, ((Model) obs).measurementData.getOffset());
+		plotBearbeiten.setSliderPosition(KEY_START, ((Model) obs).measurementData.getDeadTime());
+		plotBearbeiten.setSliderPosition(KEY_END, ((Model) obs).measurementData.getTail());
 	}
 }

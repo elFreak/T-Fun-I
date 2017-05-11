@@ -289,7 +289,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 		Polygon polygon;
 		if (mouseIsPressed) {
 			g2.setColor(zoomFrameColor);
-			g2.setStroke(new BasicStroke((int)(zoomFrameThickness*1.5)));
+			g2.setStroke(new BasicStroke((int) (zoomFrameThickness * 1.5)));
 			polygon = new Polygon();
 			polygon.addPoint((int) zoomTopLeft[PIXEL][X], (int) zoomTopLeft[PIXEL][Y]);
 			polygon.addPoint((int) zoomTopLeft[PIXEL][X], (int) zoomDownRight[PIXEL][Y]);
@@ -298,7 +298,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			g2.drawPolygon(polygon);
 
 			g2.setColor(zoomFrameColor);
-			g2.setStroke(new BasicStroke(zoomFrameThickness/2));
+			g2.setStroke(new BasicStroke(zoomFrameThickness / 2));
 			g2.draw(new Line2D.Float((int) zoomDownRight[PIXEL][X], (int) zoomDownRight[PIXEL][Y],
 					(int) zoomDownRight[PIXEL][X] + width, (int) zoomDownRight[PIXEL][Y]));
 			g2.draw(new Line2D.Float((int) zoomDownRight[PIXEL][X], (int) zoomDownRight[PIXEL][Y],
@@ -797,6 +797,17 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	// --------------------------------------------------------------------
 	// Set the ideal range of the axes:
 	public void setRangeIdeal() {
+
+		int zaehler = 0;
+		for (int i = 0; i < trace.length; i++) {
+			if (trace[i].dataValid == true) {
+				zaehler++;
+			}
+		}
+		if(zaehler==0) {
+			return;
+		}
+
 		double xMin = 0;
 		double xMax = 100;
 		double y1Min = 0;

@@ -5,21 +5,34 @@ public class Numbers {
 	public double number;
 	public String unit;
 
-	public void Number(double number, String unit, int digits) {
-		int factor = (int) (((int) Math.log10(number)) / 3) * 3;
-		number *= Math.log10(-factor);
-		if (number >= 100) {
-			number = Math.floor(number * 1) / 1;
-		}
-		if (number >= 10) {
-			number = Math.floor(number * 10) / 10;
-		}
-		if (number >= 1) {
-			number = Math.floor(number * 100) / 100;
-		}
+	public Numbers(double number) {
+		int factor=0;
+		if (number == 0) {
+			number = 0;
+		} else {
+			boolean negative = false;
+			if(number<0){
+				negative = true;
+				number*=-1;
+			}
+			factor = (int)(Math.floor(Math.floor(Math.log10(number))/3)*3);
+			number *= Math.pow(10,-factor);
+			if (number >= 100) {
+				number = Math.floor(number * 1) / 1;
+			}
+			if (number >= 10) {
+				number = Math.floor(number * 10) / 10;
+			}
+			if (number >= 1) {
+				number = Math.floor(number * 100) / 100;
+			}
+			if(negative == true){
+				number*=-1;
+			}
 
-		unit = ("" + getPrefix(factor) + unit);
-
+		}
+		this.number=number;
+		unit = getPrefix(factor);
 	}
 
 	// --------------------------------------------------------------------
@@ -28,31 +41,31 @@ public class Numbers {
 		String k = "";
 		switch (potency) {
 		case -12:
-			k = "p";
+			k = "e-12";
 			break;
 		case -9:
-			k = "n";
+			k = "e-9";
 			break;
 		case -6:
-			k = "u";
+			k = "e-6";
 			break;
 		case -3:
-			k = "m";
+			k = "e-3";
 			break;
 		case 0:
 			k = "";
 			break;
 		case 3:
-			k = "k";
+			k = "e3";
 			break;
 		case 6:
-			k = "M";
+			k = "e6";
 			break;
 		case 9:
-			k = "G";
+			k = "e9";
 			break;
 		case 12:
-			k = "T";
+			k = "e12";
 			break;
 		}
 		return k;

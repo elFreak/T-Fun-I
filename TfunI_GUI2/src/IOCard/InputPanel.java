@@ -80,4 +80,8 @@ public class InputPanel extends JPanel {
 			break;
 		}
 	}
+	
+	public void update(java.util.Observable obs, Object obj) {
+		inputCardBearbeiten.update(obs, obj);
+	}
 }
