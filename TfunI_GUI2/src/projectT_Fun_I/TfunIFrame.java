@@ -125,7 +125,7 @@ public class TfunIFrame extends JFrame {
 				ImageIcon imageIcon = new ImageIcon(getClass().getClassLoader().getResource("bilder/logo2.png"));
 				frame.setIconImage(imageIcon.getImage());
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.setTitle("Transfer Function Identifier");
+				frame.setTitle("TfunI - Transfer Function Identifier");
 				frame.init();
 				frame.setVisible(true);
 			}

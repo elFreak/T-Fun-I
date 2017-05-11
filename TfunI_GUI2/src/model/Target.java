@@ -9,12 +9,10 @@ public class Target implements MultivariateFunction {
 
 	private double[] t;
 	private double[] step_soll;
-	private int ord;
 
-	public Target(double[] t, double[] step_soll, int ord) {
+	public Target(double[] t, double[] step_soll) {
 		this.t = t;
 		this.step_soll = step_soll;
-		this.ord = ord;
 	}
 
 	public double value(double[] variables) {
@@ -27,7 +25,7 @@ public class Target implements MultivariateFunction {
 		//final double x6 = variables[6];
 		//final double x7 = variables[7];
 		
-		return failuresum(step_soll, omega2polstep(ord, variables, t));
+		return failuresum(step_soll, omega2polstep(variables, t));
 
 	}
 
@@ -42,8 +40,9 @@ public class Target implements MultivariateFunction {
  * @return
  */
 
-	public static double[] omega2polstep(int ordnung, double[] data, double[] time) {
+	public static double[] omega2polstep(double[] data, double[] time) {
 		double[] zaehler1 = new double[1];
+		int ordnung = data.length-1;
 		double[] nenner1 = new double[ordnung + 1];
 		double[] nenner2 = new double[ordnung + 1];
 		double[] data2 = new double[time.length];
