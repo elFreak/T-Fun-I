@@ -1,5 +1,7 @@
 package model;
 
+import sun.security.util.Length;
+
 /**
  * 
  * @author Marc de Bever
@@ -139,7 +141,7 @@ public class MeasurementData {
 	public void setLimits(double deadTime, double offset, double tail) {
 		this.deadTime = deadTime;
 		this.offset = offset;
-		this.tail = tail;
+		this.tail = meanData[XAXIS].length - tail; // tail vom hintersten Datenpunkt aus
 
 		// finalData aktualisieren
 		updateFinalData();
@@ -230,7 +232,7 @@ public class MeasurementData {
 	public void setStepTime(double stepTime) {
 		this.stepTime = stepTime;
 
-		// stepData aktuallisieren
+		// stepData aktualisieren
 		for (int i = 0; i < rawData[XAXIS].length; i++) {
 			if (rawData[XAXIS][i] < stepTime) {
 				stepData[MEASUREMENTS][i] = 0;
@@ -250,7 +252,7 @@ public class MeasurementData {
 	public void setStepHeight(double stepHeight) {
 		this.stepHeight = stepHeight;
 
-		// stepData aktuallisieren
+		// stepData aktualisieren
 		for (int i = 0; i < stepData[MEASUREMENTS].length; i++) {
 			if (stepData[MEASUREMENTS][i] != 0) {
 				stepData[MEASUREMENTS][i] = stepHeight;
@@ -278,6 +280,25 @@ public class MeasurementData {
 	 * Aktualisiert finalData aus den gemittelten Daten und dem Rahmen.
 	 */
 	private void updateFinalData() {
+		int frontIndex = 0;
+		int tailIndex = 0;
+		// Indexe der Zeiten berechnen
+		for (int i = 0; i < meanData[XAXIS].length; i++) {
+			// Index der Totzeit + stepTime bestimmen
+			if (meanData[XAXIS][i] > stepTime + deadTime) {
+				frontIndex++;
+			}
+			// Index des Tails bestimmen
+			if (meanData[XAXIS][i] < meanData[XAXIS].length - tail) {
+				tailIndex++;
+			}
+		}
+		//finalData aktualisieren
+		finalData = new double[meanData.length][tailIndex - frontIndex + 1];
+		for (int i = 0; i < meanData[XAXIS].length; i++) {
+			finalData[XAXIS][i] = meanData[XAXIS][i + frontIndex];
+			finalData[MEASUREMENTS][i] = meanData[MEASUREMENTS][i + frontIndex] - offset;
+		}
 
 	}
 	// -------------------------------------------------------------------------------------------------------
@@ -390,6 +411,5 @@ public class MeasurementData {
 		return stepHeight;
 	}
 	// -------------------------------------------------------------------------------------------------------
-
 
 }
