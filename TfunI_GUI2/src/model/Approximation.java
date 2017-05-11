@@ -81,13 +81,13 @@ public class Approximation extends SwingWorker<Object, Integer> {
 	@Override
 	protected void process(List<Integer> zaeler) {
 		super.process(zaeler);
-		StatusBar.showStatus("Zähler: " + zaeler.get(0));
+		StatusBar.showStatus("Zähler: " + zaeler.get(0),StatusBar.INFO);
 	}
 
 	@Override
 	public void done() {
 		super.done();
-		StatusBar.showStatus("Fertig ");
+		StatusBar.showStatus("Fertig ",StatusBar.INFO);
 	}
 
 	private static double[][] scalingTime(double[][] step_response_m) {
