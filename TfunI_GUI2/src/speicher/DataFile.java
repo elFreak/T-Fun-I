@@ -9,6 +9,48 @@ import java.io.IOException;
 
 public class DataFile {
 
+	public static void createdatafile() {
+		FilePackageDatatype[] ones = new FilePackageDatatype[6];
+		for (int i = 0; i < 6; i++) {
+			ones[i] = new FilePackageDatatype();
+		}
+
+		for (int i = 5; i < 11; i++) {
+			ones[i - 5].ordnung = (byte) i;
+			ones[i - 5].utf.zaehler = 1;
+			ones[i - 5].utf.koeffWQ = new double[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+			ones[i - 5].utf.sigma = 1;
+
+			for (int j = 0; j < 2500; j++) {
+				ones[i - 5].doubl[j] = 1;
+			}
+		}
+		FileOutputStream fileos;
+		try {
+			fileos = new FileOutputStream("database.tiffany", true);
+			DataOutputStream os = new DataOutputStream(fileos);
+
+			for (int j = 0; j < 6; j++) {
+				os.writeByte(ones[j].ordnung);
+				os.writeDouble(ones[j].utf.zaehler);
+				for (int i = 0; i < 10; i++) {
+					os.writeDouble(ones[j].utf.koeffWQ[i]);
+				}
+				os.writeDouble(ones[j].utf.sigma);
+				for (int i = 0; i < 2500; i++) {
+					os.writeDouble(ones[j].doubl[i]);
+				}
+			}
+			os.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	// Daten in die Datei datafile speichern. Diese wird im ProjektOrdner
 	// erstellt.
 	public static void setdata(FilePackageDatatype data) {

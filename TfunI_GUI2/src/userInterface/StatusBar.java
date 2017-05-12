@@ -77,7 +77,7 @@ public class StatusBar extends JPanel implements ActionListener {
 	public static void showStatus(String text, int type) {
 		if (type == INFO) {
 			try {
-				document.insertString(0, " " + text + "\n", styleInfo);
+				document.insertString(0, "Info:  " + text + "\n", styleInfo);
 			} catch (Exception e) {
 			}
 		}
