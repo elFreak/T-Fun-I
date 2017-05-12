@@ -164,13 +164,14 @@ public class MeasurementData {
 	 * 
 	 */
 	public void autoLimits() {
+		int n = 50;
+		int frontIndex = 0;
+		int tailIndex = 0;
+		double q = 0.2;
+		double m = meanData[MEASUREMENTS][0];
 
 		// Automatische Erkennung der Totzeit
-		int n = 50;
-		int frontIndex = 1;
-		double q = 0.2;
-
-		double m = meanData[MEASUREMENTS][0];
+		//-------------------------------------------------------------------------------------------------------
 		while (Math.abs((meanData[MEASUREMENTS][frontIndex] - m) / meanData[MEASUREMENTS][frontIndex]) < q
 				&& meanData.length >= frontIndex + n) {
 			m = 0;
@@ -180,62 +181,60 @@ public class MeasurementData {
 			m /= n;
 			frontIndex++;
 		}
-		frontIndex = frontIndex - 1;
+//		frontIndex = frontIndex - 1;
 
-		// Abschneiden
-		for (int i = 0; i < meanData.length - frontIndex; i++) {
-			meanData[1][i] = meanData[1][i + frontIndex];
+//		// Abschneiden
+//		for (int i = 0; i < meanData.length - frontIndex; i++) {
+//			meanData[1][i] = meanData[1][i + frontIndex];
+//		}
+//		for (int i = 0; i < meanData.length - frontIndex; i++) {
+//			meanData[0][i] = meanData[0][i + frontIndex];
+//		}
+		
+		
+		// Automatische Erkennung des Endes
+		//-------------------------------------------------------------------------------------------------------
+		while (Math.abs((meanData[MEASUREMENTS][meanData.length - 1 - tailIndex] - m) / meanData[MEASUREMENTS][meanData.length - 1 - tailIndex]) < q
+				&& meanData.length >= tailIndex + n) {
+			m = 0;
+			for (int i = 0; i < n; i++) {
+				m += meanData[MEASUREMENTS][meanData.length - 1 - tailIndex - n];
+			}
+			m /= n;
+			tailIndex++;
 		}
-		for (int i = 0; i < meanData.length - frontIndex; i++) {
-			meanData[0][i] = meanData[0][i + frontIndex];
+//		tailIndex = tailIndex - 1;
+		
+//		// Abschneiden
+//		for (int i = 0; i < meanData.length - tailIndex; i++) {
+//			meanData[1][i] = meanData[1][i];
+//		}
+//		for (int i = 0; i < meanData.length - tailIndex; i++) {
+//			meanData[0][i] = meanData[0][i];
+//		}
+		
+		
+		// finalData aktualisieren
+		//---------------------------------------------------------------------------------------------
+				if (tailIndex <= frontIndex) 
+					tailIndex = frontIndex + 1;
+				if(tailIndex >= meanData[XAXIS].length){
+					tailIndex--;
+					frontIndex--;
+				}
+				
+		finalData = new double[meanData.length][tailIndex - frontIndex + 1];
+		for (int i = 0; i < finalData[XAXIS].length; i++) {
+			finalData[XAXIS][i] = meanData[XAXIS][i + frontIndex] - meanData[XAXIS][frontIndex];
+			finalData[MEASUREMENTS][i] = meanData[MEASUREMENTS][i + frontIndex] - offset;
 		}
-		cutTail(rawData, 10, 0.002);
 
 		model.notifyObservers();
 	}
 
-	/**
-	 * Schneidet den Anfang ab.
-	 * 
-	 * @param y
-	 * @param n
-	 * @param q
-	 * @return
-	 */
-	private double[][] cutFront(double y[][], int n, double q) {
 
-		return y;
-	}
 
-	/**
-	 * Schneidet das Ende ab.
-	 * 
-	 * @param y
-	 * @param n
-	 * @param q
-	 * @return
-	 */
-	private double[][] cutTail(double y[][], int n, double q) {
-		double m = meanData[MEASUREMENTS][meanData.length - 1];
-		int c = 1;
-		while (Math.abs((y[MEASUREMENTS][meanData.length - 1 - c] - m) / y[MEASUREMENTS][meanData.length - 1 - c]) < q
-				&& y.length >= c + n) {
-			m = 0;
-			for (int i = 0; i < n; i++) {
-				m += y[MEASUREMENTS][meanData.length - 1 - c - n];
-			}
-			m /= n;
-			c++;
-		}
-		c = c - 1;
-		for (int i = 0; i < y.length - c; i++) {
-			y[1][i] = y[1][i];
-		}
-		for (int i = 0; i < y.length - c; i++) {
-			y[0][i] = y[0][i];
-		}
-		return y;
-	}
+	
 
 	/**
 	 * Erstellt einene neue Schrittantwort mit der gesetzten stepTime.
