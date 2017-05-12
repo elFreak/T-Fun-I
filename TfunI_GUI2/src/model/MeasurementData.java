@@ -128,7 +128,6 @@ public class MeasurementData {
 			}
 		}
 
-		// finalData aktualisieren
 		updateFinalData();
 
 		model.notifyObservers();
@@ -154,7 +153,6 @@ public class MeasurementData {
 		else
 			this.tail = meanData[XAXIS][meanData[XAXIS].length - 1] - tail;
 
-		// finalData aktualisieren
 		updateFinalData();
 
 		model.notifyObservers();
@@ -255,6 +253,8 @@ public class MeasurementData {
 				stepData[MEASUREMENTS][i] = stepHeight;
 			}
 		}
+		
+		updateFinalData();
 
 		model.notifyObservers();
 	}
@@ -289,6 +289,8 @@ public class MeasurementData {
 		}
 		stepHeight = originalStepHeight;
 		stepTime = originalStepTime;
+		
+		updateFinalData();
 
 		model.notifyObservers();
 	}
