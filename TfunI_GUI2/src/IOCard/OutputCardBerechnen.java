@@ -59,12 +59,12 @@ public class OutputCardBerechnen extends WindowContainer {
 	
 	public void update(java.util.Observable obs, Object obj) {
 		
-		if(outputPanel.traceRaw.dataValid&&!plotBerechnenTracePreprocessedAdded) {
+		if(outputPanel.tracePreprocessed.dataValid&&!plotBerechnenTracePreprocessedAdded) {
 			plotBerechnen.setSubplot(0);
 			plotBerechnen.addTrace(outputPanel.tracePreprocessed);
 			plotBerechnen.setRangeIdeal();
 		}
-		if(outputPanel.traceRaw.dataValid&&!plotBerechnenTraceSolutionAdded) {
+		if(outputPanel.traceSolution.dataValid&&!plotBerechnenTraceSolutionAdded) {
 			plotBerechnen.setSubplot(0);
 			plotBerechnen.addTrace(outputPanel.traceSolution);
 			plotBerechnen.setRangeIdeal();

@@ -13,8 +13,6 @@ import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.NelderMeadSimplex;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizer;
 
-import com.sun.swing.internal.plaf.metal.resources.metal;
-
 import speicher.StartValueSaver;
 import userInterface.StatusBar;
 
@@ -23,6 +21,8 @@ public class Approximation extends SwingWorker<Object, Integer> {
 	MeasurementData measurementData;
 	Model model;
 
+	
+	
 	public double[][] stepAnswer;
 
 	public Approximation(MeasurementData measurementData, Model model) {
@@ -44,8 +44,10 @@ public class Approximation extends SwingWorker<Object, Integer> {
 			System.out.println("" + time_normiert[i]);
 		}
 
-		SimplexOptimizer optimizer = new SimplexOptimizer(1e-10, 1e-6); // (relativer Threshold,absoluter Threshold)
-																																		
+		SimplexOptimizer optimizer = new SimplexOptimizer(1e-10, 1e-6); // (relativer
+																		// Threshold,absoluter
+																		// Threshold)
+
 		PointValuePair optimum = optimizer.optimize(new MaxEval(10000), new ObjectiveFunction(target),
 				GoalType.MINIMIZE,
 				new InitialGuess(getStartingValues(measurementData.getFinalData(),
@@ -63,8 +65,9 @@ public class Approximation extends SwingWorker<Object, Integer> {
 		System.out.println(Arrays.toString(optimum.getPoint()) + " : " + optimum.getSecond());
 		System.out.println(Arrays.toString(optimum2.getPoint()) + " : " + optimum2.getSecond());
 
-		stepAnswer = new double[][] { time_normiert, target.omega2polstep(optimum2.getPoint(), time_normiert) };
-		//saveFuckOff(stepAnswer);
+		stepAnswer = new double[][] { measurementData.getFinalData()[0], target.omega2polstep(optimum2.getPoint(), time_normiert) };
+		//stepAnswer = new double[][] { time_normiert, target.omega2polstep(optimum2.getPoint(), time_normiert) };
+		// saveFuckOff(stepAnswer);
 	}
 
 	public void stopp() {
@@ -72,7 +75,7 @@ public class Approximation extends SwingWorker<Object, Integer> {
 
 	@Override
 	public Object doInBackground() {
-			berechne();
+		berechne();
 		return 0;
 	}
 
