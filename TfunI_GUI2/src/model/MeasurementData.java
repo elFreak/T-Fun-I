@@ -168,29 +168,30 @@ public class MeasurementData {
 	public void autoLimits() {
 
 		// Automatische Erkennung der Totzeit
-//		int n = 50;
-//
-//		double m = meanData[MEASUREMENTS][0];
-//		int frontIndex = 1;
-//		while (Math.abs((y[MEASUREMENTS][frontIndex] - m) / y[MEASUREMENTS][frontIndex]) < q
-//				&& y.length >= frontIndex + n) {
-//			m = 0;
-//			for (int i = 0; i < n; i++) {
-//				m += y[MEASUREMENTS][frontIndex + n];
-//			}
-//			m /= n;
-//			frontIndex++;
-//		}
-//		frontIndex = frontIndex - 1;
-//
-//		// Abschneiden
-//		for (int i = 0; i < y.length - frontIndex; i++) {
-//			y[1][i] = y[1][i + frontIndex];
-//		}
-//		for (int i = 0; i < y.length - frontIndex; i++) {
-//			y[0][i] = y[0][i + frontIndex];
-//		}
-//		cutTail(rawData, 10, 0.002);
+		int n = 50;
+		int frontIndex = 1;
+		double q = 0.2;
+
+		double m = meanData[MEASUREMENTS][0];
+		while (Math.abs((meanData[MEASUREMENTS][frontIndex] - m) / meanData[MEASUREMENTS][frontIndex]) < q
+				&& meanData.length >= frontIndex + n) {
+			m = 0;
+			for (int i = 0; i < n; i++) {
+				m += meanData[MEASUREMENTS][frontIndex + n];
+			}
+			m /= n;
+			frontIndex++;
+		}
+		frontIndex = frontIndex - 1;
+
+		// Abschneiden
+		for (int i = 0; i < meanData.length - frontIndex; i++) {
+			meanData[1][i] = meanData[1][i + frontIndex];
+		}
+		for (int i = 0; i < meanData.length - frontIndex; i++) {
+			meanData[0][i] = meanData[0][i + frontIndex];
+		}
+		cutTail(rawData, 10, 0.002);
 
 		model.notifyObservers();
 	}
@@ -310,6 +311,9 @@ public class MeasurementData {
 			}
 		}
 		// finalData aktualisieren
+		if(tailIndex < frontIndex){
+			tailIndex = frontIndex;
+		}
 		finalData = new double[meanData.length][tailIndex - frontIndex + 1];
 		for (int i = 0; i < finalData[XAXIS].length; i++) {
 			finalData[XAXIS][i] = meanData[XAXIS][i + frontIndex] - meanData[XAXIS][frontIndex];
