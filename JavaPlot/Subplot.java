@@ -1,5 +1,6 @@
 package JavaPlot;
 
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -101,6 +102,12 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	public String axisLabelSymbol[] = { "", "", "" };
 	public String axisLabelIndex[] = { "", "", "" };
 	public String axisLabelUnit[] = { "", "", "" };
+	
+	// --------------------------------------------------------------------
+	// Slider:
+	private final static int HORIZONTAL = 1;
+	private final static int VERTICAL = 2;
+	
 
 	// --------------------------------------------------------------------
 	// Cursor:
@@ -609,6 +616,12 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 				}
 			}
 		}
+	}
+
+	// --------------------------------------------------------------------
+	// Add new Slider:
+	public void addSlider(int orientation){
+		
 	}
 
 	// --------------------------------------------------------------------

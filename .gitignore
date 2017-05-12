@@ -5,6 +5,7 @@
 
 # Package Files #
 *.jar
+!TfunI_GUI2/lib/**/*.jar
 *.war
 *.ear
 
@@ -78,4 +79,5 @@ local.properties
 # JDT-specific (Eclipse Java Development Tools)		
 #.classpath
 
-# End of https://www.gitignore.io/api/eclipse
+# End of https://www.gitignore.io/api/
+

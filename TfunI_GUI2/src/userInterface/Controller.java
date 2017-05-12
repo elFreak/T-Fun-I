@@ -1,5 +1,6 @@
 package userInterface;
 
+import IOCard.OutputPanel;
 import model.Model;
 
 /**
@@ -24,8 +25,8 @@ public class Controller {
 	public final static String KEY_BEARBEITEN = "BEARBEITEN";
 	public final static int BERECHNEN = 2;
 	public final static String KEY_BERECHNEN = "BERECHNEN";
-	public final static int VERTIFIZIEREN = 3;
-	public final static String KEY_VERTIFIZIEREN = "VERTIFIZIEREN";
+	public final static int VERIFIZIEREN = 3;
+	public final static String KEY_VERIFIZIEREN = "VERIFIZIEREN";
 
 	public Controller(Model model) {
 		this.model = model;
@@ -60,8 +61,8 @@ public class Controller {
 		case Controller.BERECHNEN:
 
 			break;
-		case Controller.VERTIFIZIEREN:
-
+		case Controller.VERIFIZIEREN:
+			
 			break;
 		}
 	}
@@ -69,4 +70,59 @@ public class Controller {
 	public void setMesuredData(double[][] data) {
 		model.setMesuredData(data);
 	}
+
+	public void filterChanged(int n) {
+		model.measurementData.setMovingMean(n);
+	}
+
+	public void setRange(double deadTime, double tail, double offset) {
+		if (tail < (deadTime + model.measurementData.getstepTime())) {
+			if (tail != model.measurementData.getTail()) {
+				tail = (deadTime + model.measurementData.getstepTime());
+			}
+			if (deadTime != model.measurementData.getDeadTime()) {
+				deadTime = model.measurementData.getTail() - model.measurementData.getstepTime();
+			}
+		}
+
+		model.measurementData.setLimits(deadTime, offset, tail);
+	}
+
+	public void setStep(double stepTime, double stepHeight) {
+		if (stepTime > model.measurementData.getTail() - model.measurementData.getDeadTime()) {
+			stepTime = model.measurementData.getTail() - model.measurementData.getDeadTime();
+		}
+
+		model.measurementData.setStepHeight(stepHeight);
+		model.measurementData.setStepTime(stepTime);
+	}
+
+	public void setOriginalStep() {
+		model.measurementData.setOriginalStep();
+	}
+	
+	public void calculateUTF() {
+		model.approximation.execute();
+	}
+	
+	public void autoLimmits(){
+		model.measurementData.autoLimits();
+	}
+	
+//	public void activateTrace(int trace){
+//		switch(trace) {
+//		case OutputPanel.TRACE_STEP:
+//			view.outputPanel.traceStep.dataValid=true;
+//			break;
+//		case OutputPanel.TRACE_RAW:
+//			view.outputPanel.traceRaw.dataValid=true;
+//			break;
+//		case OutputPanel.TRACE_PREPROCESSED:
+//			view.outputPanel.tracePreprocessed.dataValid=true;
+//			break;
+//		case OutputPanel.TRACE_SOLUTION:
+//			view.outputPanel.traceSolution.dataValid=true;
+//			break;
+//		}
+//	}
 }

@@ -12,8 +12,9 @@ import java.awt.geom.Line2D;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import projectTfunI.GlobalSettings;
-import projectTfunI.Utility;
+
+import projectT_Fun_I.GlobalSettings;
+import projectT_Fun_I.Utility;
 
 public class ProgramFlow extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -29,7 +30,7 @@ public class ProgramFlow extends JPanel implements ActionListener {
 	private JButton btBerechnen = new JButton(
 			"<html><center> <b>Berechnen</b> <p/> " + "(Übertragungsfunktion)</html>");
 	private JButton btVertifizieren = new JButton(
-			"<html><center><b>Vertifizieren</b> <p/> " + "(Übertragungsfunktion)</html>");
+			"<html><center><b>Verifizieren</b> <p/> " + "(Übertragungsfunktion)</html>");
 
 	// --------------------------------------------------------------------
 	// Initialize:
@@ -78,7 +79,7 @@ public class ProgramFlow extends JPanel implements ActionListener {
 		FontMetrics fm = g2.getFontMetrics();
 		g2.setFont(GlobalSettings.fontText);
 		fm = g2.getFontMetrics();
-		int textWidthMax = (fm.stringWidth(" (Übertragungsfunktion) "));
+		int textWidthMax = (fm.stringWidth(" (ï¿½bertragungsfunktion) "));
 		int textHighMax = 3 * getFont().getSize();
 
 		// Calculate Positions:
@@ -137,7 +138,7 @@ public class ProgramFlow extends JPanel implements ActionListener {
 		case Controller.BERECHNEN:
 
 			break;
-		case Controller.VERTIFIZIEREN:
+		case Controller.VERIFIZIEREN:
 
 			break;
 
@@ -157,7 +158,7 @@ public class ProgramFlow extends JPanel implements ActionListener {
 			controller.setActualMode(Controller.BERECHNEN);
 		}
 		if (e.getSource().equals(btVertifizieren)) {
-			controller.setActualMode(Controller.VERTIFIZIEREN);
+			controller.setActualMode(Controller.VERIFIZIEREN);
 		}
 	}
 }

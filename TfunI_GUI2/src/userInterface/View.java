@@ -10,16 +10,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
-import com.sun.management.jmx.Trace;
-import com.sun.org.apache.xpath.internal.operations.Mod;
+import IOCard.InputPanel;
+import IOCard.OutputPanel;
+import projectT_Fun_I.GlobalSettings;
+import projectT_Fun_I.Utility;
 
-import javafx.beans.Observable;
-import model.MeasurementData;
-import model.Model;
-import projectTfunI.GlobalSettings;
-import projectTfunI.Utility;
-
-public class View extends JPanel implements Observer{
+public class View extends JPanel implements Observer {
 	private static final long serialVersionUID = 1L;
 
 	// --------------------------------------------------------------------
@@ -41,6 +37,7 @@ public class View extends JPanel implements Observer{
 		super(new GridBagLayout());
 		this.controller = controller;
 		this.frame = frame;
+
 		menuBar = new MenuBar(this.controller, this.frame);
 		statusBar = new StatusBar();
 		inputPanel = new InputPanel(this.controller);
@@ -48,7 +45,7 @@ public class View extends JPanel implements Observer{
 		programFlow = new ProgramFlow(this.controller);
 
 		// Add MenuBar and ProgramFlow:
-		add(menuBar, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
+		this.add(menuBar, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 
 		JPanel panelFlow = new JPanel(new GridLayout(1, 1));
@@ -60,9 +57,7 @@ public class View extends JPanel implements Observer{
 				GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		// Add the rest of the GUI (SplitPane-Area):
 		add(new SplitPaneContainer(JSplitPane.HORIZONTAL_SPLIT, inputPanel,
-				new SplitPaneContainer(JSplitPane.VERTICAL_SPLIT, outputPanel, statusBar, 1.0,
-						0.0),
-				0.0, 1.0),
+				new SplitPaneContainer(JSplitPane.VERTICAL_SPLIT, outputPanel, statusBar, 1.0, 0.0), 0.0, 1.0),
 				new GridBagConstraints(0, 2, 1, 1, 1.0, 1.0, GridBagConstraints.FIRST_LINE_START,
 						GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
@@ -77,25 +72,14 @@ public class View extends JPanel implements Observer{
 
 	@Override
 	public void update(java.util.Observable obs, Object obj) {
-		
-		// Traces Aktualisieren
-		JavaPlot.Trace traceStep = new JavaPlot.Trace();
-		traceStep.data = ((Model)obs).measurementData.getstep();
-		
-		JavaPlot.Trace traceRaw = new JavaPlot.Trace();
-		traceRaw.data = ((Model)obs).measurementData.getRawData();
-		
-		//Einlesen aktualisieren:
-		
 
+		inputPanel.update(obs, obj);
+		outputPanel.update(obs, obj);
+		
+		// Update:
 		revalidate();
 		repaint();
-		
-//		Bearbeiten aktualisieren
-		
-		outputPanel.plotBearbeiten.addTrace(traceStep);
-		outputPanel.plotBearbeiten.setRangeIdeal();
-		
+
 	}
 
 }
