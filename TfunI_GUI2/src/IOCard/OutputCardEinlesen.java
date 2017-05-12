@@ -23,14 +23,15 @@ public class OutputCardEinlesen extends WindowContainer {
 	}
 
 	public void update(java.util.Observable obs, Object obj) {
-		plotEinlesen.setRangeIdeal();
 		
 		if(outputPanel.traceRaw.dataValid&&!plotEinlesenTraceRawAdded) {
 			plotEinlesen.addTrace(outputPanel.traceRaw);
+			plotEinlesen.setRangeIdeal();
 		}
 		
 		if(outputPanel.traceRaw.dataValid&&!plotEinlesenTraceStepAdded) {
 			plotEinlesen.addTrace(outputPanel.traceStep);
+			plotEinlesen.setRangeIdeal();
 		}
 	}
 }

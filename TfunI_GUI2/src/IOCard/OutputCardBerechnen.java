@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import JavaPlot.Plot;
+import model.Model;
 import projectT_Fun_I.GlobalSettings;
 import userInterface.MyBorderFactory;
 import userInterface.WindowContainer;
@@ -15,11 +16,18 @@ import userInterface.WindowContainer;
 public class OutputCardBerechnen extends WindowContainer {
 	private static final long serialVersionUID = 1L;
 	
+	private OutputPanel outputPanel;
+	
 	private Plot plotBerechnen = new Plot();
+	private boolean plotBerechnenTracePreprocessedAdded = false;
+	private boolean plotBerechnenTraceSolutionAdded = false;
+	
 	private Plot plotNullstellen = new Plot();
 	private JPanel panelBerechnen = new JPanel(new GridBagLayout());
 
 	public OutputCardBerechnen(OutputPanel outputPanel) {
+		this.outputPanel = outputPanel;
+		
 		
 		addComponent(plotBerechnen);
 		addComponent(plotNullstellen);
@@ -47,5 +55,19 @@ public class OutputCardBerechnen extends WindowContainer {
 		plotBerechnen.addTrace(outputPanel.traceSolution);
 		outputPanel.tracePreprocessed.dataValid = false;
 
+	}
+	
+	public void update(java.util.Observable obs, Object obj) {
+		
+		if(outputPanel.tracePreprocessed.dataValid&&!plotBerechnenTracePreprocessedAdded) {
+			plotBerechnen.setSubplot(0);
+			plotBerechnen.addTrace(outputPanel.tracePreprocessed);
+			plotBerechnen.setRangeIdeal();
+		}
+		if(outputPanel.traceSolution.dataValid&&!plotBerechnenTraceSolutionAdded) {
+			plotBerechnen.setSubplot(0);
+			plotBerechnen.addTrace(outputPanel.traceSolution);
+			plotBerechnen.setRangeIdeal();
+		}
 	}
 }

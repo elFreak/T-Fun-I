@@ -32,6 +32,7 @@ public class GlobalSettings {
 	public static Color colorTraceGreen = new Color(20,250,20);
 	public static Color colorTraceYellow = new Color(255, 217, 102);
 	public static Color colorTraceOrange = new Color(197, 90, 17);
+	public static Color colorTracePink	= new Color(255, 30, 255);
 	
 	public static Color colorSliderBlue = new Color(0, 180, 240);
 	public static Color colorSliderViolet = new Color(204, 153, 255);

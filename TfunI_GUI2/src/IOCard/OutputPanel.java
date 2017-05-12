@@ -22,15 +22,12 @@ public class OutputPanel extends JPanel {
 	/**
 	 * Traces
 	 */
-	// public static final int TRACE_STEP = 0;
-	// public static final int TRACE_RAW = 1;
-	// public static final int TRACE_PREPROCESSED = 2;
-	// public static final int TRACE_SOLUTION = 3;
 
-	public JavaPlot.Trace traceStep;
-	public JavaPlot.Trace traceRaw;
-	public JavaPlot.Trace tracePreprocessed;
-	public JavaPlot.Trace traceSolution;
+	public Trace traceStep;
+	public Trace traceRaw;
+	public Trace tracePreprocessed;
+	public Trace traceSolution;
+	public Trace traceMean;
 
 	/**
 	 * Cards:
@@ -59,6 +56,11 @@ public class OutputPanel extends JPanel {
 		tracePreprocessed.usePreferedColor = true;
 		tracePreprocessed.preferedColor = GlobalSettings.colorTraceOrange;
 		traceSolution = new Trace();
+		traceSolution.usePreferedColor = true;
+		traceSolution.preferedColor = GlobalSettings.colorTracePink;
+		traceMean = new Trace();
+		traceMean.usePreferedColor = true;
+		traceMean.preferedColor = GlobalSettings.colorTraceOrange;
 
 		// Init Cards:
 		cardEinlesen = new OutputCardEinlesen(this);
@@ -102,6 +104,8 @@ public class OutputPanel extends JPanel {
 			traceRaw.dataValid = true;
 			tracePreprocessed.data = ((Model) obs).measurementData.getFinalData();
 			tracePreprocessed.dataValid = true;
+			traceMean.data = ((Model) obs).measurementData.getMeanData();
+			traceMean.dataValid = true;
 			break;
 		case Model.NOTIFY_REASON_APPROXIMATION_DONE:
 			traceSolution.data = ((Model) obs).approximation.stepAnswer;
