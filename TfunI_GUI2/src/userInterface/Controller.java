@@ -1,5 +1,6 @@
 package userInterface;
 
+import IOCard.OutputPanel;
 import model.Model;
 
 /**
@@ -61,7 +62,7 @@ public class Controller {
 
 			break;
 		case Controller.VERIFIZIEREN:
-			model.approximation.berechne();
+			
 			break;
 		}
 	}
@@ -99,4 +100,25 @@ public class Controller {
 	public void setOriginalStep() {
 		model.measurementData.setOriginalStep();
 	}
+	
+	public void calculateUTF() {
+		model.approximation.execute();
+	}
+	
+//	public void activateTrace(int trace){
+//		switch(trace) {
+//		case OutputPanel.TRACE_STEP:
+//			view.outputPanel.traceStep.dataValid=true;
+//			break;
+//		case OutputPanel.TRACE_RAW:
+//			view.outputPanel.traceRaw.dataValid=true;
+//			break;
+//		case OutputPanel.TRACE_PREPROCESSED:
+//			view.outputPanel.tracePreprocessed.dataValid=true;
+//			break;
+//		case OutputPanel.TRACE_SOLUTION:
+//			view.outputPanel.traceSolution.dataValid=true;
+//			break;
+//		}
+//	}
 }

@@ -3,7 +3,10 @@ package IOCard;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,6 +40,10 @@ Controller controller;
 	
 	private JPanel panelStartwert = new JPanel(new GridBagLayout());
 	private JTextField tfStartwert = new JTextField();
+	
+	private JPanel panelButton = new JPanel(new GridBagLayout());
+	private JButton btBerechnen = new JButton("Berechnen");
+	private JButton btAbbrechen = new JButton("Abbrechen");
 
 	
 	public InputCardBerechnen (Controller controller){
@@ -122,6 +129,27 @@ Controller controller;
 		panelStartwert.add(tfStartwert, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 
+		// Button
+		panelButton.setBackground(GlobalSettings.colorBackground);
+		panelButton.setBorder(MyBorderFactory.createMyBorder("Cockpit"));
+								
+		panelButton.add(btBerechnen, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+									GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+		panelButton.add(btAbbrechen, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+		
+
+		// Anonymer ActionListener für Textfeld bei Enter
+		btBerechnen.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.calculateUTF();
+				
+			}
+		});
+					
+		
 		
 		// Cardpanel konfigurieren
 		this.setLayout(new GridBagLayout());
@@ -133,7 +161,9 @@ Controller controller;
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 		this.add(panelStartwert, new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
-		this.add(new JPanel(), new GridBagConstraints(0, 2, 1, 1, 1.0, 1.0, GridBagConstraints.FIRST_LINE_START,
+		this.add(panelButton, new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
+				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+		this.add(new JPanel(), new GridBagConstraints(0, 3, 1, 1, 1.0, 1.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 		
 	}

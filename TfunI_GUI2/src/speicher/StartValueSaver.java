@@ -5,7 +5,7 @@ import model.UTFDatatype;
 import projectT_Fun_I.GlobalSettings;
 
 public class StartValueSaver {
-	
+
 	/**
 	 * Fügt dem Speicherfile einen neuen Trace mit der dazuberechneten
 	 * Übertragungsfunktion hinzu.
@@ -16,8 +16,7 @@ public class StartValueSaver {
 	 * @param sigma
 	 * @param messwerte
 	 */
-	
-	
+
 	public static void addUTF(byte ordnung, UTFDatatype utf, double[][] messwerte) {
 		FilePackageDatatype save = new FilePackageDatatype();
 		double korrKoeff = 0.0;
@@ -65,49 +64,60 @@ public class StartValueSaver {
 
 	public static UTFDatatype getSimilarUTF(double[][] plot, boolean[] ordnung) {
 
-		// Plot auf 2500 werte normen.
-		double[] plotn = plotnorm(plot);
+		FilePackageDatatype returnp = new FilePackageDatatype();
 
-		// Datenbank laden.
-		FilePackageDatatype[] plotpack = DataFile.getdata();
+		if (ordnung[4] == true || ordnung[5] == true || ordnung[6] == true || ordnung[7] == true || ordnung[8] == true
+				|| ordnung[9] == true) {
 
-		double[] korrKoeffa = new double[plotpack.length];
-		double korrKoeff = 0.0;
-		int position = 0;
+			// Plot auf 2500 werte normen.
+			double[] plotn = plotnorm(plot);
 
-		// Ordnung überprüfen und Korrelationskoeffizient überprüfen
-		for (int i = 0; i < plotpack.length; i++) {
-			if ((ordnung[4] == true && true == (plotpack[i].ordnung == 5))
-					|| (ordnung[5] == true && true == (plotpack[i].ordnung == 6))
-					|| (ordnung[6] == true && true == (plotpack[i].ordnung == 7))
-					|| (ordnung[7] == true && true == (plotpack[i].ordnung == 8))
-					|| (ordnung[8] == true && true == (plotpack[i].ordnung == 9))
-					|| (ordnung[9] == true && true == (plotpack[i].ordnung == 10))) {
-				korrKoeffa[i] = Korrelation.korrKoeff(plotn, plotpack[i].doubl);
+			// Datenbank laden.
+			FilePackageDatatype[] plotpack = DataFile.getdata();
 
-				// Wenn Korrelationskoeffizient grösser als 0.8, berechnung
-				// abbrechen und position speichern
-				if (korrKoeffa[i] > 0.8) {
-					korrKoeff = korrKoeffa[i];
-					position = i;
-					break;
+			double[] korrKoeffa = new double[plotpack.length];
+			double korrKoeff = 0.0;
+			int position = 0;
+
+			// Ordnung überprüfen und Korrelationskoeffizient überprüfen
+			for (int i = 0; i < plotpack.length; i++) {
+				if ((ordnung[4] == true && true == (plotpack[i].ordnung == 5))
+						|| (ordnung[5] == true && true == (plotpack[i].ordnung == 6))
+						|| (ordnung[6] == true && true == (plotpack[i].ordnung == 7))
+						|| (ordnung[7] == true && true == (plotpack[i].ordnung == 8))
+						|| (ordnung[8] == true && true == (plotpack[i].ordnung == 9))
+						|| (ordnung[9] == true && true == (plotpack[i].ordnung == 10))) {
+					korrKoeffa[i] = Korrelation.korrKoeff(plotn, plotpack[i].doubl);
+
+					// Wenn Korrelationskoeffizient grösser als 0.8, berechnung
+					// abbrechen und position speichern
+					if (korrKoeffa[i] > 0.8) {
+						korrKoeff = korrKoeffa[i];
+						position = i;
+						break;
+					}
 				}
 			}
-		}
 
-		// Wenn kein Korrelationskoeffizient grösser als 0.8, den grössten
-		// herausfinden und position abspeichern.
-		if (korrKoeff == 0) {
-			for (int i = 1; i < korrKoeffa.length - 1; i++) {
-				if (korrKoeffa[i] > korrKoeffa[i - 1]) {
-					korrKoeff = korrKoeffa[i];
-					position = i;
+			// Wenn kein Korrelationskoeffizient grösser als 0.8, den grössten
+			// herausfinden und position abspeichern.
+			if (korrKoeff == 0) {
+				for (int i = 1; i < korrKoeffa.length - 1; i++) {
+					if (korrKoeffa[i] > korrKoeffa[i - 1]) {
+						korrKoeff = korrKoeffa[i];
+						position = i;
+					}
 				}
 			}
+			returnp.utf = plotpack[position].utf;
+		} else {
+			returnp.utf.zaehler = 1;
+			returnp.utf.koeffWQ = new double[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+			returnp.utf.sigma = 1;
 		}
 
 		// geeignete Startwerte ausgeben mit der vorhin ermittelten position.
-		return plotpack[position].utf;
+		return returnp.utf;
 	}
 
 	/**

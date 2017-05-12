@@ -6,7 +6,7 @@ import userInterface.WindowContainer;
 public class OutputCardVerifizieren extends WindowContainer {
 	private static final long serialVersionUID = 1L;
 	
-	public Plot plotVerifizieren = new Plot();
+	private Plot plotVerifizieren = new Plot();
 	
 	public OutputCardVerifizieren(OutputPanel outputPanel) {
 		addComponent(plotVerifizieren);
