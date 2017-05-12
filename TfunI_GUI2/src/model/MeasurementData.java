@@ -76,10 +76,10 @@ public class MeasurementData {
 				originalStep[MEASUREMENTS][i] = data[STEP][i];
 
 				// stepTime und stepHeight berechnen
-				if(i!=0) {
-					if (data[STEP][i] != 0 && data[STEP][i-1] == 0) {
+				if (i != 0) {
+					if (data[STEP][i] != 0 && data[STEP][i - 1] == 0) {
 						stepTime = data[XAXIS][i];
-						originalStepTime=data[XAXIS][i];
+						originalStepTime = data[XAXIS][i];
 						stepHeight = data[STEP][i];
 						originalStepHeight = data[STEP][i];
 					}
@@ -311,9 +311,13 @@ public class MeasurementData {
 			}
 		}
 		// finalData aktualisieren
-		if(tailIndex < frontIndex){
-			tailIndex = frontIndex;
+		if (tailIndex < frontIndex) 
+			tailIndex = frontIndex + 1;
+		if(tailIndex >= meanData[XAXIS].length){
+			tailIndex--;
+			frontIndex--;
 		}
+		
 		finalData = new double[meanData.length][tailIndex - frontIndex + 1];
 		for (int i = 0; i < finalData[XAXIS].length; i++) {
 			finalData[XAXIS][i] = meanData[XAXIS][i + frontIndex] - meanData[XAXIS][frontIndex];
@@ -396,7 +400,7 @@ public class MeasurementData {
 	 * @return tail
 	 */
 	public double getTail() {
-		return meanData[XAXIS][meanData[XAXIS].length - 1]-tail;
+		return meanData[XAXIS][meanData[XAXIS].length - 1] - tail;
 	}
 
 	/**
