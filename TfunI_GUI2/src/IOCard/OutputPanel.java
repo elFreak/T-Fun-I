@@ -22,11 +22,11 @@ public class OutputPanel extends JPanel {
 	/**
 	 * Traces
 	 */
-//	public static final int TRACE_STEP = 0;
-//	public static final int TRACE_RAW = 1;
-//	public static final int TRACE_PREPROCESSED = 2;
-//	public static final int TRACE_SOLUTION = 3;
-	
+	// public static final int TRACE_STEP = 0;
+	// public static final int TRACE_RAW = 1;
+	// public static final int TRACE_PREPROCESSED = 2;
+	// public static final int TRACE_SOLUTION = 3;
+
 	public JavaPlot.Trace traceStep;
 	public JavaPlot.Trace traceRaw;
 	public JavaPlot.Trace tracePreprocessed;
@@ -93,16 +93,22 @@ public class OutputPanel extends JPanel {
 	}
 
 	public void update(java.util.Observable obs, Object obj) {
-		// Traces Aktualisieren:
-		traceStep.data = ((Model) obs).measurementData.getstep();
-		traceStep.dataValid=true;
-		traceRaw.data = ((Model) obs).measurementData.getRawData();
-		traceRaw.dataValid=true;
-		tracePreprocessed.data = ((Model) obs).measurementData.getFinalData();
-		tracePreprocessed.dataValid=true;
-		traceSolution.data = ((Model) obs).approximation.stepAnswer;
-		traceSolution.dataValid=true;
-		
+
+		switch ((int) obj) {
+		case Model.NOTIFY_REASON_MEASUREMENT_CHANGED:
+			traceStep.data = ((Model) obs).measurementData.getstep();
+			traceStep.dataValid = true;
+			traceRaw.data = ((Model) obs).measurementData.getRawData();
+			traceRaw.dataValid = true;
+			tracePreprocessed.data = ((Model) obs).measurementData.getFinalData();
+			tracePreprocessed.dataValid = true;
+			break;
+		case Model.NOTIFY_REASON_APPROXIMATION_DONE:
+			traceSolution.data = ((Model) obs).approximation.stepAnswer;
+			traceSolution.dataValid = true;
+			break;
+		}
+
 		cardEinlesen.update(obs, obj);
 		cardBearbeiten.update(obs, obj);
 	}

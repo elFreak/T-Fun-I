@@ -85,7 +85,7 @@ public class Approximation extends SwingWorker<Object, Integer> {
 	public void done() {
 		super.done();
 		StatusBar.showStatus("Fertig", StatusBar.INFO);
-		model.notifyObservers();
+		model.notifyObservers(Model.NOTIFY_REASON_APPROXIMATION_DONE);
 	}
 
 	private static double[][] scalingTime(double[][] step_response_m) {

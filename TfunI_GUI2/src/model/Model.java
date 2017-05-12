@@ -17,7 +17,7 @@ public class Model extends Observable{
 	public void setMesuredData(double[][] data) {
 		measurementData = new MeasurementData(this, data);
 		approximation = new Approximation(measurementData, this);
-		notifyObservers();
+		notifyObservers(NOTIFY_REASON_MEASUREMENT_CHANGED);
 	}
 	
 	@Override
