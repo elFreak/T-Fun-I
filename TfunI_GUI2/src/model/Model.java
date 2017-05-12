@@ -7,7 +7,7 @@ public class Model extends Observable{
 	public Approximation approximation;
 	public MeasurementData measurementData;
 	
-	public static final int NOTIFY_REASON_MEASUREMENT_ACTUAL = 0;
+	public static final int NOTIFY_REASON_MEASUREMENT_CHANGED = 0;
 	public static final int NOTIFY_REASON_APPROXIMATION_DONE = 1;
 	
 	public Model() {

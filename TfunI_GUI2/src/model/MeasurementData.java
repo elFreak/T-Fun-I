@@ -129,7 +129,7 @@ public class MeasurementData {
 
 		updateFinalData();
 
-		model.notifyObservers();
+		model.notifyObservers(Model.NOTIFY_REASON_MEASUREMENT_CHANGED);
 
 	}
 
@@ -154,7 +154,7 @@ public class MeasurementData {
 
 		updateFinalData();
 
-		model.notifyObservers();
+		model.notifyObservers(Model.NOTIFY_REASON_MEASUREMENT_CHANGED);
 	}
 
 	/**
@@ -228,7 +228,7 @@ public class MeasurementData {
 			finalData[MEASUREMENTS][i] = meanData[MEASUREMENTS][i + frontIndex] - offset;
 		}
 
-		model.notifyObservers();
+		model.notifyObservers(Model.NOTIFY_REASON_MEASUREMENT_CHANGED);
 	}
 
 
@@ -254,7 +254,7 @@ public class MeasurementData {
 		
 		updateFinalData();
 
-		model.notifyObservers();
+		model.notifyObservers(Model.NOTIFY_REASON_MEASUREMENT_CHANGED);
 	}
 
 	/**
@@ -272,7 +272,7 @@ public class MeasurementData {
 			}
 		}
 
-		model.notifyObservers();
+		model.notifyObservers(Model.NOTIFY_REASON_MEASUREMENT_CHANGED);
 
 	}
 
@@ -290,7 +290,7 @@ public class MeasurementData {
 		
 		updateFinalData();
 
-		model.notifyObservers();
+		model.notifyObservers(Model.NOTIFY_REASON_MEASUREMENT_CHANGED);
 	}
 
 	/**
