@@ -19,6 +19,7 @@ public class OutputCardBearbeiten extends WindowContainer {
 	private boolean plotBearbeitenTraceStepAdded = false;
 	private boolean plotBearbeitenTraceRawAdded = false;
 	private boolean plotBearbeitenTracePreprocessedAdded = false;
+	private boolean plotBearbeitenTraceMeanAdded = false;
 	
 	public OutputCardBearbeiten(OutputPanel outputPanel, Controller controller) {
 		this.outputPanel = outputPanel;
@@ -53,14 +54,22 @@ public class OutputCardBearbeiten extends WindowContainer {
 		if(outputPanel.traceRaw.dataValid&&!plotBearbeitenTraceStepAdded) {
 			plotBearbeiten.setSubplot(0);
 			plotBearbeiten.addTrace(outputPanel.traceStep);
+			plotBearbeiten.setRangeIdeal();
 		}
 		if(outputPanel.traceRaw.dataValid&&!plotBearbeitenTraceRawAdded) {
 			plotBearbeiten.setSubplot(0);
 			plotBearbeiten.addTrace(outputPanel.traceRaw);
+			plotBearbeiten.setRangeIdeal();
 		}
 		if(outputPanel.traceRaw.dataValid&&!plotBearbeitenTracePreprocessedAdded) {
 			plotBearbeiten.setSubplot(1);
 			plotBearbeiten.addTrace(outputPanel.tracePreprocessed);
+			plotBearbeiten.setRangeIdeal();
+		}
+		if(outputPanel.traceMean.dataValid&&!plotBearbeitenTraceMeanAdded) {
+			plotBearbeiten.setSubplot(0);
+			plotBearbeiten.addTrace(outputPanel.traceMean);
+			plotBearbeiten.setRangeIdeal();
 		}
 	}
 }
