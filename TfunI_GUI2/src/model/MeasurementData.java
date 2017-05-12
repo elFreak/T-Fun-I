@@ -313,7 +313,7 @@ public class MeasurementData {
 			}
 		}
 		// finalData aktualisieren
-		if (tailIndex < frontIndex) 
+		if (tailIndex <= frontIndex) 
 			tailIndex = frontIndex + 1;
 		if(tailIndex >= meanData[XAXIS].length){
 			tailIndex--;
