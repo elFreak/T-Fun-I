@@ -276,6 +276,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 					}
 				}
 			}
+
 		}
 
 		// Paint Cursor-X:
@@ -383,7 +384,6 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 		setSliderPosition(OutputCardBearbeiten.KEY_OFFSET);
 
 		for (int i = 0; i < sliderActualNumber; i++) {
-
 
 			if (sliders[i].orienation == Slider.HORIZONTAL) {
 				if (sliders[i].positionPixel < boardCorner[0][Y]) {
@@ -1043,15 +1043,15 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			break;
 		}
 
-		plot.updateSliderValue(sliderStartValue-stepTime, sliderEndValue, sliderOffsetValue);
+		plot.updateSliderValue(sliderStartValue - stepTime, sliderEndValue, sliderOffsetValue);
 
 	}
-	
+
 	// --------------------------------------------------------------------
-		// Set Step Position:
-		public void setStepPosition(double position){
-			stepTime = position;
-		}
+	// Set Step Position:
+	public void setStepPosition(double position) {
+		stepTime = position;
+	}
 
 	// --------------------------------------------------------------------
 	// Set Slider Position:
@@ -1061,7 +1061,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 				switch (sliders[i].tag) {
 				case OutputCardBearbeiten.KEY_START:
-					sliderStartValue = value+stepTime;
+					sliderStartValue = value + stepTime;
 					break;
 				case OutputCardBearbeiten.KEY_END:
 					sliderEndValue = value;

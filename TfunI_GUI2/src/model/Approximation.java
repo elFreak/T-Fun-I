@@ -1,16 +1,8 @@
 package model;
 
-import java.util.Arrays;
 import java.util.List;
 import javax.swing.SwingWorker;
-import org.apache.commons.math3.optim.InitialGuess;
-import org.apache.commons.math3.optim.MaxEval;
 import org.apache.commons.math3.optim.PointValuePair;
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
-import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.NelderMeadSimplex;
-import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizer;
-import speicher.StartValueSaver;
 import userInterface.StatusBar;
 
 public class Approximation extends SwingWorker<Object, Integer> {
@@ -52,6 +44,7 @@ public class Approximation extends SwingWorker<Object, Integer> {
 		Target target = new Target(time_normiert, measurementData.getFinalData()[1]);
 
 		PointValuePair optimum = StableFMinSearch.fminsearch(target, 4);
+		System.out.println(""+optimum.getPoint()[0]+optimum.getPoint()[1]+optimum.getPoint()[2]+optimum.getPoint()[3]+optimum.getPoint()[4]);
 		
 		solutionSignal = new double[][] { measurementData.getFinalData()[0],
 				Target.omega2polstep(optimum.getPoint(), time_normiert) };
