@@ -65,8 +65,6 @@ public class Approximation extends SwingWorker<Object, Integer> {
 
 		stepAnswer = new double[][] { time_normiert, target.omega2polstep(optimum2.getPoint(), time_normiert) };
 		//saveFuckOff(stepAnswer);
-
-		model.notifyObservers();
 	}
 
 	public void stopp() {
@@ -74,29 +72,20 @@ public class Approximation extends SwingWorker<Object, Integer> {
 
 	@Override
 	public Object doInBackground() {
-		int zaeler = 0;
-		try {
-			for (zaeler = 1; zaeler <= 10; zaeler++) {
-				Thread.sleep(500);
-				publish(zaeler);
-			}
-
-		} catch (InterruptedException e) {
-		}
-
+			berechne();
 		return 0;
 	}
 
 	@Override
-	protected void process(List<Integer> zaeler) {
-		super.process(zaeler);
-		StatusBar.showStatus("Zähler: " + zaeler.get(0), StatusBar.INFO);
+	protected void process(List<Integer> arg) {
+		super.process(arg);
 	}
 
 	@Override
 	public void done() {
 		super.done();
-		StatusBar.showStatus("Fertig ", StatusBar.INFO);
+		StatusBar.showStatus("Fertig", StatusBar.INFO);
+		model.notifyObservers();
 	}
 
 	private static double[][] scalingTime(double[][] step_response_m) {

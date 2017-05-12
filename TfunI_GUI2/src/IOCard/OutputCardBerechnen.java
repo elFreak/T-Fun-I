@@ -15,14 +15,14 @@ import userInterface.WindowContainer;
 public class OutputCardBerechnen extends WindowContainer {
 	private static final long serialVersionUID = 1L;
 	
-	public Plot plotBerechnen = new Plot();
-	public Plot plotNullstellen = new Plot();
+	private Plot plotBerechnen = new Plot();
+	private Plot plotNullstellen = new Plot();
 	private JPanel panelBerechnen = new JPanel(new GridBagLayout());
 
 	public OutputCardBerechnen(OutputPanel outputPanel) {
 		
-		addComponent(plotNullstellen);
 		addComponent(plotBerechnen);
+		addComponent(plotNullstellen);
 		addComponent(panelBerechnen);
 
 		// Funktion
@@ -43,17 +43,9 @@ public class OutputCardBerechnen extends WindowContainer {
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 	
 		// Plot
-		plotBerechnen.addTrace(outputPanel.traceStep);
-		plotBerechnen.addTrace(outputPanel.traceRaw);
-		outputPanel.traceStep.dataValid = false;
-		outputPanel.traceRaw.dataValid = false;
-		
-		// Nullstellen
-		plotBerechnen.addTrace(outputPanel.traceStep);
-		plotBerechnen.addTrace(outputPanel.traceRaw);
-		outputPanel.traceStep.dataValid = false;
-		outputPanel.traceRaw.dataValid = false;
-		
+		plotBerechnen.addTrace(outputPanel.tracePreprocessed);
+		plotBerechnen.addTrace(outputPanel.traceSolution);
+		outputPanel.tracePreprocessed.dataValid = false;
 
 	}
 }

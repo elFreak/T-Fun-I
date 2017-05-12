@@ -22,6 +22,11 @@ public class OutputPanel extends JPanel {
 	/**
 	 * Traces
 	 */
+//	public static final int TRACE_STEP = 0;
+//	public static final int TRACE_RAW = 1;
+//	public static final int TRACE_PREPROCESSED = 2;
+//	public static final int TRACE_SOLUTION = 3;
+	
 	public JavaPlot.Trace traceStep;
 	public JavaPlot.Trace traceRaw;
 	public JavaPlot.Trace tracePreprocessed;
@@ -30,10 +35,10 @@ public class OutputPanel extends JPanel {
 	/**
 	 * Cards:
 	 */
-	public OutputCardEinlesen cardEinlesen;
-	public OutputCardBearbeiten cardBearbeiten;
-	public OutputCardBerechnen cardBerechnen;
-	public OutputCardVerifizieren cardVerifizieren;
+	private OutputCardEinlesen cardEinlesen;
+	private OutputCardBearbeiten cardBearbeiten;
+	private OutputCardBerechnen cardBerechnen;
+	private OutputCardVerifizieren cardVerifizieren;
 
 	public OutputPanel(Controller controller) {
 
@@ -90,34 +95,15 @@ public class OutputPanel extends JPanel {
 	public void update(java.util.Observable obs, Object obj) {
 		// Traces Aktualisieren:
 		traceStep.data = ((Model) obs).measurementData.getstep();
+		traceStep.dataValid=true;
 		traceRaw.data = ((Model) obs).measurementData.getRawData();
+		traceRaw.dataValid=true;
 		tracePreprocessed.data = ((Model) obs).measurementData.getFinalData();
+		tracePreprocessed.dataValid=true;
 		traceSolution.data = ((Model) obs).approximation.stepAnswer;
-
-		if (traceRaw.dataValid == false) {
-
-			traceStep.dataValid = true;
-			traceRaw.dataValid = true;
-			tracePreprocessed.dataValid = true;
-			traceSolution.dataValid = true;
-			cardEinlesen.plotEinlesen.setRangeIdeal();
-			cardBearbeiten.plotBearbeiten.setSubplot(0);
-			cardBearbeiten.plotBearbeiten.setRangeIdeal();
-		} else {
-			traceStep.dataValid = true;
-			traceRaw.dataValid = true;
-			tracePreprocessed.dataValid = true;
-			traceSolution.dataValid = true;
-		}
+		traceSolution.dataValid=true;
 		
-		
-		
-		cardBearbeiten.plotBearbeiten.setSubplot(0);
-		cardBearbeiten.plotBearbeiten.setStepPosition(((Model) obs).measurementData.getstepTime());
-		
-		cardBearbeiten.plotBearbeiten.setSubplot(1);
-		cardBearbeiten.plotBearbeiten.setRangeIdeal();
-		
+		cardEinlesen.update(obs, obj);
 		cardBearbeiten.update(obs, obj);
 	}
 }
