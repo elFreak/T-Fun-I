@@ -105,6 +105,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	private double sliderStartValue = 0;
 	private double sliderEndValue = 0;
 	private double sliderOffsetValue = 0;
+	private double stepTime = 0;
 
 	// --------------------------------------------------------------------
 	// Axis Label:
@@ -382,6 +383,8 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 		setSliderPosition(OutputCardBearbeiten.KEY_OFFSET);
 
 		for (int i = 0; i < sliderActualNumber; i++) {
+
+
 			if (sliders[i].orienation == Slider.HORIZONTAL) {
 				if (sliders[i].positionPixel < boardCorner[0][Y]) {
 					sliders[i].positionPixel = boardCorner[0][Y];
@@ -804,7 +807,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 				zaehler++;
 			}
 		}
-		if(zaehler==0) {
+		if (zaehler == 0) {
 			return;
 		}
 
@@ -1043,6 +1046,12 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 		plot.updateSliderValue(sliderStartValue, sliderEndValue, sliderOffsetValue);
 
 	}
+	
+	// --------------------------------------------------------------------
+		// Set Step Position:
+		public void setStepPosition(double position){
+			stepTime = position;
+		}
 
 	// --------------------------------------------------------------------
 	// Set Slider Position:

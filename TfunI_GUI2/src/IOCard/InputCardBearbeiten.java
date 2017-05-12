@@ -91,7 +91,7 @@ public class InputCardBearbeiten extends JPanel {
 
 		// Schieberegler von Filtern konfigurieren
 		sFilter.setMinimum(0);
-		sFilter.setMaximum(30);
+		sFilter.setMaximum(40);
 		sFilter.setValue(0);
 		sFilter.setMinorTickSpacing(10);
 		sFilter.setMajorTickSpacing(10);
@@ -158,7 +158,7 @@ public class InputCardBearbeiten extends JPanel {
 					tfOffset.setText("0.0");
 
 				double tempValue = Double.parseDouble(tfOffset.getText());
-				tempValue = tempValue*Math.pow(1.1,e.getWheelRotation())+0.000001*e.getWheelRotation();
+				tempValue = tempValue * Math.pow(1.1, e.getWheelRotation()) + 0.000001 * e.getWheelRotation();
 
 				controller.setRange(Double.parseDouble(tfDeadtime.getText()), Double.parseDouble(tfTail.getText()),
 						tempValue);
@@ -188,7 +188,7 @@ public class InputCardBearbeiten extends JPanel {
 					tfTail.setText("0");
 
 				double tempValue = Double.parseDouble(tfTail.getText());
-				tempValue = tempValue*Math.pow(1.1,e.getWheelRotation())+0.000001*e.getWheelRotation();
+				tempValue = tempValue * Math.pow(1.1, e.getWheelRotation()) + 0.000001 * e.getWheelRotation();
 				if (tempValue < 0) {
 					tempValue = 0;
 				}
@@ -224,7 +224,7 @@ public class InputCardBearbeiten extends JPanel {
 					tfDeadtime.setText("0");
 
 				double tempValue = Double.parseDouble(tfDeadtime.getText());
-				tempValue = tempValue*Math.pow(1.1,e.getWheelRotation())+0.000001*e.getWheelRotation();
+				tempValue = tempValue * Math.pow(1.1, e.getWheelRotation()) + 0.000001 * e.getWheelRotation();
 				if (tempValue < 0) {
 					tempValue = 0;
 				}
@@ -291,7 +291,7 @@ public class InputCardBearbeiten extends JPanel {
 					tfSprungzeit.setText("0");
 
 				double tempValue = Double.parseDouble(tfSprungzeit.getText());
-				tempValue = tempValue*Math.pow(1.1,e.getWheelRotation())+0.000001*e.getWheelRotation();
+				tempValue = tempValue * Math.pow(1.1, e.getWheelRotation()) + 0.000001 * e.getWheelRotation();
 				if (tempValue < 0) {
 					tempValue = 0;
 				}
@@ -325,8 +325,8 @@ public class InputCardBearbeiten extends JPanel {
 				if (tfSprunghöhe.getText().isEmpty())
 					tfSprunghöhe.setText("0");
 
-				double tempValue = Double.parseDouble(tfSprungzeit.getText());
-				tempValue = tempValue*Math.pow(1.1,e.getWheelRotation())+0.000001*e.getWheelRotation();
+				double tempValue = Double.parseDouble(tfSprunghöhe.getText());
+				tempValue = tempValue * Math.pow(1.1, e.getWheelRotation()) + 0.000001 * e.getWheelRotation();
 				if (tempValue < 0) {
 					tempValue = 0;
 				}
@@ -349,6 +349,14 @@ public class InputCardBearbeiten extends JPanel {
 				} catch (NumberFormatException exp) {
 					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben", StatusBar.FEHLER);
 				}
+			}
+		});
+
+		btSprung.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.setOriginalStep();
 			}
 		});
 

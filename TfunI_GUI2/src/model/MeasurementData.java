@@ -26,7 +26,9 @@ public class MeasurementData {
 	private double offset = 0;
 	private double tail;
 	private double stepTime = 0;
+	private double originalStepTime = 0;
 	private double stepHeight = 1;
+	private double originalStepHeight = 1;
 	private double stepData[][];
 	private double originalStep[][];
 	private double n = 0;
@@ -74,9 +76,11 @@ public class MeasurementData {
 				originalStep[MEASUREMENTS][i] = data[STEP][i];
 
 				// stepTime und stepHeight berechnen
-				if (data[STEP][i] != 0 && data[STEP][i] == 0) {
+				if (data[STEP][i] != 0) {
 					stepTime = data[XAXIS][i];
+					originalStepTime=data[XAXIS][i];
 					stepHeight = data[STEP][i];
+					originalStepHeight = data[STEP][i];
 				}
 			}
 			// Wenn kein Sprung vorhanden
@@ -280,6 +284,8 @@ public class MeasurementData {
 		for (int i = 0; i < stepData[MEASUREMENTS].length; i++) {
 			stepData[MEASUREMENTS][i] = originalStep[MEASUREMENTS][i];
 		}
+		stepHeight = originalStepHeight;
+		stepTime = originalStepTime;
 
 		model.notifyObservers();
 	}
@@ -384,7 +390,7 @@ public class MeasurementData {
 	 * @return tail
 	 */
 	public double getTail() {
-		return tail;
+		return meanData[XAXIS][meanData[XAXIS].length - 1]-tail;
 	}
 
 	/**

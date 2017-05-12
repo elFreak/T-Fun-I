@@ -52,10 +52,10 @@ public class Approximation extends SwingWorker<Object, Integer> {
 						new boolean[] { false, false, false, false, true, false, false, false, false, false })),
 				new NelderMeadSimplex(new double[] { 0.2, 0.2, 0.2, 0.2, 0.2, 0.2 }));
 
-		SimplexOptimizer optimizer2 = new SimplexOptimizer(1e-20, 1e-16);
+		SimplexOptimizer optimizer2 = new SimplexOptimizer(1e-40, 1e-32);
 		PointValuePair optimum2 = optimizer.optimize(new MaxEval(10000), new ObjectiveFunction(target),
 				GoalType.MINIMIZE, new InitialGuess(optimum.getPoint()),
-				new NelderMeadSimplex(new double[] { 0.2, 0.2, 0.2, 0.2, 0.2, 0.2 }));
+				new NelderMeadSimplex(new double[] { 0.1, 0.1, 0.1, 0.1, 0.1, 0.1 }));
 
 		// double[] step_approx = target.omega2polstep(4, optimum.getPoint(),
 		// measurementData.getMeanData()[0]);

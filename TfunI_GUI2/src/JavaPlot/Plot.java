@@ -53,7 +53,7 @@ public class Plot extends JPanel {
 		// Generate first subplot:
 		addSubplot();
 	}
-	
+
 	public Plot(Controller controller) {
 		super(new GridLayout());
 		this.controller = controller;
@@ -201,7 +201,13 @@ public class Plot extends JPanel {
 	public void updateSliderValue(double start, double end, double offset) {
 		controller.setRange(start, end, offset);
 	}
-	
+
+	// --------------------------------------------------------------------
+	// Set Step Position:
+	public void setStepPosition(double position) {
+		subplot[subplotSelected].setStepPosition(position);
+	}
+
 	// --------------------------------------------------------------------
 	// Set Slider Position:
 	public void setSliderPosition(String tag, double value) {

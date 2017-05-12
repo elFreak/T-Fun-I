@@ -1,8 +1,6 @@
 package userInterface;
 
-
 import model.Model;
-
 
 /**
  * 
@@ -71,17 +69,22 @@ public class Controller {
 	public void setMesuredData(double[][] data) {
 		model.setMesuredData(data);
 	}
-	
+
 	public void filterChanged(int n) {
 		model.measurementData.setMovingMean(n);
 	}
-	
+
 	public void setRange(double deadTime, double tail, double offset) {
 		model.measurementData.setLimits(deadTime, offset, tail);
 	}
 	
-	public void setStep(double stepTime, double stepHeight){
+
+	public void setStep(double stepTime, double stepHeight) {
 		model.measurementData.setStepHeight(stepHeight);
 		model.measurementData.setStepTime(stepTime);
+	}
+
+	public void setOriginalStep() {
+		model.measurementData.setOriginalStep();
 	}
 }

@@ -110,6 +110,9 @@ public class OutputPanel extends JPanel {
 			traceSolution.dataValid = true;
 		}
 		
+		cardBearbeiten.plotBearbeiten.setSubplot(1);
+		cardBearbeiten.plotBearbeiten.setRangeIdeal();
+		
 		cardBearbeiten.update(obs, obj);
 	}
 }
