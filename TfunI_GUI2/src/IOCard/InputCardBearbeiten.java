@@ -251,6 +251,14 @@ public class InputCardBearbeiten extends JPanel {
 				}
 			}
 		});
+		
+		// Anonymer ActionListener für Auto Button
+		btAutoRahmen.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				controller.autoLimmits();
+			}
+		});
 
 		// Panel Rahmen konfigurieren
 		panelRahmen.setBackground(GlobalSettings.colorBackground);

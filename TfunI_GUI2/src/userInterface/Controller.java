@@ -105,6 +105,10 @@ public class Controller {
 		model.approximation.execute();
 	}
 	
+	public void autoLimmits(){
+		model.measurementData.autoLimits();
+	}
+	
 //	public void activateTrace(int trace){
 //		switch(trace) {
 //		case OutputPanel.TRACE_STEP:
