@@ -110,6 +110,11 @@ public class OutputPanel extends JPanel {
 			traceSolution.dataValid = true;
 		}
 		
+		
+		
+		cardBearbeiten.plotBearbeiten.setSubplot(0);
+		cardBearbeiten.plotBearbeiten.setStepPosition(((Model) obs).measurementData.getstepTime());
+		
 		cardBearbeiten.plotBearbeiten.setSubplot(1);
 		cardBearbeiten.plotBearbeiten.setRangeIdeal();
 		

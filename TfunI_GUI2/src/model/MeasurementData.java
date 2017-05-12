@@ -76,11 +76,13 @@ public class MeasurementData {
 				originalStep[MEASUREMENTS][i] = data[STEP][i];
 
 				// stepTime und stepHeight berechnen
-				if (data[STEP][i] != 0) {
-					stepTime = data[XAXIS][i];
-					originalStepTime=data[XAXIS][i];
-					stepHeight = data[STEP][i];
-					originalStepHeight = data[STEP][i];
+				if(i!=0) {
+					if (data[STEP][i] != 0 && data[STEP][i-1] == 0) {
+						stepTime = data[XAXIS][i];
+						originalStepTime=data[XAXIS][i];
+						stepHeight = data[STEP][i];
+						originalStepHeight = data[STEP][i];
+					}
 				}
 			}
 			// Wenn kein Sprung vorhanden

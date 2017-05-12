@@ -1043,7 +1043,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			break;
 		}
 
-		plot.updateSliderValue(sliderStartValue, sliderEndValue, sliderOffsetValue);
+		plot.updateSliderValue(sliderStartValue-stepTime, sliderEndValue, sliderOffsetValue);
 
 	}
 	
@@ -1061,7 +1061,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 				switch (sliders[i].tag) {
 				case OutputCardBearbeiten.KEY_START:
-					sliderStartValue = value;
+					sliderStartValue = value+stepTime;
 					break;
 				case OutputCardBearbeiten.KEY_END:
 					sliderEndValue = value;

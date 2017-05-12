@@ -38,8 +38,9 @@ public class OutputCardBearbeiten extends WindowContainer {
 	
 	public void update(java.util.Observable obs, Object obj) {
 		plotBearbeiten.setSubplot(0);
+		plotBearbeiten.setStepPosition(((Model) obs).measurementData.getstepTime());
 		plotBearbeiten.setSliderPosition(KEY_OFFSET, ((Model) obs).measurementData.getOffset());
-		plotBearbeiten.setSliderPosition(KEY_START, ((Model) obs).measurementData.getDeadTime()+((Model) obs).measurementData.getstepTime());
+		plotBearbeiten.setSliderPosition(KEY_START, ((Model) obs).measurementData.getDeadTime());
 		plotBearbeiten.setSliderPosition(KEY_END, ((Model) obs).measurementData.getTail());
 	}
 }

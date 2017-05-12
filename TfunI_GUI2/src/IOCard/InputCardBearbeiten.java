@@ -91,7 +91,7 @@ public class InputCardBearbeiten extends JPanel {
 
 		// Schieberegler von Filtern konfigurieren
 		sFilter.setMinimum(0);
-		sFilter.setMaximum(40);
+		sFilter.setMaximum(30);
 		sFilter.setValue(0);
 		sFilter.setMinorTickSpacing(10);
 		sFilter.setMajorTickSpacing(10);
@@ -121,11 +121,11 @@ public class InputCardBearbeiten extends JPanel {
 					tfFilter.setText("0");
 
 				int tempValue = (int) Double.parseDouble(tfFilter.getText());
-				tempValue += e.getWheelRotation();
+				tempValue += (int) (e.getWheelRotation() * 1);
 				if (tempValue < 0) {
 					tempValue = 0;
 				}
-
+				tfFilter.setText(String.valueOf(tempValue));
 				if (tempValue > sFilter.getMaximum()) {
 					ChangeListener[] changeListener = sFilter.getChangeListeners();
 					sFilter.removeChangeListener(changeListener[0]);
