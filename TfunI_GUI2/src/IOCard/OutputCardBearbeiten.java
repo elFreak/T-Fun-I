@@ -53,21 +53,25 @@ public class OutputCardBearbeiten extends WindowContainer {
 		
 		if(outputPanel.traceRaw.dataValid&&!plotBearbeitenTraceStepAdded) {
 			plotBearbeiten.setSubplot(0);
+			plotBearbeitenTraceStepAdded = true;
 			plotBearbeiten.addTrace(outputPanel.traceStep);
 			plotBearbeiten.setRangeIdeal();
 		}
 		if(outputPanel.traceRaw.dataValid&&!plotBearbeitenTraceRawAdded) {
 			plotBearbeiten.setSubplot(0);
+			plotBearbeitenTraceRawAdded = true;
 			plotBearbeiten.addTrace(outputPanel.traceRaw);
 			plotBearbeiten.setRangeIdeal();
 		}
 		if(outputPanel.traceRaw.dataValid&&!plotBearbeitenTracePreprocessedAdded) {
 			plotBearbeiten.setSubplot(1);
+			plotBearbeitenTracePreprocessedAdded = true;
 			plotBearbeiten.addTrace(outputPanel.tracePreprocessed);
 			plotBearbeiten.setRangeIdeal();
 		}
 		if(outputPanel.traceMean.dataValid&&!plotBearbeitenTraceMeanAdded) {
 			plotBearbeiten.setSubplot(0);
+			plotBearbeitenTraceMeanAdded = true;
 			plotBearbeiten.addTrace(outputPanel.traceMean);
 			plotBearbeiten.setRangeIdeal();
 		}

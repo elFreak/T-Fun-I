@@ -26,11 +26,13 @@ public class OutputCardEinlesen extends WindowContainer {
 		
 		if(outputPanel.traceRaw.dataValid&&!plotEinlesenTraceRawAdded) {
 			plotEinlesen.addTrace(outputPanel.traceRaw);
+			plotEinlesenTraceRawAdded = true;
 			plotEinlesen.setRangeIdeal();
 		}
 		
 		if(outputPanel.traceRaw.dataValid&&!plotEinlesenTraceStepAdded) {
 			plotEinlesen.addTrace(outputPanel.traceStep);
+			plotEinlesenTraceStepAdded = true;
 			plotEinlesen.setRangeIdeal();
 		}
 	}

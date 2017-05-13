@@ -61,11 +61,13 @@ public class OutputCardBerechnen extends WindowContainer {
 		
 		if(outputPanel.tracePreprocessed.dataValid&&!plotBerechnenTracePreprocessedAdded) {
 			plotBerechnen.setSubplot(0);
+			plotBerechnenTracePreprocessedAdded = true;
 			plotBerechnen.addTrace(outputPanel.tracePreprocessed);
 			plotBerechnen.setRangeIdeal();
 		}
 		if(outputPanel.traceSolution.dataValid&&!plotBerechnenTraceSolutionAdded) {
 			plotBerechnen.setSubplot(0);
+			plotBerechnenTraceSolutionAdded = true;
 			plotBerechnen.addTrace(outputPanel.traceSolution);
 			plotBerechnen.setRangeIdeal();
 		}
