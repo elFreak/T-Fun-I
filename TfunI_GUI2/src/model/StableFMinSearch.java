@@ -28,9 +28,9 @@ public class StableFMinSearch {
 
 		// Berechnen:
 		for (int i = 0; i <= 4; i++) {
-			verbesserungsKoeff /= 100;
+			verbesserungsKoeff /= 10000;
 			for (int j = 0; j < ordnung + 1; j++) {
-				polySeiteLaenge[i] /= 1.5;
+				polySeiteLaenge[i] /= 2;
 			}
 			koeffizienten = berechnen(target, verbesserungsKoeff, koeffizienten.getPoint(), polySeiteLaenge);
 		}
