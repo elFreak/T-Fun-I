@@ -27,10 +27,11 @@ public class StableFMinSearch {
 																					// Compiler!
 
 		// Berechnen:
-		for (int i = 0; i <= 4; i++) {
+		for (int i = 0; i <= 2; i++) {
 			verbesserungsKoeff /= 10000;
 			for (int j = 0; j < ordnung + 1; j++) {
-				polySeiteLaenge[i] /= 2;
+				
+				polySeiteLaenge[i] /= 10;
 			}
 			koeffizienten = berechnen(target, verbesserungsKoeff, koeffizienten.getPoint(), polySeiteLaenge);
 		}
@@ -70,7 +71,7 @@ public class StableFMinSearch {
 				}
 
 				if (status[0] == OverwatchedTask.STATUS_PROBLEM_ABFRAGEN
-						&& System.currentTimeMillis() - startTime > 2000) {
+						&& System.currentTimeMillis() - startTime > 2500) {
 					problem = true;
 					StatusBar.showStatus("Abgestürzt", StatusBar.FEHLER);
 					break;

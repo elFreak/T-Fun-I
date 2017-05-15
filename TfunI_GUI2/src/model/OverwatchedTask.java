@@ -41,16 +41,31 @@ public class OverwatchedTask extends SwingWorker<Object, Integer> {
 	protected Object doInBackground() {
 		publish(1);
 		SimplexOptimizer optimizer = new SimplexOptimizer(verbesserungsKoeff, verbesserungsKoeff);
-		optimum = optimizer.optimize(new MaxEval(10000), new ObjectiveFunction(target), GoalType.MINIMIZE,
+		optimum = optimizer.optimize(new MaxEval(1000), new ObjectiveFunction(target), GoalType.MINIMIZE,
 				new InitialGuess(startWert), new NelderMeadSimplex(polySeiteLaenge));
 		publish(2);
-		optimum = optimizer.optimize(new MaxEval(10000), new ObjectiveFunction(target), GoalType.MINIMIZE,
+		verbesserungsKoeff/=2;
+		for(int i=0;i<polySeiteLaenge.length;i++){
+			polySeiteLaenge[i] = polySeiteLaenge[i]/2;
+		}
+		optimizer = new SimplexOptimizer(verbesserungsKoeff, verbesserungsKoeff);
+		optimum = optimizer.optimize(new MaxEval(1000), new ObjectiveFunction(target), GoalType.MINIMIZE,
 				new InitialGuess(optimum.getPoint()), new NelderMeadSimplex(polySeiteLaenge));
 		publish(3);
-		optimum = optimizer.optimize(new MaxEval(10000), new ObjectiveFunction(target), GoalType.MINIMIZE,
+		verbesserungsKoeff/=5;
+		for(int i=0;i<polySeiteLaenge.length;i++){
+			polySeiteLaenge[i] = polySeiteLaenge[i]/5;
+		}
+		optimizer = new SimplexOptimizer(verbesserungsKoeff, verbesserungsKoeff/5);
+		optimum = optimizer.optimize(new MaxEval(1000), new ObjectiveFunction(target), GoalType.MINIMIZE,
 				new InitialGuess(optimum.getPoint()), new NelderMeadSimplex(polySeiteLaenge));
 		publish(4);
-		optimum = optimizer.optimize(new MaxEval(10000), new ObjectiveFunction(target), GoalType.MINIMIZE,
+		verbesserungsKoeff/=10;
+		for(int i=0;i<polySeiteLaenge.length;i++){
+			polySeiteLaenge[i] = polySeiteLaenge[i]/10;
+		}
+		optimizer = new SimplexOptimizer(verbesserungsKoeff, verbesserungsKoeff/10);
+		optimum = optimizer.optimize(new MaxEval(1000), new ObjectiveFunction(target), GoalType.MINIMIZE,
 				new InitialGuess(optimum.getPoint()), new NelderMeadSimplex(polySeiteLaenge));
 		publish(5);
 		return new PointValuePair(new double[] { 0 }, 0); // nur für den
