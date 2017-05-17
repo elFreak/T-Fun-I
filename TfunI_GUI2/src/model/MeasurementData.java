@@ -1,6 +1,5 @@
 package model;
 
-
 /**
  * 
  * @author Marc de Bever
@@ -166,62 +165,64 @@ public class MeasurementData {
 		int n = 50;
 		int frontIndex = 0;
 		int tailIndex = 0;
-		double q = 0.2;
+		double q = 0.7;
 		double m = meanData[MEASUREMENTS][0];
 
 		// Automatische Erkennung der Totzeit
-		//-------------------------------------------------------------------------------------------------------
-		while (Math.abs((meanData[MEASUREMENTS][frontIndex] - m) / meanData[MEASUREMENTS][frontIndex]) < q
-				&& meanData.length >= frontIndex + n) {
+		// -------------------------------------------------------------------------------------------------------
+		while (Math.abs((meanData[MEASUREMENTS][frontIndex] - m) / meanData[MEASUREMENTS][frontIndex]) < q && n > 0) {
+			if (frontIndex + n >= meanData[MEASUREMENTS].length)
+				n = meanData[MEASUREMENTS].length - 1 - frontIndex;
+
 			m = 0;
 			for (int i = 0; i < n; i++) {
 				m += meanData[MEASUREMENTS][frontIndex + n];
 			}
 			m /= n;
 			frontIndex++;
-		}
-//		frontIndex = frontIndex - 1;
 
-//		// Abschneiden
-//		for (int i = 0; i < meanData.length - frontIndex; i++) {
-//			meanData[1][i] = meanData[1][i + frontIndex];
-//		}
-//		for (int i = 0; i < meanData.length - frontIndex; i++) {
-//			meanData[0][i] = meanData[0][i + frontIndex];
-//		}
-		
-		
+		}
+
 		// Automatische Erkennung des Endes
-		//-------------------------------------------------------------------------------------------------------
-		while (Math.abs((meanData[MEASUREMENTS][meanData.length - 1 - tailIndex] - m) / meanData[MEASUREMENTS][meanData.length - 1 - tailIndex]) < q
-				&& meanData.length >= tailIndex + n) {
+		// -------------------------------------------------------------------------------------------------------
+		q = 0.16;
+		n = 50;
+		while (Math.abs((meanData[MEASUREMENTS][meanData[MEASUREMENTS].length - 1 - tailIndex] - m)
+				/ meanData[MEASUREMENTS][meanData[MEASUREMENTS].length - 1 - tailIndex]) < q && n > 0) {
+			if (meanData[MEASUREMENTS].length - 1 - tailIndex - n < 0)
+				n = meanData[MEASUREMENTS].length - 1 - tailIndex;
+
 			m = 0;
 			for (int i = 0; i < n; i++) {
-				m += meanData[MEASUREMENTS][meanData.length - 1 - tailIndex - n];
+				m += meanData[MEASUREMENTS][meanData[MEASUREMENTS].length - 1 - tailIndex - n];
 			}
 			m /= n;
 			tailIndex++;
 		}
-//		tailIndex = tailIndex - 1;
-		
-//		// Abschneiden
-//		for (int i = 0; i < meanData.length - tailIndex; i++) {
-//			meanData[1][i] = meanData[1][i];
-//		}
-//		for (int i = 0; i < meanData.length - tailIndex; i++) {
-//			meanData[0][i] = meanData[0][i];
-//		}
-		
-		
-		// finalData aktualisieren
-		//---------------------------------------------------------------------------------------------
-				if (tailIndex <= frontIndex) 
-					tailIndex = frontIndex + 1;
-				if(tailIndex >= meanData[XAXIS].length){
-					tailIndex--;
-					frontIndex--;
-				}
-				
+
+		tailIndex = meanData[MEASUREMENTS].length - 1 - tailIndex;
+
+		// Automatische Erkennung des Offsets
+		// -------------------------------------------------------------------------------------------------------
+		int offset = 0;
+		for (int i = 0; i < frontIndex; i++) {
+			offset += meanData[MEASUREMENTS][i];
+		}
+
+		offset /= frontIndex;
+		this.offset = offset;
+
+		// Data aktualisieren
+		// ---------------------------------------------------------------------------------------------
+		this.deadTime = meanData[XAXIS][frontIndex] - stepTime;
+		this.tail = meanData[XAXIS][meanData[XAXIS].length - 1] - meanData[XAXIS][tailIndex];
+		if (tailIndex <= frontIndex)
+			tailIndex = frontIndex + 1;
+		if (tailIndex >= meanData[XAXIS].length) {
+			tailIndex--;
+			frontIndex--;
+		}
+
 		finalData = new double[meanData.length][tailIndex - frontIndex + 1];
 		for (int i = 0; i < finalData[XAXIS].length; i++) {
 			finalData[XAXIS][i] = meanData[XAXIS][i + frontIndex] - meanData[XAXIS][frontIndex];
@@ -230,10 +231,6 @@ public class MeasurementData {
 
 		model.notifyObservers(Model.NOTIFY_REASON_MEASUREMENT_CHANGED);
 	}
-
-
-
-	
 
 	/**
 	 * Erstellt einene neue Schrittantwort mit der gesetzten stepTime.
@@ -251,7 +248,7 @@ public class MeasurementData {
 				stepData[MEASUREMENTS][i] = stepHeight;
 			}
 		}
-		
+
 		updateFinalData();
 
 		model.notifyObservers(Model.NOTIFY_REASON_MEASUREMENT_CHANGED);
@@ -287,7 +284,7 @@ public class MeasurementData {
 		}
 		stepHeight = originalStepHeight;
 		stepTime = originalStepTime;
-		
+
 		updateFinalData();
 
 		model.notifyObservers(Model.NOTIFY_REASON_MEASUREMENT_CHANGED);
@@ -311,13 +308,13 @@ public class MeasurementData {
 			}
 		}
 		// finalData aktualisieren
-		if (tailIndex <= frontIndex) 
+		if (tailIndex <= frontIndex)
 			tailIndex = frontIndex + 1;
-		if(tailIndex >= meanData[XAXIS].length){
+		if (tailIndex >= meanData[XAXIS].length) {
 			tailIndex--;
 			frontIndex--;
 		}
-		
+
 		finalData = new double[meanData.length][tailIndex - frontIndex + 1];
 		for (int i = 0; i < finalData[XAXIS].length; i++) {
 			finalData[XAXIS][i] = meanData[XAXIS][i + frontIndex] - meanData[XAXIS][frontIndex];
