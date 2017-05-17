@@ -99,6 +99,10 @@ public class OutputPanel extends JPanel {
 	}
 
 	public void update(java.util.Observable obs, Object obj) {
+		if(!(obs instanceof Model)||!(obj instanceof Integer)) {
+			throw(new IllegalArgumentException());
+		}
+		
 		switch ((int) obj) {
 		case Model.NOTIFY_REASON_MEASUREMENT_CHANGED:
 			traceStep.data = ((Model) obs).measurementData.getstep();

@@ -21,6 +21,8 @@ public class StableFMinSearch {
 				new_utf[j] = utf.getPoint()[j];
 			}
 			if (i % 2 == 0) {
+				new_utf[1] = Math.sqrt(Math.sqrt((new_utf[1])));
+				new_utf[2] = (new_utf[2])/2;
 				new_utf[new_utf.length - 1] = new_utf[1];
 				new_utf[new_utf.length - 2] = new_utf[2];
 			} else {
@@ -52,15 +54,41 @@ public class StableFMinSearch {
 
 	private static PointValuePair berechneOrdnungN(Target target, int ordnung, PointValuePair startValue,
 			SwingWorkerClient client) {
-		double verbesserungsKoeff = 1e-6;
+		double verbesserungsKoeff = 1e-3;
 		double[] polySeiteLaenge = new double[ordnung + 1];
 
 		// Werte initializieren:
 		for (int i = 0; i < ordnung + 1; i++) {
 			polySeiteLaenge[i] = 0.2;
 		}
-		
-		//verbesserungsKoeff = verbesserungsKoeff / Math.pow(10, (ordnung-2)*0.5);
+
+		// verbesserungsKoeff = verbesserungsKoeff / Math.pow(10,
+		// (ordnung-2)*0.5);
+
+		switch (ordnung) {
+		case 2:
+			verbesserungsKoeff /= 10;
+			break;
+		case 4:
+			verbesserungsKoeff /= 100;
+			break;
+		case 6:
+			verbesserungsKoeff /= 1000;
+			break;
+		case 7:
+
+			break;
+		case 8:
+			verbesserungsKoeff /= 10000;
+			break;
+		case 9:
+
+			break;
+		case 10:
+			verbesserungsKoeff /= 1000000;
+			break;
+
+		}
 
 		PointValuePair koeffizienten = startValue; // nur
 													// für
@@ -69,7 +97,7 @@ public class StableFMinSearch {
 
 		// Berechnen:
 		for (int i = 0; i <= 0; i++) {
-			verbesserungsKoeff/=1;
+			verbesserungsKoeff /= 1;
 			koeffizienten = berechnen(target, verbesserungsKoeff, koeffizienten.getPoint(), polySeiteLaenge, client);
 		}
 
@@ -109,14 +137,14 @@ public class StableFMinSearch {
 				}
 
 				if (status[0] == OverwatchedTask.STATUS_PROBLEM_ABFRAGEN
-						&& System.currentTimeMillis() - startTime > 10000) {
+						&& System.currentTimeMillis() - startTime > 6000) {
 					problem = true;
 					SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
 					info.isFehler = true;
 					info.isStatus = true;
 					info.status = "Abgestürzt. Unternehme neuen Versuch.";
 					client.swingAction(info);
-					verbesserungsKoeff*=10;
+					verbesserungsKoeff *= 10;
 					break;
 				}
 
