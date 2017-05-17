@@ -91,6 +91,7 @@ public class MeasurementData {
 			}
 
 		}
+		updateFinalData();
 
 	}
 	// -------------------------------------------------------------------------------------------------------
@@ -142,6 +143,8 @@ public class MeasurementData {
 	 */
 	public void setLimits(double deadTime, double offset, double tail) {
 		this.deadTime = deadTime;
+		if (this.deadTime < 0)
+			this.deadTime = 0;
 
 		this.offset = offset;
 
@@ -162,72 +165,97 @@ public class MeasurementData {
 	 * 
 	 */
 	public void autoLimits() {
-		int n = 50;
+		int n;
 		int frontIndex = 0;
 		int tailIndex = 0;
-		double q = 0.7;
-		double m = meanData[MEASUREMENTS][0];
+		double q;
+		double m;
+		double offset;
+		double meanOffsetData[][];
+
+		// Automatische Erkennung des Offsets
+		// -------------------------------------------------------------------------------------------------------
+		n = 10;
+		offset = 0;
+		for (int i = 0; i < n; i++) {
+			offset += this.meanData[MEASUREMENTS][i];
+		}
+
+		offset /= n;
+
+		meanOffsetData = new double[this.meanData.length][this.meanData[MEASUREMENTS].length];
+		for (int i = 0; i < meanOffsetData[MEASUREMENTS].length; i++) {
+			meanOffsetData[XAXIS][i] = this.meanData[XAXIS][i];
+			meanOffsetData[MEASUREMENTS][i] = this.meanData[MEASUREMENTS][i] - offset;
+		}
 
 		// Automatische Erkennung der Totzeit
 		// -------------------------------------------------------------------------------------------------------
-		while (Math.abs((meanData[MEASUREMENTS][frontIndex] - m) / meanData[MEASUREMENTS][frontIndex]) < q && n > 0) {
-			if (frontIndex + n >= meanData[MEASUREMENTS].length)
-				n = meanData[MEASUREMENTS].length - 1 - frontIndex;
+		q = 0.9;
+		n = 10;
+		m = meanOffsetData[MEASUREMENTS][0];
+		while (Math.abs((meanOffsetData[MEASUREMENTS][frontIndex] - m) / meanOffsetData[MEASUREMENTS][frontIndex]) < q
+				&& n > 0) {
 
 			m = 0;
 			for (int i = 0; i < n; i++) {
-				m += meanData[MEASUREMENTS][frontIndex + n];
+				m += meanOffsetData[MEASUREMENTS][frontIndex + n];
 			}
 			m /= n;
 			frontIndex++;
+
+			if (frontIndex + n >= meanOffsetData[MEASUREMENTS].length)
+				n = meanOffsetData[MEASUREMENTS].length - 1 - frontIndex;
 
 		}
 
 		// Automatische Erkennung des Endes
 		// -------------------------------------------------------------------------------------------------------
-		q = 0.16;
-		n = 50;
-		while (Math.abs((meanData[MEASUREMENTS][meanData[MEASUREMENTS].length - 1 - tailIndex] - m)
-				/ meanData[MEASUREMENTS][meanData[MEASUREMENTS].length - 1 - tailIndex]) < q && n > 0) {
-			if (meanData[MEASUREMENTS].length - 1 - tailIndex - n < 0)
-				n = meanData[MEASUREMENTS].length - 1 - tailIndex;
+		q = 0.1;
+		n = 10;
+		m = meanOffsetData[MEASUREMENTS][meanOffsetData[MEASUREMENTS].length - 1];
+		while (Math
+				.abs((meanOffsetData[MEASUREMENTS][meanOffsetData[MEASUREMENTS].length - 1 - tailIndex] - m)
+						/ meanOffsetData[MEASUREMENTS][meanOffsetData[MEASUREMENTS].length - 1 - tailIndex]) < q
+				&& n > 0) {
 
 			m = 0;
 			for (int i = 0; i < n; i++) {
-				m += meanData[MEASUREMENTS][meanData[MEASUREMENTS].length - 1 - tailIndex - n];
+				m += meanOffsetData[MEASUREMENTS][meanOffsetData[MEASUREMENTS].length - 1 - tailIndex - n];
 			}
 			m /= n;
 			tailIndex++;
+			if (meanOffsetData[MEASUREMENTS].length - 1 - tailIndex - n < 0)
+				n = meanOffsetData[MEASUREMENTS].length - 1 - tailIndex;
+
 		}
 
-		tailIndex = meanData[MEASUREMENTS].length - 1 - tailIndex;
+		tailIndex = meanOffsetData[MEASUREMENTS].length - 1 - tailIndex;
 
-		// Automatische Erkennung des Offsets
-		// -------------------------------------------------------------------------------------------------------
-		int offset = 0;
-		for (int i = 0; i < frontIndex; i++) {
-			offset += meanData[MEASUREMENTS][i];
-		}
-
-		offset /= frontIndex;
-		this.offset = offset;
-
-		// Data aktualisieren
-		// ---------------------------------------------------------------------------------------------
-		this.deadTime = meanData[XAXIS][frontIndex] - stepTime;
-		this.tail = meanData[XAXIS][meanData[XAXIS].length - 1] - meanData[XAXIS][tailIndex];
 		if (tailIndex <= frontIndex)
 			tailIndex = frontIndex + 1;
-		if (tailIndex >= meanData[XAXIS].length) {
+		if (tailIndex >= meanOffsetData[XAXIS].length) {
 			tailIndex--;
 			frontIndex--;
 		}
 
-		finalData = new double[meanData.length][tailIndex - frontIndex + 1];
-		for (int i = 0; i < finalData[XAXIS].length; i++) {
-			finalData[XAXIS][i] = meanData[XAXIS][i + frontIndex] - meanData[XAXIS][frontIndex];
-			finalData[MEASUREMENTS][i] = meanData[MEASUREMENTS][i + frontIndex] - offset;
-		}
+		// Data aktualisieren
+		// ---------------------------------------------------------------------------------------------
+		this.deadTime = meanOffsetData[XAXIS][frontIndex] - stepTime;
+//		if (this.deadTime < 0)
+//			this.deadTime = 0;
+		this.tail = meanOffsetData[XAXIS][meanOffsetData[XAXIS].length - 1] - meanOffsetData[XAXIS][tailIndex];
+		this.offset = offset;
+
+		// this.finalData = new double[meanOffsetData.length][tailIndex -
+		// frontIndex + 1];
+		// for (int i = 0; i < finalData[XAXIS].length; i++) {
+		// this.finalData[XAXIS][i] = meanOffsetData[XAXIS][i + frontIndex] -
+		// meanOffsetData[XAXIS][frontIndex];
+		// this.finalData[MEASUREMENTS][i] = meanOffsetData[MEASUREMENTS][i +
+		// frontIndex];
+		// }
+		updateFinalData();
 
 		model.notifyObservers(Model.NOTIFY_REASON_MEASUREMENT_CHANGED);
 	}
