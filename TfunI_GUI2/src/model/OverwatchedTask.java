@@ -11,7 +11,7 @@ import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.NelderMeadSimplex;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizer;
 
-public class OverwatchedTask extends SwingWorker<Object, Integer> {
+public class OverwatchedTask extends SwingWorker<Object, double[]> {
 
 	private double verbesserungsKoeff;
 	private double[] startWert;
@@ -23,14 +23,17 @@ public class OverwatchedTask extends SwingWorker<Object, Integer> {
 	public static final int STATUS_IN_ARBEIT = 2;
 	public static final int STATUS_PROBLEM_ABFRAGEN = 3;
 
+	private SwingWorkerClient client;
+
 	private int[] status;
 
 	public OverwatchedTask(Target target, double verbesserungsKoeff, double[] startWert, double[] polySeiteLaenge,
-			int[] status) {
+			int[] status, SwingWorkerClient client) {
 		this.target = target;
 		this.verbesserungsKoeff = verbesserungsKoeff;
 		this.startWert = startWert;
 		this.polySeiteLaenge = polySeiteLaenge;
+		this.client = client;
 
 		this.status = status;
 		status[0] = STATUS_IN_ARBEIT;
@@ -39,43 +42,50 @@ public class OverwatchedTask extends SwingWorker<Object, Integer> {
 
 	@Override
 	protected Object doInBackground() {
-		publish(1);
-		SimplexOptimizer optimizer = new SimplexOptimizer(verbesserungsKoeff, verbesserungsKoeff);
-		optimum = optimizer.optimize(new MaxEval(1000), new ObjectiveFunction(target), GoalType.MINIMIZE,
+
+		SimplexOptimizer optimizer = new SimplexOptimizer(-verbesserungsKoeff, verbesserungsKoeff);
+		optimum = optimizer.optimize(new MaxEval(1000000), new ObjectiveFunction(target), GoalType.MINIMIZE,
 				new InitialGuess(startWert), new NelderMeadSimplex(polySeiteLaenge));
-		publish(2);
-		verbesserungsKoeff/=2;
-		for(int i=0;i<polySeiteLaenge.length;i++){
-			polySeiteLaenge[i] = polySeiteLaenge[i]/2;
+		publish(optimum.getPoint());
+
+		for (int i = 0; i < polySeiteLaenge.length; i++) {
+			polySeiteLaenge[i] = polySeiteLaenge[i] / 1.0;
 		}
-		optimizer = new SimplexOptimizer(verbesserungsKoeff, verbesserungsKoeff);
-		optimum = optimizer.optimize(new MaxEval(1000), new ObjectiveFunction(target), GoalType.MINIMIZE,
-				new InitialGuess(optimum.getPoint()), new NelderMeadSimplex(polySeiteLaenge));
-		publish(3);
-		verbesserungsKoeff/=5;
-		for(int i=0;i<polySeiteLaenge.length;i++){
-			polySeiteLaenge[i] = polySeiteLaenge[i]/5;
-		}
-		optimizer = new SimplexOptimizer(verbesserungsKoeff, verbesserungsKoeff/5);
-		optimum = optimizer.optimize(new MaxEval(1000), new ObjectiveFunction(target), GoalType.MINIMIZE,
-				new InitialGuess(optimum.getPoint()), new NelderMeadSimplex(polySeiteLaenge));
-		publish(4);
-		verbesserungsKoeff/=10;
-		for(int i=0;i<polySeiteLaenge.length;i++){
-			polySeiteLaenge[i] = polySeiteLaenge[i]/10;
-		}
-		optimizer = new SimplexOptimizer(verbesserungsKoeff, verbesserungsKoeff/10);
-		optimum = optimizer.optimize(new MaxEval(1000), new ObjectiveFunction(target), GoalType.MINIMIZE,
-				new InitialGuess(optimum.getPoint()), new NelderMeadSimplex(polySeiteLaenge));
-		publish(5);
+//		optimizer = new SimplexOptimizer(-1, verbesserungsKoeff);
+//		optimum = optimizer.optimize(new MaxEval(1000), new ObjectiveFunction(target), GoalType.MINIMIZE,
+//				new InitialGuess(optimum.getPoint()), new NelderMeadSimplex(polySeiteLaenge));
+//		publish(optimum.getPoint());
+//
+//		verbesserungsKoeff /= 5;
+//		for (int i = 0; i < polySeiteLaenge.length; i++) {
+//			polySeiteLaenge[i] = polySeiteLaenge[i] / 1.0;
+//		}
+//		optimizer = new SimplexOptimizer(-1, verbesserungsKoeff);
+//		optimum = optimizer.optimize(new MaxEval(1000), new ObjectiveFunction(target), GoalType.MINIMIZE,
+//				new InitialGuess(optimum.getPoint()), new NelderMeadSimplex(polySeiteLaenge));
+//		publish(optimum.getPoint());
+//
+//		verbesserungsKoeff /= 10;
+//		for (int i = 0; i < polySeiteLaenge.length; i++) {
+//			polySeiteLaenge[i] = polySeiteLaenge[i] / 1.0;
+//		}
+//		optimizer = new SimplexOptimizer(-1, verbesserungsKoeff);
+//		optimum = optimizer.optimize(new MaxEval(1000), new ObjectiveFunction(target), GoalType.MINIMIZE,
+//				new InitialGuess(optimum.getPoint()), new NelderMeadSimplex(polySeiteLaenge));
+//		publish(optimum.getPoint());
 		return new PointValuePair(new double[] { 0 }, 0); // nur für den
 															// Compiler!
 	}
 
 	@Override
-	protected void process(List<Integer> chunks) {
-		System.out.println("tap"+ chunks);
-		status[0]=STATUS_IN_ARBEIT;
+	protected void process(List<double[]> chunks) {
+//		System.out.println("tap" + chunks);
+		status[0] = STATUS_IN_ARBEIT;
+		SwingWorkerInfoDatatype info2 = new SwingWorkerInfoDatatype();
+		info2 = new SwingWorkerInfoDatatype();
+		info2.isUtfActuallised = true;
+		info2.utfKoeff = chunks.get(0);
+		client.swingAction(info2);
 	}
 
 	@Override

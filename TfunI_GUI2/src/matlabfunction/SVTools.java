@@ -81,6 +81,7 @@ public class SVTools {
 	}
 
 	public static final Object[] step(double[] B, double[] A, double[] t) {
+		
 
 		// Koeff. der höchste Potenz des Nenners auf 1.0 normieren:
 		B = B.clone();
@@ -88,7 +89,10 @@ public class SVTools {
 		A = A.clone();
 		A = Matlab.multiply(A, 1.0 / A[0]);
 
+		
+		
 		// 1e-12 an A anhängen und Residuen rechnen
+		
 		Object[] obj = Matlab.residue(B, Matlab.concat(A, 1e-6));
 		Complex[] R = (Complex[]) obj[0];
 		Complex[] P = (Complex[]) obj[1];
@@ -99,6 +103,8 @@ public class SVTools {
 		if (K != 0.0) {
 			h[0] = K;
 		}
+		
+		
 
 		// Schrittantwort rechnen
 		for (int i = 0; i < t.length; i++) {

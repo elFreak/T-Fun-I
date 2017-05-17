@@ -5,7 +5,7 @@ import javax.swing.SwingWorker;
 import org.apache.commons.math3.optim.PointValuePair;
 import userInterface.StatusBar;
 
-public class Approximation extends SwingWorker<Object, Integer> {
+public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> implements SwingWorkerClient {
 
 	/**
 	 * General Data:
@@ -13,6 +13,9 @@ public class Approximation extends SwingWorker<Object, Integer> {
 	private MeasurementData measurementData;
 	private Model model;
 	private double[][] solutionSignal;
+	private double[][] zwischenSignal;
+	private double[] timeNormed;
+	private double[] stepNormed;
 
 	/**
 	 * Erstellt ein Objekt welches in der Lage ist eine Übertragungsfunktion zu
@@ -37,17 +40,18 @@ public class Approximation extends SwingWorker<Object, Integer> {
 
 		// Die Zeitachse der Messwerte wird normiert um die Berechnung zu
 		// vereinfachen.
-		double[] time_normiert = scalingTime(measurementData.getFinalData())[0];
+		timeNormed = scalingTime(measurementData.getFinalData())[0];
+		stepNormed = scalingTime(measurementData.getFinalData())[1];
 
 		// Die Übertragungsfunktion und die Zusammenhänge mit den Messwerten
 		// werden definiert.
-		Target target = new Target(time_normiert, measurementData.getFinalData()[1]);
+		Target target = new Target(timeNormed, measurementData.getFinalData()[1]);
 
-		PointValuePair optimum = StableFMinSearch.fminsearch(target, 4);
-		System.out.println(""+optimum.getPoint()[0]+optimum.getPoint()[1]+optimum.getPoint()[2]+optimum.getPoint()[3]+optimum.getPoint()[4]);
-		
+		PointValuePair optimum = StableFMinSearch.fminsearch(target, 10, this);
+		// System.out.println(""+optimum.getPoint()[0]+optimum.getPoint()[1]+optimum.getPoint()[2]+optimum.getPoint()[3]+optimum.getPoint()[4]);
+
 		solutionSignal = new double[][] { measurementData.getFinalData()[0],
-				Target.omega2polstep(optimum.getPoint(), time_normiert) };
+				Target.omega2polstep(optimum.getPoint(), timeNormed) };
 	}
 
 	@Override
@@ -57,8 +61,26 @@ public class Approximation extends SwingWorker<Object, Integer> {
 	}
 
 	@Override
-	protected void process(List<Integer> arg) {
+	protected void process(List<SwingWorkerInfoDatatype> arg) {
 		super.process(arg);
+		for(int i=0;i<arg.size();i++){
+			SwingWorkerInfoDatatype info = arg.get(i);
+			if (info.isStatus) {
+				if (info.isFehler) {
+					StatusBar.showStatus(info.status, StatusBar.FEHLER);
+				} else {
+					StatusBar.showStatus(info.status, StatusBar.INFO);
+				}
+				
+			}
+			if (info.isUtfActuallised) {
+				zwischenSignal = (new double[][] { measurementData.getFinalData()[0],
+						Target.omega2polstep(info.utfKoeff, timeNormed) });
+				model.notifyObservers(Model.NOTIFY_REASON_APPROXIMATION_ZWISCHENWERT);
+				
+			}
+		}
+
 	}
 
 	@Override
@@ -76,12 +98,12 @@ public class Approximation extends SwingWorker<Object, Integer> {
 	 */
 	private static double[][] scalingTime(double[][] step_response_m) {
 		double[] t_old = step_response_m[0];
-		double scalefactor = Math.log10(t_old[t_old.length - 1]) - 1;
+		double scalefactorTime = Math.log10(t_old[t_old.length - 1]) - 1;
 		double[][] step_response_scaled_m = new double[2][step_response_m[0].length];
 		double[] t_scaled = new double[t_old.length];
 
 		for (int i = 0; i < t_old.length; i++) {
-			t_scaled[i] = t_old[i] * Math.pow(10.0, -scalefactor);
+			t_scaled[i] = t_old[i] * Math.pow(10.0, -scalefactorTime);
 			step_response_scaled_m[0][i] = t_scaled[i];
 		}
 		return step_response_scaled_m;
@@ -93,6 +115,15 @@ public class Approximation extends SwingWorker<Object, Integer> {
 
 	public void setSolutionSignal(double[][] solutionSignal) {
 		this.solutionSignal = solutionSignal;
+	}
+
+	@Override
+	public void swingAction(SwingWorkerInfoDatatype info) {
+		publish(info);
+	}
+
+	public double[][] getZwischenSignal() {
+		return zwischenSignal;
 	}
 
 }

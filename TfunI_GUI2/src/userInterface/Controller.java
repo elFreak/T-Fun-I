@@ -1,6 +1,5 @@
 package userInterface;
 
-import IOCard.OutputPanel;
 import model.Model;
 
 /**

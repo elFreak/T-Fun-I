@@ -485,6 +485,8 @@ public class Matlab {
 			K = B.p[0] / A.p[0];
 			B = B.subtract(A.multiply(K));
 		}
+		
+		
 
 		Complex[] P = A.roots();
 
@@ -509,8 +511,11 @@ public class Matlab {
 	}
 
 	public static final Complex[] roots(double[] poly) {
-		final LaguerreSolver solver = new LaguerreSolver(1e-12);
+		
+		final LaguerreSolver solver = new LaguerreSolver(1e-9);
 		double[] p = new double[poly.length];
+		
+		
 
 		// Koeffizient der höchsten Potenz durch Multiplikation mit einer
 		// Konstanten auf 1 normieren:
@@ -518,20 +523,23 @@ public class Matlab {
 		for (int i = 0; i < poly.length; i++) {
 			p[i] = poly[i] * s;
 		}
+		
+	
 
 		// Nullstellen bei Null zählen und entfernen
 		int n = 0;
 		while (p[p.length - 1 - n] <= 1e-16) {
 			n++;
 		}
+		
 		double[] pnz = new double[p.length - n];
 		for (int k = 0; k < pnz.length; k++) {
 			pnz[k] = p[k];
 		}
-
+		
 		// Normierungskonstante berechnen:
 		s = Math.pow(p[pnz.length - 1], 1.0 / (p.length - 1));
-
+		
 		// Durch [s^0 s^1 s^2 s^3 ... s^N] dividieren:
 		for (int i = 0; i < pnz.length; i++)
 			pnz[i] /= Math.pow(s, i);
@@ -543,7 +551,7 @@ public class Matlab {
 
 		// Wurzeln berechnen:
 		Complex[] r = solver.solveAllComplex(flip, 0.0);
-
+	
 		// Sortieren: Grösster Imag.-Teil kommt im RESULTAT zuerst.
 		r = sort(r);
 

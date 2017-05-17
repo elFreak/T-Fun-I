@@ -18,7 +18,9 @@ public class Target implements MultivariateFunction {
 
 	public double value(double[] variables) {
 
+		
 		double error = 0.0;
+
 		error=failuresum(step_soll, omega2polstep(variables, t));
 		this.error=Matlab.concat(this.error, error/t.length);
 		return error;
@@ -62,6 +64,7 @@ public class Target implements MultivariateFunction {
 			zaehler1[0] = zaehler1[0] * Math.abs(data[ordnung]);
 		}
 		data2 = (double[]) SVTools.step(zaehler1, nenner1, time)[0];
+		
 		return data2;
 	}
 /**
@@ -72,12 +75,25 @@ public class Target implements MultivariateFunction {
  */
 	private static double failuresum(double[] should, double[] is) {
 
+		
 		double failuresum = 0;
 
+		double max = 0;
 		for (int i = 0; i < is.length; i++) {
-			failuresum = failuresum + Math.pow(should[i] - is[i], 2);
+			//failuresum = failuresum + Math.pow(should[i] - is[i], 2);
+			failuresum = failuresum + (Math.pow(should[i] - is[i], 2));
+			if(should[i]>max) {
+				max = should[i];
+			}
 		}
+		failuresum*=1000.0;
+		failuresum/=is.length;
+		failuresum/=max;
+	
+		
 //		System.out.println(""+failuresum);
+		
+		
 	
 
 		return failuresum;

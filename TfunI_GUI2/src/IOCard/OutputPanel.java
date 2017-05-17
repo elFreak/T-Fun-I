@@ -28,6 +28,7 @@ public class OutputPanel extends JPanel {
 	public Trace tracePreprocessed;
 	public Trace traceSolution;
 	public Trace traceMean;
+	public Trace traceZwischenResultat;
 
 	/**
 	 * Cards:
@@ -61,6 +62,9 @@ public class OutputPanel extends JPanel {
 		traceMean = new Trace();
 		traceMean.usePreferedColor = true;
 		traceMean.preferedColor = GlobalSettings.colorTraceOrange;
+		traceZwischenResultat = new Trace();
+		traceZwischenResultat.usePreferedColor = true;
+		traceZwischenResultat.preferedColor = GlobalSettings.colorTracePink;
 
 		// Init Cards:
 		cardEinlesen = new OutputCardEinlesen(this);
@@ -95,7 +99,6 @@ public class OutputPanel extends JPanel {
 	}
 
 	public void update(java.util.Observable obs, Object obj) {
-
 		switch ((int) obj) {
 		case Model.NOTIFY_REASON_MEASUREMENT_CHANGED:
 			traceStep.data = ((Model) obs).measurementData.getstep();
@@ -110,10 +113,18 @@ public class OutputPanel extends JPanel {
 		case Model.NOTIFY_REASON_APPROXIMATION_DONE:
 			traceSolution.data = ((Model) obs).approximation.getSolutionSignal();
 			traceSolution.dataValid = true;
+			
+			traceZwischenResultat.dataValid = false;
+			break;
+		case Model.NOTIFY_REASON_APPROXIMATION_ZWISCHENWERT:
+			traceZwischenResultat.data = ((Model) obs).approximation.getZwischenSignal();
+			traceZwischenResultat.dataValid = true;
+			
 			break;
 		}
 
 		cardEinlesen.update(obs, obj);
 		cardBearbeiten.update(obs, obj);
+		cardBerechnen.update(obs, obj);
 	}
 }
