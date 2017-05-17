@@ -37,51 +37,29 @@ public class OverwatchedTask extends SwingWorker<Object, double[]> {
 
 		this.status = status;
 		status[0] = STATUS_IN_ARBEIT;
-		
-		optimum = new PointValuePair(startWert,0);
+
+		optimum = new PointValuePair(startWert, 0);
 
 	}
 
 	@Override
 	protected Object doInBackground() {
-		publish(optimum.getPoint());
+		// publish(optimum.getPoint());
 		SimplexOptimizer optimizer = new SimplexOptimizer(verbesserungsKoeff, verbesserungsKoeff);
-		optimum = optimizer.optimize(new MaxEval(1000000), new ObjectiveFunction(target), GoalType.MINIMIZE,
+		optimum = optimizer.optimize(new MaxEval(20000), new ObjectiveFunction(target), GoalType.MINIMIZE,
 				new InitialGuess(startWert), new NelderMeadSimplex(polySeiteLaenge));
-		publish(optimum.getPoint());
 
-		for (int i = 0; i < polySeiteLaenge.length; i++) {
-			polySeiteLaenge[i] = polySeiteLaenge[i] / 1.0;
+		if (isCancelled() == false) {
+			publish(optimum.getPoint());
 		}
-//		optimizer = new SimplexOptimizer(-1, verbesserungsKoeff);
-//		optimum = optimizer.optimize(new MaxEval(1000), new ObjectiveFunction(target), GoalType.MINIMIZE,
-//				new InitialGuess(optimum.getPoint()), new NelderMeadSimplex(polySeiteLaenge));
-//		publish(optimum.getPoint());
-//
-//		verbesserungsKoeff /= 5;
-//		for (int i = 0; i < polySeiteLaenge.length; i++) {
-//			polySeiteLaenge[i] = polySeiteLaenge[i] / 1.0;
-//		}
-//		optimizer = new SimplexOptimizer(-1, verbesserungsKoeff);
-//		optimum = optimizer.optimize(new MaxEval(1000), new ObjectiveFunction(target), GoalType.MINIMIZE,
-//				new InitialGuess(optimum.getPoint()), new NelderMeadSimplex(polySeiteLaenge));
-//		publish(optimum.getPoint());
-//
-//		verbesserungsKoeff /= 10;
-//		for (int i = 0; i < polySeiteLaenge.length; i++) {
-//			polySeiteLaenge[i] = polySeiteLaenge[i] / 1.0;
-//		}
-//		optimizer = new SimplexOptimizer(-1, verbesserungsKoeff);
-//		optimum = optimizer.optimize(new MaxEval(1000), new ObjectiveFunction(target), GoalType.MINIMIZE,
-//				new InitialGuess(optimum.getPoint()), new NelderMeadSimplex(polySeiteLaenge));
-//		publish(optimum.getPoint());
+
 		return new PointValuePair(new double[] { 0 }, 0); // nur für den
 															// Compiler!
 	}
 
 	@Override
 	protected void process(List<double[]> chunks) {
-//		System.out.println("tap" + chunks);
+		// System.out.println("tap" + chunks);
 		status[0] = STATUS_IN_ARBEIT;
 		SwingWorkerInfoDatatype info2 = new SwingWorkerInfoDatatype();
 		info2 = new SwingWorkerInfoDatatype();
