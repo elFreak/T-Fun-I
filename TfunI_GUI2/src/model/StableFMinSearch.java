@@ -22,7 +22,7 @@ public class StableFMinSearch {
 			}
 			if (i % 2 == 0) {
 				new_utf[1] = Math.sqrt(Math.sqrt((new_utf[1])));
-				new_utf[2] = (new_utf[2])/2;
+				new_utf[2] = (new_utf[2]) / 4;
 				new_utf[new_utf.length - 1] = new_utf[1];
 				new_utf[new_utf.length - 2] = new_utf[2];
 			} else {
@@ -38,7 +38,12 @@ public class StableFMinSearch {
 
 			utf = new PointValuePair(new_utf, 0);
 
-			utf = berechneOrdnungN(target, i, utf, client);
+			if (i == ordnung) {
+				utf = berechneOrdnungN(target, i, utf, client, 2);
+			} else {
+				utf = berechneOrdnungN(target, i, utf, client, 0);
+			}
+			
 
 			SwingWorkerInfoDatatype info1 = new SwingWorkerInfoDatatype();
 			info1.isStatus = true;
@@ -53,7 +58,7 @@ public class StableFMinSearch {
 	}
 
 	private static PointValuePair berechneOrdnungN(Target target, int ordnung, PointValuePair startValue,
-			SwingWorkerClient client) {
+			SwingWorkerClient client, int accuracy) {
 		double verbesserungsKoeff = 1e-3;
 		double[] polySeiteLaenge = new double[ordnung + 1];
 
@@ -96,9 +101,17 @@ public class StableFMinSearch {
 													// Compiler!
 
 		// Berechnen:
-		for (int i = 0; i <= 0; i++) {
-			verbesserungsKoeff /= 1;
+		for (int i = 0; i <= accuracy; i++) {
 			koeffizienten = berechnen(target, verbesserungsKoeff, koeffizienten.getPoint(), polySeiteLaenge, client);
+			verbesserungsKoeff /= 5;
+			for(int j=0;j<polySeiteLaenge.length;j++) {
+				//polySeiteLaenge[j] /= 1.2;
+			}
+			SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
+			info.isStatus = true;
+			info.isFehler = false;
+			info.status = "Signal verbessert. Durchgang: "+(i+1)+".";
+			client.swingAction(info);
 		}
 
 		return koeffizienten;
@@ -137,14 +150,15 @@ public class StableFMinSearch {
 				}
 
 				if (status[0] == OverwatchedTask.STATUS_PROBLEM_ABFRAGEN
-						&& System.currentTimeMillis() - startTime > 6000) {
+						&& System.currentTimeMillis() - startTime > 10000) {
+					overwatchedTask.cancel(true);
 					problem = true;
 					SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
 					info.isFehler = true;
 					info.isStatus = true;
 					info.status = "Abgestürzt. Unternehme neuen Versuch.";
 					client.swingAction(info);
-					verbesserungsKoeff *= 10;
+					verbesserungsKoeff *= 1000;
 					break;
 				}
 
