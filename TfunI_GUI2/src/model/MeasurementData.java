@@ -235,7 +235,7 @@ public class MeasurementData {
 		// Totzeit bestimmen
 
 		for (int i = 0; i < meanOffsetData[MEASUREMENTS].length; i++) {
-			if (meanOffsetData[MEASUREMENTS][i] < noise * 0.75 + delta * 0.01)
+			if (Math.abs(meanOffsetData[MEASUREMENTS][i]) < noise * 0.75 + delta * 0.01)
 				frontIndex++;
 			else
 				break;
@@ -280,7 +280,7 @@ public class MeasurementData {
 		// tail bestimmen
 
 		for (int i = 0; i < meanOffsetData[MEASUREMENTS].length; i++) {
-			if (meanOffsetData[MEASUREMENTS][meanOffsetData[MEASUREMENTS].length - 1 - i] - end < noise * 0.75
+			if (Math.abs(meanOffsetData[MEASUREMENTS][meanOffsetData[MEASUREMENTS].length - 1 - i] - end) < noise * 0.75
 					+ delta * 0.01)
 				tailIndex++;
 			else
