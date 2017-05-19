@@ -29,18 +29,17 @@ public class MeasurementData {
 	private double originalStepHeight = 1;
 	private double stepData[][];
 	private double originalStep[][];
-	private double n = 0;
 	// -------------------------------------------------------------------------------------------------------
 
 	// Konstruktor
 	// -------------------------------------------------------------------------------------------------------
 	/**
-	 * Speichert die übergebenen Daten in die entsprechenden Attribute.
+	 * Initialisiert Attribute.
 	 * 
 	 * @param model
 	 * @param data
-	 *            data[0] = x-axis(time), data[1] = measurements(measurement
-	 *            values), data[3] = step(step response values)
+	 *            data[0] = X-AXIS(time), data[1] = MEASUREMENTS(measurement
+	 *            values), data[3] = STEP(step response values)
 	 * @throws IllegalArgumentException
 	 */
 	public MeasurementData(Model model, double data[][]) throws IllegalArgumentException {
@@ -50,7 +49,7 @@ public class MeasurementData {
 		if (data.length > 3 || data.length < 1 || data[0].length < 1)
 			throw new IllegalArgumentException(data.length + " " + data[1].length);
 
-		// update data
+		// update attributes
 		rawData = new double[2][data[XAXIS].length];
 		meanData = new double[2][data[XAXIS].length];
 		finalData = new double[2][data[XAXIS].length];
@@ -68,7 +67,7 @@ public class MeasurementData {
 			finalData[MEASUREMENTS][i] = data[MEASUREMENTS][i];
 
 			// Sprung berechnen
-			// Wenn Sprung voranden
+			// Wenn Sprung vorhanden
 			if (data.length == 3) {
 				stepData[MEASUREMENTS][i] = data[STEP][i];
 				originalStep[MEASUREMENTS][i] = data[STEP][i];
@@ -100,8 +99,8 @@ public class MeasurementData {
 	// -------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Methode um mit dem Mittelwert zu filtern. Mit dem Parameter n kann man
-	 * bestimmen über wie viele Werte gemittelt wird.
+	 * Gleitender Mittelwert der Daten berechnen und in meanData speichern.
+	 * Parameter n bestimmt über wie viele Werte gemittelt wird.
 	 * 
 	 * @param n
 	 */
@@ -134,8 +133,7 @@ public class MeasurementData {
 	}
 
 	/**
-	 * Setzt den Rahmen. Setzt die jeweilige Parameter. Und aktualisiert
-	 * finalData
+	 * Setzt die jeweilige Parameter. Und aktualisiert finalData
 	 * 
 	 * @param deadTime
 	 * @param offset
@@ -148,7 +146,7 @@ public class MeasurementData {
 
 		this.offset = offset;
 
-		// tail vom hintersten Datenpunkt aus
+		// tail vom hintersten Datenpunkt aus gemessen.
 		if (tail > meanData[XAXIS][meanData[XAXIS].length - 1])
 			this.tail = 0;
 		else
@@ -160,16 +158,14 @@ public class MeasurementData {
 	}
 
 	/**
-	 * Setzt die jeweiligen Parameter automatisch. Und aktualisiert die
-	 * jeweiligen Daten
+	 * Setzt den Rahmen automatisch. Und aktualisiert die jeweiligen Daten
 	 * 
 	 */
 	public void autoLimits() {
 		int n;
+		double delta;
 		int frontIndex = 0;
 		int tailIndex = 0;
-		// double q;
-		// double m;
 		double offset;
 		double meanOffsetData[][];
 
@@ -213,7 +209,7 @@ public class MeasurementData {
 				iMaxD = i;
 		}
 
-		double delta = Math.abs(meanOffsetData[MEASUREMENTS][iMaxD]) > Math.abs(meanOffsetData[MEASUREMENTS][iMinD])
+		delta = Math.abs(meanOffsetData[MEASUREMENTS][iMaxD]) > Math.abs(meanOffsetData[MEASUREMENTS][iMinD])
 				? Math.abs(meanOffsetData[MEASUREMENTS][iMaxD]) : Math.abs(meanOffsetData[MEASUREMENTS][iMinD]);
 
 		// noise bestimmen
@@ -242,23 +238,6 @@ public class MeasurementData {
 
 		}
 
-		// m = meanOffsetData[MEASUREMENTS][0];
-
-		// while (Math.abs((meanOffsetData[MEASUREMENTS][frontIndex] - m) /
-		// delta) < q && n > 0) {
-		//
-		// m = 0;
-		// for (int i = 0; i < n; i++) {
-		// m += meanOffsetData[MEASUREMENTS][frontIndex + n];
-		// }
-		// m /= n;
-		// frontIndex++;
-		//
-		// if (frontIndex + n >= meanOffsetData[MEASUREMENTS].length)
-		// n = meanOffsetData[MEASUREMENTS].length - 1 - frontIndex;
-		//
-		// }
-
 		// Automatische Erkennung des Endes
 		// -------------------------------------------------------------------------------------------------------
 		// delta bestimmen
@@ -273,10 +252,6 @@ public class MeasurementData {
 				.abs(meanOffsetData[MEASUREMENTS][iMinD] - end) ? Math.abs(meanOffsetData[MEASUREMENTS][iMaxD] - end)
 						: Math.abs(meanOffsetData[MEASUREMENTS][iMinD] - end);
 
-		// // q bestimmen
-		//
-		// q = delta / noise;
-
 		// tail bestimmen
 
 		for (int i = 0; i < meanOffsetData[MEASUREMENTS].length; i++) {
@@ -287,26 +262,6 @@ public class MeasurementData {
 				break;
 
 		}
-		// m = meanOffsetData[MEASUREMENTS][meanOffsetData[MEASUREMENTS].length
-		// - 1];
-		// while (Math
-		// .abs((meanOffsetData[MEASUREMENTS][meanOffsetData[MEASUREMENTS].length
-		// - 1 - tailIndex] - m)
-		// / meanOffsetData[MEASUREMENTS][meanOffsetData[MEASUREMENTS].length -
-		// 1 - tailIndex]) < q
-		// && n > 0) {
-		//
-		// m = 0;
-		// for (int i = 0; i < n; i++) {
-		// m += meanOffsetData[MEASUREMENTS][meanOffsetData[MEASUREMENTS].length
-		// - 1 - tailIndex - n];
-		// }
-		// m /= n;
-		// tailIndex++;
-		// if (meanOffsetData[MEASUREMENTS].length - 1 - tailIndex - n < 0)
-		// n = meanOffsetData[MEASUREMENTS].length - 1 - tailIndex;
-		//
-		// }
 
 		tailIndex = meanOffsetData[MEASUREMENTS].length - 1 - tailIndex;
 
@@ -424,7 +379,7 @@ public class MeasurementData {
 	/**
 	 * Gibt die Rohdaten zurück.
 	 * 
-	 * @return The raw data; rawData[0][]: Measurement time (t), rawData[1][]:
+	 * @return rawdata rawData[0][]: Measurement time (t), rawData[1][]:
 	 *         measurement values (y)
 	 */
 	public double[][] getRawData() {
@@ -487,7 +442,7 @@ public class MeasurementData {
 	}
 
 	/**
-	 * Gibt die länge des uninteresanten Endes zurück.
+	 * Gibt die Länge des uninteresanten Endes zurück.
 	 * 
 	 * @return tail
 	 */

@@ -9,7 +9,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class DataRead {
 	public static double[][] csvread() {
-		JFileChooser chooser = new JFileChooser();
+		JFileChooser chooser = new JFileChooser(new File(".\\"));
 		BufferedReader eingabeDatei = null;
 		File f = null;
 		double[][] data = null;
