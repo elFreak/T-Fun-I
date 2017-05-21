@@ -1,4 +1,4 @@
-package JavaPlot;
+package userInterface.JavaPlot;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -14,12 +14,11 @@ import java.awt.geom.Line2D;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
-import JavaPlot.Trace;
 import projectT_Fun_I.GlobalSettings;
+import userInterface.IOCard.OutputCardBearbeiten;
+import userInterface.JavaPlot.Trace;
 
 import javax.swing.JPanel;
-
-import IOCard.OutputCardBearbeiten;
 
 public class Subplot extends JPanel implements MouseMotionListener, MouseListener {
 	private static final long serialVersionUID = 1L;

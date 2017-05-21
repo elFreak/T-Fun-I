@@ -1,10 +1,10 @@
-package IOCard;
+package userInterface.IOCard;
 
-import JavaPlot.Plot;
-import JavaPlot.Slider;
 import model.Model;
 import userInterface.Controller;
 import userInterface.WindowContainer;
+import userInterface.JavaPlot.Plot;
+import userInterface.JavaPlot.Slider;
 
 public class OutputCardBearbeiten extends WindowContainer {
 	private static final long serialVersionUID = 1L;

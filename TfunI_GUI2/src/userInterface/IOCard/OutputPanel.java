@@ -1,15 +1,15 @@
-package IOCard;
+package userInterface.IOCard;
 
 import java.awt.CardLayout;
 
 import javax.swing.JPanel;
 
-import JavaPlot.Trace;
 import model.Model;
 import projectT_Fun_I.GlobalSettings;
 import projectT_Fun_I.Utility;
 import userInterface.Controller;
 import userInterface.MyBorderFactory;
+import userInterface.JavaPlot.Trace;
 
 public class OutputPanel extends JPanel {
 	private static final long serialVersionUID = 1L;

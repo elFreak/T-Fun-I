@@ -1,4 +1,4 @@
-package IOCard;
+package userInterface.IOCard;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
