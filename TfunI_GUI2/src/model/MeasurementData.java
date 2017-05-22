@@ -22,25 +22,24 @@ public class MeasurementData {
 
 	private double deadTime = 0;
 	private double offset = 0;
-	private double tail;
+	private double tail = 0;
 	private double stepTime = 0;
 	private double originalStepTime = 0;
 	private double stepHeight = 1;
 	private double originalStepHeight = 1;
 	private double stepData[][];
 	private double originalStep[][];
-	private double n = 0;
 	// -------------------------------------------------------------------------------------------------------
 
 	// Konstruktor
 	// -------------------------------------------------------------------------------------------------------
 	/**
-	 * Speichert die übergebenen Daten in die entsprechenden Attribute.
+	 * Initialisiert Attribute.
 	 * 
 	 * @param model
 	 * @param data
-	 *            data[0] = x-axis(time), data[1] = measurements(measurement
-	 *            values), data[3] = step(step response values)
+	 *            data[0] = X-AXIS(time), data[1] = MEASUREMENTS(measurement
+	 *            values), data[3] = STEP(step response values)
 	 * @throws IllegalArgumentException
 	 */
 	public MeasurementData(Model model, double data[][]) throws IllegalArgumentException {
@@ -50,7 +49,7 @@ public class MeasurementData {
 		if (data.length > 3 || data.length < 1 || data[0].length < 1)
 			throw new IllegalArgumentException(data.length + " " + data[1].length);
 
-		// update data
+		// update attributes
 		rawData = new double[2][data[XAXIS].length];
 		meanData = new double[2][data[XAXIS].length];
 		finalData = new double[2][data[XAXIS].length];
@@ -68,7 +67,7 @@ public class MeasurementData {
 			finalData[MEASUREMENTS][i] = data[MEASUREMENTS][i];
 
 			// Sprung berechnen
-			// Wenn Sprung voranden
+			// Wenn Sprung vorhanden
 			if (data.length == 3) {
 				stepData[MEASUREMENTS][i] = data[STEP][i];
 				originalStep[MEASUREMENTS][i] = data[STEP][i];
@@ -91,6 +90,7 @@ public class MeasurementData {
 			}
 
 		}
+		updateFinalData();
 
 	}
 	// -------------------------------------------------------------------------------------------------------
@@ -99,8 +99,8 @@ public class MeasurementData {
 	// -------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Methode um mit dem Mittelwert zu filtern. Mit dem Parameter n kann man
-	 * bestimmen über wie viele Werte gemittelt wird.
+	 * Gleitender Mittelwert der Daten berechnen und in meanData speichern.
+	 * Parameter n bestimmt über wie viele Werte gemittelt wird.
 	 * 
 	 * @param n
 	 */
@@ -133,8 +133,7 @@ public class MeasurementData {
 	}
 
 	/**
-	 * Setzt den Rahmen. Setzt die jeweilige Parameter. Und aktualisiert
-	 * finalData
+	 * Setzt die jeweilige Parameter. Und aktualisiert finalData
 	 * 
 	 * @param deadTime
 	 * @param offset
@@ -142,10 +141,12 @@ public class MeasurementData {
 	 */
 	public void setLimits(double deadTime, double offset, double tail) {
 		this.deadTime = deadTime;
+		if (this.deadTime < 0)
+			this.deadTime = 0;
 
 		this.offset = offset;
 
-		// tail vom hintersten Datenpunkt aus
+		// tail vom hintersten Datenpunkt aus gemessen.
 		if (tail > meanData[XAXIS][meanData[XAXIS].length - 1])
 			this.tail = 0;
 		else
@@ -157,77 +158,129 @@ public class MeasurementData {
 	}
 
 	/**
-	 * Setzt die jeweiligen Parameter automatisch. Und aktualisiert die
-	 * jeweiligen Daten
+	 * Setzt den Rahmen automatisch. Und aktualisiert die jeweiligen Daten
 	 * 
 	 */
 	public void autoLimits() {
-		int n = 50;
+		int n;
+		double delta;
 		int frontIndex = 0;
 		int tailIndex = 0;
-		double q = 0.4;
-		double m = meanData[MEASUREMENTS][0];
+		double offset;
+		double meanOffsetData[][];
+
+		// n bestimmen
+		n = 0;
+		for (int i = 0; i < this.meanData[XAXIS].length - 1; i++) {
+			if (this.meanData[XAXIS][n] <= this.meanData[XAXIS][this.meanData[XAXIS].length - 1] / 100)
+				n++;
+			else
+				break;
+		}
+		n = n < 5 ? 5 : n;
+
+		// Automatische Erkennung des Offsets
+		// -------------------------------------------------------------------------------------------------------
+		offset = 0;
+		for (int i = 0; i < n; i++) {
+			offset += this.meanData[MEASUREMENTS][i];
+		}
+
+		offset /= n;
+
+		meanOffsetData = new double[this.meanData.length][this.meanData[MEASUREMENTS].length];
+		for (int i = 0; i < meanOffsetData[MEASUREMENTS].length; i++) {
+			meanOffsetData[XAXIS][i] = this.meanData[XAXIS][i];
+			meanOffsetData[MEASUREMENTS][i] = this.meanData[MEASUREMENTS][i] - offset;
+		}
 
 		// Automatische Erkennung der Totzeit
 		// -------------------------------------------------------------------------------------------------------
-		while (Math.abs((meanData[MEASUREMENTS][frontIndex] - m) / meanData[MEASUREMENTS][frontIndex]) < q && n > 0) {
-			if (frontIndex + n >= meanData[MEASUREMENTS].length)
-				n = meanData[MEASUREMENTS].length - 1 - frontIndex;
 
-			m = 0;
-			for (int i = 0; i < n; i++) {
-				m += meanData[MEASUREMENTS][frontIndex + n];
-			}
-			m /= n;
-			frontIndex++;
+		// delta bestimmen
+		int iMinD = 0;
+		for (int i = 1; i < meanOffsetData[MEASUREMENTS].length; i++) {
+			if (meanOffsetData[MEASUREMENTS][i] < meanOffsetData[MEASUREMENTS][iMinD])
+				iMinD = i;
+		}
+		int iMaxD = 0;
+		for (int i = 1; i < meanOffsetData[MEASUREMENTS].length; i++) {
+			if (meanOffsetData[MEASUREMENTS][i] > meanOffsetData[MEASUREMENTS][iMaxD])
+				iMaxD = i;
+		}
+
+		delta = Math.abs(meanOffsetData[MEASUREMENTS][iMaxD]) > Math.abs(meanOffsetData[MEASUREMENTS][iMinD])
+				? Math.abs(meanOffsetData[MEASUREMENTS][iMaxD]) : Math.abs(meanOffsetData[MEASUREMENTS][iMinD]);
+
+		// noise bestimmen
+		int iMinN = 0;
+		for (int i = 1; i < n; i++) {
+			if (meanOffsetData[MEASUREMENTS][i] < meanOffsetData[MEASUREMENTS][iMinN])
+				iMinN = i;
+		}
+		int iMaxN = 0;
+		for (int i = 1; i < n; i++) {
+			if (meanOffsetData[MEASUREMENTS][i] > meanOffsetData[MEASUREMENTS][iMaxN])
+				iMaxN = i;
+		}
+
+		double noise = Math.abs(meanOffsetData[MEASUREMENTS][iMaxN] - meanOffsetData[MEASUREMENTS][iMinN]);
+
+		// q = delta / noise;
+
+		// Totzeit bestimmen
+
+		for (int i = 0; i < meanOffsetData[MEASUREMENTS].length; i++) {
+			if (Math.abs(meanOffsetData[MEASUREMENTS][i]) < noise * 0.75 + delta * 0.01)
+				frontIndex++;
+			else
+				break;
 
 		}
 
 		// Automatische Erkennung des Endes
 		// -------------------------------------------------------------------------------------------------------
-		q = 0.16;
-		n = 50;
-		while (Math.abs((meanData[MEASUREMENTS][meanData[MEASUREMENTS].length - 1 - tailIndex] - m)
-				/ meanData[MEASUREMENTS][meanData[MEASUREMENTS].length - 1 - tailIndex]) < q && n > 0) {
-			if (meanData[MEASUREMENTS].length - 1 - tailIndex - n < 0)
-				n = meanData[MEASUREMENTS].length - 1 - tailIndex;
-
-			m = 0;
-			for (int i = 0; i < n; i++) {
-				m += meanData[MEASUREMENTS][meanData[MEASUREMENTS].length - 1 - tailIndex - n];
-			}
-			m /= n;
-			tailIndex++;
+		// delta bestimmen
+		double end = 0;
+		for (int i = 0; i < n; i++) {
+			end += meanOffsetData[MEASUREMENTS][meanOffsetData[MEASUREMENTS].length - 1 - i];
 		}
 
-		tailIndex = meanData[MEASUREMENTS].length - 1 - tailIndex;
+		end /= n;
 
-		// Automatische Erkennung des Offsets
-		// -------------------------------------------------------------------------------------------------------
-		int offset = 0;
-		for (int i = 0; i < frontIndex; i++) {
-			offset += meanData[MEASUREMENTS][i];
+		delta = Math.abs(meanOffsetData[MEASUREMENTS][iMaxD] - end) > Math
+				.abs(meanOffsetData[MEASUREMENTS][iMinD] - end) ? Math.abs(meanOffsetData[MEASUREMENTS][iMaxD] - end)
+						: Math.abs(meanOffsetData[MEASUREMENTS][iMinD] - end);
+
+		// tail bestimmen
+
+		for (int i = 0; i < meanOffsetData[MEASUREMENTS].length; i++) {
+			if (Math.abs(meanOffsetData[MEASUREMENTS][meanOffsetData[MEASUREMENTS].length - 1 - i] - end) < noise * 0.75
+					+ delta * 0.01)
+				tailIndex++;
+			else
+				break;
+
 		}
 
-		offset /= frontIndex;
-		this.offset = offset;
+		tailIndex = meanOffsetData[MEASUREMENTS].length - 1 - tailIndex;
 
-		// Data aktualisieren
-		// ---------------------------------------------------------------------------------------------
-		this.deadTime = meanData[XAXIS][frontIndex] - stepTime;
-		this.tail = meanData[XAXIS][meanData[XAXIS].length - 1] - meanData[XAXIS][tailIndex];
 		if (tailIndex <= frontIndex)
 			tailIndex = frontIndex + 1;
-		if (tailIndex >= meanData[XAXIS].length) {
+		if (tailIndex >= meanOffsetData[XAXIS].length) {
 			tailIndex--;
 			frontIndex--;
 		}
 
-		finalData = new double[meanData.length][tailIndex - frontIndex + 1];
-		for (int i = 0; i < finalData[XAXIS].length; i++) {
-			finalData[XAXIS][i] = meanData[XAXIS][i + frontIndex] - meanData[XAXIS][frontIndex];
-			finalData[MEASUREMENTS][i] = meanData[MEASUREMENTS][i + frontIndex] - offset;
-		}
+		// Data aktualisieren
+		// ---------------------------------------------------------------------------------------------
+		this.deadTime = meanOffsetData[XAXIS][frontIndex] - stepTime;
+		if (this.deadTime < 0)
+			this.deadTime = 0;
+		this.tail = meanOffsetData[XAXIS][meanOffsetData[XAXIS].length - 1] - meanOffsetData[XAXIS][tailIndex];
+		this.offset = offset;
+
+		updateFinalData();
 
 		model.notifyObservers(Model.NOTIFY_REASON_MEASUREMENT_CHANGED);
 	}
@@ -290,9 +343,6 @@ public class MeasurementData {
 		model.notifyObservers(Model.NOTIFY_REASON_MEASUREMENT_CHANGED);
 	}
 
-	/**
-	 * Aktualisiert finalData aus den gemittelten Daten und dem Rahmen.
-	 */
 	private void updateFinalData() {
 		int frontIndex = 0;
 		int tailIndex = 0;
@@ -329,7 +379,7 @@ public class MeasurementData {
 	/**
 	 * Gibt die Rohdaten zurück.
 	 * 
-	 * @return The raw data; rawData[0][]: Measurement time (t), rawData[1][]:
+	 * @return rawdata rawData[0][]: Measurement time (t), rawData[1][]:
 	 *         measurement values (y)
 	 */
 	public double[][] getRawData() {
@@ -392,7 +442,7 @@ public class MeasurementData {
 	}
 
 	/**
-	 * Gibt die länge des uninteresanten Endes zurück.
+	 * Gibt die Länge des uninteresanten Endes zurück.
 	 * 
 	 * @return tail
 	 */
