@@ -1,7 +1,7 @@
-package IOCard;
+package userInterface.IOCard;
 
-import JavaPlot.Plot;
 import userInterface.WindowContainer;
+import userInterface.JavaPlot.Plot;
 
 public class OutputCardEinlesen extends WindowContainer {
 	private static final long serialVersionUID = 1L;

@@ -1,4 +1,4 @@
-package IOCard;
+package userInterface.IOCard;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -7,10 +7,10 @@ import java.awt.Insets;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import JavaPlot.Plot;
 import projectT_Fun_I.GlobalSettings;
 import userInterface.MyBorderFactory;
 import userInterface.WindowContainer;
+import userInterface.JavaPlot.Plot;
 
 public class OutputCardBerechnen extends WindowContainer {
 	private static final long serialVersionUID = 1L;

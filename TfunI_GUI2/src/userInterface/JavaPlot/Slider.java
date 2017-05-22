@@ -1,4 +1,4 @@
-package JavaPlot;
+package userInterface.JavaPlot;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics;

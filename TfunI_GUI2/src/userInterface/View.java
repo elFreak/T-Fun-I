@@ -10,10 +10,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
-import IOCard.InputPanel;
-import IOCard.OutputPanel;
 import projectT_Fun_I.GlobalSettings;
 import projectT_Fun_I.Utility;
+import userInterface.IOCard.InputPanel;
+import userInterface.IOCard.OutputPanel;
 
 public class View extends JPanel implements Observer {
 	private static final long serialVersionUID = 1L;
