@@ -165,7 +165,7 @@ public class MeasurementData {
 		int n = 50;
 		int frontIndex = 0;
 		int tailIndex = 0;
-		double q = 0.7;
+		double q = 0.4;
 		double m = meanData[MEASUREMENTS][0];
 
 		// Automatische Erkennung der Totzeit

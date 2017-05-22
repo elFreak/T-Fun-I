@@ -44,7 +44,6 @@ public class OverwatchedTask extends SwingWorker<Object, double[]> {
 
 	@Override
 	protected Object doInBackground() {
-		// publish(optimum.getPoint());
 		SimplexOptimizer optimizer = new SimplexOptimizer(verbesserungsKoeff, verbesserungsKoeff);
 		optimum = optimizer.optimize(new MaxEval(20000), new ObjectiveFunction(target), GoalType.MINIMIZE,
 				new InitialGuess(startWert), new NelderMeadSimplex(polySeiteLaenge));

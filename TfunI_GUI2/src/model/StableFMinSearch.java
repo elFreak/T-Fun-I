@@ -20,6 +20,7 @@ public class StableFMinSearch {
 			for (int j = 0; j < utf.getPoint().length; j++) {
 				new_utf[j] = utf.getPoint()[j];
 			}
+			
 			if (i % 2 == 0) {
 				new_utf[1] = Math.sqrt(Math.sqrt((new_utf[1])));
 				new_utf[2] = (new_utf[2]) / 4;

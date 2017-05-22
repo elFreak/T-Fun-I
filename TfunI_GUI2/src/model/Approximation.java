@@ -45,7 +45,7 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 
 		// Die Übertragungsfunktion und die Zusammenhänge mit den Messwerten
 		// werden definiert.
-		Target target = new Target(timeNormed, measurementData.getFinalData()[1]);
+		Target target = new Target(timeNormed, stepNormed);
 
 		PointValuePair optimum = StableFMinSearch.fminsearch(target, 10, this);
 		// System.out.println(""+optimum.getPoint()[0]+optimum.getPoint()[1]+optimum.getPoint()[2]+optimum.getPoint()[3]+optimum.getPoint()[4]);
@@ -99,12 +99,11 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 	private static double[][] scalingTime(double[][] step_response_m) {
 		double[] t_old = step_response_m[0];
 		double scalefactorTime = Math.log10(t_old[t_old.length - 1]) - 1;
-		double[][] step_response_scaled_m = new double[2][step_response_m[0].length];
-		double[] t_scaled = new double[t_old.length];
+		double[][] step_response_scaled_m = new double[2][(step_response_m[0].length)];
 
-		for (int i = 0; i < t_old.length; i++) {
-			t_scaled[i] = t_old[i] * Math.pow(10.0, -scalefactorTime);
-			step_response_scaled_m[0][i] = t_scaled[i];
+		for (int i = 0; i < step_response_scaled_m[0].length; i++) {
+			step_response_scaled_m[0][i] = t_old[i] * Math.pow(10.0, -scalefactorTime);
+			step_response_scaled_m[1][i] = step_response_m[1][i];
 		}
 		return step_response_scaled_m;
 	}
