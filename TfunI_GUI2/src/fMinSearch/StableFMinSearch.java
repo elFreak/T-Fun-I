@@ -1,6 +1,11 @@
-package model;
+package fMinSearch;
 
 import org.apache.commons.math3.optim.PointValuePair;
+
+import model.OverwatchedTask;
+import model.SwingWorkerClient;
+import model.SwingWorkerInfoDatatype;
+import model.Target;
 
 public class StableFMinSearch {
 
