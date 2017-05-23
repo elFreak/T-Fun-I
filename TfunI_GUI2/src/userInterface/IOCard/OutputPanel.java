@@ -115,9 +115,9 @@ public class OutputPanel extends JPanel {
 			traceMean.dataValid = true;
 			break;
 		case Model.NOTIFY_REASON_APPROXIMATION_DONE:
-			traceSolution.data = ((Model) obs).approximation.getStepResponse()[0];
+			traceSolution.data = ((Model) obs).approximation.getStepResponse()[8];
 			traceSolution.dataValid = true;
-			tracePole.data = ((Model) obs).approximation.getPole()[0];
+			tracePole.data = new double[][]{((Model) obs).approximation.getPole()[8][0].getPoint(), ((Model) obs).approximation.getPole()[8][1].getPoint()};
 			tracePole.dataValid = true;
 			break;
 		}

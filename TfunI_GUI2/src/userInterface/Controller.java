@@ -86,7 +86,7 @@ public class Controller {
 	}
 	
 	public void calculateUTF() {
-		model.approximation.execute();
+		model.berechneUTF();
 	}
 	
 	public void autoLimmits(){

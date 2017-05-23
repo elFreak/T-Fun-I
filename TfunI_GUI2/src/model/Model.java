@@ -11,12 +11,14 @@ public class Model extends Observable{
 	public static final int NOTIFY_REASON_APPROXIMATION_DONE = 1;
 	
 	public Model() {
-		
+	}
+	
+	public void berechneUTF() {
+		approximation = new Approximation(measurementData, this);
 	}
 
 	public void setMesuredData(double[][] data) {
 		measurementData = new MeasurementData(this, data);
-		approximation = new Approximation(measurementData, this);
 		notifyObservers(NOTIFY_REASON_MEASUREMENT_CHANGED);
 	}
 	

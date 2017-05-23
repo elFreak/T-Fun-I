@@ -3,77 +3,99 @@ package model;
 import org.apache.commons.math3.optim.PointValuePair;
 
 /**
- * Klasse welche einen stabilen FMinSearch für die Berechnung einer Übertragungsfunktion zur Verfügung stellt.
+ * Klasse welche einen stabilen FMinSearch für die Berechnung einer
+ * Übertragungsfunktion zur Verfügung stellt.
  * 
  * @author Team 1
  *
  */
 public class StableFMinSearch {
 
-	
-	static public PointValuePair fminsearch(Target target, int ordnung, SwingWorkerClient client) {
+	/**
+	 * Berechnet eine ungefähr mit dem Eingangssignal übereinstimmende
+	 * Übertragungsfunktion für alle Polstellenordnungen von 2-10. Diese Werte
+	 * können dann als Startwerte für die genauere Methode .... benutzt werden.
+	 * 
+	 * @param target
+	 * @param client
+	 * @return
+	 */
+	static public PointValuePair[] getStartValues(Target target, SwingWorkerClient client) {
+		double[] startWert = new double[] { 1.0, -1.0 };
 
-		double[] startWert;
-		if (ordnung % 2 == 0) {
-			startWert = new double[] { 1, 1, 1 };
-		} else {
-			startWert = new double[] { 1, -1 };
-		}
+		// Strucktur für Rückgabewert wird definiert.
+		PointValuePair utf[] = new PointValuePair[9]; // Ordnung 2-10 ...
+		utf[0] = new PointValuePair(startWert, 0);
 
-		PointValuePair utf = new PointValuePair(startWert, 0);
+		for (int i = 2; i <= 10; i++) {
 
-		for (int i = ordnung % 2 + 2; i <= ordnung; i += 2) {
-			double[] new_utf = new double[i + 1];
-			for (int j = 0; j < utf.getPoint().length; j++) {
-				new_utf[j] = utf.getPoint()[j];
-			}
-			
-			if (i % 2 == 0) {
-				new_utf[1] = Math.sqrt(Math.sqrt((new_utf[1])));
-				new_utf[2] = (new_utf[2]) / 4;
-				new_utf[new_utf.length - 1] = new_utf[1];
-				new_utf[new_utf.length - 2] = new_utf[2];
-			} else {
-				new_utf[new_utf.length - 1] = new_utf[new_utf.length - 3];
-				if (i == 3) {
-					new_utf[new_utf.length - 2] = 1.0;
-					new_utf[new_utf.length - 3] = 1.0;
+			// Kopiere Werte von kleineren Ordnungen.
+			double[] newUtf = new double[i + 1];
+			if (i >= 4) { // Ordnung >= 4
+				for (int j = 0; j < utf[i - 4].getPoint().length; j++) {
+					newUtf[j] = utf[i - 4].getPoint()[j];
+				}
+				if (i % 2 == 0) {
+					newUtf[1] = Math.sqrt(Math.sqrt((newUtf[1])));
+					newUtf[2] = (newUtf[2]) / 4;
+					newUtf[newUtf.length - 2] = newUtf[1];
+					newUtf[newUtf.length - 1] = newUtf[2];
 				} else {
-					new_utf[new_utf.length - 2] = new_utf[1];
-					new_utf[new_utf.length - 3] = new_utf[2];
+					newUtf[newUtf.length - 1] = newUtf[newUtf.length - 3];
+					newUtf[1] = Math.sqrt(Math.sqrt((newUtf[1])));
+					newUtf[2] = (newUtf[2]) / 4;
+					newUtf[newUtf.length - 3] = newUtf[1];
+					newUtf[newUtf.length - 2] = newUtf[2];
 				}
 			}
-
-			utf = new PointValuePair(new_utf, 0);
-
-			if (i == ordnung) {
-				utf = berechneOrdnungN(target, i, utf, client, 2);
-			} else {
-				utf = berechneOrdnungN(target, i, utf, client, 0);
+			if (i == 2) { // Ordnung = 2
+				newUtf[0] = 1.0;
+				newUtf[1] = 1.0;
+				newUtf[2] = 1.0;
 			}
-			
+			if (i == 3) { // Ordnung = 3
+				newUtf[0] = 1.0;
+				newUtf[1] = 1.0;
+				newUtf[2] = 1.0;
+				newUtf[3] = -1.0;
+			}
+			utf[i - 2] = new PointValuePair(newUtf, 0);
 
-			SwingWorkerInfoDatatype info1 = new SwingWorkerInfoDatatype();
-			info1.isStatus = true;
-			info1.isFehler = false;
-			info1.status = "Ordnung " + i + " wurde berechne.";
-			client.swingAction(info1);
+			// Berechne die Ordnung N:
+			utf[i - 2] = getUtfN(target, i, utf[i - 2], client, 0);
+			SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
+			info.isFehler = false;
+			info.isStatus = true;
+			info.status = "Startwerte für Ordnung "+i+" berechnet.";
+			client.swingAction(info);
+			
 
 		}
 
 		return utf;
+
 	}
 
-	private static PointValuePair berechneOrdnungN(Target target, int ordnung, PointValuePair startValue,
+	/**
+	 * Bereichnet eine möglichst genau mit dem Eingagnssignal übereinstimmende
+	 * Übertragungsfunktion für genau eine Polstellenordnung.
+	 * 
+	 * @param target
+	 * @param ordnung
+	 * @param startValue
+	 * @param client
+	 * @param accuracy
+	 * @return
+	 */
+	public static PointValuePair getUtfN(Target target, int ordnung, PointValuePair startValue,
 			SwingWorkerClient client, int accuracy) {
+
+		// Bestimme wie genau die Berechnung sein soll:
 		double verbesserungsKoeff = 1e-3;
 		double[] polySeiteLaenge = new double[ordnung + 1];
-
-		// Werte initializieren:
 		for (int i = 0; i < ordnung + 1; i++) {
 			polySeiteLaenge[i] = 0.2;
 		}
-
 		switch (ordnung) {
 		case 2:
 			verbesserungsKoeff /= 1e2;
@@ -88,46 +110,46 @@ public class StableFMinSearch {
 			verbesserungsKoeff /= 1e4;
 			break;
 		case 6:
-			verbesserungsKoeff /= 1e5;
+			verbesserungsKoeff /= 5e4;
 			break;
 		case 7:
-			verbesserungsKoeff /= 1e5;
+			verbesserungsKoeff /= 5e4;
 			break;
 		case 8:
-			verbesserungsKoeff /= 1e6;
+			verbesserungsKoeff /= 5e4;
 			break;
 		case 9:
-			verbesserungsKoeff /= 1e6;
+			verbesserungsKoeff /= 5e4;
 			break;
 		case 10:
-			verbesserungsKoeff /= 1e7;
+			verbesserungsKoeff /= 5e4;
 			break;
-
 		}
+		PointValuePair koeffizienten = startValue; // nur für den Compiler!
 
-		PointValuePair koeffizienten = startValue; // nur
-													// für
-													// den
-													// Compiler!
-
-		// Berechnen:
+		// Berechne:
 		for (int i = 0; i <= accuracy; i++) {
-			koeffizienten = berechnen(target, verbesserungsKoeff, koeffizienten.getPoint(), polySeiteLaenge, client);
-			verbesserungsKoeff /= 10;
-			for(int j=0;j<polySeiteLaenge.length;j++) {
-				//polySeiteLaenge[j] /= 1.2;
+			if(i==0) {
+				verbesserungsKoeff*=1000;
 			}
-			SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
-			info.isStatus = true;
-			info.isFehler = false;
-			info.status = "Signal verbessert. Durchgang: "+(i+1)+".";
-			client.swingAction(info);
+			koeffizienten = calculate(target, verbesserungsKoeff, koeffizienten.getPoint(), polySeiteLaenge, client);
+			verbesserungsKoeff /= 10;
 		}
 
 		return koeffizienten;
 	}
 
-	private static PointValuePair berechnen(Target target, double verbesserungsKoeff, double[] startWert,
+	/**
+	 * Startet und überwacht die .....
+	 * 
+	 * @param target
+	 * @param verbesserungsKoeff
+	 * @param startWert
+	 * @param polySeiteLaenge
+	 * @param client
+	 * @return
+	 */
+	private static PointValuePair calculate(Target target, double verbesserungsKoeff, double[] startWert,
 			double[] polySeiteLaenge, SwingWorkerClient client) {
 		// Berechnung:
 		OverwatchedTask overwatchedTask;
@@ -150,7 +172,7 @@ public class StableFMinSearch {
 				}
 
 				if (status[0] == OverwatchedTask.STATUS_PROBLEM_ABFRAGEN
-						&& System.currentTimeMillis() - startTime > 3500) {
+						&& System.currentTimeMillis() - startTime > 10000) {
 					overwatchedTask.cancel(true);
 					problem = true;
 					SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
@@ -158,15 +180,15 @@ public class StableFMinSearch {
 					info.isStatus = true;
 					info.status = "Zu langsam!";
 					client.swingAction(info);
-					verbesserungsKoeff *= 1000;
+					verbesserungsKoeff *= 100;
 					break;
 				}
 
-				// Eine kleine Verzögerung muss eingebaut werden, damit alles
-				// funktioniert.
+				// Eine kleine Verzögerung muss eingebaut werden, damit dieser
+				// Thread nicht unnötig den Prozessor beansprucht.
 				try {
-					Thread.sleep(10);
-				} catch (Exception e) {
+					Thread.sleep(5);
+				} catch (InterruptedException e) {
 				}
 			}
 		} while (problem);
