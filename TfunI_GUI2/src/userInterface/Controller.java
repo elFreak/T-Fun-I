@@ -48,22 +48,6 @@ public class Controller {
 	public void setActualMode(int mode) {
 		view.inputPanel.setActualMode(mode);
 		view.outputPanel.setActualMode(mode);
-
-		switch (mode) {
-		case Controller.EINLESEN:
-
-			break;
-
-		case Controller.BEARBEITEN:
-
-			break;
-		case Controller.BERECHNEN:
-
-			break;
-		case Controller.VERIFIZIEREN:
-			
-			break;
-		}
 	}
 
 	public void setMesuredData(double[][] data) {

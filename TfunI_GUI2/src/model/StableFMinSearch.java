@@ -1,14 +1,16 @@
-package fMinSearch;
+package model;
 
 import org.apache.commons.math3.optim.PointValuePair;
 
-import model.OverwatchedTask;
-import model.SwingWorkerClient;
-import model.SwingWorkerInfoDatatype;
-import model.Target;
-
+/**
+ * Klasse welche einen stabilen FMinSearch für die Berechnung einer Übertragungsfunktion zur Verfügung stellt.
+ * 
+ * @author Team 1
+ *
+ */
 public class StableFMinSearch {
 
+	
 	static public PointValuePair fminsearch(Target target, int ordnung, SwingWorkerClient client) {
 
 		double[] startWert;
@@ -60,7 +62,6 @@ public class StableFMinSearch {
 		}
 
 		return utf;
-
 	}
 
 	private static PointValuePair berechneOrdnungN(Target target, int ordnung, PointValuePair startValue,
@@ -126,16 +127,6 @@ public class StableFMinSearch {
 		return koeffizienten;
 	}
 
-	/**
-	 * Eigentliche Berechnungsfunktion, welche dafür sorgt, dass Programme die
-	 * abkacken, neugestarted werden.
-	 * 
-	 * @param target
-	 * @param verbesserungsKoeff
-	 * @param startWert
-	 * @param polySeiteLaenge
-	 * @return
-	 */
 	private static PointValuePair berechnen(Target target, double verbesserungsKoeff, double[] startWert,
 			double[] polySeiteLaenge, SwingWorkerClient client) {
 		// Berechnung:
