@@ -68,6 +68,7 @@ public class Controller {
 
 	public void setMesuredData(double[][] data) {
 		model.setMesuredData(data);
+		model.measurementData.autoLimits();
 	}
 
 	public void filterChanged(int n) {
@@ -107,21 +108,4 @@ public class Controller {
 	public void autoLimmits(){
 		model.measurementData.autoLimits();
 	}
-	
-//	public void activateTrace(int trace){
-//		switch(trace) {
-//		case OutputPanel.TRACE_STEP:
-//			view.outputPanel.traceStep.dataValid=true;
-//			break;
-//		case OutputPanel.TRACE_RAW:
-//			view.outputPanel.traceRaw.dataValid=true;
-//			break;
-//		case OutputPanel.TRACE_PREPROCESSED:
-//			view.outputPanel.tracePreprocessed.dataValid=true;
-//			break;
-//		case OutputPanel.TRACE_SOLUTION:
-//			view.outputPanel.traceSolution.dataValid=true;
-//			break;
-//		}
-//	}
 }

@@ -9,7 +9,6 @@ public class Model extends Observable{
 	
 	public static final int NOTIFY_REASON_MEASUREMENT_CHANGED = 0;
 	public static final int NOTIFY_REASON_APPROXIMATION_DONE = 1;
-	public static final int NOTIFY_REASON_APPROXIMATION_ZWISCHENWERT = 2;
 	
 	public Model() {
 		

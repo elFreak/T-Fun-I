@@ -20,9 +20,10 @@ public class OutputCardBerechnen extends WindowContainer {
 	private Plot plotBerechnen = new Plot();
 	private boolean plotBerechnenTracePreprocessedAdded = false;
 	private boolean plotBerechnenTraceSolutionAdded = false;
-	private boolean plotBerechnenTraceZwischenResultAdded = false;
 
 	private Plot plotNullstellen = new Plot();
+	private boolean plotNullstellenTracePoleAdded = false;
+
 	private JPanel panelBerechnen = new JPanel(new GridBagLayout());
 
 	public OutputCardBerechnen(OutputPanel outputPanel) {
@@ -49,14 +50,10 @@ public class OutputCardBerechnen extends WindowContainer {
 		panelBerechnen.add(new JLabel("K: "), new GridBagConstraints(0, 5, 1, 1, 1.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 
-
 	}
 
 	public void update(java.util.Observable obs, Object obj) {
 
-		if (!outputPanel.traceZwischenResultat.dataValid) {
-			plotBerechnenTraceZwischenResultAdded = false;
-		}
 		if (outputPanel.tracePreprocessed.dataValid && !plotBerechnenTracePreprocessedAdded) {
 			plotBerechnen.setSubplot(0);
 			plotBerechnenTracePreprocessedAdded = true;
@@ -69,11 +66,11 @@ public class OutputCardBerechnen extends WindowContainer {
 			plotBerechnen.addTrace(outputPanel.traceSolution);
 			plotBerechnen.setRangeIdeal();
 		}
-		if (outputPanel.traceZwischenResultat.dataValid && !plotBerechnenTraceZwischenResultAdded) {
-			plotBerechnen.setSubplot(0);
-			plotBerechnenTraceZwischenResultAdded = true;
-			plotBerechnen.addTrace(outputPanel.traceZwischenResultat);
-			plotBerechnen.setRangeIdeal();
+		if (outputPanel.tracePole.dataValid && !plotNullstellenTracePoleAdded) {
+			plotNullstellen.setSubplot(0);
+			plotNullstellenTracePoleAdded = true;
+			plotNullstellen.addTrace(outputPanel.tracePole);
+			plotNullstellen.setRangeIdeal();
 		}
 
 	}

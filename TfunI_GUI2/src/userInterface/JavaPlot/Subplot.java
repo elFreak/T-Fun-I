@@ -438,23 +438,14 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			// Paint Main-Grid:
 			g2.setColor(gridColor);
 			g2.setStroke(new BasicStroke(gridMainGridThickness));
-			if (axisRangeActualSectorNumber[axis] - 1 - i == axisRangeSectorZeroPoint[axis] && !yAxis2Available) {
+			if (i == axisRangeSectorZeroPoint[axis] && !yAxis2Available) {
 				if (i < axisRangeActualSectorNumber[axis] - 1) {
 					if (axis == XAXIS) {
 						g2.draw(new Line2D.Float(boardCorner[0][X] + i * deltaGrid, boardCorner[0][Y],
 								boardCorner[1][X] + i * deltaGrid, boardCorner[1][Y]));
 					} else {
-						g2.draw(new Line2D.Float(boardCorner[0][X], boardCorner[0][Y] + i * deltaGrid,
-								boardCorner[3][X], boardCorner[3][Y] + i * deltaGrid));
-					}
-
-				} else {
-					if (axis == XAXIS) {
-						g2.draw(new Line2D.Float(boardCorner[3][X], boardCorner[3][Y], boardCorner[2][X],
-								boardCorner[2][Y]));
-					} else {
-						g2.draw(new Line2D.Float(boardCorner[1][X], boardCorner[1][Y], boardCorner[2][X],
-								boardCorner[2][Y]));
+						g2.draw(new Line2D.Float(boardCorner[0][X], boardCorner[0][Y] + (axisRangeActualSectorNumber[axis] - 1 -i) * deltaGrid,
+								boardCorner[3][X], boardCorner[3][Y] + (axisRangeActualSectorNumber[axis] - 1 -i) * deltaGrid));
 					}
 				}
 			}

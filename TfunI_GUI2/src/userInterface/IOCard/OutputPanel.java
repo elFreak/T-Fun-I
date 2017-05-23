@@ -28,7 +28,7 @@ public class OutputPanel extends JPanel {
 	public Trace tracePreprocessed;
 	public Trace traceSolution;
 	public Trace traceMean;
-	public Trace traceZwischenResultat;
+	public Trace tracePole;
 
 	/**
 	 * Cards:
@@ -62,9 +62,9 @@ public class OutputPanel extends JPanel {
 		traceMean = new Trace();
 		traceMean.usePreferedColor = true;
 		traceMean.preferedColor = GlobalSettings.colorTraceOrange;
-		traceZwischenResultat = new Trace();
-		traceZwischenResultat.usePreferedColor = true;
-		traceZwischenResultat.preferedColor = GlobalSettings.colorTracePink;
+		tracePole = new Trace();
+		tracePole.lineType = Trace.LINE_NONE;
+		tracePole.pointType = Trace.POINT_CROSS;
 
 		// Init Cards:
 		cardEinlesen = new OutputCardEinlesen(this);
@@ -115,15 +115,10 @@ public class OutputPanel extends JPanel {
 			traceMean.dataValid = true;
 			break;
 		case Model.NOTIFY_REASON_APPROXIMATION_DONE:
-			traceSolution.data = ((Model) obs).approximation.getSolutionSignal();
+			traceSolution.data = ((Model) obs).approximation.getStepResponse()[0];
 			traceSolution.dataValid = true;
-			
-			traceZwischenResultat.dataValid = false;
-			break;
-		case Model.NOTIFY_REASON_APPROXIMATION_ZWISCHENWERT:
-			traceZwischenResultat.data = ((Model) obs).approximation.getZwischenSignal();
-			traceZwischenResultat.dataValid = true;
-			
+			tracePole.data = ((Model) obs).approximation.getPole()[0];
+			tracePole.dataValid = true;
 			break;
 		}
 

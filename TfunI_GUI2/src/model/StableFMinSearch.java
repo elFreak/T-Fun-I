@@ -68,30 +68,33 @@ public class StableFMinSearch {
 			polySeiteLaenge[i] = 0.2;
 		}
 
-		// verbesserungsKoeff = verbesserungsKoeff / Math.pow(10,
-		// (ordnung-2)*0.5);
-
 		switch (ordnung) {
 		case 2:
-			verbesserungsKoeff /= 10;
+			verbesserungsKoeff /= 1e2;
+			break;
+		case 3:
+			verbesserungsKoeff /= 1e2;
 			break;
 		case 4:
-			verbesserungsKoeff /= 100;
+			verbesserungsKoeff /= 1e4;
+			break;
+		case 5:
+			verbesserungsKoeff /= 1e4;
 			break;
 		case 6:
-			verbesserungsKoeff /= 1000;
+			verbesserungsKoeff /= 1e5;
 			break;
 		case 7:
-
+			verbesserungsKoeff /= 1e5;
 			break;
 		case 8:
-			verbesserungsKoeff /= 10000;
+			verbesserungsKoeff /= 1e6;
 			break;
 		case 9:
-
+			verbesserungsKoeff /= 1e6;
 			break;
 		case 10:
-			verbesserungsKoeff /= 1000000;
+			verbesserungsKoeff /= 1e7;
 			break;
 
 		}
@@ -104,7 +107,7 @@ public class StableFMinSearch {
 		// Berechnen:
 		for (int i = 0; i <= accuracy; i++) {
 			koeffizienten = berechnen(target, verbesserungsKoeff, koeffizienten.getPoint(), polySeiteLaenge, client);
-			verbesserungsKoeff /= 5;
+			verbesserungsKoeff /= 10;
 			for(int j=0;j<polySeiteLaenge.length;j++) {
 				//polySeiteLaenge[j] /= 1.2;
 			}
@@ -151,13 +154,13 @@ public class StableFMinSearch {
 				}
 
 				if (status[0] == OverwatchedTask.STATUS_PROBLEM_ABFRAGEN
-						&& System.currentTimeMillis() - startTime > 10000) {
+						&& System.currentTimeMillis() - startTime > 3500) {
 					overwatchedTask.cancel(true);
 					problem = true;
 					SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
-					info.isFehler = true;
+					info.isFehler = false;
 					info.isStatus = true;
-					info.status = "Abgestürzt. Unternehme neuen Versuch.";
+					info.status = "Zu langsam!";
 					client.swingAction(info);
 					verbesserungsKoeff *= 1000;
 					break;

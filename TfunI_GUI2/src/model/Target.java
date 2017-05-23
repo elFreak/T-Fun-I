@@ -80,7 +80,6 @@ public class Target implements MultivariateFunction {
 
 		double max = 0;
 		for (int i = 0; i < is.length; i++) {
-			//failuresum = failuresum + Math.pow(should[i] - is[i], 2);
 			failuresum = failuresum + (Math.pow(should[i] - is[i], 2));
 			if(should[i]>max) {
 				max = should[i];
