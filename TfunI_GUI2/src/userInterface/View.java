@@ -50,8 +50,6 @@ public class View extends JPanel implements Observer {
 
 		JPanel panelFlow = new JPanel(new GridLayout(1, 1));
 		panelFlow.setBackground(GlobalSettings.colorBackgroundBlueBright);
-		// panelFlow.setBorder(MyBorderFactory.createMyBorder(" Programm Flow
-		// "));
 		panelFlow.add(programFlow);
 		add(panelFlow, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));

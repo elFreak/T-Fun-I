@@ -29,7 +29,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 	// --------------------------------------------------------------------
 	// Trace:
-	private int traceMaxNumber = 3; // @Approach
+	private int traceMaxNumber = 10; // @Approach
 	private static final int traceColorsNumber = 3;
 	private static final Color[] traceColors = new Color[traceColorsNumber];
 	private Trace[] trace = new Trace[traceMaxNumber];

@@ -21,7 +21,6 @@ public class InputCardEinlesen extends JPanel {
 	private JButton btEinlesen = new JButton("Öffnen");
 
 	public InputCardEinlesen(Controller controller) {
-		// panelEinlesen.add(btEinlesen);
 		btEinlesen.addActionListener(new ActionListener() {
 
 			@Override
@@ -43,8 +42,10 @@ public class InputCardEinlesen extends JPanel {
 
 		this.add(panelEinlesen, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.NORTH,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
-		this.add(new JPanel(), new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0, GridBagConstraints.FIRST_LINE_START,
-				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+		JPanel panelBackground = new JPanel();
+		panelBackground.setBackground(GlobalSettings.colorBackground);
+		this.add(panelBackground, new GridBagConstraints(0, 1, 1, 1, 1.0, 1.0, GridBagConstraints.FIRST_LINE_START,
+				GridBagConstraints.BOTH, new Insets(20, 10, 10, 10), 0, 0));
 	}
 
 }

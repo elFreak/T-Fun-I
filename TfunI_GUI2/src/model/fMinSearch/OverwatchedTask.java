@@ -1,4 +1,4 @@
-package model;
+package model.fMinSearch;
 
 import java.util.List;
 
@@ -10,6 +10,8 @@ import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.NelderMeadSimplex;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizer;
+
+import model.Target;
 
 public class OverwatchedTask extends SwingWorker<Object, double[]> {
 
@@ -45,7 +47,7 @@ public class OverwatchedTask extends SwingWorker<Object, double[]> {
 	@Override
 	protected Object doInBackground() {
 		SimplexOptimizer optimizer = new SimplexOptimizer(verbesserungsKoeff, verbesserungsKoeff);
-		optimum = optimizer.optimize(new MaxEval(20000), new ObjectiveFunction(target), GoalType.MINIMIZE,
+		optimum = optimizer.optimize(new MaxEval(10000), new ObjectiveFunction(target), GoalType.MINIMIZE,
 				new InitialGuess(startWert), new NelderMeadSimplex(polySeiteLaenge));
 
 		if (isCancelled() == false) {
@@ -58,13 +60,7 @@ public class OverwatchedTask extends SwingWorker<Object, double[]> {
 
 	@Override
 	protected void process(List<double[]> chunks) {
-		// System.out.println("tap" + chunks);
 		status[0] = STATUS_IN_ARBEIT;
-		SwingWorkerInfoDatatype info2 = new SwingWorkerInfoDatatype();
-		info2 = new SwingWorkerInfoDatatype();
-		info2.isUtfActuallised = true;
-		info2.utfKoeff = chunks.get(0);
-		client.swingAction(info2);
 	}
 
 	@Override

@@ -34,7 +34,7 @@ public class GlobalSettings {
 	public static Color colorTraceGreen = new Color(20,250,20);
 	public static Color colorTraceYellow = new Color(255, 217, 102);
 	public static Color colorTraceOrange = new Color(197, 90, 17);
-	public static Color colorTracePink	= new Color(255, 30, 255);
+	public static Color[] colorsTraceSolution = new Color[9];
 	
 	public static Color colorSliderBlue = new Color(0, 180, 240);
 	public static Color colorSliderViolet = new Color(204, 153, 255);
@@ -49,8 +49,16 @@ public class GlobalSettings {
 		fontText = new Font(systemFont.getName(), Font.PLAIN, (int) (systemFont.getSize() * 1.3));
 		fontTextSmall = new Font(systemFont.getName(), Font.PLAIN, (int) (systemFont.getSize() * 1.1));
 		fontMath = new Font("Cambria Math", Font.ITALIC, (int) (systemFont.getSize() * 1.3));
-
 		
+		colorsTraceSolution[0] = new Color(0,255, 255);
+		colorsTraceSolution[1] = new Color(0,153, 255);
+		colorsTraceSolution[2] = new Color(102,102, 255);
+		colorsTraceSolution[3] = new Color(204,102, 255);
+		colorsTraceSolution[4] = new Color(255,0, 255);
+		colorsTraceSolution[5] = new Color(255,51, 153);
+		colorsTraceSolution[6] = new Color(255,80, 80);
+		colorsTraceSolution[7] = new Color(255,51, 0);
+		colorsTraceSolution[8] = new Color(255,153, 0);
 	}
 
 }

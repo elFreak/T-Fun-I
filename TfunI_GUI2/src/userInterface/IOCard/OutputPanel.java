@@ -26,9 +26,9 @@ public class OutputPanel extends JPanel {
 	public Trace traceStep;
 	public Trace traceRaw;
 	public Trace tracePreprocessed;
-	public Trace traceSolution;
 	public Trace traceMean;
-	public Trace tracePole;
+	public Trace[] tracesSolution = new Trace[9];
+	public Trace[] tracesPole = new Trace[9];
 
 	/**
 	 * Cards:
@@ -50,21 +50,29 @@ public class OutputPanel extends JPanel {
 		traceStep = new Trace();
 		traceStep.usePreferedColor = true;
 		traceStep.preferedColor = GlobalSettings.colorTraceGreen;
+
 		traceRaw = new Trace();
 		traceRaw.usePreferedColor = true;
 		traceRaw.preferedColor = GlobalSettings.colorTraceYellow;
+
 		tracePreprocessed = new Trace();
 		tracePreprocessed.usePreferedColor = true;
 		tracePreprocessed.preferedColor = GlobalSettings.colorTraceOrange;
-		traceSolution = new Trace();
-		traceSolution.usePreferedColor = true;
-		traceSolution.preferedColor = GlobalSettings.colorTracePink;
+
 		traceMean = new Trace();
 		traceMean.usePreferedColor = true;
 		traceMean.preferedColor = GlobalSettings.colorTraceOrange;
-		tracePole = new Trace();
-		tracePole.lineType = Trace.LINE_NONE;
-		tracePole.pointType = Trace.POINT_CROSS;
+
+		for (int i = 0; i < tracesSolution.length; i++) {
+			tracesSolution[i] = new Trace();
+			tracesSolution[i].usePreferedColor = true;
+			tracesSolution[i].preferedColor = GlobalSettings.colorsTraceSolution[i];
+			tracesPole[i] = new Trace();
+			tracesPole[i].usePreferedColor = true;
+			tracesPole[i].preferedColor = GlobalSettings.colorsTraceSolution[i];
+			tracesPole[i].lineType = Trace.LINE_NONE;
+			tracesPole[i].pointType = Trace.POINT_CROSS;
+		}
 
 		// Init Cards:
 		cardEinlesen = new OutputCardEinlesen(this);
@@ -99,10 +107,10 @@ public class OutputPanel extends JPanel {
 	}
 
 	public void update(java.util.Observable obs, Object obj) {
-		if(!(obs instanceof Model)||!(obj instanceof Integer)) {
-			throw(new IllegalArgumentException());
+		if (!(obs instanceof Model) || !(obj instanceof Integer)) {
+			throw (new IllegalArgumentException());
 		}
-		
+
 		switch ((int) obj) {
 		case Model.NOTIFY_REASON_MEASUREMENT_CHANGED:
 			traceStep.data = ((Model) obs).measurementData.getstep();
@@ -115,10 +123,17 @@ public class OutputPanel extends JPanel {
 			traceMean.dataValid = true;
 			break;
 		case Model.NOTIFY_REASON_APPROXIMATION_DONE:
-			traceSolution.data = ((Model) obs).approximation.getStepResponse()[8];
-			traceSolution.dataValid = true;
-			tracePole.data = new double[][]{((Model) obs).approximation.getPole()[8][0].getPoint(), ((Model) obs).approximation.getPole()[8][1].getPoint()};
-			tracePole.dataValid = true;
+			for (int i = 0; i < tracesSolution.length; i++) {
+				if (((Model) obs).approximation.getPole()[i][0]!=null) {
+					tracesSolution[i].data = ((Model) obs).approximation.getStepResponse()[i];
+					tracesSolution[i].dataValid = true;
+					tracesPole[i].data = new double[][] { ((Model) obs).approximation.getPole()[i][0].getPoint(),
+							((Model) obs).approximation.getPole()[i][1].getPoint() };
+					tracesPole[i].dataValid = true;
+				} else {
+					tracesSolution[i].dataValid = false;
+				}
+			}
 			break;
 		}
 
