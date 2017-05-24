@@ -16,11 +16,6 @@ public class Model extends Observable {
 	public void berechneUTF() {
 		if (approximation != null) {
 			approximation.cancel(true);
-			try {
-				approximation.wait();
-			} catch (InterruptedException e) {
-				// TODO: handle exception
-			}
 		}
 
 		approximation = new Approximation(measurementData, this);

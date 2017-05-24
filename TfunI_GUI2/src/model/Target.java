@@ -90,6 +90,12 @@ public class Target implements MultivariateFunction {
 		failuresum/=max;
 	
 		
+		try {
+			Thread.sleep(0,100);
+		} catch (InterruptedException e) {
+			// TODO: handle exception
+		}
+		
 //		System.out.println(""+failuresum);
 		
 		

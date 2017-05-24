@@ -76,7 +76,7 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 		swingAction(info);
 
 		// Die Übertragungsfunktion wird berechnet:
-		for (int k = 2; k <= 10; k++) {
+		for (int k = 2; k <= 10 && isCancelled() == false; k++) {
 
 			// Berechnet aus den vorher berechneten Startwerten eine möglichst
 			// genaue Übertragungsfunktion.
@@ -159,19 +159,20 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 
 	@Override
 	protected void process(List<SwingWorkerInfoDatatype> arg) {
-		super.process(arg);
-		for (int i = 0; i < arg.size(); i++) {
-			SwingWorkerInfoDatatype info = arg.get(i);
-			if (info.isStatus) {
-				if (info.statusFehler) {
-					StatusBar.showStatus(info.statusText, StatusBar.FEHLER);
-				} else {
-					StatusBar.showStatus(info.statusText, StatusBar.INFO);
-				}
+		if (isCancelled() == false) {
+			super.process(arg);
+			for (int i = 0; i < arg.size(); i++) {
+				SwingWorkerInfoDatatype info = arg.get(i);
+				if (info.isStatus) {
+					if (info.statusFehler) {
+						StatusBar.showStatus(info.statusText, StatusBar.FEHLER);
+					} else {
+						StatusBar.showStatus(info.statusText, StatusBar.INFO);
+					}
 
-			}
-			if (info.isActuallised) {
-				if (isCancelled() == false) {
+				}
+				if (info.isActuallised) {
+
 					model.notifyObservers(Model.NOTIFY_REASON_APPROXIMATION_DONE);
 				}
 			}

@@ -180,13 +180,8 @@ public class StableFMinSearch {
 				}
 
 				if (status[0] == OverwatchedTask.STATUS_PROBLEM_ABFRAGEN
-						&& System.currentTimeMillis() - startTime > 5000) {
+						&& System.currentTimeMillis() - startTime > 2000) {
 					overwatchedTask.cancel(true);
-					try {
-						overwatchedTask.wait();
-					}catch (InterruptedException e) {
-						// TODO: handle exception
-					}
 					problem = true;
 					SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
 					info.statusFehler = false;
