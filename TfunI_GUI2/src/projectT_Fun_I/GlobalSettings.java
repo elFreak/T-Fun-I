@@ -28,6 +28,8 @@ public class GlobalSettings {
 
 	public static Font fontText;
 	public static Font fontTextSmall;
+	public static Font fontMath;
+
 	
 	public static Color colorTraceGreen = new Color(20,250,20);
 	public static Color colorTraceYellow = new Color(255, 217, 102);
@@ -46,6 +48,9 @@ public class GlobalSettings {
 		Font systemFont = UIManager.getDefaults().getFont("TextPane.font");
 		fontText = new Font(systemFont.getName(), Font.PLAIN, (int) (systemFont.getSize() * 1.3));
 		fontTextSmall = new Font(systemFont.getName(), Font.PLAIN, (int) (systemFont.getSize() * 1.1));
+		fontMath = new Font("Cambria Math", Font.ITALIC, (int) (systemFont.getSize() * 1.3));
+
+		
 	}
 
 }
