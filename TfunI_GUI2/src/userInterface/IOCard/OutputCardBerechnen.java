@@ -22,35 +22,16 @@ public class OutputCardBerechnen extends WindowContainer {
 	private boolean[] plotBerechnenTraceSolutionAdded = new boolean[] { false, false, false, false, false, false, false,
 			false, false };
 
-	private Plot plotNullstellen = new Plot();
-	private boolean[] plotNullstellenTracePoleAdded = new boolean[] { false, false, false, false, false, false, false,
+	private Plot plotPolstellen = new Plot();
+	private boolean[] plotPolstellenTracePoleAdded = new boolean[] { false, false, false, false, false, false, false,
 			false, false };
-
-	private JPanel panelBerechnen = new JPanel(new GridBagLayout());
 
 	public OutputCardBerechnen(OutputPanel outputPanel) {
 		this.outputPanel = outputPanel;
 
 		addComponent(plotBerechnen);
-		addComponent(plotNullstellen);
-		addComponent(panelBerechnen);
-
-		// Funktion
-		panelBerechnen.setBackground(GlobalSettings.colorBackground);
-		panelBerechnen.setBorder(MyBorderFactory.createMyBorder("Funktion"));
-
-		panelBerechnen.add(new JLabel("Formel: "), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
-		panelBerechnen.add(new JLabel("Qp: "), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
-				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
-		panelBerechnen.add(new JLabel("Wp: "), new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0,
-				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
-		panelBerechnen.add(new JLabel("K: "), new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0,
-				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
-		panelBerechnen.add(new JLabel("K: "), new GridBagConstraints(0, 4, 1, 1, 1.0, 0.0,
-				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
-		panelBerechnen.add(new JLabel("K: "), new GridBagConstraints(0, 5, 1, 1, 1.0, 0.0,
-				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+		addComponent(plotPolstellen);
+		
 
 	}
 
@@ -62,18 +43,24 @@ public class OutputCardBerechnen extends WindowContainer {
 			plotBerechnen.addTrace(outputPanel.tracePreprocessed);
 			plotBerechnen.setRangeIdeal();
 		}
-		for(int i=0;i<outputPanel.tracesSolution.length;i++) {
+		for (int i = 0; i < outputPanel.tracesSolution.length; i++) {
 			if (outputPanel.tracesSolution[i].dataValid && !plotBerechnenTraceSolutionAdded[i]) {
 				plotBerechnen.setSubplot(0);
 				plotBerechnenTraceSolutionAdded[i] = true;
 				plotBerechnen.addTrace(outputPanel.tracesSolution[i]);
 				plotBerechnen.setRangeIdeal();
 			}
-			if (outputPanel.tracesPole[i].dataValid && !plotNullstellenTracePoleAdded[i]) {
-				plotNullstellen.setSubplot(0);
-				plotNullstellenTracePoleAdded[i] = true;
-				plotNullstellen.addTrace(outputPanel.tracesPole[i]);
-				plotNullstellen.setRangeIdeal();
+			if (outputPanel.tracesPole[i].dataValid && !plotPolstellenTracePoleAdded[i]) {
+				plotPolstellen.setSubplot(0);
+				plotPolstellenTracePoleAdded[i] = true;
+				plotPolstellen.addTrace(outputPanel.tracesPole[i]);
+				plotPolstellen.setRangeIdeal();
+//				double[] range = plotPolstellen.getRange();
+//				range[1] = (range[1]-range[0])*0.2;
+//				range[2] = (range[2]*1.2);
+//				range[3] = (range[3]*1.2);
+//				plotPolstellen.setRange(Plot.XAXIS, range[0], range[1]);
+//				plotPolstellen.setRange(Plot.Y1AXIS, range[2], range[3]);
 			}
 		}
 	}

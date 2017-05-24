@@ -91,7 +91,7 @@ public class Target implements MultivariateFunction {
 	
 		
 		try {
-			Thread.sleep(0,100);
+			Thread.sleep(0,50);
 		} catch (InterruptedException e) {
 			// TODO: handle exception
 		}

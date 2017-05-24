@@ -444,8 +444,10 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 						g2.draw(new Line2D.Float(boardCorner[0][X] + i * deltaGrid, boardCorner[0][Y],
 								boardCorner[1][X] + i * deltaGrid, boardCorner[1][Y]));
 					} else {
-						g2.draw(new Line2D.Float(boardCorner[0][X], boardCorner[0][Y] + (axisRangeActualSectorNumber[axis] - 1 -i) * deltaGrid,
-								boardCorner[3][X], boardCorner[3][Y] + (axisRangeActualSectorNumber[axis] - 1 -i) * deltaGrid));
+						g2.draw(new Line2D.Float(boardCorner[0][X],
+								boardCorner[0][Y] + (axisRangeActualSectorNumber[axis] - 1 - i) * deltaGrid,
+								boardCorner[3][X],
+								boardCorner[3][Y] + (axisRangeActualSectorNumber[axis] - 1 - i) * deltaGrid));
 					}
 				}
 			}
@@ -871,6 +873,12 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 		y1Max = y1Max + deltaY1 / 50;
 		y2Min = y2Min - deltaY2 / 50;
 		y2Max = y2Max + deltaY2 / 50;
+
+		if (trace[0].lineType == Trace.LINE_NONE) {
+			xMax = (xMax - xMin) * 0.2;
+			y1Min *= 1.2;
+			y1Max *= 1.2;
+		}
 
 		setRange(Y1AXIS, y1Min, y1Max);
 		setRange(Y2AXIS, y2Min, y2Max);
