@@ -1,6 +1,7 @@
 package userInterface;
 
 import model.Model;
+import sun.awt.RepaintArea;
 
 /**
  * 
@@ -96,5 +97,13 @@ public class Controller {
 
 	public void autoLimmits() {
 		model.measurementData.autoLimits();
+	}
+	
+	public void cBBerechnenChanged(boolean[] value) {
+		for(int i=0;i<value.length;i++) {
+			view.outputPanel.tracesSolution[i].dataValid = value[i];
+			view.outputPanel.tracesPole[i].dataValid = value[i];
+		}
+		view.repaint();
 	}
 }
