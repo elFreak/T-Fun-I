@@ -1,6 +1,8 @@
-package model;
+package model.fMinSearch;
 
 import org.apache.commons.math3.optim.PointValuePair;
+
+import model.Target;
 
 /**
  * Klasse welche einen stabilen FMinSearch für die Berechnung einer
@@ -64,11 +66,10 @@ public class StableFMinSearch {
 			// Berechne die Ordnung N:
 			utf[i - 2] = getUtfN(target, i, utf[i - 2], client, 0);
 			SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
-			info.isFehler = false;
+			info.statusFehler = false;
 			info.isStatus = true;
-			info.status = "Startwerte für Ordnung "+i+" berechnet.";
+			info.statusText = "Startwerte für Ordnung " + i + " berechnet.";
 			client.swingAction(info);
-			
 
 		}
 
@@ -122,15 +123,15 @@ public class StableFMinSearch {
 			verbesserungsKoeff /= 5e4;
 			break;
 		case 10:
-			verbesserungsKoeff /= 5e4;
+			verbesserungsKoeff /= 1e4;
 			break;
 		}
 		PointValuePair koeffizienten = startValue; // nur für den Compiler!
 
 		// Berechne:
 		for (int i = 0; i <= accuracy; i++) {
-			if(i==0) {
-				verbesserungsKoeff*=1000;
+			if (i == 0) {
+				verbesserungsKoeff *= 1000;
 			}
 			koeffizienten = calculate(target, verbesserungsKoeff, koeffizienten.getPoint(), polySeiteLaenge, client);
 			verbesserungsKoeff /= 10;
@@ -152,13 +153,20 @@ public class StableFMinSearch {
 	private static PointValuePair calculate(Target target, double verbesserungsKoeff, double[] startWert,
 			double[] polySeiteLaenge, SwingWorkerClient client) {
 		// Berechnung:
+		double newVerbesserungsKoeff= verbesserungsKoeff;
+		double[] newStartWert = new double[startWert.length];
+		for(int i=0;i<startWert.length;i++) {
+			newStartWert[i] = startWert[i];
+		}
 		OverwatchedTask overwatchedTask;
 		boolean problem;
 		do {
 			problem = false;
 			int[] status = new int[] { OverwatchedTask.STATUS_IN_ARBEIT };
-			overwatchedTask = new OverwatchedTask(target, verbesserungsKoeff, startWert, polySeiteLaenge, status,
+			System.out.println("ver"+newVerbesserungsKoeff);
+			overwatchedTask = new OverwatchedTask(target, newVerbesserungsKoeff, newStartWert, polySeiteLaenge, status,
 					client);
+			
 
 			// Berechnung starten:
 			overwatchedTask.execute();
@@ -172,22 +180,30 @@ public class StableFMinSearch {
 				}
 
 				if (status[0] == OverwatchedTask.STATUS_PROBLEM_ABFRAGEN
-						&& System.currentTimeMillis() - startTime > 10000) {
+						&& System.currentTimeMillis() - startTime > 5000) {
 					overwatchedTask.cancel(true);
+					try {
+						overwatchedTask.wait();
+					}catch (InterruptedException e) {
+						// TODO: handle exception
+					}
 					problem = true;
 					SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
-					info.isFehler = false;
+					info.statusFehler = false;
 					info.isStatus = true;
-					info.status = "Zu langsam!";
+					info.statusText = "Zu langsam!";
 					client.swingAction(info);
-					verbesserungsKoeff *= 100;
+					newVerbesserungsKoeff = newVerbesserungsKoeff*100;
+					for(int i=0;i<startWert.length;i++) {
+						newStartWert[i] = startWert[i];
+					}
 					break;
 				}
 
 				// Eine kleine Verzögerung muss eingebaut werden, damit dieser
 				// Thread nicht unnötig den Prozessor beansprucht.
 				try {
-					Thread.sleep(5);
+					Thread.sleep(10);
 				} catch (InterruptedException e) {
 				}
 			}

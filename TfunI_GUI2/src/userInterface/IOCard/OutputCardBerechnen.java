@@ -19,10 +19,12 @@ public class OutputCardBerechnen extends WindowContainer {
 
 	private Plot plotBerechnen = new Plot();
 	private boolean plotBerechnenTracePreprocessedAdded = false;
-	private boolean plotBerechnenTraceSolutionAdded = false;
+	private boolean[] plotBerechnenTraceSolutionAdded = new boolean[] { false, false, false, false, false, false, false,
+			false, false };
 
 	private Plot plotNullstellen = new Plot();
-	private boolean plotNullstellenTracePoleAdded = false;
+	private boolean[] plotNullstellenTracePoleAdded = new boolean[] { false, false, false, false, false, false, false,
+			false, false };
 
 	private JPanel panelBerechnen = new JPanel(new GridBagLayout());
 
@@ -60,18 +62,19 @@ public class OutputCardBerechnen extends WindowContainer {
 			plotBerechnen.addTrace(outputPanel.tracePreprocessed);
 			plotBerechnen.setRangeIdeal();
 		}
-		if (outputPanel.traceSolution.dataValid && !plotBerechnenTraceSolutionAdded) {
-			plotBerechnen.setSubplot(0);
-			plotBerechnenTraceSolutionAdded = true;
-			plotBerechnen.addTrace(outputPanel.traceSolution);
-			plotBerechnen.setRangeIdeal();
+		for(int i=0;i<outputPanel.tracesSolution.length;i++) {
+			if (outputPanel.tracesSolution[i].dataValid && !plotBerechnenTraceSolutionAdded[i]) {
+				plotBerechnen.setSubplot(0);
+				plotBerechnenTraceSolutionAdded[i] = true;
+				plotBerechnen.addTrace(outputPanel.tracesSolution[i]);
+				plotBerechnen.setRangeIdeal();
+			}
+			if (outputPanel.tracesPole[i].dataValid && !plotNullstellenTracePoleAdded[i]) {
+				plotNullstellen.setSubplot(0);
+				plotNullstellenTracePoleAdded[i] = true;
+				plotNullstellen.addTrace(outputPanel.tracesPole[i]);
+				plotNullstellen.setRangeIdeal();
+			}
 		}
-		if (outputPanel.tracePole.dataValid && !plotNullstellenTracePoleAdded) {
-			plotNullstellen.setSubplot(0);
-			plotNullstellenTracePoleAdded = true;
-			plotNullstellen.addTrace(outputPanel.tracePole);
-			plotNullstellen.setRangeIdeal();
-		}
-
 	}
 }

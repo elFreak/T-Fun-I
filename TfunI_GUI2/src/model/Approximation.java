@@ -7,6 +7,9 @@ import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.optim.PointValuePair;
 
 import matlabfunction.Matlab;
+import model.fMinSearch.StableFMinSearch;
+import model.fMinSearch.SwingWorkerClient;
+import model.fMinSearch.SwingWorkerInfoDatatype;
 import userInterface.StatusBar;
 
 public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> implements SwingWorkerClient {
@@ -67,9 +70,9 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 		Target target = new Target(timeFullNormed, stepFullNormed);
 		PointValuePair[] startValues = StableFMinSearch.getStartValues(target, this);
 		SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
-		info.isFehler = false;
+		info.statusFehler = false;
 		info.isStatus = true;
-		info.status = "Startwerte berechnet.";
+		info.statusText = "Startwerte berechnet.";
 		swingAction(info);
 
 		// Die Übertragungsfunktion wird berechnet:
@@ -93,7 +96,8 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 			}
 
 			// Dazugehörige Sprungantwort berechnen:
-			stepResponse[k-2] = new double[][] {timeLenghtNormed, Target.omega2polstep(optimum.getPoint(), timeFullNormed) } ;
+			stepResponse[k - 2] = new double[][] { timeLenghtNormed,
+					Target.omega2polstep(optimum.getPoint(), timeFullNormed) };
 
 			// Dazugehörige Polstellen berechnen:
 			double[] nenner1 = new double[utf[k - 2].ordnung + 1];
@@ -108,11 +112,11 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 				}
 			} else {
 				double[] koeffAll = new double[utf[k - 2].ordnung];
-				for(int l=0;l<utf[k-2].koeffWQ.length;l++) {
-					koeffAll[l] = utf[k-2].koeffWQ[l];
+				for (int l = 0; l < utf[k - 2].koeffWQ.length; l++) {
+					koeffAll[l] = utf[k - 2].koeffWQ[l];
 				}
-				koeffAll[koeffAll.length-1] = utf[k-2].sigma;
-				
+				koeffAll[koeffAll.length - 1] = utf[k - 2].sigma;
+
 				nenner1 = new double[] { 1, utf[k - 2].koeffWQ[0] / utf[k - 2].koeffWQ[1],
 						Math.pow(utf[k - 2].koeffWQ[0], 2.0) };
 				for (int i = 2; i < utf[k - 2].ordnung - 1; i += 2) {
@@ -136,10 +140,14 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 			pole[k - 2][1] = new PointValuePair(imag, 0);
 
 			SwingWorkerInfoDatatype info2 = new SwingWorkerInfoDatatype();
-			info2.isFehler = false;
+			info2.statusFehler = false;
 			info2.isStatus = true;
-			info2.status = "Ordnung " + k + " berechnet.";
+			info2.statusText = "Ordnung " + k + " berechnet.";
 			swingAction(info2);
+
+			SwingWorkerInfoDatatype info3 = new SwingWorkerInfoDatatype();
+			info3.isActuallised = true;
+			swingAction(info3);
 		}
 	}
 
@@ -155,12 +163,17 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 		for (int i = 0; i < arg.size(); i++) {
 			SwingWorkerInfoDatatype info = arg.get(i);
 			if (info.isStatus) {
-				if (info.isFehler) {
-					StatusBar.showStatus(info.status, StatusBar.FEHLER);
+				if (info.statusFehler) {
+					StatusBar.showStatus(info.statusText, StatusBar.FEHLER);
 				} else {
-					StatusBar.showStatus(info.status, StatusBar.INFO);
+					StatusBar.showStatus(info.statusText, StatusBar.INFO);
 				}
 
+			}
+			if (info.isActuallised) {
+				if (isCancelled() == false) {
+					model.notifyObservers(Model.NOTIFY_REASON_APPROXIMATION_DONE);
+				}
 			}
 		}
 
@@ -170,7 +183,6 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 	protected void done() {
 		super.done();
 		StatusBar.showStatus("Approximation beendet.", StatusBar.INFO);
-		model.notifyObservers(Model.NOTIFY_REASON_APPROXIMATION_DONE);
 	}
 
 	/**
@@ -233,7 +245,11 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 	 * @return
 	 */
 	public double[][][] getStepResponse() {
-		return stepResponse;
+		if (stepResponse != null) {
+			return stepResponse;
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -242,6 +258,10 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 	 * @return
 	 */
 	public PointValuePair[][] getPole() {
-		return pole;
+		if (pole != null) {
+			return pole;
+		} else {
+			return null;
+		}
 	}
 }

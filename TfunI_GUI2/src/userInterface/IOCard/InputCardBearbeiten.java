@@ -399,8 +399,10 @@ public class InputCardBearbeiten extends JPanel {
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 		this.add(panelSprung, new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
-		this.add(new JPanel(), new GridBagConstraints(0, 2, 1, 1, 1.0, 1.0, GridBagConstraints.FIRST_LINE_START,
-				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+		JPanel panelBackground = new JPanel();
+		panelBackground.setBackground(GlobalSettings.colorBackground);
+		this.add(panelBackground, new GridBagConstraints(0, 3, 1, 1, 1.0, 1.0, GridBagConstraints.FIRST_LINE_START,
+				GridBagConstraints.BOTH, new Insets(20, 10, 10, 10), 0, 0));
 
 	}
 
