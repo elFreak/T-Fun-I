@@ -199,7 +199,8 @@ public class Plot extends JPanel {
 	// --------------------------------------------------------------------
 	// Update for Slider:
 	public void updateSliderValue(double start, double end, double offset) {
-		controller.setRange(start, end, offset);
+		controller.setRange(end, offset);
+		controller.setStepTime(start);
 	}
 
 	// --------------------------------------------------------------------

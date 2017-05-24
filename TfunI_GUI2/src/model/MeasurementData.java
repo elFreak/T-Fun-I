@@ -20,7 +20,6 @@ public class MeasurementData {
 	private double meanData[][];
 	private double finalData[][]; // Data für weitere Berechnungen
 
-	private double deadTime = 0;
 	private double offset = 0;
 	private double tail = 0;
 	private double stepTime = 0;
@@ -139,10 +138,7 @@ public class MeasurementData {
 	 * @param offset
 	 * @param tail
 	 */
-	public void setLimits(double deadTime, double offset, double tail) {
-		this.deadTime = deadTime;
-		if (this.deadTime < 0)
-			this.deadTime = 0;
+	public void setLimits(double offset, double tail) {
 
 		this.offset = offset;
 
@@ -194,9 +190,8 @@ public class MeasurementData {
 			meanOffsetData[MEASUREMENTS][i] = this.meanData[MEASUREMENTS][i] - offset;
 		}
 
-		// Automatische Erkennung der Totzeit
+		// Automatische Erkennung des Endes
 		// -------------------------------------------------------------------------------------------------------
-
 		// delta bestimmen
 		int iMinD = 0;
 		for (int i = 1; i < meanOffsetData[MEASUREMENTS].length; i++) {
@@ -209,8 +204,16 @@ public class MeasurementData {
 				iMaxD = i;
 		}
 
-		delta = Math.abs(meanOffsetData[MEASUREMENTS][iMaxD]) > Math.abs(meanOffsetData[MEASUREMENTS][iMinD])
-				? Math.abs(meanOffsetData[MEASUREMENTS][iMaxD]) : Math.abs(meanOffsetData[MEASUREMENTS][iMinD]);
+		double end = 0;
+		for (int i = 0; i < n; i++) {
+			end += meanOffsetData[MEASUREMENTS][meanOffsetData[MEASUREMENTS].length - 1 - i];
+		}
+
+		end /= n;
+
+		delta = Math.abs(meanOffsetData[MEASUREMENTS][iMaxD] - end) > Math
+				.abs(meanOffsetData[MEASUREMENTS][iMinD] - end) ? Math.abs(meanOffsetData[MEASUREMENTS][iMaxD] - end)
+						: Math.abs(meanOffsetData[MEASUREMENTS][iMinD] - end);
 
 		// noise bestimmen
 		int iMinN = 0;
@@ -225,32 +228,6 @@ public class MeasurementData {
 		}
 
 		double noise = Math.abs(meanOffsetData[MEASUREMENTS][iMaxN] - meanOffsetData[MEASUREMENTS][iMinN]);
-
-		// q = delta / noise;
-
-		// Totzeit bestimmen
-
-		for (int i = 0; i < meanOffsetData[MEASUREMENTS].length; i++) {
-			if (Math.abs(meanOffsetData[MEASUREMENTS][i]) < noise * 0.75 + delta * 0.01)
-				frontIndex++;
-			else
-				break;
-
-		}
-
-		// Automatische Erkennung des Endes
-		// -------------------------------------------------------------------------------------------------------
-		// delta bestimmen
-		double end = 0;
-		for (int i = 0; i < n; i++) {
-			end += meanOffsetData[MEASUREMENTS][meanOffsetData[MEASUREMENTS].length - 1 - i];
-		}
-
-		end /= n;
-
-		delta = Math.abs(meanOffsetData[MEASUREMENTS][iMaxD] - end) > Math
-				.abs(meanOffsetData[MEASUREMENTS][iMinD] - end) ? Math.abs(meanOffsetData[MEASUREMENTS][iMaxD] - end)
-						: Math.abs(meanOffsetData[MEASUREMENTS][iMinD] - end);
 
 		// tail bestimmen
 
@@ -274,9 +251,6 @@ public class MeasurementData {
 
 		// Data aktualisieren
 		// ---------------------------------------------------------------------------------------------
-		this.deadTime = meanOffsetData[XAXIS][frontIndex] - stepTime;
-		if (this.deadTime < 0)
-			this.deadTime = 0;
 		this.tail = meanOffsetData[XAXIS][meanOffsetData[XAXIS].length - 1] - meanOffsetData[XAXIS][tailIndex];
 		this.offset = offset;
 
@@ -348,8 +322,8 @@ public class MeasurementData {
 		int tailIndex = 0;
 		// Indexe der Zeiten berechnen
 		for (int i = 0; i < meanData[XAXIS].length; i++) {
-			// Index der Totzeit + stepTime bestimmen
-			if (meanData[XAXIS][i] < stepTime + deadTime) {
+			// Index des stepTimes bestimmen
+			if (meanData[XAXIS][i] < stepTime) {
 				frontIndex++;
 			}
 			// Index des Tails bestimmen
@@ -423,14 +397,6 @@ public class MeasurementData {
 		return meanData;
 	}
 
-	/**
-	 * Gibt die Totzeit zurück.
-	 * 
-	 * @return deadTime
-	 */
-	public double getDeadTime() {
-		return deadTime;
-	}
 
 	/**
 	 * Gibt die Offset zurück.
