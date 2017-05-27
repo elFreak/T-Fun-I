@@ -4,7 +4,8 @@ import java.util.Observable;
 
 public class Model extends Observable {
 
-	public Approximation approximation;
+	public Network network;
+	public boolean networkChanged = false;
 	public MeasurementData measurementData;
 
 	public static final int NOTIFY_REASON_MEASUREMENT_CHANGED = 0;
@@ -13,12 +14,18 @@ public class Model extends Observable {
 	public Model() {
 	}
 
-	public void berechneUTF() {
-		if (approximation != null) {
-			approximation.cancel(true);
+	public void creatNetwork() {
+		if (networkChanged) {
+			if (network != null) {
+				network.cancel(true);
+			}
+			network = new Network(measurementData, this);
+			networkChanged = false;
 		}
+	}
 
-		approximation = new Approximation(measurementData, this);
+	public void berechneUTF(int order) {
+		network.calculateApproximation(order);
 	}
 
 	public void setMesuredData(double[][] data) {
@@ -28,6 +35,11 @@ public class Model extends Observable {
 
 	@Override
 	public void notifyObservers(Object object) {
+
+		if ((int) object == NOTIFY_REASON_MEASUREMENT_CHANGED) {
+			networkChanged = true;
+		}
+
 		super.setChanged();
 		super.notifyObservers(object);
 	}

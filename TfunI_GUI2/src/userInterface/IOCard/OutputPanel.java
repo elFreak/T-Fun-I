@@ -124,11 +124,11 @@ public class OutputPanel extends JPanel {
 			break;
 		case Model.NOTIFY_REASON_APPROXIMATION_DONE:
 			for (int i = 0; i < tracesSolution.length; i++) {
-				if (((Model) obs).approximation.getPole()[i][0]!=null) {
-					tracesSolution[i].data = ((Model) obs).approximation.getStepResponse()[i];
+				if (((Model) obs).network.getApprox(i+2)!=null) {
+					tracesSolution[i].data = ((Model) obs).network.getApprox(i+2).getStepResponse();
 					tracesSolution[i].dataValid = true;
-					tracesPole[i].data = new double[][] { ((Model) obs).approximation.getPole()[i][0].getPoint(),
-							((Model) obs).approximation.getPole()[i][1].getPoint() };
+					tracesPole[i].data = new double[][] { ((Model) obs).network.getApprox(i+2).getPole()[0].getPoint(),
+							((Model) obs).network.getApprox(i+2).getPole()[1].getPoint() };
 					tracesPole[i].dataValid = true;
 				} else {
 					tracesSolution[i].dataValid = false;
@@ -136,6 +136,8 @@ public class OutputPanel extends JPanel {
 			}
 			break;
 		}
+		
+		
 
 		cardEinlesen.update(obs, obj);
 		cardBearbeiten.update(obs, obj);

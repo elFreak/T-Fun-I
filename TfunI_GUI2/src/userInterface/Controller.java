@@ -49,6 +49,21 @@ public class Controller {
 	public void setActualMode(int mode) {
 		view.inputPanel.setActualMode(mode);
 		view.outputPanel.setActualMode(mode);
+
+		switch (mode) {
+		case EINLESEN:
+
+			break;
+		case BEARBEITEN:
+
+			break;
+		case BERECHNEN:
+			model.creatNetwork();
+			break;
+		case VERIFIZIEREN:
+
+			break;
+		}
 	}
 
 	public void setMesuredData(double[][] data) {
@@ -85,17 +100,17 @@ public class Controller {
 	public void setOriginalStep() {
 		model.measurementData.setOriginalStep();
 	}
-	
-	public void calculateUTF() {
-		model.berechneUTF();
+
+	public void calculateUTF(int order) {
+		model.berechneUTF(order);
 	}
-	
-	public void autoLimmits(){
+
+	public void autoLimmits() {
 		model.measurementData.autoLimits();
 	}
-	
-	public void cBBerechnenChanged(boolean[] value) {
-		for(int i=0;i<value.length;i++) {
+
+	public void setBerechnenOrderShow(boolean[] value) {
+		for (int i = 0; i < value.length; i++) {
 			view.outputPanel.tracesSolution[i].dataValid = value[i];
 			view.outputPanel.tracesPole[i].dataValid = value[i];
 		}

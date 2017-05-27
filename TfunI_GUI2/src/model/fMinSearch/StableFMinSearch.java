@@ -92,47 +92,46 @@ public class StableFMinSearch {
 			SwingWorkerClient client, int accuracy) {
 
 		// Bestimme wie genau die Berechnung sein soll:
-		double verbesserungsKoeff = 1e-3;
+		double verbesserungsKoeff = 1e-1;
 		double[] polySeiteLaenge = new double[ordnung + 1];
 		for (int i = 0; i < ordnung + 1; i++) {
 			polySeiteLaenge[i] = 0.2;
 		}
 		switch (ordnung) {
 		case 2:
-			verbesserungsKoeff /= 1e2;
+			verbesserungsKoeff /= 1e3;
 			break;
 		case 3:
-			verbesserungsKoeff /= 1e2;
+			verbesserungsKoeff /= 1e3;
 			break;
 		case 4:
 			verbesserungsKoeff /= 1e4;
 			break;
 		case 5:
-			verbesserungsKoeff /= 1e4;
+			verbesserungsKoeff /= 1e5;
 			break;
 		case 6:
-			verbesserungsKoeff /= 5e4;
+			verbesserungsKoeff /= 1e5;
 			break;
 		case 7:
-			verbesserungsKoeff /= 5e4;
+			verbesserungsKoeff /= 1e5;
 			break;
 		case 8:
-			verbesserungsKoeff /= 5e4;
+			verbesserungsKoeff /= 1e5;
 			break;
 		case 9:
-			verbesserungsKoeff /= 5e4;
+			verbesserungsKoeff /= 1e5;
 			break;
 		case 10:
-			verbesserungsKoeff /= 1e4;
+			verbesserungsKoeff /= 1e5;
 			break;
 		}
+	
+		
 		PointValuePair koeffizienten = startValue; // nur für den Compiler!
 
 		// Berechne:
 		for (int i = 0; i <= accuracy; i++) {
-			if (i == 0) {
-				verbesserungsKoeff *= 1000;
-			}
 			koeffizienten = calculate(target, verbesserungsKoeff, koeffizienten.getPoint(), polySeiteLaenge, client);
 			verbesserungsKoeff /= 10;
 		}
@@ -163,7 +162,6 @@ public class StableFMinSearch {
 		do {
 			problem = false;
 			int[] status = new int[] { OverwatchedTask.STATUS_IN_ARBEIT };
-			System.out.println("ver"+newVerbesserungsKoeff);
 			overwatchedTask = new OverwatchedTask(target, newVerbesserungsKoeff, newStartWert, polySeiteLaenge, status,
 					client);
 			
@@ -180,7 +178,7 @@ public class StableFMinSearch {
 				}
 
 				if (status[0] == OverwatchedTask.STATUS_PROBLEM_ABFRAGEN
-						&& System.currentTimeMillis() - startTime > 2000) {
+						&& System.currentTimeMillis() - startTime > 2500) {
 					overwatchedTask.cancel(true);
 					problem = true;
 					SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
@@ -188,7 +186,7 @@ public class StableFMinSearch {
 					info.isStatus = true;
 					info.statusText = "Zu langsam!";
 					client.swingAction(info);
-					newVerbesserungsKoeff = newVerbesserungsKoeff*100;
+					newVerbesserungsKoeff = newVerbesserungsKoeff*1000;
 					for(int i=0;i<startWert.length;i++) {
 						newStartWert[i] = startWert[i];
 					}

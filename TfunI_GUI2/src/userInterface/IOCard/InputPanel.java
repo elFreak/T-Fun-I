@@ -3,6 +3,7 @@ package userInterface.IOCard;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
 
+import model.Model;
 import projectT_Fun_I.GlobalSettings;
 import projectT_Fun_I.Utility;
 import userInterface.Controller;
@@ -83,5 +84,6 @@ public class InputPanel extends JPanel {
 	
 	public void update(java.util.Observable obs, Object obj) {
 		inputCardBearbeiten.update(obs, obj);
+		inputCardBerechnen.update(obs, obj);
 	}
 }
