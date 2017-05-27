@@ -203,11 +203,11 @@ public class Plot extends JPanel {
 		controller.setStepTime(start);
 	}
 
-	// --------------------------------------------------------------------
-	// Set Step Position:
-	public void setStepPosition(double position) {
-		subplot[subplotSelected].setStepPosition(position);
-	}
+//	// --------------------------------------------------------------------
+//	// Set Step Position:
+//	public void setStepPosition(double position) {
+//		subplot[subplotSelected].setStepPosition(position);
+//	}
 
 	// --------------------------------------------------------------------
 	// Set Slider Position:

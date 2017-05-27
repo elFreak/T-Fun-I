@@ -104,7 +104,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	private double sliderStartValue = 0;
 	private double sliderEndValue = 0;
 	private double sliderOffsetValue = 0;
-	private double stepTime = 0;
+	// private double stepTime = 0;
 
 	// --------------------------------------------------------------------
 	// Axis Label:
@@ -227,7 +227,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 		// paint traces:
 		for (int i = 0; i < trace.length; i++) {
-			if (trace[i].dataValid) {
+			if (trace[i].dataValid && trace[i].data != null) {
 				int provColor = i % traceColorsNumber;
 				if (trace[i].usePreferedColor) {
 					g2.setColor(trace[i].preferedColor);
@@ -810,7 +810,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 		double y2Min = 0;
 		double y2Max = 100;
 		for (int iTrace = 0; iTrace < trace.length; iTrace++) {
-			if (trace[iTrace].dataValid) {
+			if (trace[iTrace].dataValid && trace[iTrace].data != null) {
 				xMin = trace[iTrace].data[X][0];
 				xMax = trace[iTrace].data[X][0];
 				if (trace[iTrace].yaxis == Y1AXIS) {
@@ -824,7 +824,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			}
 		}
 		for (int iTrace = 0; iTrace < trace.length; iTrace++) {
-			if (trace[iTrace].dataValid) {
+			if (trace[iTrace].dataValid && trace[iTrace].data != null) {
 				for (int i = 0; i < trace[iTrace].data[0].length; i++) {
 					if (trace[iTrace].data[X][i] < xMin) {
 						xMin = trace[iTrace].data[X][i];
@@ -865,6 +865,15 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			} else {
 				y2Max = 0;
 			}
+		}
+		
+		if(y1Min==y1Max) {
+			y1Min -= 0.1;
+			y1Max += 0.1;
+		}
+		if(y2Min==y2Max) {
+			y2Min -= 0.1;
+			y2Max += 0.1;
 		}
 
 		double deltaY1 = y1Max - y1Min;
@@ -1041,15 +1050,15 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			break;
 		}
 
-		plot.updateSliderValue(sliderStartValue - stepTime, sliderEndValue, sliderOffsetValue);
+		plot.updateSliderValue(sliderStartValue/* - stepTime */, sliderEndValue, sliderOffsetValue);
 
 	}
 
-	// --------------------------------------------------------------------
-	// Set Step Position:
-	public void setStepPosition(double position) {
-		stepTime = position;
-	}
+	// // --------------------------------------------------------------------
+	// // Set Step Position:
+	// public void setStepPosition(double position) {
+	// stepTime = position;
+	// }
 
 	// --------------------------------------------------------------------
 	// Set Slider Position:
@@ -1059,7 +1068,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 				switch (sliders[i].tag) {
 				case OutputCardBearbeiten.KEY_START:
-					sliderStartValue = value + stepTime;
+					sliderStartValue = value;// + stepTime;
 					break;
 				case OutputCardBearbeiten.KEY_END:
 					sliderEndValue = value;

@@ -18,6 +18,7 @@ public class Model extends Observable {
 		if (networkChanged) {
 			if (network != null) {
 				network.cancel(true);
+				network.threadExecutor.shutdown();
 			}
 			network = new Network(measurementData, this);
 			networkChanged = false;

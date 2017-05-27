@@ -17,6 +17,7 @@ public class OutputPanel extends JPanel {
 	/**
 	 * General
 	 */
+	Controller controller;
 	private CardLayout cardLayout = new CardLayout();
 
 	/**
@@ -39,6 +40,7 @@ public class OutputPanel extends JPanel {
 	private OutputCardVerifizieren cardVerifizieren;
 
 	public OutputPanel(Controller controller) {
+		this.controller = controller;
 
 		// Output-Panel Design:
 		setBorder(MyBorderFactory.createMyBorder("  Ausgabe  "));
@@ -124,20 +126,22 @@ public class OutputPanel extends JPanel {
 			break;
 		case Model.NOTIFY_REASON_APPROXIMATION_DONE:
 			for (int i = 0; i < tracesSolution.length; i++) {
-				if (((Model) obs).network.getApprox(i+2)!=null) {
-					tracesSolution[i].data = ((Model) obs).network.getApprox(i+2).getStepResponse();
-					tracesSolution[i].dataValid = true;
-					tracesPole[i].data = new double[][] { ((Model) obs).network.getApprox(i+2).getPole()[0].getPoint(),
-							((Model) obs).network.getApprox(i+2).getPole()[1].getPoint() };
-					tracesPole[i].dataValid = true;
-				} else {
-					tracesSolution[i].dataValid = false;
+				if (((Model) obs).network.getApprox(i + 2) != null && controller.getBerechnenCBActive()[i]==true) {
+					if (((Model) obs).network.getApprox(i + 2).getPole()[0] != null) {
+						tracesSolution[i].data = ((Model) obs).network.getApprox(i + 2).getStepResponse();
+						tracesSolution[i].dataValid = true;
+						tracesPole[i].data = new double[][] {
+								((Model) obs).network.getApprox(i + 2).getPole()[0].getPoint(),
+								((Model) obs).network.getApprox(i + 2).getPole()[1].getPoint() };
+						tracesPole[i].dataValid = true;
+					} else {
+						tracesSolution[i].dataValid = false;
+						tracesPole[i].dataValid = false;
+					}
 				}
 			}
 			break;
 		}
-		
-		
 
 		cardEinlesen.update(obs, obj);
 		cardBearbeiten.update(obs, obj);

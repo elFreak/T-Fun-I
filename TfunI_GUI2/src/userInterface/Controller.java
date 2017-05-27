@@ -1,5 +1,7 @@
 package userInterface;
 
+import java.util.Observable;
+
 import model.Model;
 import sun.awt.RepaintArea;
 
@@ -27,6 +29,9 @@ public class Controller {
 	public final static String KEY_BERECHNEN = "BERECHNEN";
 	public final static int VERIFIZIEREN = 3;
 	public final static String KEY_VERIFIZIEREN = "VERIFIZIEREN";
+	
+	
+	private boolean[] berechnenCBActive = new boolean[9];
 
 	public Controller(Model model) {
 		this.model = model;
@@ -114,11 +119,16 @@ public class Controller {
 		model.measurementData.autoLimits();
 	}
 
-	public void setBerechnenOrderShow(boolean[] value) {
+	public void setBerechnenCBActive(boolean[] value) {
+		this.berechnenCBActive = value;
 		for (int i = 0; i < value.length; i++) {
 			view.outputPanel.tracesSolution[i].dataValid = value[i];
 			view.outputPanel.tracesPole[i].dataValid = value[i];
 		}
-		view.repaint();
+		view.update(model, Model.NOTIFY_REASON_APPROXIMATION_DONE);
+	}
+	
+	public boolean[] getBerechnenCBActive() {
+		return berechnenCBActive;
 	}
 }

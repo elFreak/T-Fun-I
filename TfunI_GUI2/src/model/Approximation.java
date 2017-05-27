@@ -50,9 +50,6 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 		this.stepFullNormed = stepFullNormed;
 		this.timeLenghtNormed = timeLenghtNormed;
 		this.network = network;
-
-		// Started die Berechnung:
-		this.execute();
 	}
 
 	private void calculate() {
@@ -122,7 +119,12 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 	}
 
 	@Override
-	protected Object doInBackground() {
+	protected Object doInBackground() throws Exception {
+		SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
+		info.isStatus = true;
+		info.statusFehler = false;
+		info.statusText = "Berechnung für Ordnung " + order + " gestartet.";
+		swingAction(info);
 		calculate();
 		return 0;
 	}

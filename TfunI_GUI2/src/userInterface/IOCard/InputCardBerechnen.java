@@ -150,7 +150,7 @@ public class InputCardBerechnen extends JPanel implements ActionListener {
 		for (int i = 0; i < cB.length; i++) {
 			active[i] = cB[i].isSelected();
 		}
-		controller.setBerechnenOrderShow(active);
+		controller.setBerechnenCBActive(active);
 	}
 
 	/**
@@ -161,20 +161,5 @@ public class InputCardBerechnen extends JPanel implements ActionListener {
 	public void update(java.util.Observable obs, Object obj) {
 		Model model = (Model) obs;
 
-		if ((int) obj == Model.NOTIFY_REASON_APPROXIMATION_DONE) {
-			boolean[] order = new boolean[9];
-			for (int i = 0; i < 9; i++) {
-				if (model.network.getApprox(i + 2)!= null) {
-					order[i] = true;
-				} else {
-					order[i] = false;
-				}
-			}
-			controller.setBerechnenOrderShow(order);
-			for (int j = 0; j < cB.length; j++) {
-				cB[j].setSelected(order[j]);
-			}
-
-		}
 	}
 }

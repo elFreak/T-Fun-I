@@ -22,12 +22,11 @@ public class OutputCardBerechnen extends WindowContainer {
 
 		addComponent(plotBerechnen);
 		addComponent(plotPolstellen);
-		
 
 	}
 
 	public void update(java.util.Observable obs, Object obj) {
-		
+
 		if (outputPanel.tracePreprocessed.dataValid && !plotBerechnenTracePreprocessedAdded) {
 			plotBerechnen.setSubplot(0);
 			plotBerechnenTracePreprocessedAdded = true;
@@ -40,12 +39,16 @@ public class OutputCardBerechnen extends WindowContainer {
 				plotBerechnenTraceSolutionAdded[i] = true;
 				plotBerechnen.addTrace(outputPanel.tracesSolution[i]);
 				plotBerechnen.setRangeIdeal();
+			} else {
+				plotBerechnenTraceSolutionAdded[i] = false;
 			}
 			if (outputPanel.tracesPole[i].dataValid && !plotPolstellenTracePoleAdded[i]) {
 				plotPolstellen.setSubplot(0);
 				plotPolstellenTracePoleAdded[i] = true;
 				plotPolstellen.addTrace(outputPanel.tracesPole[i]);
 				plotPolstellen.setRangeIdeal();
+			} else {
+				plotPolstellenTracePoleAdded[i] = false;
 			}
 		}
 	}

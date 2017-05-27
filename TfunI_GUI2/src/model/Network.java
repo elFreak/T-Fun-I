@@ -1,6 +1,9 @@
 package model;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import javax.swing.SwingWorker;
 
 import org.apache.commons.math3.optim.PointValuePair;
@@ -17,6 +20,7 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 	 */
 	private MeasurementData measurementData;
 	private Model model;
+	ExecutorService threadExecutor = Executors.newFixedThreadPool(1);
 
 	/**
 	 * Normierte Eingangssignale (Sprungantwort aus der Klasse Messwerte):
@@ -33,7 +37,7 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 		this.measurementData = measurementData;
 		this.model = model;
 
-		this.execute();
+		threadExecutor.execute(this);
 	}
 
 	private void prepareCalculation() {
@@ -60,12 +64,12 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 			approximations[order - 2] = new Approximation(startValues[order - 2],
 					new Target(timeFullNormed, stepFullNormed), order, timeFullNormed, stepFullNormed, timeLenghtNormed,
 					this);
-			StatusBar.showStatus("Berechnung für Ordnung " + order + " gestartet.", StatusBar.INFO);
+			threadExecutor.execute(approximations[order-2]);
 		}
 	}
 
 	@Override
-	protected Object doInBackground() {
+	protected Object doInBackground() throws Exception {
 		prepareCalculation();
 		return 0;
 	}

@@ -21,7 +21,7 @@ public class Trace {
 	// Data:
 	public static final int X = 0;
 	public static final int Y = 1;
-	public double[][] data = new double[][]{{0.0}};
+	public double[][] data;
 	
 	// --------------------------------------------------------------------
 	// Line Type:
