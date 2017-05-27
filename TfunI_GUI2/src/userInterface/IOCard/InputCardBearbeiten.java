@@ -43,7 +43,6 @@ public class InputCardBearbeiten extends JPanel {
 	private JPanel panelRahmen = new JPanel(new GridBagLayout());
 	private JTextField tfOffset = new JTextField("0");
 	private JTextField tfTail = new JTextField("0");
-	private JTextField tfDeadtime = new JTextField("0");
 	private JButton btAutoRahmen = new JButton("Auto");
 
 	private JPanel panelSprung = new JPanel(new GridBagLayout());
@@ -160,7 +159,7 @@ public class InputCardBearbeiten extends JPanel {
 				double tempValue = Double.parseDouble(tfOffset.getText());
 				tempValue = tempValue * Math.pow(1.1, e.getWheelRotation()) + 0.000001 * e.getWheelRotation();
 
-				controller.setRange(Double.parseDouble(tfDeadtime.getText()), Double.parseDouble(tfTail.getText()),
+				controller.setRange(Double.parseDouble(tfTail.getText()),
 						tempValue);
 			}
 		});
@@ -172,7 +171,7 @@ public class InputCardBearbeiten extends JPanel {
 				try {
 					double tempValue = Double.parseDouble(tfOffset.getText());
 
-					controller.setRange(Double.parseDouble(tfDeadtime.getText()), Double.parseDouble(tfTail.getText()),
+					controller.setRange(Double.parseDouble(tfTail.getText()),
 							tempValue);
 				} catch (NumberFormatException exp) {
 					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben", StatusBar.FEHLER);
@@ -193,7 +192,7 @@ public class InputCardBearbeiten extends JPanel {
 					tempValue = 0;
 				}
 
-				controller.setRange(Double.parseDouble(tfDeadtime.getText()), tempValue,
+				controller.setRange(tempValue,
 						Double.parseDouble(tfOffset.getText()));
 			}
 		});
@@ -208,50 +207,14 @@ public class InputCardBearbeiten extends JPanel {
 						tempValue = 0;
 					}
 
-					controller.setRange(Double.parseDouble(tfDeadtime.getText()), tempValue,
+					controller.setRange(tempValue,
 							Double.parseDouble(tfOffset.getText()));
 				} catch (NumberFormatException exp) {
 					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben", StatusBar.FEHLER);
 				}
 			}
 		});
-
-		// Anonymer MouseWheelListener für Textfeld BereichOben
-		tfDeadtime.addMouseWheelListener(new MouseWheelListener() {
-			@Override
-			public void mouseWheelMoved(MouseWheelEvent e) {
-				if (tfDeadtime.getText().isEmpty())
-					tfDeadtime.setText("0");
-
-				double tempValue = Double.parseDouble(tfDeadtime.getText());
-				tempValue = tempValue * Math.pow(1.1, e.getWheelRotation()) + 0.000001 * e.getWheelRotation();
-				if (tempValue < 0) {
-					tempValue = 0;
-				}
-
-				controller.setRange(tempValue, Double.parseDouble(tfTail.getText()),
-						Double.parseDouble(tfOffset.getText()));
-			}
-		});
-
-		// Anonymer ActionListener für Textfeld bei Enter
-		tfDeadtime.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					double tempValue = Double.parseDouble(tfDeadtime.getText());
-					if (tempValue < 0) {
-						tempValue = 0;
-					}
-
-					controller.setRange(tempValue, Double.parseDouble(tfTail.getText()),
-							Double.parseDouble(tfOffset.getText()));
-				} catch (NumberFormatException exp) {
-					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben", StatusBar.FEHLER);
-				}
-			}
-		});
-		
+	
 		// Anonymer ActionListener für Auto Button
 		btAutoRahmen.addActionListener(new ActionListener() {
 			@Override
@@ -271,21 +234,14 @@ public class InputCardBearbeiten extends JPanel {
 		panelRahmen.add(new JLabel("V"), new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 
-		panelRahmen.add(new Label("Totzeit:"), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+		panelRahmen.add(new Label("Ende:"), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
-		panelRahmen.add(tfDeadtime, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
+		panelRahmen.add(tfTail, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 20, 0));
 		panelRahmen.add(new JLabel("s"), new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 
-		panelRahmen.add(new Label("Ende:"), new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
-				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
-		panelRahmen.add(tfTail, new GridBagConstraints(1, 2, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 20, 0));
-		panelRahmen.add(new JLabel("s"), new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0,
-				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
-
-		panelRahmen.add(btAutoRahmen, new GridBagConstraints(0, 3, 3, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+		panelRahmen.add(btAutoRahmen, new GridBagConstraints(0, 2, 3, 1, 0.0, 0.0, GridBagConstraints.CENTER,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 
 		// --------------------------------------------------------
@@ -313,7 +269,7 @@ public class InputCardBearbeiten extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					double tempValue = Double.parseDouble(tfDeadtime.getText());
+					double tempValue = Double.parseDouble(tfSprungzeit.getText());
 					if (tempValue < 0) {
 						tempValue = 0;
 					}
@@ -414,8 +370,6 @@ public class InputCardBearbeiten extends JPanel {
 	public void update(java.util.Observable obs, Object obj) {
 		Numbers offset = new Numbers(((Model) obs).measurementData.getOffset());
 		tfOffset.setText(String.valueOf(offset.number) + offset.unit);
-		Numbers deadTime = new Numbers(((Model) obs).measurementData.getDeadTime());
-		tfDeadtime.setText(String.valueOf(deadTime.number) + deadTime.unit);
 		Numbers tail = new Numbers(((Model) obs).measurementData.getTail());
 		tfTail.setText(String.valueOf(tail.number) + tail.unit);
 		Numbers stepHeight = new Numbers(((Model) obs).measurementData.getstepHeight());

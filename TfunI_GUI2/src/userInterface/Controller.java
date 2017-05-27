@@ -75,25 +75,30 @@ public class Controller {
 		model.measurementData.setMovingMean(n);
 	}
 
-	public void setRange(double deadTime, double tail, double offset) {
-		if (tail < (deadTime + model.measurementData.getstepTime())) {
+	public void setRange(double tail, double offset) {
+		if (tail < model.measurementData.getstepTime()) {
 			if (tail != model.measurementData.getTail()) {
-				tail = (deadTime + model.measurementData.getstepTime());
-			}
-			if (deadTime != model.measurementData.getDeadTime()) {
-				deadTime = model.measurementData.getTail() - model.measurementData.getstepTime();
+				tail = model.measurementData.getstepTime();
 			}
 		}
 
-		model.measurementData.setLimits(deadTime, offset, tail);
+		model.measurementData.setLimits(offset, tail);
 	}
 
 	public void setStep(double stepTime, double stepHeight) {
-		if (stepTime > model.measurementData.getTail() - model.measurementData.getDeadTime()) {
-			stepTime = model.measurementData.getTail() - model.measurementData.getDeadTime();
+		if (stepTime > model.measurementData.getTail()) {
+			stepTime = model.measurementData.getTail();
 		}
 
 		model.measurementData.setStepHeight(stepHeight);
+		model.measurementData.setStepTime(stepTime);
+	}
+
+	public void setStepTime(double stepTime) {
+		if (stepTime > model.measurementData.getTail()) {
+			stepTime = model.measurementData.getTail();
+		}
+
 		model.measurementData.setStepTime(stepTime);
 	}
 
