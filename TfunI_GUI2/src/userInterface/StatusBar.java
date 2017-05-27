@@ -86,7 +86,7 @@ public class StatusBar extends JPanel implements ActionListener {
 		}
 		if (type == FEHLER) {
 			try {
-				document.insertString(0, "Problem:  " + text + "\n", styleFehler);
+				document.insertString(0, "" + text + "\n", styleFehler);
 			} catch (Exception e) {
 			}
 		}

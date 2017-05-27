@@ -17,7 +17,7 @@ public class StartValueSaver {
 	 * @param messwerte
 	 */
 
-	public static void addUTF(byte ordnung, UTFDatatype utf, double[][] messwerte) {
+	public static void addUTF(UTFDatatype utf, double[][] messwerte) {
 		FilePackageDatatype save = new FilePackageDatatype();
 		double korrKoeff = 0.0;
 		FilePackageDatatype[] plotpack = DataFile.getdata();
@@ -26,8 +26,8 @@ public class StartValueSaver {
 		// Plots mit Ordnung kleiner als 5,
 		// weniger 625 und
 		// mehr als 50000 Messpunkten werden nicht gespeichert
-		if (ordnung > 4 && messwerte.length > 625 && messwerte.length < 50000) {
-			save.ordnung = ordnung;
+		if (utf.ordnung > 4 && messwerte.length > 625 && messwerte.length < 50000) {
+			save.ordnung = (byte)utf.ordnung;
 			save.utf = utf;
 
 			// Eingelesener Plot wird auf 2500 Messwerte normiert, zum

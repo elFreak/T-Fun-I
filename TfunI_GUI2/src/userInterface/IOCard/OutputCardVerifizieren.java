@@ -7,10 +7,10 @@ public class OutputCardVerifizieren extends WindowContainer {
 	private static final long serialVersionUID = 1L;
 	
 	private Plot plotVerifizieren = new Plot();
-	private KoefPanel koefPanel = new KoefPanel();
+	//private KoefPanel koefPanel = new KoefPanel();
 	
 	public OutputCardVerifizieren(OutputPanel outputPanel) {
 		addComponent(plotVerifizieren);
-		addComponent(koefPanel);
+		//addComponent(koefPanel);
 	}
 }

@@ -39,6 +39,7 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 	private UTFDatatype utf = new UTFDatatype();
 	private double[][] stepResponse;
 	private PointValuePair[] pole = new PointValuePair[2];
+	private double korrKoef = 0;
 
 	public Approximation(PointValuePair startValues, Target target, int order, double[] timeFullNormed,
 			double[] stepFullNormed, double[] timeLenghtNormed, Network network) {
@@ -110,10 +111,14 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 		pole[0] = new PointValuePair(real, 0);
 		pole[1] = new PointValuePair(imag, 0);
 
+		//Den Korelationskoeffizienten berechnen:
+		korrKoef = Korrelation.korrKoeff(stepFullNormed, stepResponse[1]);
+		
+		// Den Benutzer informieren:
 		SwingWorkerInfoDatatype info2 = new SwingWorkerInfoDatatype();
 		info2.statusFehler = false;
 		info2.isStatus = true;
-		info2.statusText = "Ordnung " + order + " berechnet.";
+		info2.statusText = "Berechnung abgeschlossen (Ordnung " + order + ").";
 		swingAction(info2);
 
 	}
@@ -123,7 +128,7 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 		SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
 		info.isStatus = true;
 		info.statusFehler = false;
-		info.statusText = "Berechnung für Ordnung " + order + " gestartet.";
+		info.statusText = "Berechnung gestarted (Ordnung " + order + ").";
 		swingAction(info);
 		calculate();
 		return 0;
@@ -151,7 +156,6 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 	@Override
 	protected void done() {
 		super.done();
-		StatusBar.showStatus("Approximation beendet.", StatusBar.INFO);
 		network.approximationDone();
 	}
 
@@ -170,6 +174,10 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 
 	public PointValuePair[] getPole() {
 		return pole;
+	}
+
+	public double getKorrKoef() {
+		return korrKoef;
 	}
 
 }

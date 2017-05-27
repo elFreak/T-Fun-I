@@ -78,7 +78,6 @@ public class View extends JPanel implements Observer {
 		// Update:
 		revalidate();
 		repaint();
-
 	}
 
 }

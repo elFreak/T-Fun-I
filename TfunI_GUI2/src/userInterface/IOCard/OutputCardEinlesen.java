@@ -1,5 +1,6 @@
 package userInterface.IOCard;
 
+import model.Model;
 import userInterface.WindowContainer;
 import userInterface.JavaPlot.Plot;
 
@@ -23,7 +24,7 @@ public class OutputCardEinlesen extends WindowContainer {
 	}
 
 	public void update(java.util.Observable obs, Object obj) {
-		
+				
 		if(outputPanel.traceRaw.dataValid&&!plotEinlesenTraceRawAdded) {
 			plotEinlesen.addTrace(outputPanel.traceRaw);
 			plotEinlesenTraceRawAdded = true;
@@ -33,6 +34,10 @@ public class OutputCardEinlesen extends WindowContainer {
 		if(outputPanel.traceRaw.dataValid&&!plotEinlesenTraceStepAdded) {
 			plotEinlesen.addTrace(outputPanel.traceStep);
 			plotEinlesenTraceStepAdded = true;
+			plotEinlesen.setRangeIdeal();
+		}
+		
+		if(((int)obj)==Model.NOTIFY_REASON_NEW_DATA) {
 			plotEinlesen.setRangeIdeal();
 		}
 	}

@@ -13,7 +13,7 @@ public class GlobalSettings {
 	public static Color colorBackgroundBlueBright = new Color(218, 227, 243);
 	public static Color colorBackgroundBlueDark = new Color(143, 170, 220);
 	public static Color colorBackgroundGreen = new Color(170, 210, 140);
-	public static Color colorBackgroundBlack = new Color(80, 80, 80);
+	public static Color colorBackgroundBlack = new Color(100, 100, 100);
 	public static Color colorBackgroundWhite = new Color(250, 250, 250);
 
 	public static Color colorText = new Color(40, 40, 40);
@@ -35,6 +35,7 @@ public class GlobalSettings {
 	public static Color colorTraceYellow = new Color(255, 217, 102);
 	public static Color colorTraceOrange = new Color(197, 90, 17);
 	public static Color[] colorsTraceSolution = new Color[9];
+	public static Color colorTraceGrey = new Color(200, 200, 250);
 	
 	public static Color colorSliderBlue = new Color(0, 180, 240);
 	public static Color colorSliderViolet = new Color(204, 153, 255);

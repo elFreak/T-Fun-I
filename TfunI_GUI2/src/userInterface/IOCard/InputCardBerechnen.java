@@ -5,20 +5,23 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import model.Model;
 import projectT_Fun_I.GlobalSettings;
 import userInterface.Controller;
 import userInterface.MyBorderFactory;
-import userInterface.Numbers;
+import userInterface.StatusBar;
 
-public class InputCardBerechnen extends JPanel implements ActionListener {
+public class InputCardBerechnen extends JPanel implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 
 	Controller controller;
@@ -28,7 +31,6 @@ public class InputCardBerechnen extends JPanel implements ActionListener {
 	private JButton btNone = new JButton("Keine");
 	private JCheckBox[] cB = new JCheckBox[9];
 	private JLabel[] lB = new JLabel[9];
-
 
 	public InputCardBerechnen(Controller controller) {
 		this.controller = controller;
@@ -44,48 +46,49 @@ public class InputCardBerechnen extends JPanel implements ActionListener {
 			cB[i].setEnabled(false);
 			cB[i].setOpaque(true);
 			cB[i].setBackground(GlobalSettings.colorsTraceSolution[i]);
+			cB[i].addMouseListener(this);
 			lB[i] = new JLabel();
 			lB[i].setText("" + (i + 2) + ": ");
-
+			lB[i].setHorizontalAlignment(SwingConstants.RIGHT);
 		}
 
-		panelOrdnung.add(lB[0], new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
-				GridBagConstraints.NONE, new Insets(20, 20, 10, 10), 0, 0));
-		panelOrdnung.add(lB[1], new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
-				GridBagConstraints.NONE, new Insets(20, 20, 10, 10), 0, 0));
-		panelOrdnung.add(lB[2], new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
-				GridBagConstraints.NONE, new Insets(20, 20, 10, 10), 0, 0));
-		panelOrdnung.add(lB[3], new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
-				GridBagConstraints.NONE, new Insets(20, 20, 10, 10), 0, 0));
-		panelOrdnung.add(lB[4], new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
-				GridBagConstraints.NONE, new Insets(20, 20, 10, 10), 0, 0));
-		panelOrdnung.add(lB[5], new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
-				GridBagConstraints.NONE, new Insets(20, 20, 10, 10), 0, 0));
-		panelOrdnung.add(lB[6], new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
-				GridBagConstraints.NONE, new Insets(20, 20, 10, 10), 0, 0));
-		panelOrdnung.add(lB[7], new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
-				GridBagConstraints.NONE, new Insets(20, 20, 10, 10), 0, 0));
-		panelOrdnung.add(lB[8], new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
-				GridBagConstraints.NONE, new Insets(20, 20, 10, 10), 0, 0));
+		panelOrdnung.add(lB[0], new GridBagConstraints(2, 0, 1, 1, 1.0,0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0));
+		panelOrdnung.add(lB[1], new GridBagConstraints(0, 1, 1, 1, 1.0,0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0));
+		panelOrdnung.add(lB[2], new GridBagConstraints(2, 1, 1, 1, 1.0,0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0));
+		panelOrdnung.add(lB[3], new GridBagConstraints(0, 2, 1, 1, 1.0,0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0));
+		panelOrdnung.add(lB[4], new GridBagConstraints(2, 2, 1, 1, 1.0,0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0));
+		panelOrdnung.add(lB[5], new GridBagConstraints(0, 3, 1, 1, 1.0,0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0));
+		panelOrdnung.add(lB[6], new GridBagConstraints(2, 3, 1, 1, 1.0,0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0));
+		panelOrdnung.add(lB[7], new GridBagConstraints(0, 4, 1, 1, 1.0,0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0));
+		panelOrdnung.add(lB[8], new GridBagConstraints(2, 4, 1, 1, 1.0,0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0));
 
-		panelOrdnung.add(cB[0], new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
-				GridBagConstraints.NONE, new Insets(20, 0, 10, 40), 0, 0));
-		panelOrdnung.add(cB[1], new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
-				GridBagConstraints.NONE, new Insets(20, 0, 10, 40), 0, 0));
-		panelOrdnung.add(cB[2], new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
-				GridBagConstraints.NONE, new Insets(20, 0, 10, 40), 0, 0));
-		panelOrdnung.add(cB[3], new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
-				GridBagConstraints.NONE, new Insets(20, 0, 10, 40), 0, 0));
-		panelOrdnung.add(cB[4], new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
-				GridBagConstraints.NONE, new Insets(20, 0, 10, 40), 0, 0));
-		panelOrdnung.add(cB[5], new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
-				GridBagConstraints.NONE, new Insets(20, 0, 10, 40), 0, 0));
-		panelOrdnung.add(cB[6], new GridBagConstraints(3, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
-				GridBagConstraints.NONE, new Insets(20, 0, 10, 40), 0, 0));
-		panelOrdnung.add(cB[7], new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
-				GridBagConstraints.NONE, new Insets(20, 0, 10, 40), 0, 0));
-		panelOrdnung.add(cB[8], new GridBagConstraints(3, 4, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
-				GridBagConstraints.NONE, new Insets(20, 0, 10, 40), 0, 0));
+		panelOrdnung.add(cB[0], new GridBagConstraints(3, 0, 1, 1, 1.0,0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0));
+		panelOrdnung.add(cB[1], new GridBagConstraints(1, 1, 1, 1, 1.0,0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0));
+		panelOrdnung.add(cB[2], new GridBagConstraints(3, 1, 1, 1, 1.0,0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0));
+		panelOrdnung.add(cB[3], new GridBagConstraints(1, 2, 1, 1, 1.0,0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0));
+		panelOrdnung.add(cB[4], new GridBagConstraints(3, 2, 1, 1, 1.0,0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0));
+		panelOrdnung.add(cB[5], new GridBagConstraints(1, 3, 1, 1, 1.0,0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0));
+		panelOrdnung.add(cB[6], new GridBagConstraints(3, 3, 1, 1, 1.0,0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0));
+		panelOrdnung.add(cB[7], new GridBagConstraints(1, 4, 1, 1, 1.0,0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0));
+		panelOrdnung.add(cB[8], new GridBagConstraints(3, 4, 1, 1, 1.0,0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0));
 		panelOrdnung.add(btAll, new GridBagConstraints(0, 5, 4, 1, 1.0, 0.0, GridBagConstraints.CENTER,
 				GridBagConstraints.HORIZONTAL, new Insets(10, 10, 10, 10), 0, 0));
 		panelOrdnung.add(btNone, new GridBagConstraints(0, 6, 4, 1, 1.0, 0.0, GridBagConstraints.CENTER,
@@ -109,13 +112,18 @@ public class InputCardBerechnen extends JPanel implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				boolean[] active = new boolean[cB.length];
-				for (int i = 0; i < cB.length; i++) {
-					cB[i].setSelected(true);
-					controller.calculateUTF(i+2);
-					active[i] = cB[i].isSelected();
+
+				if (cB[0].isEnabled() == false) {
+					StatusBar.showStatus("Bitte warten, bis alle Startwerte berechnet sind.", StatusBar.FEHLER);
+				} else {
+					boolean[] active = new boolean[cB.length];
+					for (int i = 0; i < cB.length; i++) {
+						cB[i].setSelected(true);
+						controller.calculateUTF(i + 2);
+						active[i] = cB[i].isSelected();
+					}
+					controller.setBerechnenCBActive(active);
 				}
-				controller.setBerechnenCBActive(active);
 			}
 		});
 
@@ -123,19 +131,31 @@ public class InputCardBerechnen extends JPanel implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				boolean[] active = new boolean[cB.length];
-				for (int i = 0; i < cB.length; i++) {
-					cB[i].setSelected(false);
-					active[i] = cB[i].isSelected();
+
+				if (cB[0].isEnabled() == false) {
+					StatusBar.showStatus("Bitte warten, bis alle Startwerte berechnet sind.", StatusBar.FEHLER);
+				} else {
+					boolean[] active = new boolean[cB.length];
+					for (int i = 0; i < cB.length; i++) {
+						cB[i].setSelected(false);
+						active[i] = cB[i].isSelected();
+					}
+					controller.setBerechnenCBActive(active);
 				}
-				controller.setBerechnenCBActive(active);
 			}
 		});
 
 	}
+	
+	public void clearAllCB() {
+		for (int i = 0; i < cB.length; i++) {
+			cB[i].setSelected(false);
+		}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
 		if (e.getSource().equals(cB[0])) {
 			controller.calculateUTF(2);
 		}
@@ -181,5 +201,36 @@ public class InputCardBerechnen extends JPanel implements ActionListener {
 				cB[i].setEnabled(true);
 			}
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (((JCheckBox) e.getSource()).isEnabled() == false) {
+			StatusBar.showStatus("Bitte warten, bis alle Startwerte berechnet sind.", StatusBar.FEHLER);
+		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 }

@@ -3,6 +3,7 @@ package userInterface;
 import java.util.Observable;
 
 import model.Model;
+import speicher.DataFile;
 import sun.awt.RepaintArea;
 
 /**
@@ -72,8 +73,13 @@ public class Controller {
 	}
 
 	public void setMesuredData(double[][] data) {
+		view.inputPanel.berechneClearAllCB();
+		for(int i=0;i<berechnenCBActive.length;i++) {
+			berechnenCBActive[i] = false;
+		}
 		model.setMesuredData(data);
 		model.measurementData.autoLimits();
+		StatusBar.showStatus("Neue Sprungantwort wurde eingelesen.", StatusBar.INFO);
 	}
 
 	public void filterChanged(int n) {

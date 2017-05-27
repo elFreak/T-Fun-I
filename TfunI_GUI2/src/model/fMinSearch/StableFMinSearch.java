@@ -3,6 +3,8 @@ package model.fMinSearch;
 import org.apache.commons.math3.optim.PointValuePair;
 
 import model.Target;
+import model.UTFDatatype;
+import speicher.StartValueSaver;
 
 /**
  * Klasse welche einen stabilen FMinSearch für die Berechnung einer
@@ -68,9 +70,26 @@ public class StableFMinSearch {
 			SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
 			info.statusFehler = false;
 			info.isStatus = true;
-			info.statusText = "Startwerte für Ordnung " + i + " berechnet.";
+			info.statusText = "Startwerte berechnet (Ordnung " + i + ").";
 			client.swingAction(info);
 
+			// Dazugehörige Sprungantwort berechnen:
+			double[][] stepResponse = new double[][] { target.getTime(),
+					Target.omega2polstep(utf[i - 2].getPoint(), target.getTime()) };
+			// Uebertragungsfuktion umschreiben:
+			UTFDatatype uebergabe = new UTFDatatype();
+			uebergabe.ordnung = i;
+			uebergabe.zaehler = utf[i - 2].getPoint()[0];
+			if (utf[i - 2].getPoint().length % 2 == 1) {
+				uebergabe.koeffWQ = new double[utf[i - 2].getPoint().length - 1];
+
+			} else {
+				uebergabe.koeffWQ = new double[utf[i - 2].getPoint().length - 2];
+				uebergabe.sigma = utf[i - 2].getPoint()[utf[i - 2].getPoint().length - 1];
+			}
+			for (int j = 0; j < uebergabe.koeffWQ.length; j++) {
+				uebergabe.koeffWQ[j] = utf[i - 2].getPoint()[j + 1];
+			}
 		}
 
 		return utf;
@@ -120,14 +139,13 @@ public class StableFMinSearch {
 			verbesserungsKoeff /= 1e5;
 			break;
 		case 9:
-			verbesserungsKoeff /= 1e5;
+			verbesserungsKoeff /= 1e6;
 			break;
 		case 10:
-			verbesserungsKoeff /= 1e5;
+			verbesserungsKoeff /= 5e6;
 			break;
 		}
-	
-		
+
 		PointValuePair koeffizienten = startValue; // nur für den Compiler!
 
 		// Berechne:
@@ -152,19 +170,20 @@ public class StableFMinSearch {
 	private static PointValuePair calculate(Target target, double verbesserungsKoeff, double[] startWert,
 			double[] polySeiteLaenge, SwingWorkerClient client) {
 		// Berechnung:
-		double newVerbesserungsKoeff= verbesserungsKoeff;
+		double newVerbesserungsKoeff = verbesserungsKoeff;
 		double[] newStartWert = new double[startWert.length];
-		for(int i=0;i<startWert.length;i++) {
+		for (int i = 0; i < startWert.length; i++) {
 			newStartWert[i] = startWert[i];
 		}
 		OverwatchedTask overwatchedTask;
 		boolean problem;
+		int problemZaeler = 0;
 		do {
+			problemZaeler++;
 			problem = false;
 			int[] status = new int[] { OverwatchedTask.STATUS_IN_ARBEIT };
 			overwatchedTask = new OverwatchedTask(target, newVerbesserungsKoeff, newStartWert, polySeiteLaenge, status,
 					client);
-			
 
 			// Berechnung starten:
 			overwatchedTask.execute();
@@ -184,10 +203,10 @@ public class StableFMinSearch {
 					SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
 					info.statusFehler = false;
 					info.isStatus = true;
-					info.statusText = "Zu langsam!";
+					info.statusText = "bitte warten ...";
 					client.swingAction(info);
-					newVerbesserungsKoeff = newVerbesserungsKoeff*1000;
-					for(int i=0;i<startWert.length;i++) {
+					newVerbesserungsKoeff = newVerbesserungsKoeff * 1000;
+					for (int i = 0; i < startWert.length; i++) {
 						newStartWert[i] = startWert[i];
 					}
 					break;
@@ -200,7 +219,7 @@ public class StableFMinSearch {
 				} catch (InterruptedException e) {
 				}
 			}
-		} while (problem);
+		} while (problem&&problemZaeler<5);
 
 		return overwatchedTask.getOptimum();
 

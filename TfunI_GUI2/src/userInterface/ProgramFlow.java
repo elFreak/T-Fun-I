@@ -49,7 +49,7 @@ public class ProgramFlow extends JPanel implements ActionListener {
 
 		Utility.setAllBackgrounds(this, GlobalSettings.colorBackgroundBlueDark);
 
-		// User-Interface:
+		// User-Interface:		
 		btEinlesen.setEnabled(true);
 		btBearbeiten.setEnabled(true);
 		btBerechnen.setEnabled(true);

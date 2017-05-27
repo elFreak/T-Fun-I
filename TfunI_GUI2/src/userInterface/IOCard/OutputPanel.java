@@ -30,6 +30,8 @@ public class OutputPanel extends JPanel {
 	public Trace traceMean;
 	public Trace[] tracesSolution = new Trace[9];
 	public Trace[] tracesPole = new Trace[9];
+	public Trace traceKorKoeffCompare;
+	public Trace[] traceKorKoeffPoints = new Trace[9];
 
 	/**
 	 * Cards:
@@ -64,6 +66,18 @@ public class OutputPanel extends JPanel {
 		traceMean = new Trace();
 		traceMean.usePreferedColor = true;
 		traceMean.preferedColor = GlobalSettings.colorTraceOrange;
+
+		traceKorKoeffCompare = new Trace();
+		traceKorKoeffCompare.usePreferedColor = true;
+		traceKorKoeffCompare.preferedColor = GlobalSettings.colorTraceGrey;
+
+		for (int i = 0; i < traceKorKoeffPoints.length; i++) {
+			traceKorKoeffPoints[i] = new Trace();
+			traceKorKoeffPoints[i].usePreferedColor = true;
+			traceKorKoeffPoints[i].preferedColor = GlobalSettings.colorsTraceSolution[i];
+			traceKorKoeffPoints[i].lineType = Trace.LINE_NONE;
+			traceKorKoeffPoints[i].pointType = Trace.POINT_BULLET;
+		}
 
 		for (int i = 0; i < tracesSolution.length; i++) {
 			tracesSolution[i] = new Trace();
@@ -114,6 +128,17 @@ public class OutputPanel extends JPanel {
 		}
 
 		switch ((int) obj) {
+		case Model.NOTIFY_REASON_NEW_DATA:
+			for (int i = 0; i < tracesSolution.length; i++) {
+				tracesSolution[i].dataValid = false;
+				tracesPole[i].dataValid = false;
+			}
+			for (int i = 0; i < traceKorKoeffPoints.length; i++) {
+				traceKorKoeffPoints[i].dataValid = false;
+			}
+			traceKorKoeffCompare.dataValid = false;
+
+			break;
 		case Model.NOTIFY_REASON_MEASUREMENT_CHANGED:
 			traceStep.data = ((Model) obs).measurementData.getstep();
 			traceStep.dataValid = true;
@@ -125,8 +150,11 @@ public class OutputPanel extends JPanel {
 			traceMean.dataValid = true;
 			break;
 		case Model.NOTIFY_REASON_APPROXIMATION_DONE:
+			traceKorKoeffCompare.data = ((Model) obs).network.getKorrelationComparison();
+			traceKorKoeffCompare.dataValid = true;
+
 			for (int i = 0; i < tracesSolution.length; i++) {
-				if (((Model) obs).network.getApprox(i + 2) != null && controller.getBerechnenCBActive()[i]==true) {
+				if (((Model) obs).network.getApprox(i + 2) != null && controller.getBerechnenCBActive()[i] == true) {
 					if (((Model) obs).network.getApprox(i + 2).getPole()[0] != null) {
 						tracesSolution[i].data = ((Model) obs).network.getApprox(i + 2).getStepResponse();
 						tracesSolution[i].dataValid = true;
@@ -134,9 +162,13 @@ public class OutputPanel extends JPanel {
 								((Model) obs).network.getApprox(i + 2).getPole()[0].getPoint(),
 								((Model) obs).network.getApprox(i + 2).getPole()[1].getPoint() };
 						tracesPole[i].dataValid = true;
+						traceKorKoeffPoints[i].data = new double[][] { { i + 2 },
+								{ ((Model) obs).network.getApprox(i + 2).getKorrKoef() } };
+						traceKorKoeffPoints[i].dataValid = true;
 					} else {
 						tracesSolution[i].dataValid = false;
 						tracesPole[i].dataValid = false;
+						traceKorKoeffPoints[i].dataValid = false;
 					}
 				}
 			}

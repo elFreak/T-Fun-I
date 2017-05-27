@@ -11,6 +11,7 @@ public class Model extends Observable {
 	public static final int NOTIFY_REASON_MEASUREMENT_CHANGED = 0;
 	public static final int NOTIFY_REASON_APPROXIMATION_DONE = 1;
 	public static final int NOTIFY_REASON_NETWORK_START_VALUES = 2;
+	public static final int NOTIFY_REASON_NEW_DATA = 3;
 
 	public Model() {
 	}
@@ -32,7 +33,13 @@ public class Model extends Observable {
 
 	public void setMesuredData(double[][] data) {
 		measurementData = new MeasurementData(this, data);
+		if (network != null) {
+			network.cancel(true);
+			network.threadExecutor.shutdown();
+			network = null;
+		}
 		notifyObservers(NOTIFY_REASON_MEASUREMENT_CHANGED);
+		notifyObservers(NOTIFY_REASON_NEW_DATA);
 	}
 
 	@Override

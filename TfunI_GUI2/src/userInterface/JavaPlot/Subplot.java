@@ -696,15 +696,26 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	// --------------------------------------------------------------------
 	// Add new trace:
 	public int addTrace(Trace trace) {
+		boolean vorhanden = false;
 		for (int i = 0; i < this.trace.length; i++) {
-			if (this.trace[i].dataValid == false) {
-				this.trace[i] = trace;
-				this.trace[i].dataValid = true;
-				return i; // If there is enough space, then return the index for
-							// the given trace.
+			if (trace == this.trace[i]) {
+				vorhanden = true;
 			}
 		}
-		return NOT_ENOUGHT_SPACE;
+		if (vorhanden == false) {
+			for (int i = 0; i < this.trace.length; i++) {
+				if (this.trace[i].dataValid == false) {
+					this.trace[i] = trace;
+					this.trace[i].dataValid = true;
+					return i; // If there is enough space, then return the index
+								// for
+								// the given trace.
+				}
+			}
+			return NOT_ENOUGHT_SPACE;
+		} else {
+			return -2;
+		}
 	}
 
 	// --------------------------------------------------------------------
@@ -852,28 +863,32 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			}
 		}
 
+		// if (y1Min == y1Max) {
+		// if (y1Max > 0) {
+		// y1Min = 0;
+		// } else {
+		// y1Max = 0;
+		// }
+		// }
+		// if (y2Min == y2Max) {
+		// if (y2Max > 0) {
+		// y2Min = 0;
+		// } else {
+		// y2Max = 0;
+		// }
+		// }
+
 		if (y1Min == y1Max) {
-			if (y1Max > 0) {
-				y1Min = 0;
-			} else {
-				y1Max = 0;
-			}
-		}
-		if (y2Min == y2Max) {
-			if (y2Max > 0) {
-				y2Min = 0;
-			} else {
-				y2Max = 0;
-			}
-		}
-		
-		if(y1Min==y1Max) {
 			y1Min -= 0.1;
 			y1Max += 0.1;
 		}
-		if(y2Min==y2Max) {
+		if (y2Min == y2Max) {
 			y2Min -= 0.1;
 			y2Max += 0.1;
+		}
+		if (xMin == xMax) {
+			xMin -= 0.1;
+			xMax += 0.1;
 		}
 
 		double deltaY1 = y1Max - y1Min;

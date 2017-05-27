@@ -159,8 +159,7 @@ public class InputCardBearbeiten extends JPanel {
 				double tempValue = Double.parseDouble(tfOffset.getText());
 				tempValue = tempValue * Math.pow(1.1, e.getWheelRotation()) + 0.000001 * e.getWheelRotation();
 
-				controller.setRange(Double.parseDouble(tfTail.getText()),
-						tempValue);
+				controller.setRange(Double.parseDouble(tfTail.getText()), tempValue);
 			}
 		});
 
@@ -171,8 +170,7 @@ public class InputCardBearbeiten extends JPanel {
 				try {
 					double tempValue = Double.parseDouble(tfOffset.getText());
 
-					controller.setRange(Double.parseDouble(tfTail.getText()),
-							tempValue);
+					controller.setRange(Double.parseDouble(tfTail.getText()), tempValue);
 				} catch (NumberFormatException exp) {
 					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben", StatusBar.FEHLER);
 				}
@@ -192,8 +190,7 @@ public class InputCardBearbeiten extends JPanel {
 					tempValue = 0;
 				}
 
-				controller.setRange(tempValue,
-						Double.parseDouble(tfOffset.getText()));
+				controller.setRange(tempValue, Double.parseDouble(tfOffset.getText()));
 			}
 		});
 
@@ -207,14 +204,13 @@ public class InputCardBearbeiten extends JPanel {
 						tempValue = 0;
 					}
 
-					controller.setRange(tempValue,
-							Double.parseDouble(tfOffset.getText()));
+					controller.setRange(tempValue, Double.parseDouble(tfOffset.getText()));
 				} catch (NumberFormatException exp) {
 					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben", StatusBar.FEHLER);
 				}
 			}
 		});
-	
+
 		// Anonymer ActionListener für Auto Button
 		btAutoRahmen.addActionListener(new ActionListener() {
 			@Override
@@ -368,14 +364,16 @@ public class InputCardBearbeiten extends JPanel {
 	 * @param obj
 	 */
 	public void update(java.util.Observable obs, Object obj) {
-		Numbers offset = new Numbers(((Model) obs).measurementData.getOffset());
-		tfOffset.setText(String.valueOf(offset.number) + offset.unit);
-		Numbers tail = new Numbers(((Model) obs).measurementData.getTail());
-		tfTail.setText(String.valueOf(tail.number) + tail.unit);
-		Numbers stepHeight = new Numbers(((Model) obs).measurementData.getstepHeight());
-		tfSprunghöhe.setText(String.valueOf(stepHeight.number) + stepHeight.unit);
-		Numbers stepTime = new Numbers(((Model) obs).measurementData.getstepTime());
-		tfSprungzeit.setText(String.valueOf(stepTime.number) + stepTime.unit);
+		if (((int) obj) == Model.NOTIFY_REASON_MEASUREMENT_CHANGED) {
+			Numbers offset = new Numbers(((Model) obs).measurementData.getOffset());
+			tfOffset.setText(String.valueOf(offset.number) + offset.unit);
+			Numbers tail = new Numbers(((Model) obs).measurementData.getTail());
+			tfTail.setText(String.valueOf(tail.number) + tail.unit);
+			Numbers stepHeight = new Numbers(((Model) obs).measurementData.getstepHeight());
+			tfSprunghöhe.setText(String.valueOf(stepHeight.number) + stepHeight.unit);
+			Numbers stepTime = new Numbers(((Model) obs).measurementData.getstepTime());
+			tfSprungzeit.setText(String.valueOf(stepTime.number) + stepTime.unit);
+		}
 	}
 
 }

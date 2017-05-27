@@ -32,6 +32,9 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 
 	private PointValuePair[] startValues = new PointValuePair[9];
 	private Approximation[] approximations = new Approximation[9];
+	
+	private double[][] korrelationComparison;
+	
 	public Network(MeasurementData measurementData, Model model) {
 		// Setze die Grundlegenden Verknüpfungen der Klasse:
 		this.measurementData = measurementData;
@@ -55,7 +58,7 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 		SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
 		info.statusFehler = false;
 		info.isStatus = true;
-		info.statusText = "Startwerte berechnet.";
+		info.statusText = "Alle Startwerte wurden berechnet.";
 		swingAction(info);
 	}
 
@@ -95,7 +98,6 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 	@Override
 	protected void done() {
 		super.done();
-		StatusBar.showStatus("Approximation beendet.", StatusBar.INFO);
 		model.notifyObservers(Model.NOTIFY_REASON_NETWORK_START_VALUES);
 	}
 
@@ -140,6 +142,27 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 	}
 
 	public void approximationDone() {
+		
+		int anzahl = 0;
+		for(int i=0;i<approximations.length;i++) {
+			if(approximations[i]!=null) {
+				if(approximations[i].getKorrKoef()!=0){
+					anzahl++;
+				}
+			}
+		}
+		korrelationComparison = new double[2][anzahl];
+		int zaeler = 0;
+		for(int i=0;i<approximations.length;i++) {
+			if(approximations[i]!=null) {
+				if(approximations[i].getKorrKoef()!=0){
+					korrelationComparison[0][zaeler] = (double)(i+2);
+					korrelationComparison[1][zaeler] = approximations[i].getKorrKoef();
+					zaeler++;
+				}
+			}
+		}
+		
 		if (isCancelled() == false) {
 			model.notifyObservers(Model.NOTIFY_REASON_APPROXIMATION_DONE);
 		}
@@ -157,5 +180,9 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 	 */
 	public Approximation getApprox(int order) {
 		return approximations[order - 2];
+	}
+
+	public double[][] getKorrelationComparison() {
+		return korrelationComparison;
 	}
 }

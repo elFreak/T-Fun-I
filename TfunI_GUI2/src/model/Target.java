@@ -98,10 +98,11 @@ public class Target implements MultivariateFunction {
 		
 //		System.out.println(""+failuresum);
 		
-		
-	
 
 		return failuresum;
 	}
 	
+	public double[] getTime() {
+		return t;
+	}
 }
