@@ -72,7 +72,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	// Grid:
 	private Color gridColor = new Color(245, 245, 245); // @Approach
 	private int gridThickness = 1;
-	private int gridMainGridThickness = 3;
+	private int gridMainGridThickness = 5;
 	private Color gridHelpGridColor = new Color(150, 150, 150); // @Approach
 
 	// --------------------------------------------------------------------

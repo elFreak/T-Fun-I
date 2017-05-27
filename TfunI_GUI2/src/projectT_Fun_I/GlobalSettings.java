@@ -50,15 +50,15 @@ public class GlobalSettings {
 		fontTextSmall = new Font(systemFont.getName(), Font.PLAIN, (int) (systemFont.getSize() * 1.1));
 		fontMath = new Font("Cambria Math", Font.ITALIC, (int) (systemFont.getSize() * 1.3));
 		
-		colorsTraceSolution[0] = new Color(0,255, 255);
-		colorsTraceSolution[1] = new Color(0,153, 255);
-		colorsTraceSolution[2] = new Color(102,102, 255);
-		colorsTraceSolution[3] = new Color(204,102, 255);
-		colorsTraceSolution[4] = new Color(255,0, 255);
-		colorsTraceSolution[5] = new Color(255,51, 153);
-		colorsTraceSolution[6] = new Color(255,80, 80);
-		colorsTraceSolution[7] = new Color(255,51, 0);
-		colorsTraceSolution[8] = new Color(255,153, 0);
+		colorsTraceSolution[0] = new Color(255,160, 0);
+		colorsTraceSolution[1] = new Color(255,255, 0);
+		colorsTraceSolution[2] = new Color(210,255, 50);
+		colorsTraceSolution[3] = new Color(102,255, 60);
+		colorsTraceSolution[4] = new Color(0,255, 155);
+		colorsTraceSolution[5] = new Color(0,255, 255);
+		colorsTraceSolution[6] = new Color(0,160, 255);
+		colorsTraceSolution[7] = new Color(155,100, 255);
+		colorsTraceSolution[8] = new Color(255,0, 255);
 	}
 
 }

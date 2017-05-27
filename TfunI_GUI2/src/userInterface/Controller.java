@@ -125,7 +125,7 @@ public class Controller {
 			view.outputPanel.tracesSolution[i].dataValid = value[i];
 			view.outputPanel.tracesPole[i].dataValid = value[i];
 		}
-		view.update(model, Model.NOTIFY_REASON_APPROXIMATION_DONE);
+		model.notifyObservers(Model.NOTIFY_REASON_APPROXIMATION_DONE);
 	}
 	
 	public boolean[] getBerechnenCBActive() {

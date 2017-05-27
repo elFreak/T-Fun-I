@@ -2,6 +2,7 @@ package userInterface;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -44,6 +45,8 @@ public class StatusBar extends JPanel implements ActionListener {
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		add(scrollPane, BorderLayout.CENTER);
 		textPane.setEditable(false);
+		
+		setPreferredSize(new Dimension(getPreferredSize().width, getPreferredSize().height*3));
 
 		// Initzialise Styles:
 		StyleContext contextInfo = new StyleContext();
@@ -77,13 +80,13 @@ public class StatusBar extends JPanel implements ActionListener {
 	public static void showStatus(String text, int type) {
 		if (type == INFO) {
 			try {
-				document.insertString(0, "Info:  " + text + "\n", styleInfo);
+				document.insertString(0,""+ text + "\n", styleInfo);
 			} catch (Exception e) {
 			}
 		}
 		if (type == FEHLER) {
 			try {
-				document.insertString(0, "Fehler:  " + text + "\n", styleFehler);
+				document.insertString(0, "Problem:  " + text + "\n", styleFehler);
 			} catch (Exception e) {
 			}
 		}

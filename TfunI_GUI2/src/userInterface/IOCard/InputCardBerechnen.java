@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import model.Model;
 import projectT_Fun_I.GlobalSettings;
@@ -23,12 +24,11 @@ public class InputCardBerechnen extends JPanel implements ActionListener {
 	Controller controller;
 
 	private JPanel panelOrdnung = new JPanel(new GridBagLayout());
-
+	private JButton btAll = new JButton("Alle");
+	private JButton btNone = new JButton("Keine");
 	private JCheckBox[] cB = new JCheckBox[9];
+	private JLabel[] lB = new JLabel[9];
 
-	private JPanel panelButton = new JPanel(new GridBagLayout());
-	private JButton btBerechnen = new JButton("Berechnen");
-	private JButton btAbbrechen = new JButton("Abbrechen");
 
 	public InputCardBerechnen(Controller controller) {
 		this.controller = controller;
@@ -41,26 +41,32 @@ public class InputCardBerechnen extends JPanel implements ActionListener {
 			cB[i] = new JCheckBox();
 			cB[i].setOpaque(false);
 			cB[i].addActionListener(this);
+			cB[i].setEnabled(false);
+			cB[i].setOpaque(true);
+			cB[i].setBackground(GlobalSettings.colorsTraceSolution[i]);
+			lB[i] = new JLabel();
+			lB[i].setText("" + (i + 2) + ": ");
+
 		}
 
-		panelOrdnung.add(new JLabel("2"), new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
-				GridBagConstraints.NONE, new Insets(20, 0, 10, 10), 0, 0));
-		panelOrdnung.add(new JLabel("3"), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
-				GridBagConstraints.NONE, new Insets(20, 0, 10, 10), 0, 0));
-		panelOrdnung.add(new JLabel("4"), new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
-				GridBagConstraints.NONE, new Insets(20, 0, 10, 10), 0, 0));
-		panelOrdnung.add(new JLabel("5"), new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
-				GridBagConstraints.NONE, new Insets(20, 0, 10, 10), 0, 0));
-		panelOrdnung.add(new JLabel("6"), new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
-				GridBagConstraints.NONE, new Insets(20, 0, 10, 10), 0, 0));
-		panelOrdnung.add(new JLabel("7"), new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
-				GridBagConstraints.NONE, new Insets(20, 0, 10, 10), 0, 0));
-		panelOrdnung.add(new JLabel("8"), new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
-				GridBagConstraints.NONE, new Insets(20, 0, 10, 10), 0, 0));
-		panelOrdnung.add(new JLabel("9"), new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
-				GridBagConstraints.NONE, new Insets(20, 0, 10, 10), 0, 0));
-		panelOrdnung.add(new JLabel("10"), new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
-				GridBagConstraints.NONE, new Insets(20, 0, 10, 10), 0, 0));
+		panelOrdnung.add(lB[0], new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
+				GridBagConstraints.NONE, new Insets(20, 20, 10, 10), 0, 0));
+		panelOrdnung.add(lB[1], new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
+				GridBagConstraints.NONE, new Insets(20, 20, 10, 10), 0, 0));
+		panelOrdnung.add(lB[2], new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
+				GridBagConstraints.NONE, new Insets(20, 20, 10, 10), 0, 0));
+		panelOrdnung.add(lB[3], new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
+				GridBagConstraints.NONE, new Insets(20, 20, 10, 10), 0, 0));
+		panelOrdnung.add(lB[4], new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
+				GridBagConstraints.NONE, new Insets(20, 20, 10, 10), 0, 0));
+		panelOrdnung.add(lB[5], new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
+				GridBagConstraints.NONE, new Insets(20, 20, 10, 10), 0, 0));
+		panelOrdnung.add(lB[6], new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
+				GridBagConstraints.NONE, new Insets(20, 20, 10, 10), 0, 0));
+		panelOrdnung.add(lB[7], new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
+				GridBagConstraints.NONE, new Insets(20, 20, 10, 10), 0, 0));
+		panelOrdnung.add(lB[8], new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0, GridBagConstraints.LINE_END,
+				GridBagConstraints.NONE, new Insets(20, 20, 10, 10), 0, 0));
 
 		panelOrdnung.add(cB[0], new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
 				GridBagConstraints.NONE, new Insets(20, 0, 10, 40), 0, 0));
@@ -80,40 +86,51 @@ public class InputCardBerechnen extends JPanel implements ActionListener {
 				GridBagConstraints.NONE, new Insets(20, 0, 10, 40), 0, 0));
 		panelOrdnung.add(cB[8], new GridBagConstraints(3, 4, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
 				GridBagConstraints.NONE, new Insets(20, 0, 10, 40), 0, 0));
-
-		// Button
-		panelButton.setBackground(GlobalSettings.colorBackground);
-		panelButton.setBorder(MyBorderFactory.createMyBorder("Cockpit"));
-
-		panelButton.add(btBerechnen, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
-		panelButton.add(btAbbrechen, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.FIRST_LINE_START,
-				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
+		panelOrdnung.add(btAll, new GridBagConstraints(0, 5, 4, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(10, 10, 10, 10), 0, 0));
+		panelOrdnung.add(btNone, new GridBagConstraints(0, 6, 4, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(10, 10, 10, 10), 0, 0));
 
 		// Cardpanel konfigurieren
 		this.setBackground(GlobalSettings.colorBackground);
-
-		// Anonymer ActionListener für Berechnen
-		btBerechnen.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
 
 		// Cardpanel konfigurieren
 		this.setLayout(new GridBagLayout());
 		this.setBackground(GlobalSettings.colorBackground);
 
-		this.add(panelOrdnung, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.NORTH,
-				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
-		this.add(panelButton, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.NORTH,
+		this.add(panelOrdnung, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.NORTH,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 		JPanel panelBackground2 = new JPanel();
 		panelBackground2.setBackground(GlobalSettings.colorBackground);
-		this.add(panelBackground2, new GridBagConstraints(0, 2, 1, 1, 1.0, 1.0, GridBagConstraints.FIRST_LINE_START,
+		this.add(panelBackground2, new GridBagConstraints(0, 1, 1, 1, 1.0, 1.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.BOTH, new Insets(20, 10, 10, 10), 0, 0));
+
+		btAll.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				boolean[] active = new boolean[cB.length];
+				for (int i = 0; i < cB.length; i++) {
+					cB[i].setSelected(true);
+					controller.calculateUTF(i+2);
+					active[i] = cB[i].isSelected();
+				}
+				controller.setBerechnenCBActive(active);
+			}
+		});
+
+		btNone.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				boolean[] active = new boolean[cB.length];
+				for (int i = 0; i < cB.length; i++) {
+					cB[i].setSelected(false);
+					active[i] = cB[i].isSelected();
+				}
+				controller.setBerechnenCBActive(active);
+			}
+		});
 
 	}
 
@@ -159,7 +176,10 @@ public class InputCardBerechnen extends JPanel implements ActionListener {
 	 * @param obj
 	 */
 	public void update(java.util.Observable obs, Object obj) {
-		Model model = (Model) obs;
-
+		if (((int) obj) == Model.NOTIFY_REASON_NETWORK_START_VALUES) {
+			for (int i = 0; i < cB.length; i++) {
+				cB[i].setEnabled(true);
+			}
+		}
 	}
 }

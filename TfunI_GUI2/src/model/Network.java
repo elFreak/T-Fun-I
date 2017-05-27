@@ -96,6 +96,7 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 	protected void done() {
 		super.done();
 		StatusBar.showStatus("Approximation beendet.", StatusBar.INFO);
+		model.notifyObservers(Model.NOTIFY_REASON_NETWORK_START_VALUES);
 	}
 
 	/**
