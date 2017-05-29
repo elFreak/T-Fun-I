@@ -25,6 +25,7 @@ import com.sun.prism.Image;
 import model.Model;
 import model.UTFDatatype;
 import projectT_Fun_I.GlobalSettings;
+import userInterface.Controller;
 import userInterface.MyBorderFactory;
 
 public class KoefPanel extends JPanel implements ActionListener, MouseWheelListener {
@@ -52,10 +53,13 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 
 	private double korrKoef;
 
+	private Controller controller;
+
 	/**
 	 * 
 	 */
-	public KoefPanel() {
+	public KoefPanel(Controller controller) {
+		this.controller = controller;
 		setLayout(new GridLayout(2, 1));
 		// ------------------------------------------------------------------------------------------------------------------------------
 		// pnEquation
@@ -200,8 +204,18 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JTextField tfe = (JTextField)e.getSource();
-		tfe.getText();
+		UTFDatatype utf = new UTFDatatype();
+		utf.ordnung = order;
+		utf.zaehler = Double.parseDouble(tfk.getText());
+		for (int i = 0; i < tfwp.length; i++) {
+			utf.koeffWQ = new double[10];
+			utf.koeffWQ[i * 2] = Double.parseDouble(tfwp[i].getText());
+			utf.koeffWQ[i * 2 + 1] = Double.parseDouble(tfqp[i].getText());
+		}
+		if (utf.ordnung % 2 == 0) {
+			utf.sigma = Double.parseDouble(tfsigma.getText());
+		}
+		controller.changeApproximation(utf);
 
 	}
 }
