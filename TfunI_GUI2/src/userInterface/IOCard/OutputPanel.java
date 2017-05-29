@@ -94,7 +94,7 @@ public class OutputPanel extends JPanel {
 		cardEinlesen = new OutputCardEinlesen(this);
 		cardBearbeiten = new OutputCardBearbeiten(this, controller);
 		cardBerechnen = new OutputCardBerechnen(this);
-		cardVerifizieren = new OutputCardVerifizieren(this);
+		cardVerifizieren = new OutputCardVerifizieren(this, controller);
 
 		// Card Layout:
 		setLayout(cardLayout);

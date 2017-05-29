@@ -71,7 +71,10 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 			threadExecutor.execute(approximations[order - 1]);
 		}
 
-		// abspeichern
+		
+		//abspeichern
+		//speicher.StartValueSaver.addUTF(utf, messwerte);
+
 	}
 
 	@Override
