@@ -168,7 +168,6 @@ public class OutputPanel extends JPanel {
 					} else {
 						tracesSolution[i].dataValid = false;
 						tracesPole[i].dataValid = false;
-						traceKorKoeffPoints[i].dataValid = false;
 					}
 				}
 			}

@@ -1,5 +1,8 @@
 package model.fMinSearch;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.apache.commons.math3.optim.PointValuePair;
 
 import model.Target;
@@ -142,16 +145,19 @@ public class StableFMinSearch {
 			verbesserungsKoeff /= 1e6;
 			break;
 		case 10:
-			verbesserungsKoeff /= 5e6;
+			verbesserungsKoeff /= 1e6;
 			break;
 		}
 
 		PointValuePair koeffizienten = startValue; // nur für den Compiler!
 
-		// Berechne:
+		
+		double[] overwatchedVerbesserungskoeff = new double[1];
+		overwatchedVerbesserungskoeff[0] = verbesserungsKoeff;
+		// Berechne
 		for (int i = 0; i <= accuracy; i++) {
-			koeffizienten = calculate(target, verbesserungsKoeff, koeffizienten.getPoint(), polySeiteLaenge, client);
-			verbesserungsKoeff /= 10;
+			koeffizienten = calculate(target, overwatchedVerbesserungskoeff, koeffizienten.getPoint(), polySeiteLaenge, client);
+			//overwatchedVerbesserungskoeff[0] /= 10;
 		}
 
 		return koeffizienten;
@@ -167,26 +173,27 @@ public class StableFMinSearch {
 	 * @param client
 	 * @return
 	 */
-	private static PointValuePair calculate(Target target, double verbesserungsKoeff, double[] startWert,
+	private static PointValuePair calculate(Target target, double[] verbesserungsKoeff, double[] startWert,
 			double[] polySeiteLaenge, SwingWorkerClient client) {
 		// Berechnung:
-		double newVerbesserungsKoeff = verbesserungsKoeff;
+		double newVerbesserungsKoeff = verbesserungsKoeff[0];
 		double[] newStartWert = new double[startWert.length];
+		Target newTarget = target.copy();
 		for (int i = 0; i < startWert.length; i++) {
 			newStartWert[i] = startWert[i];
 		}
 		OverwatchedTask overwatchedTask;
 		boolean problem;
-		int problemZaeler = 0;
+		ExecutorService threadExecutor = Executors.newFixedThreadPool(1);
+
 		do {
-			problemZaeler++;
 			problem = false;
 			int[] status = new int[] { OverwatchedTask.STATUS_IN_ARBEIT };
-			overwatchedTask = new OverwatchedTask(target, newVerbesserungsKoeff, newStartWert, polySeiteLaenge, status,
-					client);
+			overwatchedTask = new OverwatchedTask(newTarget, newVerbesserungsKoeff, newStartWert, polySeiteLaenge,
+					status, client);
 
 			// Berechnung starten:
-			overwatchedTask.execute();
+			threadExecutor.execute(overwatchedTask);
 			long startTime = 0;
 
 			while (status[0] != OverwatchedTask.STATUS_FERTIG) {
@@ -199,16 +206,25 @@ public class StableFMinSearch {
 				if (status[0] == OverwatchedTask.STATUS_PROBLEM_ABFRAGEN
 						&& System.currentTimeMillis() - startTime > 2500) {
 					overwatchedTask.cancel(true);
+					// threadExecutor.shutdownNow();
+					// threadExecutor = Executors.newFixedThreadPool(1);
 					problem = true;
 					SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
 					info.statusFehler = false;
 					info.isStatus = true;
 					info.statusText = "bitte warten ...";
 					client.swingAction(info);
-					newVerbesserungsKoeff = newVerbesserungsKoeff * 1000;
+					newVerbesserungsKoeff = newVerbesserungsKoeff * 100;
+					verbesserungsKoeff[0] = newVerbesserungsKoeff;
+					if (newVerbesserungsKoeff > 1) {
+						newVerbesserungsKoeff = 1;
+					}
 					for (int i = 0; i < startWert.length; i++) {
 						newStartWert[i] = startWert[i];
 					}
+					newTarget.isCanceled = true;
+					newTarget = target.copy();
+					System.out.println("" + newVerbesserungsKoeff);
 					break;
 				}
 
@@ -219,7 +235,7 @@ public class StableFMinSearch {
 				} catch (InterruptedException e) {
 				}
 			}
-		} while (problem&&problemZaeler<5);
+		} while (problem);
 
 		return overwatchedTask.getOptimum();
 

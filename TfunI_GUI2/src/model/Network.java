@@ -69,6 +69,8 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 					this);
 			threadExecutor.execute(approximations[order-2]);
 		}
+		
+		//abspeichern
 	}
 
 	@Override

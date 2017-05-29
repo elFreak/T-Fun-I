@@ -150,6 +150,7 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 	public void clearAllCB() {
 		for (int i = 0; i < cB.length; i++) {
 			cB[i].setSelected(false);
+			cB[i].setEnabled(false);
 		}
 	}
 
