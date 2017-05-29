@@ -27,11 +27,11 @@ public class Target implements MultivariateFunction {
 		this.error = Matlab.concat(this.error, error / t.length);
 		
 //		if(isCanceled) {
-			try {
-				Thread.sleep(0, 10);
-			} catch (InterruptedException e) {
-				// TODO: handle exception
-			}
+//			try {
+//				Thread.sleep(0, 10);
+//			} catch (InterruptedException e) {
+//				// TODO: handle exception
+//			}
 //		}
 		
 		return error;

@@ -177,5 +177,6 @@ public class OutputPanel extends JPanel {
 		cardEinlesen.update(obs, obj);
 		cardBearbeiten.update(obs, obj);
 		cardBerechnen.update(obs, obj);
+		cardVerifizieren.update(obs, obj);
 	}
 }

@@ -179,5 +179,10 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 	public double getKorrKoef() {
 		return korrKoef;
 	}
+	
+	public void setUtf(UTFDatatype utf) {
+		this.utf = utf;
+		network.approximationDone();
+	}
 
 }

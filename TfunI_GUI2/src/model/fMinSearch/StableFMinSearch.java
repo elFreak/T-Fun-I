@@ -152,11 +152,9 @@ public class StableFMinSearch {
 		PointValuePair koeffizienten = startValue; // nur für den Compiler!
 
 		
-		double[] overwatchedVerbesserungskoeff = new double[1];
-		overwatchedVerbesserungskoeff[0] = verbesserungsKoeff;
 		// Berechne
 		for (int i = 0; i <= accuracy; i++) {
-			koeffizienten = calculate(target, overwatchedVerbesserungskoeff, koeffizienten.getPoint(), polySeiteLaenge, client);
+			koeffizienten = calculate(target, verbesserungsKoeff, koeffizienten.getPoint(), polySeiteLaenge, client);
 			//overwatchedVerbesserungskoeff[0] /= 10;
 		}
 
@@ -173,10 +171,10 @@ public class StableFMinSearch {
 	 * @param client
 	 * @return
 	 */
-	private static PointValuePair calculate(Target target, double[] verbesserungsKoeff, double[] startWert,
+	private static PointValuePair calculate(Target target, double verbesserungsKoeff, double[] startWert,
 			double[] polySeiteLaenge, SwingWorkerClient client) {
 		// Berechnung:
-		double newVerbesserungsKoeff = verbesserungsKoeff[0];
+		double newVerbesserungsKoeff = verbesserungsKoeff;
 		double[] newStartWert = new double[startWert.length];
 		Target newTarget = target.copy();
 		for (int i = 0; i < startWert.length; i++) {
@@ -215,7 +213,7 @@ public class StableFMinSearch {
 					info.statusText = "bitte warten ...";
 					client.swingAction(info);
 					newVerbesserungsKoeff = newVerbesserungsKoeff * 100;
-					verbesserungsKoeff[0] = newVerbesserungsKoeff;
+					//verbesserungsKoeff[0] = newVerbesserungsKoeff;
 					if (newVerbesserungsKoeff > 1) {
 						newVerbesserungsKoeff = 1;
 					}

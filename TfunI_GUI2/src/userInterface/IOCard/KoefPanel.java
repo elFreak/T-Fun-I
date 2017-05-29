@@ -56,16 +56,16 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 		// pnEquation
 		pnEquation.setLayout(new GridBagLayout());
 
-		try {
-			equation = ImageIO.read(new File("path-to-file"));
-			pnKoef.add(new JLabel(new ImageIcon(equation)), new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0,
+//		try {
+//			equation = ImageIO.read(new File("path-to-file"));
+			pnKoef.add(new JLabel("equation"/*new ImageIcon(equation)*/), new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0,
 					GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(10, 10, 10, 10), 0, 0));
-		} catch (IOException e) {
+//		} catch (IOException e) {
 			pnKoef.add(new JLabel(""), new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER,
 					GridBagConstraints.NONE, new Insets(10, 10, 10, 10), 0, 0));
-		}
-		pnKoef.add(new JLabel(new ImageIcon(equation)), new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0,
-				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(10, 10, 10, 10), 0, 0));
+//		}
+//		pnKoef.add(new JLabel(new ImageIcon(equation)), new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0,
+//				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(10, 10, 10, 10), 0, 0));
 		pnKoef.add(new JLabel("Korrelation"), new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.NONE, new Insets(10, 10, 10, 10), 0, 0));
 		pnEquation.add(lbKorel);

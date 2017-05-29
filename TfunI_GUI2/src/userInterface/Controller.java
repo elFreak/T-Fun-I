@@ -3,6 +3,7 @@ package userInterface;
 import java.util.Observable;
 
 import model.Model;
+import model.UTFDatatype;
 import speicher.DataFile;
 import sun.awt.RepaintArea;
 
@@ -136,5 +137,9 @@ public class Controller {
 	
 	public boolean[] getBerechnenCBActive() {
 		return berechnenCBActive;
+	}
+	
+	public void changeApproximation(UTFDatatype utf) {
+		model.network.getApprox(utf.ordnung).setUtf(utf);
 	}
 }
