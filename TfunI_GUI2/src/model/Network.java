@@ -71,6 +71,7 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 		}
 		
 		//abspeichern
+		//speicher.StartValueSaver.addUTF(utf, messwerte);
 	}
 
 	@Override

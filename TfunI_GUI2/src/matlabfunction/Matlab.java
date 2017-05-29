@@ -512,7 +512,7 @@ public class Matlab {
 
 	public static final Complex[] roots(double[] poly) {
 		
-		final LaguerreSolver solver = new LaguerreSolver(1e-9);
+		final LaguerreSolver solver = new LaguerreSolver(1e-5);
 		double[] p = new double[poly.length];
 		
 		
@@ -661,11 +661,11 @@ public class Matlab {
 		return p;
 	}
 
-	public static void main(String[] args) {
-		Filter filter = FilterFactory.createCheby1(11, 6, 1.0e18);
-
-		Complex[] rA = roots(concat(filter.A, new double[] { 0, 0 }));
-
-		print("rA", rA);
-	}
+//	public static void main(String[] args) {
+//		Filter filter = FilterFactory.createCheby1(11, 6, 1.0e18);
+//
+//		Complex[] rA = roots(concat(filter.A, new double[] { 0, 0 }));
+//
+//		print("rA", rA);
+//	}
 }

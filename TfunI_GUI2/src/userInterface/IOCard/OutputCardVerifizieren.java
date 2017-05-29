@@ -19,7 +19,7 @@ public class OutputCardVerifizieren extends WindowContainer {
 
 	public void update(Observable obs, Object obj) {
 		if ((int) obj == Model.NOTIFY_REASON_APPROXIMATION_DONE) {
-			koefPanel.update(obs);
+			//koefPanel.update(obs);
 		}
 	}
 }

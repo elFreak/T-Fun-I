@@ -7,7 +7,6 @@ import org.apache.commons.math3.optim.PointValuePair;
 
 import model.Target;
 import model.UTFDatatype;
-import speicher.StartValueSaver;
 
 /**
  * Klasse welche einen stabilen FMinSearch für die Berechnung einer
@@ -117,17 +116,17 @@ public class StableFMinSearch {
 		double verbesserungsKoeff = 1e-1;
 		double[] polySeiteLaenge = new double[ordnung + 1];
 		for (int i = 0; i < ordnung + 1; i++) {
-			polySeiteLaenge[i] = 0.2;
+			polySeiteLaenge[i] = 0.1;
 		}
 		switch (ordnung) {
 		case 2:
-			verbesserungsKoeff /= 1e3;
+			verbesserungsKoeff /= 1e5;
 			break;
 		case 3:
-			verbesserungsKoeff /= 1e3;
+			verbesserungsKoeff /= 1e5;
 			break;
 		case 4:
-			verbesserungsKoeff /= 1e4;
+			verbesserungsKoeff /= 1e5;
 			break;
 		case 5:
 			verbesserungsKoeff /= 1e5;
@@ -142,10 +141,10 @@ public class StableFMinSearch {
 			verbesserungsKoeff /= 1e5;
 			break;
 		case 9:
-			verbesserungsKoeff /= 1e6;
+			verbesserungsKoeff /= 1e5;
 			break;
 		case 10:
-			verbesserungsKoeff /= 1e6;
+			verbesserungsKoeff /= 1e5;
 			break;
 		}
 
