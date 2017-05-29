@@ -3,6 +3,8 @@ package model;
 import java.util.Observable;
 
 public class Model extends Observable {
+	
+	private double threshold = 0.001;
 
 	public Network network;
 	public boolean networkChanged = false;
@@ -11,9 +13,12 @@ public class Model extends Observable {
 	public static final int NOTIFY_REASON_MEASUREMENT_CHANGED = 0;
 	public static final int NOTIFY_REASON_APPROXIMATION_DONE = 1;
 	public static final int NOTIFY_REASON_NETWORK_START_VALUES = 2;
-	public static final int NOTIFY_REASON_NEW_DATA = 3;
+	public static final int NOTIFY_REASON_THRESHOLD_CHANGED = 3;
+	public static final int NOTIFY_REASON_NEW_DATA = 4;
 
 	public Model() {
+		threshold = 1e-8;setChanged();setChanged();
+		notifyObservers(NOTIFY_REASON_THRESHOLD_CHANGED);
 	}
 
 	public void creatNetwork() {
@@ -57,5 +62,21 @@ public class Model extends Observable {
 	public void notifyObservers() {
 		super.setChanged();
 		super.notifyObservers();
+	}
+
+	public void deleteNetwork() {
+		networkChanged = true;
+		creatNetwork();
+		notifyObservers(Model.NOTIFY_REASON_NEW_DATA);
+	}
+	
+	public void setThreshold(double threshold) {
+		this.threshold = threshold;
+		notifyObservers(Model.NOTIFY_REASON_THRESHOLD_CHANGED);
+	}
+
+	public double getThreshold() {
+		// TODO Auto-generated method stub
+		return threshold;
 	}
 }

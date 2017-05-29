@@ -20,7 +20,8 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 	 */
 	private MeasurementData measurementData;
 	private Model model;
-	ExecutorService threadExecutor = Executors.newFixedThreadPool(1);
+	public ExecutorService threadExecutor = Executors.newFixedThreadPool(1);
+
 
 	/**
 	 * Normierte Eingangssignale (Sprungantwort aus der Klasse Messwerte):
@@ -30,11 +31,11 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 	private double[] timeLenghtNormed;
 	private static final int NORM_NUMBER_OF_DATA = 200;
 
-	private PointValuePair[] startValues = new PointValuePair[9];
-	private Approximation[] approximations = new Approximation[9];
-	
+	private PointValuePair[] startValues = new PointValuePair[10];
+	private Approximation[] approximations = new Approximation[10];
+
 	private double[][] korrelationComparison;
-	
+
 	public Network(MeasurementData measurementData, Model model) {
 		// Setze die Grundlegenden Verknüpfungen der Klasse:
 		this.measurementData = measurementData;
@@ -54,7 +55,7 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 
 		// Startwerte werden berechnet:
 		Target target = new Target(timeFullNormed, stepFullNormed);
-		startValues = StableFMinSearch.getStartValues(target, this);
+		startValues = StableFMinSearch.getStartValues(target, this, model.getThreshold());
 		SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
 		info.statusFehler = false;
 		info.isStatus = true;
@@ -63,14 +64,14 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 	}
 
 	public void calculateApproximation(int order) {
-		if (approximations[order - 2] == null) {
-			approximations[order - 2] = new Approximation(startValues[order - 2],
+		if (approximations[order - 1] == null) {
+			approximations[order - 1] = new Approximation(startValues[order - 1],
 					new Target(timeFullNormed, stepFullNormed), order, timeFullNormed, stepFullNormed, timeLenghtNormed,
-					this);
-			threadExecutor.execute(approximations[order-2]);
+					this, model.getThreshold());
+			threadExecutor.execute(approximations[order - 1]);
 		}
-		
-		//abspeichern
+
+		// abspeichern
 	}
 
 	@Override
@@ -144,27 +145,27 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 	}
 
 	public void approximationDone() {
-		
+
 		int anzahl = 0;
-		for(int i=0;i<approximations.length;i++) {
-			if(approximations[i]!=null) {
-				if(approximations[i].getKorrKoef()!=0){
+		for (int i = 0; i < approximations.length; i++) {
+			if (approximations[i] != null) {
+				if (approximations[i].getKorrKoef() != 0) {
 					anzahl++;
 				}
 			}
 		}
 		korrelationComparison = new double[2][anzahl];
 		int zaeler = 0;
-		for(int i=0;i<approximations.length;i++) {
-			if(approximations[i]!=null) {
-				if(approximations[i].getKorrKoef()!=0){
-					korrelationComparison[0][zaeler] = (double)(i+2);
+		for (int i = 0; i < approximations.length; i++) {
+			if (approximations[i] != null) {
+				if (approximations[i].getKorrKoef() != 0) {
+					korrelationComparison[0][zaeler] = (double) (i + 1);
 					korrelationComparison[1][zaeler] = approximations[i].getKorrKoef();
 					zaeler++;
 				}
 			}
 		}
-		
+
 		if (isCancelled() == false) {
 			model.notifyObservers(Model.NOTIFY_REASON_APPROXIMATION_DONE);
 		}
@@ -181,7 +182,7 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 	 * @return
 	 */
 	public Approximation getApprox(int order) {
-		return approximations[order - 2];
+		return approximations[order - 1];
 	}
 
 	public double[][] getKorrelationComparison() {

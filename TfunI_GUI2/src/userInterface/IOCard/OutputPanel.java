@@ -28,10 +28,10 @@ public class OutputPanel extends JPanel {
 	public Trace traceRaw;
 	public Trace tracePreprocessed;
 	public Trace traceMean;
-	public Trace[] tracesSolution = new Trace[9];
-	public Trace[] tracesPole = new Trace[9];
+	public Trace[] tracesSolution = new Trace[10];
+	public Trace[] tracesPole = new Trace[10];
 	public Trace traceKorKoeffCompare;
-	public Trace[] traceKorKoeffPoints = new Trace[9];
+	public Trace[] traceKorKoeffPoints = new Trace[10];
 
 	/**
 	 * Cards:
@@ -154,20 +154,25 @@ public class OutputPanel extends JPanel {
 			traceKorKoeffCompare.dataValid = true;
 
 			for (int i = 0; i < tracesSolution.length; i++) {
-				if (((Model) obs).network.getApprox(i + 2) != null && controller.getBerechnenCBActive()[i] == true) {
-					if (((Model) obs).network.getApprox(i + 2).getPole()[0] != null) {
-						tracesSolution[i].data = ((Model) obs).network.getApprox(i + 2).getStepResponse();
+				if (((Model) obs).network.getApprox(i + 1) != null && controller.getBerechnenCBActive()[i] == true) {
+					if (((Model) obs).network.getApprox(i + 1).getPole()[0] != null) {
+						tracesSolution[i].data = ((Model) obs).network.getApprox(i + 1).getStepResponse();
 						tracesSolution[i].dataValid = true;
 						tracesPole[i].data = new double[][] {
-								((Model) obs).network.getApprox(i + 2).getPole()[0].getPoint(),
-								((Model) obs).network.getApprox(i + 2).getPole()[1].getPoint() };
+								((Model) obs).network.getApprox(i + 1).getPole()[0].getPoint(),
+								((Model) obs).network.getApprox(i + 1).getPole()[1].getPoint() };
 						tracesPole[i].dataValid = true;
-						traceKorKoeffPoints[i].data = new double[][] { { i + 2 },
-								{ ((Model) obs).network.getApprox(i + 2).getKorrKoef() } };
-						traceKorKoeffPoints[i].dataValid = true;
+
 					} else {
 						tracesSolution[i].dataValid = false;
 						tracesPole[i].dataValid = false;
+					}
+				}
+				if (((Model) obs).network.getApprox(i + 1) != null) {
+					if (((Model) obs).network.getApprox(i + 1).getPole()[0] != null) {
+						traceKorKoeffPoints[i].data = new double[][] { { i + 1 },
+								{ ((Model) obs).network.getApprox(i + 1).getKorrKoef() } };
+						traceKorKoeffPoints[i].dataValid = true;
 					}
 				}
 			}

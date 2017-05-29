@@ -142,4 +142,13 @@ public class Controller {
 	public void changeApproximation(UTFDatatype utf) {
 		model.network.getApprox(utf.ordnung).setUtf(utf);
 	}
+	
+	public void berechnungLoeschen() {
+		view.inputPanel.berechneClearAllCB();
+		model.deleteNetwork();
+	}
+	
+	public void setThreshold(double threshold) {
+		model.setThreshold(threshold);
+	}
 }

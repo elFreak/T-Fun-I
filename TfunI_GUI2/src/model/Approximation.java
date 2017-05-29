@@ -7,6 +7,7 @@ import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.optim.PointValuePair;
 
 import matlabfunction.Matlab;
+import matlabfunction.SVTools;
 import model.fMinSearch.StableFMinSearch;
 import model.fMinSearch.SwingWorkerClient;
 import model.fMinSearch.SwingWorkerInfoDatatype;
@@ -27,6 +28,7 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 	double[] timeFullNormed;
 	double[] stepFullNormed;
 	double[] timeLenghtNormed;
+	private double threshold;
 
 	/**
 	 * Startwerte:
@@ -42,7 +44,7 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 	private double korrKoef = 0;
 
 	public Approximation(PointValuePair startValues, Target target, int order, double[] timeFullNormed,
-			double[] stepFullNormed, double[] timeLenghtNormed, Network network) {
+			double[] stepFullNormed, double[] timeLenghtNormed, Network network, double threshold) {
 		// Setze die Grundlegenden Verknüpfungen der Klasse:
 		this.startValues = startValues;
 		this.target = target;
@@ -51,13 +53,14 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 		this.stepFullNormed = stepFullNormed;
 		this.timeLenghtNormed = timeLenghtNormed;
 		this.network = network;
+		this.threshold = threshold;
 	}
 
 	private void calculate() {
 
 		// Berechnet aus den vorher berechneten Startwerten eine möglichst
 		// genaue Übertragungsfunktion.
-		PointValuePair optimum = StableFMinSearch.getUtfN(target, order, startValues, this, 3);
+		PointValuePair optimum = StableFMinSearch.getUtfN(target, order, startValues, this, 3, threshold);
 		utf = new UTFDatatype();
 		utf.ordnung = order;
 		utf.zaehler = optimum.getPoint()[0];
@@ -78,25 +81,29 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 		// Dazugehörige Polstellen berechnen:
 		double[] nenner1 = new double[utf.ordnung + 1];
 		double[] nenner2 = new double[utf.ordnung + 1];
-		if (utf.ordnung % 2 == 0) {
-			nenner1 = new double[] { 1, utf.koeffWQ[0] / utf.koeffWQ[1], Math.pow(utf.koeffWQ[0], 2.0) };
-			for (int i = 2; i < utf.ordnung - 1; i += 2) {
-				nenner2 = new double[] { 1, utf.koeffWQ[i] / utf.koeffWQ[i + 1], Math.pow(utf.koeffWQ[i], 2.0) };
-				nenner1 = Matlab.conv(nenner1, nenner2);
+		if (utf.ordnung != 1) {
+			if (utf.ordnung % 2 == 0) {
+				nenner1 = new double[] { 1, utf.koeffWQ[0] / utf.koeffWQ[1], Math.pow(utf.koeffWQ[0], 2.0) };
+				for (int i = 2; i < utf.ordnung - 1; i += 2) {
+					nenner2 = new double[] { 1, utf.koeffWQ[i] / utf.koeffWQ[i + 1], Math.pow(utf.koeffWQ[i], 2.0) };
+					nenner1 = Matlab.conv(nenner1, nenner2);
+				}
+			} else {
+				double[] koeffAll = new double[utf.ordnung];
+				for (int l = 0; l < utf.koeffWQ.length; l++) {
+					koeffAll[l] = utf.koeffWQ[l];
+				}
+				koeffAll[koeffAll.length - 1] = utf.sigma;
+
+				nenner1 = new double[] { 1, utf.koeffWQ[0] / utf.koeffWQ[1], Math.pow(utf.koeffWQ[0], 2.0) };
+				for (int i = 2; i < utf.ordnung - 1; i += 2) {
+					nenner2 = new double[] { 1, utf.koeffWQ[i] / utf.koeffWQ[i + 1], Math.pow(utf.koeffWQ[i], 2.0) };
+					nenner1 = Matlab.conv(nenner1, nenner2);
+				}
+				nenner1 = Matlab.conv(new double[] { 1, -utf.sigma }, nenner1);
 			}
 		} else {
-			double[] koeffAll = new double[utf.ordnung];
-			for (int l = 0; l < utf.koeffWQ.length; l++) {
-				koeffAll[l] = utf.koeffWQ[l];
-			}
-			koeffAll[koeffAll.length - 1] = utf.sigma;
-
-			nenner1 = new double[] { 1, utf.koeffWQ[0] / utf.koeffWQ[1], Math.pow(utf.koeffWQ[0], 2.0) };
-			for (int i = 2; i < utf.ordnung - 1; i += 2) {
-				nenner2 = new double[] { 1, utf.koeffWQ[i] / utf.koeffWQ[i + 1], Math.pow(utf.koeffWQ[i], 2.0) };
-				nenner1 = Matlab.conv(nenner1, nenner2);
-			}
-			nenner1 = Matlab.conv(new double[] { 1, -utf.sigma }, nenner1);
+			nenner1 = new double[] { 1, -utf.sigma };
 		}
 		Complex[] roots = new Complex[utf.ordnung];
 		roots = Matlab.roots(nenner1);
@@ -111,9 +118,9 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 		pole[0] = new PointValuePair(real, 0);
 		pole[1] = new PointValuePair(imag, 0);
 
-		//Den Korelationskoeffizienten berechnen:
+		// Den Korelationskoeffizienten berechnen:
 		korrKoef = Korrelation.korrKoeff(stepFullNormed, stepResponse[1]);
-		
+
 		// Den Benutzer informieren:
 		SwingWorkerInfoDatatype info2 = new SwingWorkerInfoDatatype();
 		info2.statusFehler = false;
@@ -179,7 +186,7 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 	public double getKorrKoef() {
 		return korrKoef;
 	}
-	
+
 	public void setUtf(UTFDatatype utf) {
 		this.utf = utf;
 		network.approximationDone();

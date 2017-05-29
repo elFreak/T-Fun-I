@@ -34,7 +34,7 @@ public class GlobalSettings {
 	public static Color colorTraceGreen = new Color(20,250,20);
 	public static Color colorTraceYellow = new Color(255, 217, 102);
 	public static Color colorTraceOrange = new Color(197, 90, 17);
-	public static Color[] colorsTraceSolution = new Color[9];
+	public static Color[] colorsTraceSolution = new Color[10];
 	public static Color colorTraceGrey = new Color(200, 200, 250);
 	
 	public static Color colorSliderBlue = new Color(0, 180, 240);
@@ -51,15 +51,16 @@ public class GlobalSettings {
 		fontTextSmall = new Font(systemFont.getName(), Font.PLAIN, (int) (systemFont.getSize() * 1.1));
 		fontMath = new Font("Cambria Math", Font.ITALIC, (int) (systemFont.getSize() * 1.3));
 		
-		colorsTraceSolution[0] = new Color(255,160, 0);
-		colorsTraceSolution[1] = new Color(255,255, 0);
-		colorsTraceSolution[2] = new Color(210,255, 50);
-		colorsTraceSolution[3] = new Color(102,255, 60);
-		colorsTraceSolution[4] = new Color(0,255, 155);
-		colorsTraceSolution[5] = new Color(0,255, 255);
-		colorsTraceSolution[6] = new Color(0,160, 255);
-		colorsTraceSolution[7] = new Color(155,100, 255);
-		colorsTraceSolution[8] = new Color(255,0, 255);
+		colorsTraceSolution[0] = new Color(255,140, 100);
+		colorsTraceSolution[1] = new Color(255,160, 0);
+		colorsTraceSolution[2] = new Color(255,255, 0);
+		colorsTraceSolution[3] = new Color(210,255, 50);
+		colorsTraceSolution[4] = new Color(102,255, 60);
+		colorsTraceSolution[5] = new Color(0,255, 155);
+		colorsTraceSolution[6] = new Color(0,255, 255);
+		colorsTraceSolution[7] = new Color(0,160, 255);
+		colorsTraceSolution[8] = new Color(155,100, 255);
+		colorsTraceSolution[9] = new Color(255,0, 255);
 	}
 
 }

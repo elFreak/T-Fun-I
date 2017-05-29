@@ -374,6 +374,7 @@ public class InputCardBearbeiten extends JPanel {
 			Numbers stepTime = new Numbers(((Model) obs).measurementData.getstepTime());
 			tfSprungzeit.setText(String.valueOf(stepTime.number) + stepTime.unit);
 		}
+		
 	}
 
 }

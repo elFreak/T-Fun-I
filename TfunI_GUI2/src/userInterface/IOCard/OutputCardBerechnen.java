@@ -13,16 +13,16 @@ public class OutputCardBerechnen extends WindowContainer {
 	private Plot plotBerechnen = new Plot();
 	private boolean plotBerechnenTracePreprocessedAdded = false;
 	private boolean[] plotBerechnenTraceSolutionAdded = new boolean[] { false, false, false, false, false, false, false,
-			false, false };
+			false, false, false };
 
 	private Plot plotPolstellen = new Plot();
 	private boolean[] plotPolstellenTracePoleAdded = new boolean[] { false, false, false, false, false, false, false,
-			false, false };
+			false, false, false };
 
 	private Plot plotCompare = new Plot();
 	private boolean plotCompareTraceKorKoeffAdded = false;
 	private boolean[] plotCompareTraceKorPointsAdded = new boolean[] { false, false, false, false, false, false, false,
-			false, false };
+			false, false, false };
 
 	public OutputCardBerechnen(OutputPanel outputPanel) {
 		this.outputPanel = outputPanel;

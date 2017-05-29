@@ -40,6 +40,18 @@ public class Numbers {
 	private String getPrefix(int potency) {
 		String k = "";
 		switch (potency) {
+		case -24:
+			k = "e-24";
+			break;
+		case -21:
+			k = "e-21";
+			break;
+		case -18:
+			k = "e-18";
+			break;
+		case -15:
+			k = "e-15";
+			break;
 		case -12:
 			k = "e-12";
 			break;
@@ -67,6 +79,7 @@ public class Numbers {
 		case 12:
 			k = "e12";
 			break;
+			
 		}
 		return k;
 	}
