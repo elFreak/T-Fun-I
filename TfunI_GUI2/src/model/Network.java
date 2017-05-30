@@ -3,13 +3,9 @@ package model;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import javax.swing.SwingWorker;
-
 import org.apache.commons.math3.optim.PointValuePair;
-
 import com.sun.corba.se.impl.orbutil.threadpool.TimeoutException;
-
 import model.fMinSearch.Message;
 import model.fMinSearch.StableFMinSearch;
 import model.fMinSearch.SwingWorkerClient;
@@ -60,6 +56,9 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 		threadExecutor.execute(this);
 	}
 
+	// -----------------------------------------------------------------------------------------------------------------
+	// Berechnungs Methoden:
+	// -----------------------------------------------------------------------------------------------------------------
 	/**
 	 * In dieser Methode werden die Vorbereitungen für die Berechnungen der
 	 * einzelnen Übertragungsfunktionen gemacht. Diese Vorbereitung besteht aus
@@ -152,26 +151,36 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 		startValues = utf;
 	}
 
+	/**
+	 * Diese Methode gibt dem Thread-Pool die Aufgabe die Übertragungsfunktion
+	 * der ausgewählten Ordnung in einem seperaten Thread zu berechnen.
+	 * 
+	 * @param order
+	 */
 	public void calculateApproximation(int order) {
-		if (approximations[order - 1] == null) {
+		if (approximations[order - 1] == null) { // Falls die Ordnung noch nicht
+													// berechnet wurde.
 			approximations[order - 1] = new Approximation(startValues[order - 1],
 					new Target(measurementData.getTimeFullNormed(), measurementData.getStepFullNormed()), order,
 					measurementData.getTimeFullNormed(), measurementData.getStepFullNormed(),
 					measurementData.getTimeLenghtNormed(), this, threshold);
 			threadExecutor.execute(approximations[order - 1]);
 		}
-
-		// abspeichern
-		// speicher.StartValueSaver.addUTF(utf, messwerte);
-
 	}
 
+	/**
+	 * Definiert, was im eigenen Thread gemacht werden soll.
+	 * 
+	 */
 	@Override
 	protected Object doInBackground() throws Exception {
 		prepareCalculation();
 		return 0;
 	}
 
+	/**
+	 * Dient dazu den Benutzer mittels der StatusBar zu informieren.
+	 */
 	@Override
 	protected void process(List<Message> arg) {
 		if (isCancelled() == false) {
@@ -191,7 +200,7 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 	}
 
 	/**
-	 * 	Sobald der Thread beendet wird werden die Observer des Models informiert.
+	 * Sobald der Thread beendet wird werden die Observer des Models informiert.
 	 */
 	@Override
 	protected void done() {
@@ -204,8 +213,13 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 		}
 	}
 
+	/**
+	 * Diese Methode kann von den einzelnen Approximationen benutzt werden, um
+	 * dem Netzwerk mitzuteilen, dass eine neue Approxmation berechnet wurde.
+	 * Das Netzwerk passt darauf den Korrelationsvergleich der bereits
+	 * berechneten Ordnungen an und informiert die Observer.
+	 */
 	public void approximationDone() {
-
 		int anzahl = 0;
 		for (int i = 0; i < approximations.length; i++) {
 			if (approximations[i] != null) {
@@ -225,7 +239,6 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 				}
 			}
 		}
-
 		if (isCancelled() == false) {
 			model.notifyObservers(Model.NOTIFY_REASON_APPROXIMATION_DONE);
 		}
@@ -236,11 +249,9 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 		publish(message);
 	}
 
-	/**
-	 * Gibt die Übertragungsfunktion der Polstellen-Ordnung 2-10 zurück.
-	 * 
-	 * @return
-	 */
+	// -----------------------------------------------------------------------------------------------------------------
+	// Get-Methoden:
+	// -----------------------------------------------------------------------------------------------------------------
 	public Approximation getApprox(int order) {
 		return approximations[order - 1];
 	}
