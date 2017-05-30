@@ -77,7 +77,7 @@ public class Target implements MultivariateFunction {
 			data2 = (double[]) SVTools.step(zaehler1, nenner1, time)[0];
 		} else {
 			zaehler1[0] = data[0] * Math.pow(data[1], 2.0);
-			nenner1 = new double[]{1,data[1]};
+			nenner1 = new double[]{1,-data[1]};
 			data2 = (double[]) SVTools.step(zaehler1, nenner1, time)[0];
 		}
 

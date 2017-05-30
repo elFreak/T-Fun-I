@@ -6,6 +6,8 @@ import javax.swing.SwingWorker;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.optim.PointValuePair;
 
+import com.sun.corba.se.impl.orbutil.threadpool.TimeoutException;
+
 import matlabfunction.Matlab;
 import matlabfunction.SVTools;
 import model.fMinSearch.StableFMinSearch;
@@ -56,11 +58,11 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 		this.threshold = threshold;
 	}
 
-	private void calculate() {
+	private void calculate() throws TimeoutException{
 
 		// Berechnet aus den vorher berechneten Startwerten eine möglichst
 		// genaue Übertragungsfunktion.
-		PointValuePair optimum = StableFMinSearch.getUtfN(target, order, startValues, this, 3, threshold);
+			PointValuePair optimum = StableFMinSearch.getUtfN(target, order, startValues, this, 3, threshold);
 		utf = new UTFDatatype();
 		utf.ordnung = order;
 		utf.zaehler = optimum.getPoint()[0];
@@ -137,7 +139,15 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 		info.statusFehler = false;
 		info.statusText = "Berechnung gestarted (Ordnung " + order + ").";
 		swingAction(info);
-		calculate();
+		try {
+			calculate();
+		} catch (TimeoutException e) {
+			SwingWorkerInfoDatatype info2 = new SwingWorkerInfoDatatype();
+			info2.statusFehler = true;
+			info2.isStatus = true;
+			info2.statusText = "Probleme bei der Berechnung (Ordnung "+order+").\nVersuchen Sie folgendes:\n1) Versichern Sie sich, dass die Messwerte korekt bearbeited wurden.\n2) Passen Sie den Threshold an und starten Sie dann die Berechnung neu.";
+			swingAction(info2);
+		}
 		return 0;
 	}
 

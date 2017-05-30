@@ -23,6 +23,8 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 	public ExecutorService threadExecutor = Executors.newFixedThreadPool(1);
 
 
+	private double threshold;
+	
 	/**
 	 * Normierte Eingangssignale (Sprungantwort aus der Klasse Messwerte):
 	 */
@@ -40,6 +42,7 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 		// Setze die Grundlegenden Verknüpfungen der Klasse:
 		this.measurementData = measurementData;
 		this.model = model;
+		this.threshold = model.getThreshold();
 
 		threadExecutor.execute(this);
 	}
@@ -55,19 +58,14 @@ public class Network extends SwingWorker<Object, SwingWorkerInfoDatatype> implem
 
 		// Startwerte werden berechnet:
 		Target target = new Target(timeFullNormed, stepFullNormed);
-		startValues = StableFMinSearch.getStartValues(target, this, model.getThreshold());
-		SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
-		info.statusFehler = false;
-		info.isStatus = true;
-		info.statusText = "Alle Startwerte wurden berechnet.";
-		swingAction(info);
+		startValues = StableFMinSearch.getStartValues(target, this, threshold);
 	}
 
 	public void calculateApproximation(int order) {
 		if (approximations[order - 1] == null) {
 			approximations[order - 1] = new Approximation(startValues[order - 1],
 					new Target(timeFullNormed, stepFullNormed), order, timeFullNormed, stepFullNormed, timeLenghtNormed,
-					this, model.getThreshold());
+					this, threshold);
 			threadExecutor.execute(approximations[order - 1]);
 		}
 
