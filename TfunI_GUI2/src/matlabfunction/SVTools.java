@@ -116,43 +116,4 @@ public class SVTools {
 		return new Object[] { h, t };
 	}
 
-	public static void main(String[] args) {
-
-		//		// Vergleich step() vs. schrittIFFT()
-		//		Filter butter = FilterFactory.createCheby1(10, 3.0, 1.0);
-		//		double[] A = butter.A;
-		//		double[] B = butter.B;
-		//
-		//		long start1 = System.currentTimeMillis();
-		//		Object[] results = step(B, A, Matlab.linspace(0.0, 100.0, 2048));
-		//		long time1 = System.currentTimeMillis() - start1;
-		//		double[] h1 = (double[]) results[0];
-		//		double[] t = (double[]) results[1];
-		//
-		//		long start2 = System.currentTimeMillis();
-		//		results = schrittIFFT(B, A, Matlab.linspace(0.0, 100.0, 2048));
-		//		long time2 = System.currentTimeMillis() - start2;
-		//
-		//		double[] h2 = (double[]) results[0];
-		//		t = (double[]) results[1];
-		//
-		//		Matlab.print("h1", h1);
-		//		Matlab.print("h2", h2);
-		//		Matlab.print("t", t);
-
-		double[] B = { 0.866032235939622 };
-//		double[] A = { 1, 2.41333440259417, 2.70891766463899, 1.96572254045305, 0.636170904182253 };
-		double[] A = new double[] {1,2.3695645813651,2.68176370933309,1.92931949927968,0.636170904182253};
-
-		Object[] results = step(B, A, Matlab.linspace(0.0, 15.0, 100));
-		double[] h1 = (double[]) results[0];
-		double[] t = (double[]) results[1];
-
-		Matlab.print("h1", h1);
-		
-		Matlab.print("rA", Matlab.roots(A));
-		
-
-	}
-
 }

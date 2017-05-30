@@ -25,6 +25,7 @@ public class Matlab {
 		String[] a = s1.split("[, ]+");
 		String[] b = s2.split("[, ]+");
 		String res = "";
+		
 
 		if (a.length < b.length) {
 			String[] tmp = a;
@@ -512,7 +513,8 @@ public class Matlab {
 
 	public static final Complex[] roots(double[] poly) {
 		
-		final LaguerreSolver solver = new LaguerreSolver(1e-5);
+		
+		LaguerreSolver solver = new LaguerreSolver(1e-5);
 		double[] p = new double[poly.length];
 		
 		

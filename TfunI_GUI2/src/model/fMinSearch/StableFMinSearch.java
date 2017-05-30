@@ -4,6 +4,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.apache.commons.math3.optim.PointValuePair;
 import com.sun.corba.se.impl.orbutil.threadpool.TimeoutException;
+
+import model.Message;
+import model.SwingWorkerClient;
 import model.Target;
 
 /**

@@ -6,9 +6,8 @@ import java.util.concurrent.Executors;
 import javax.swing.SwingWorker;
 import org.apache.commons.math3.optim.PointValuePair;
 import com.sun.corba.se.impl.orbutil.threadpool.TimeoutException;
-import model.fMinSearch.Message;
+
 import model.fMinSearch.StableFMinSearch;
-import model.fMinSearch.SwingWorkerClient;
 import userInterface.StatusBar;
 
 /**

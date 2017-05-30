@@ -6,9 +6,7 @@ import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.optim.PointValuePair;
 import com.sun.corba.se.impl.orbutil.threadpool.TimeoutException;
 import matlabfunction.Matlab;
-import model.fMinSearch.Message;
 import model.fMinSearch.StableFMinSearch;
-import model.fMinSearch.SwingWorkerClient;
 import userInterface.StatusBar;
 
 /**
@@ -145,7 +143,11 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 			nenner1 = new double[] { 1, -utf.sigma };
 		}
 		Complex[] roots = new Complex[utf.ordnung];
-		roots = Matlab.roots(nenner1);
+		try {
+			roots = Matlab.roots(nenner1);
+		} catch (Exception e) {
+			
+		}
 
 		// Den Wert der Polstellen in die entsprechende Variable schreiben:
 		double[] real = new double[order];

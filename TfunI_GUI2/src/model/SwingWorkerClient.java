@@ -1,4 +1,4 @@
-package model.fMinSearch;
+package model;
 
 /**
  * Dient dem weiterleiten von Informationen aus einem Thread zum Benutzer.

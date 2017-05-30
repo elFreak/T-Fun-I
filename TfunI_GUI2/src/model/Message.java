@@ -1,4 +1,4 @@
-package model.fMinSearch;
+package model;
 
 /**
  * Klasse Message:
