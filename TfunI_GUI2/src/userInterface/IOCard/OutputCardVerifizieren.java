@@ -28,4 +28,8 @@ public class OutputCardVerifizieren extends WindowContainer {
 	public void setAllRangeIdeal() {
 		plotVerifizieren.setRangeIdeal();
 	}
+
+	public void setVerifizierenOrder(int order) {
+		koefPanel.setOrdnung(order);
+	}
 }

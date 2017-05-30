@@ -125,6 +125,10 @@ public class OutputPanel extends JPanel {
 			break;
 		}
 	}
+	
+	public void setVerifzizerenOrder(int order) {
+		cardVerifizieren.setVerifizierenOrder(order);
+	}
 
 	public void update(java.util.Observable obs, Object obj) {
 

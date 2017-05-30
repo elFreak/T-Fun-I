@@ -65,8 +65,7 @@ public class InputCardVerifizieren extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO: irgendwie setOrder von KoefPanel aufrufen. Mit
-		// "Double.parsedouble(e.getactioncommand)" als Parameter
+		controller.setVerifizierenOrder(Integer.parseInt(e.getActionCommand()));
 	}
 
 }

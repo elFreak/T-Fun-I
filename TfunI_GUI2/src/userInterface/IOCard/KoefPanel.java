@@ -147,6 +147,7 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 	}
 
 	public void setOrdnung(int order) {
+		System.out.println("order"+order);
 		this.order = order;
 	}
 

@@ -126,4 +126,8 @@ public class Controller {
 	public void setThreshold(double threshold) {
 		model.setNextThreshold(threshold);
 	}
+	
+	public void setVerifizierenOrder(int order) {
+		view.outputPanel.setVerifzizerenOrder(order);
+	}
 }
