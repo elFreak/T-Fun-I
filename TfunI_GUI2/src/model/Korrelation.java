@@ -1,7 +1,20 @@
 package model;
 
+/**
+ * Klasse Korrelation:
+ * 
+ * @author Team 1
+ *
+ */
 public class Korrelation {
-	
+
+	/**
+	 * Dient dem Berechnen des Korrelations-Koeffizienten von zwei Vektoren.
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
+	 */
 	public static double korrKoeff(double[] a, double[] b) {
 
 		double mean_a = mean(a);
@@ -22,7 +35,7 @@ public class Korrelation {
 		}
 		return coeff;
 	}
-	
+
 	private static double mean(double[] a) {
 		double mean = 0;
 		for (int i = 0; i < a.length; i++) {

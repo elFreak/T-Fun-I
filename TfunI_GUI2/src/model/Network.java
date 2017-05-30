@@ -11,10 +11,17 @@ import model.fMinSearch.StableFMinSearch;
 import model.fMinSearch.SwingWorkerClient;
 import userInterface.StatusBar;
 
+/**
+ * Klasse Network: Verwalted alle berechneten Übertragungsfunktionen
+ * (Annäherungsrechngen).
+ * 
+ * @author Team 1
+ *
+ */
 public class Network extends SwingWorker<Object, Message> implements SwingWorkerClient {
 
 	/**
-	 * Verknüpfungen zu anderen Klassen:
+	 * Verknüpfungen zu anderen Objekten:
 	 */
 	private MeasurementData measurementData;
 	private Model model;
@@ -23,6 +30,7 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 	 * Eigenschaften:
 	 */
 	private double threshold;
+	private Target target;
 
 	/**
 	 * Approximationen:
@@ -30,6 +38,7 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 	private PointValuePair[] startValues;
 	private Approximation[] approximations = new Approximation[10];
 	private double[][] korrelationComparison;
+	private double[][][] korrelationComparisonPoins;
 
 	/**
 	 * Thread verwalten:
@@ -51,7 +60,9 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 	public Network(MeasurementData measurementData, Model model) {
 		this.measurementData = measurementData;
 		this.model = model;
-		this.threshold = model.getThreshold();
+		this.threshold = model.getNextThreshold();
+
+		target = new Target(measurementData.getTimeFullNormed(), measurementData.getStepFullNormed());
 
 		threadExecutor.execute(this);
 	}
@@ -71,8 +82,6 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 	 * 
 	 */
 	private void prepareCalculation() {
-
-		Target target = new Target(measurementData.getTimeFullNormed(), measurementData.getStepFullNormed());
 
 		// Strucktur der Startwerte wird definiert.
 		PointValuePair utf[] = new PointValuePair[10]; // Ordnung 1-10 ...
@@ -160,10 +169,7 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 	public void calculateApproximation(int order) {
 		if (approximations[order - 1] == null) { // Falls die Ordnung noch nicht
 													// berechnet wurde.
-			approximations[order - 1] = new Approximation(startValues[order - 1],
-					new Target(measurementData.getTimeFullNormed(), measurementData.getStepFullNormed()), order,
-					measurementData.getTimeFullNormed(), measurementData.getStepFullNormed(),
-					measurementData.getTimeLenghtNormed(), this, threshold);
+			approximations[order - 1] = new Approximation(order, this);
 			threadExecutor.execute(approximations[order - 1]);
 		}
 	}
@@ -208,7 +214,7 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 
 		// Nur falls die Startwerte auch berechnet wurden, wird dies den
 		// Observern mitgeteilt:
-		if (startValues != null) {
+		if (startValues != null && isCancelled()==false) {
 			model.notifyObservers(Model.NOTIFY_REASON_NETWORK_START_VALUES);
 		}
 	}
@@ -229,6 +235,7 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 			}
 		}
 		korrelationComparison = new double[2][anzahl];
+		korrelationComparisonPoins = new double[10][][];
 		int zaeler = 0;
 		for (int i = 0; i < approximations.length; i++) {
 			if (approximations[i] != null) {
@@ -236,11 +243,15 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 					korrelationComparison[0][zaeler] = (double) (i + 1);
 					korrelationComparison[1][zaeler] = approximations[i].getKorrKoef();
 					zaeler++;
+					
+					korrelationComparisonPoins[i] = new double[][] { { (i + 1) },{ approximations[i].getKorrKoef() } };
 				}
 			}
 		}
+		
+		
 		if (isCancelled() == false) {
-			model.notifyObservers(Model.NOTIFY_REASON_APPROXIMATION_DONE);
+			model.notifyObservers(Model.NOTIFY_REASON_APPROXIMATION_UPDATE);
 		}
 	}
 
@@ -258,5 +269,25 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 
 	public double[][] getKorrelationComparison() {
 		return korrelationComparison;
+	}
+
+	public Target getTarget() {
+		return target;
+	}
+
+	public double getThreshold() {
+		return threshold;
+	}
+
+	public PointValuePair[] getStartWerte() {
+		return startValues;
+	}
+
+	public MeasurementData getMeasurementData() {
+		return measurementData;
+	}
+
+	public double[][][] getKorrelationComparisonPoins() {
+		return korrelationComparisonPoins;
 	}
 }

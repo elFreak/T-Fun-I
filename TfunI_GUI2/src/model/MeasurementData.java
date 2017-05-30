@@ -1,8 +1,10 @@
 package model;
 
 /**
+ * Klasse MeasurementData:
+ * Representiert eine gemessene Sprungantwort.
  * 
- * @author Marc de Bever
+ * @author Team 1
  *
  */
 public class MeasurementData {

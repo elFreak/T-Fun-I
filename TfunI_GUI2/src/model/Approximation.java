@@ -2,67 +2,77 @@ package model;
 
 import java.util.List;
 import javax.swing.SwingWorker;
-
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.optim.PointValuePair;
-
 import com.sun.corba.se.impl.orbutil.threadpool.TimeoutException;
-
 import matlabfunction.Matlab;
-import matlabfunction.SVTools;
 import model.fMinSearch.Message;
 import model.fMinSearch.StableFMinSearch;
 import model.fMinSearch.SwingWorkerClient;
 import userInterface.StatusBar;
 
+/**
+ * Klasse Approximation: Verwalted eine Übertragungsfunktion
+ * (Annäherungsrechnung). Diese Funktion hat eine feste Polstellenordnung
+ * zwischen 1 und 10.
+ * 
+ * @author Team 1
+ *
+ */
 public class Approximation extends SwingWorker<Object, Message> implements SwingWorkerClient {
 
 	/**
-	 * Grundlegende Verknüpfungen
+	 * Verknüpfungen zu anderen Objekten:
 	 */
 	Network network;
 
 	/**
-	 * Zu optimierendes System:
+	 * Eigenschaften:
 	 */
-	private Target target;
 	private int order;
-	double[] timeFullNormed;
-	double[] stepFullNormed;
-	double[] timeLenghtNormed;
-	private double threshold;
 
 	/**
-	 * Startwerte:
-	 */
-	private PointValuePair startValues;
-
-	/**
-	 * Schrittantwort, Polstellen und Übertragungsfunktion:
+	 * Resultat:
 	 */
 	private UTFDatatype utf = new UTFDatatype();
 	private double[][] stepResponse;
 	private PointValuePair[] pole = new PointValuePair[2];
 	private double korrKoef = 0;
 
-	public Approximation(PointValuePair startValues, Target target, int order, double[] timeFullNormed,
-			double[] stepFullNormed, double[] timeLenghtNormed, Network network, double threshold) {
-		// Setze die Grundlegenden Verknüpfungen der Klasse:
-		this.startValues = startValues;
-		this.target = target;
+	// -----------------------------------------------------------------------------------------------------------------
+	// Konstrucktor:
+	// -----------------------------------------------------------------------------------------------------------------
+	/**
+	 * Erzeugt ein Objekt, welches eine Übertragungsfunktion von einer
+	 * Polstellenordnung representiert. Dieses Objekt kann diese
+	 * Übertragungsfunktion sowie die dazugehörigen Eigenschaften in einem
+	 * eigenen Thread berechnen.
+	 * 
+	 * @param order
+	 * @param network
+	 */
+	public Approximation(int order, Network network) {
 		this.order = order;
-		this.timeFullNormed = timeFullNormed;
-		this.stepFullNormed = stepFullNormed;
-		this.timeLenghtNormed = timeLenghtNormed;
 		this.network = network;
-		this.threshold = threshold;
 	}
 
+	// -----------------------------------------------------------------------------------------------------------------
+	// Berechnungs Methoden:
+	// -----------------------------------------------------------------------------------------------------------------
+	/**
+	 * Berechnet anhand des Netzwerkes eine Übertragungsfunktion der gegebenen
+	 * Polstellenordnung.
+	 * 
+	 * @throws TimeoutException
+	 */
 	private void calculate() throws TimeoutException {
 
-		// Berechnet aus den vorher berechneten Startwerten eine möglichst
-		// genaue Übertragungsfunktion.
-		PointValuePair optimum = StableFMinSearch.getUtfN(target, order, startValues, this, 3, threshold);
+		// Eigentliche Berechnung:
+		PointValuePair optimum = StableFMinSearch.getUtfN(network.getTarget(), order,
+				network.getStartWerte()[order - 1], this, 3, network.getThreshold());
+
+		// Schreibe die berechnete Übertragungsfunktion in die entsprechende
+		// Variable:
 		utf = new UTFDatatype();
 		utf.ordnung = order;
 		utf.zaehler = optimum.getPoint()[0];
@@ -78,9 +88,36 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 		}
 
 		// Dazugehörige Sprungantwort berechnen:
-		stepResponse = new double[][] { timeLenghtNormed, Target.omega2polstep(optimum.getPoint(), timeFullNormed) };
+		calculateStep();
 
 		// Dazugehörige Polstellen berechnen:
+		calculatePole();
+
+		// Den Korelationskoeffizienten berechnen:
+		calculateKorrKoeff();
+
+		// Den Benutzer informieren:
+		if (network.isCancelled() == false) {
+			swingAction(new Message("Berechnung abgeschlossen (Ordnung " + order + ").", false));
+		}
+
+	}
+
+	private void calculateStep() {
+		double[] points = new double[utf.ordnung + 1];
+		points[0] = utf.zaehler;
+		for (int i = 0; i < utf.koeffWQ.length; i++) {
+			points[i + 1] = utf.koeffWQ[i];
+		}
+		if (utf.ordnung % 2 == 1) {
+			points[points.length - 1] = utf.sigma;
+		}
+
+		stepResponse = new double[][] { network.getMeasurementData().getTimeLenghtNormed(),
+				Target.omega2polstep(points, network.getMeasurementData().getTimeFullNormed()) };
+	}
+
+	private void calculatePole() {
 		double[] nenner1 = new double[utf.ordnung + 1];
 		double[] nenner2 = new double[utf.ordnung + 1];
 		if (utf.ordnung != 1) {
@@ -119,32 +156,39 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 		}
 		pole[0] = new PointValuePair(real, 0);
 		pole[1] = new PointValuePair(imag, 0);
-
-		// Den Korelationskoeffizienten berechnen:
-		korrKoef = Korrelation.korrKoeff(stepFullNormed, stepResponse[1]);
-
-		// Den Benutzer informieren:
-		swingAction(new Message("Berechnung abgeschlossen (Ordnung " + order + ").", false));
-
 	}
 
+	private void calculateKorrKoeff() {
+		korrKoef = Korrelation.korrKoeff(network.getMeasurementData().getStepFullNormed(), stepResponse[1]);
+	}
+
+	/**
+	 * Definiert, was im eigenen Thread gemacht werden soll.
+	 * 
+	 * @throws Exception
+	 */
 	@Override
 	protected Object doInBackground() throws Exception {
 		swingAction(new Message("Berechnung gestarted (Ordnung " + order + ").", false));
 		try {
 			calculate();
 		} catch (TimeoutException e) {
-			swingAction(new Message(
-					"Probleme bei der Berechnung (Ordnung " + order
-							+ ").\nVersuchen Sie folgendes:\n1) Versichern Sie sich, dass die Messwerte korekt bearbeited wurden.\n2) Passen Sie den Threshold an und starten Sie dann die Berechnung neu.",
-					true));
+			if (network.isCancelled() == false) {
+				swingAction(new Message(
+						"Probleme bei der Berechnung (Ordnung " + order
+								+ ").\nVersuchen Sie folgendes:\n1) Versichern Sie sich, dass die Messwerte korekt bearbeited wurden.\n2) Passen Sie den Threshold an und starten Sie dann die Berechnung neu.",
+						true));
+			}
 		}
 		return 0;
 	}
 
+	/**
+	 * Dient dazu den Benutzer mittels der StatusBar zu informieren.
+	 */
 	@Override
 	protected void process(List<Message> arg) {
-		if (isCancelled() == false) {
+		if (network.isCancelled() == false) {
 			super.process(arg);
 			for (int i = 0; i < arg.size(); i++) {
 				Message message = arg.get(i);
@@ -159,6 +203,9 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 		}
 	}
 
+	/**
+	 * Sobald der Thread beendet wird werden die Observer des Models informiert.
+	 */
 	@Override
 	protected void done() {
 		super.done();
@@ -170,6 +217,9 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 		publish(info);
 	}
 
+	// -----------------------------------------------------------------------------------------------------------------
+	// Get-Methoden:
+	// -----------------------------------------------------------------------------------------------------------------
 	public double[][] getStepResponse() {
 		return stepResponse;
 	}
@@ -188,6 +238,9 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 
 	public void setUtf(UTFDatatype utf) {
 		this.utf = utf;
+		calculateStep();
+		calculatePole();
+		calculateKorrKoeff();
 		network.approximationDone();
 	}
 

@@ -20,8 +20,12 @@ public class OutputCardVerifizieren extends WindowContainer {
 	}
 
 	public void update(Observable obs, Object obj) {
-		if ((int) obj == Model.NOTIFY_REASON_APPROXIMATION_DONE) {
+		if ((int) obj == Model.NOTIFY_REASON_APPROXIMATION_UPDATE) {
 			//koefPanel.update(obs);
 		}
+	}
+
+	public void setAllRangeIdeal() {
+		plotVerifizieren.setRangeIdeal();
 	}
 }

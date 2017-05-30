@@ -87,7 +87,7 @@ public class InputPanel extends JPanel {
 		inputCardBerechnen.update(obs, obj);
 	}
 
-	public void berechneClearAllCB() {
-		inputCardBerechnen.clearAllCB();
+	public boolean[] getBerechneCB() {
+		return inputCardBerechnen.getCBState();
 	}
 }

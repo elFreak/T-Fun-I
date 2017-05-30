@@ -111,7 +111,8 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 		panelButton.setBorder(MyBorderFactory.createMyBorder("Zurücksetzen"));
 		panelButton.add(btLoeschen, new GridBagConstraints(0, 1, 2, 1, 1.0, 0.0, GridBagConstraints.CENTER,
 				GridBagConstraints.HORIZONTAL, new Insets(10, 10, 10, 10), 0, 0));
-		panelButton.add(new JLabel("Neuer Threshold: "),new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		panelButton.add(new JLabel("Neuer Threshold: "), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 		panelButton.add(tfThreshold, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
 				GridBagConstraints.HORIZONTAL, new Insets(10, 10, 10, 10), 0, 0));
 
@@ -123,7 +124,6 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 			}
 		});
 
-	
 		// Anonymer ActionListener für Textfeld Thresholdn bei Enter
 		tfThreshold.addActionListener(new ActionListener() {
 			@Override
@@ -155,7 +155,7 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 		panelBackground2.setBackground(GlobalSettings.colorBackground);
 		this.add(panelBackground2, new GridBagConstraints(0, 2, 1, 1, 1.0, 1.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.BOTH, new Insets(10, 10, 10, 10), 0, 0));
-		
+
 		btAll.addActionListener(new ActionListener() {
 
 			@Override
@@ -193,13 +193,6 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 			}
 		});
 
-	}
-
-	public void clearAllCB() {
-		for (int i = 0; i < cB.length; i++) {
-			cB[i].setSelected(false);
-			cB[i].setEnabled(false);
-		}
 	}
 
 	@Override
@@ -248,13 +241,23 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 	 * @param obj
 	 */
 	public void update(java.util.Observable obs, Object obj) {
-		if (((int) obj) == Model.NOTIFY_REASON_NETWORK_START_VALUES) {
+		int reason = (int) obj;
+
+		switch (reason) {
+		case Model.NOTIFY_REASON_NETWORK_START_VALUES:
 			for (int i = 0; i < cB.length; i++) {
 				cB[i].setEnabled(true);
 			}
-		}
-		if (((int) obj) == Model.NOTIFY_REASON_THRESHOLD_CHANGED) {
-			tfThreshold.setText(String.valueOf(((Model) obs).getThreshold()));
+			break;
+		case Model.NOTIFY_REASON_THRESHOLD_CHANGED:
+			tfThreshold.setText(String.valueOf(((Model) obs).getNextThreshold()));
+			break;
+		case Model.NOTIFY_REASON_UPDATE_NETWORK:
+			for (int i = 0; i < cB.length; i++) {
+				cB[i].setSelected(false);
+				cB[i].setEnabled(false);
+			}
+			break;
 		}
 	}
 
@@ -288,4 +291,13 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 		// TODO Auto-generated method stub
 
 	}
+
+	public boolean[] getCBState() {
+		boolean[] state = new boolean[10];
+		for (int i = 0; i < cB.length; i++) {
+			state[i] = cB[i].isSelected();
+		}
+		return state;
+	}
+
 }

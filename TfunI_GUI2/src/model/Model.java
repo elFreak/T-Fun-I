@@ -2,40 +2,79 @@ package model;
 
 import java.util.Observable;
 
+/**
+ * Klasse Model:
+ * 
+ * @author Team 1
+ *
+ */
 public class Model extends Observable {
-	
-	private double threshold = 0.001;
 
+	/**
+	 * Verknüpfungen zu anderen Objekten:
+	 */
 	public Network network;
-	public boolean networkChanged = false;
 	public MeasurementData measurementData;
 
+	/**
+	 * Eigenschaften:
+	 */
+	private double nextThreshold = 1e-8;
+	public boolean networkChanged = false;
+
+	/**
+	 * Obserververwaltung:
+	 */
 	public static final int NOTIFY_REASON_MEASUREMENT_CHANGED = 0;
-	public static final int NOTIFY_REASON_APPROXIMATION_DONE = 1;
+	public static final int NOTIFY_REASON_APPROXIMATION_UPDATE = 1;
 	public static final int NOTIFY_REASON_NETWORK_START_VALUES = 2;
 	public static final int NOTIFY_REASON_THRESHOLD_CHANGED = 3;
-	public static final int NOTIFY_REASON_NEW_DATA = 4;
+	public static final int NOTIFY_REASON_UPDATE_NETWORK = 4;
 
+	// -----------------------------------------------------------------------------------------------------------------
+	// Konstrucktor:
+	// -----------------------------------------------------------------------------------------------------------------
+	/**
+	 * Erstellt ein neues Model.
+	 */
 	public Model() {
-		threshold = 1e-8;setChanged();setChanged();
 		notifyObservers(NOTIFY_REASON_THRESHOLD_CHANGED);
 	}
 
-	public void creatNetwork() {
+	// -----------------------------------------------------------------------------------------------------------------
+	// Diverse Methoden:
+	// -----------------------------------------------------------------------------------------------------------------
+	/**
+	 * Erstellt ein neues Network, falls networkChanged = true ist.
+	 */
+	public void updateNetwork() {
 		if (networkChanged) {
-			if (network != null) {
-				network.cancel(true);
+			if (network != null) {// Falls bereits ein Network besteht, wird
+									// dieses aufgelöst.
 				network.threadExecutor.shutdown();
+				network.cancel(true);
 			}
 			network = new Network(measurementData, this);
 			networkChanged = false;
 		}
+		notifyObservers(NOTIFY_REASON_UPDATE_NETWORK);
+		notifyObservers(Model.NOTIFY_REASON_APPROXIMATION_UPDATE);
 	}
 
+	/**
+	 * Leited den Befehl weiter an das Netzwerk.
+	 * 
+	 * @param order
+	 */
 	public void berechneUTF(int order) {
 		network.calculateApproximation(order);
 	}
 
+	/**
+	 * Speichert neue Messwerte ab.
+	 * 
+	 * @param data
+	 */
 	public void setMesuredData(double[][] data) {
 		measurementData = new MeasurementData(this, data);
 		if (network != null) {
@@ -44,9 +83,13 @@ public class Model extends Observable {
 			network = null;
 		}
 		notifyObservers(NOTIFY_REASON_MEASUREMENT_CHANGED);
-		notifyObservers(NOTIFY_REASON_NEW_DATA);
 	}
 
+	/**
+	 * Informiert die Observer über eine aktualisierung des Models.
+	 * 
+	 * @param object
+	 */
 	@Override
 	public void notifyObservers(Object object) {
 
@@ -58,25 +101,21 @@ public class Model extends Observable {
 		super.notifyObservers(object);
 	}
 
-	@Override
-	public void notifyObservers() {
-		super.setChanged();
-		super.notifyObservers();
+	public void setBackNetwork() {
+		networkChanged = true;
+		updateNetwork();
 	}
 
-	public void deleteNetwork() {
-		networkChanged = true;
-		creatNetwork();
-		notifyObservers(Model.NOTIFY_REASON_NEW_DATA);
-	}
-	
-	public void setThreshold(double threshold) {
-		this.threshold = threshold;
+	// -----------------------------------------------------------------------------------------------------------------
+	// Get-/Set-Methoden:
+	// -----------------------------------------------------------------------------------------------------------------
+
+	public void setNextThreshold(double threshold) {
+		this.nextThreshold = threshold;
 		notifyObservers(Model.NOTIFY_REASON_THRESHOLD_CHANGED);
 	}
 
-	public double getThreshold() {
-		// TODO Auto-generated method stub
-		return threshold;
+	public double getNextThreshold() {
+		return nextThreshold;
 	}
 }

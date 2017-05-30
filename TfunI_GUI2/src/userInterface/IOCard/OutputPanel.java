@@ -109,71 +109,74 @@ public class OutputPanel extends JPanel {
 		switch (mode) {
 		case Controller.EINLESEN:
 			cardLayout.show(this, Controller.KEY_EINLESEN);
+			cardEinlesen.setAllRangeIdeal();
 			break;
 		case Controller.BEARBEITEN:
 			cardLayout.show(this, Controller.KEY_BEARBEITEN);
+			cardBearbeiten.setAllRangeIdeal();
 			break;
 		case Controller.BERECHNEN:
 			cardLayout.show(this, Controller.KEY_BERECHNEN);
+			cardBerechnen.setAllRangeIdeal();
 			break;
 		case Controller.VERIFIZIEREN:
 			cardLayout.show(this, Controller.KEY_VERIFIZIEREN);
+			cardVerifizieren.setAllRangeIdeal();
 			break;
 		}
 	}
 
 	public void update(java.util.Observable obs, Object obj) {
+
 		if (!(obs instanceof Model) || !(obj instanceof Integer)) {
 			throw (new IllegalArgumentException());
 		}
 
-		switch ((int) obj) {
-		case Model.NOTIFY_REASON_NEW_DATA:
-			for (int i = 0; i < tracesSolution.length; i++) {
-				tracesSolution[i].dataValid = false;
-				tracesPole[i].dataValid = false;
-			}
-			for (int i = 0; i < traceKorKoeffPoints.length; i++) {
-				traceKorKoeffPoints[i].dataValid = false;
-			}
-			traceKorKoeffCompare.dataValid = false;
+		Model model = (Model) obs;
+		int reason = (int) obj;
 
-			break;
+		switch (reason) {
 		case Model.NOTIFY_REASON_MEASUREMENT_CHANGED:
-			traceStep.data = ((Model) obs).measurementData.getstep();
+			traceStep.data = model.measurementData.getstep();
 			traceStep.dataValid = true;
-			traceRaw.data = ((Model) obs).measurementData.getRawData();
+			traceRaw.data = model.measurementData.getRawData();
 			traceRaw.dataValid = true;
-			tracePreprocessed.data = ((Model) obs).measurementData.getFinalData();
+			tracePreprocessed.data = model.measurementData.getFinalData();
 			tracePreprocessed.dataValid = true;
-			traceMean.data = ((Model) obs).measurementData.getMeanData();
+			traceMean.data = model.measurementData.getMeanData();
 			traceMean.dataValid = true;
 			break;
-		case Model.NOTIFY_REASON_APPROXIMATION_DONE:
-			traceKorKoeffCompare.data = ((Model) obs).network.getKorrelationComparison();
+		case Model.NOTIFY_REASON_APPROXIMATION_UPDATE:
+			traceKorKoeffCompare.data = model.network.getKorrelationComparison();
 			traceKorKoeffCompare.dataValid = true;
 
 			for (int i = 0; i < tracesSolution.length; i++) {
-				if (((Model) obs).network.getApprox(i + 1) != null && controller.getBerechnenCBActive()[i] == true) {
-					if (((Model) obs).network.getApprox(i + 1).getPole()[0] != null) {
-						tracesSolution[i].data = ((Model) obs).network.getApprox(i + 1).getStepResponse();
-						tracesSolution[i].dataValid = true;
-						tracesPole[i].data = new double[][] {
-								((Model) obs).network.getApprox(i + 1).getPole()[0].getPoint(),
-								((Model) obs).network.getApprox(i + 1).getPole()[1].getPoint() };
-						tracesPole[i].dataValid = true;
+				if (model.network.getApprox(i + 1) != null) {
+					if (model.network.getApprox(i + 1).getPole()[0] != null
+							&& controller.getBerechnenCBActive()[i] == true) {
 
-					} else {
+						tracesSolution[i].data = model.network.getApprox(i + 1).getStepResponse();
+						tracesSolution[i].dataValid = true;
+						tracesPole[i].data = new double[][] { model.network.getApprox(i + 1).getPole()[0].getPoint(),
+								model.network.getApprox(i + 1).getPole()[1].getPoint() };
+						tracesPole[i].dataValid = true;
+					}
+					else {
+						traceKorKoeffPoints[i].dataValid = false;
 						tracesSolution[i].dataValid = false;
+					}
+					if (model.network.getApprox(i + 1).getPole()[0] != null) {
+						if (model.network.getApprox(i + 1).getPole()[0] != null) {
+							traceKorKoeffPoints[i].data = model.network.getKorrelationComparisonPoins()[i];
+							traceKorKoeffPoints[i].dataValid = true;
+						}
+					} else {
 						tracesPole[i].dataValid = false;
 					}
-				}
-				if (((Model) obs).network.getApprox(i + 1) != null) {
-					if (((Model) obs).network.getApprox(i + 1).getPole()[0] != null) {
-						traceKorKoeffPoints[i].data = new double[][] { { i + 1 },
-								{ ((Model) obs).network.getApprox(i + 1).getKorrKoef() } };
-						traceKorKoeffPoints[i].dataValid = true;
-					}
+				} else {
+					traceKorKoeffPoints[i].dataValid = false;
+					tracesSolution[i].dataValid = false;
+					tracesPole[i].dataValid = false;
 				}
 			}
 			break;
@@ -184,4 +187,5 @@ public class OutputPanel extends JPanel {
 		cardBerechnen.update(obs, obj);
 		cardVerifizieren.update(obs, obj);
 	}
+
 }
