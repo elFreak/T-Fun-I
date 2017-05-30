@@ -31,7 +31,7 @@ public class InputCardVerifizieren extends JPanel implements ActionListener {
 
 	private JPanel panelOrder = new JPanel(new GridLayout(5, 2));
 
-	JRadioButton rbOrder[] = new JRadioButton[9];
+	JRadioButton rbOrder[] = new JRadioButton[10];
 
 	ButtonGroup bgOrder = new ButtonGroup();
 
@@ -42,11 +42,10 @@ public class InputCardVerifizieren extends JPanel implements ActionListener {
 		panelOrder.setBackground(GlobalSettings.colorBackground);
 		panelOrder.setBorder(MyBorderFactory.createMyBorder("Ordnung"));
 
-		panelOrder.add(new JLabel(""));
 		for (int i = 0; i < rbOrder.length; i++) {
-			rbOrder[i] = new JRadioButton("" + (i + 2));
+			rbOrder[i] = new JRadioButton("" + (i + 1));
 			rbOrder[i].setBackground(GlobalSettings.colorBackground);
-			rbOrder[i].setActionCommand("" + i);
+			rbOrder[i].setActionCommand("" + (i+1));
 			rbOrder[i].addActionListener(this);
 			bgOrder.add(rbOrder[i]);
 			panelOrder.add(rbOrder[i]);

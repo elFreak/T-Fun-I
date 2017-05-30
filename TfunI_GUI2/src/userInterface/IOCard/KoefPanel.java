@@ -153,7 +153,7 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 
 	public void update(Object obs) {
 		Model model = (Model) obs;
-		if (order < 2 || order > 10)
+		if (order < 1 || order > 10)
 			return;
 		// else
 		if (model.network.getApprox(order) == null) {
