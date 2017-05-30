@@ -77,11 +77,7 @@ public class StableFMinSearch {
 
 				// Berechne die Ordnung N:
 				utf[i - 1] = getUtfN(target, i, utf[i - 1], client, 0, threshold);
-				SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
-				info.statusFehler = false;
-				info.isStatus = true;
-				info.statusText = "Startwerte berechnet (Ordnung " + i + ").";
-				client.swingAction(info);
+				client.swingAction(new Message("Startwerte berechnet (Ordnung " + i + ").", false));
 
 				// // Dazugehörige Sprungantwort berechnen:
 				// double[][] stepResponse = new double[][] { target.getTime(),
@@ -102,18 +98,12 @@ public class StableFMinSearch {
 					uebergabe.koeffWQ[j] = utf[i - 1].getPoint()[j + 1];
 				}
 			}
-			SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
-			info.statusFehler = false;
-			info.isStatus = true;
-			info.statusText = "Alle Startwerte wurden berechnet.";
-			client.swingAction(info);
+			client.swingAction(new Message("Alle Startwerte wurden berechnet.", false));
 
 		} catch (TimeoutException e) {
-			SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
-			info.statusFehler = true;
-			info.isStatus = true;
-			info.statusText = "Probleme bei der Berechnung (Startwerte).\nVersuchen Sie folgendes:\n1) Versichern Sie sich, dass die Messwerte korekt bearbeited wurden.\n2) Passen Sie den Threshold an und starten Sie dann die Berechnung neu.";
-			client.swingAction(info);
+			client.swingAction(new Message(
+					"Probleme bei der Berechnung (Startwerte).\nVersuchen Sie folgendes:\n1) Versichern Sie sich, dass die Messwerte korekt bearbeited wurden.\n2) Passen Sie den Threshold an und starten Sie dann die Berechnung neu.",
+					true));
 		}
 
 		return utf;
@@ -207,11 +197,7 @@ public class StableFMinSearch {
 					// threadExecutor.shutdownNow();
 					// threadExecutor = Executors.newFixedThreadPool(1);
 					problem = true;
-					SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
-					info.statusFehler = false;
-					info.isStatus = true;
-					info.statusText = "bitte warten ...";
-					client.swingAction(info);
+					client.swingAction(new Message("bitte warten ...", false));
 					newVerbesserungsKoeff = newVerbesserungsKoeff * 100;
 					// verbesserungsKoeff[0] = newVerbesserungsKoeff;
 					if (newVerbesserungsKoeff > 1) {

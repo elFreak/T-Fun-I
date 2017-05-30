@@ -26,8 +26,12 @@ public class MeasurementData {
 	private double originalStepTime = 0;
 	private double stepHeight = 1;
 	private double originalStepHeight = 1;
-	private double stepData[][];
-	private double originalStep[][];
+	private double[][] stepData;
+	private double[][] originalStep;
+	private double[] timeFullNormed;
+	private double[] stepFullNormed;
+	private double[] timeLenghtNormed;
+	private static final int NORM_NUMBER_OF_DATA = 250;
 	// -------------------------------------------------------------------------------------------------------
 
 	// Konstruktor
@@ -345,6 +349,58 @@ public class MeasurementData {
 			finalData[MEASUREMENTS][i] = meanData[MEASUREMENTS][i + frontIndex] - offset;
 		}
 
+		// Final Daten normieren:
+		double[][] stepResponseMeasurement = scalingStepResponse(getFinalData());
+		timeFullNormed = stepResponseMeasurement[0];
+		stepFullNormed = stepResponseMeasurement[1];
+		timeLenghtNormed = stepResponseMeasurement[2];
+
+	}
+
+	/**
+	 * Normiert die gegeben Daten:
+	 * A) Normiert die Anzahl Datenwerte.
+	 * B) Normiert die "Zeitachse".
+	 * 
+	 * Gibt folgende Vektoren zurück:
+	 * 1) Zeitachse normiert nach A und B.
+	 * 2) Zeitachse normiert nach A.
+	 * 3) Werteachse normiert nach A und B.
+	 * 
+	 * @param stepResponseOriginal
+	 * @return
+	 */
+	private static double[][] scalingStepResponse(double[][] stepResponseOriginal) {
+
+		// Berechnet den Faktor um die Anzahl der Messpunkte zu normieren:
+		int originalLenght = stepResponseOriginal[0].length;
+		int factor = originalLenght / NORM_NUMBER_OF_DATA;
+		factor = (int) Math.max(1.0, factor);
+
+		// Berechnet den Faktor um die Zeitachse zu normieren:
+		double scalefactorTime = Math.log10(stepResponseOriginal[0][stepResponseOriginal[0].length - 1]) - 1;
+
+		// Erzeugt die Strucktur der normierten Daten:
+		int newLenght = originalLenght / factor;
+		double[][] stepResponseNew = new double[3][newLenght];
+
+		// Erstellt die normierten Daten:
+		for (int i = 0; i < newLenght; i++) {
+			stepResponseNew[0][i] = stepResponseOriginal[0][i * factor] * Math.pow(10.0, -scalefactorTime); // Zeit
+																											// normiert
+																											// und
+																											// Anzahl
+																											// Messwerte
+																											// normiert.
+			stepResponseNew[1][i] = stepResponseOriginal[1][i * factor]; // Anzahl
+																			// Messwerte
+																			// normiert.
+			stepResponseNew[2][i] = stepResponseOriginal[0][i * factor]; // Anzahl
+																			// Messwerte
+																			// normiert.
+		}
+
+		return stepResponseNew;
 	}
 	// -------------------------------------------------------------------------------------------------------
 
@@ -397,7 +453,6 @@ public class MeasurementData {
 		return meanData;
 	}
 
-
 	/**
 	 * Gibt die Offset zurück.
 	 * 
@@ -447,6 +502,32 @@ public class MeasurementData {
 	public double getstepHeight() {
 		return stepHeight;
 	}
-	// -------------------------------------------------------------------------------------------------------
 
+	/**
+	 * Gibt die vollnormierte Zeit zurück.
+	 * 
+	 * @return
+	 */
+	public double[] getTimeFullNormed() {
+		return timeFullNormed;
+	}
+
+	/**
+	 * Gibt die vollnormierte Schrittantort zurück (ohne Zeit).
+	 * 
+	 * @return
+	 */
+	public double[] getStepFullNormed() {
+		return stepFullNormed;
+	}
+
+	/**
+	 * Gibt die Zeit normiert zurück (nur Anzahl der Werte normiert).
+	 * 
+	 * @return
+	 */
+	public double[] getTimeLenghtNormed() {
+		return timeLenghtNormed;
+	}
+	// -------------------------------------------------------------------------------------------------------
 }

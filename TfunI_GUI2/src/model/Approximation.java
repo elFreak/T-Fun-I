@@ -10,12 +10,12 @@ import com.sun.corba.se.impl.orbutil.threadpool.TimeoutException;
 
 import matlabfunction.Matlab;
 import matlabfunction.SVTools;
+import model.fMinSearch.Message;
 import model.fMinSearch.StableFMinSearch;
 import model.fMinSearch.SwingWorkerClient;
-import model.fMinSearch.SwingWorkerInfoDatatype;
 import userInterface.StatusBar;
 
-public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> implements SwingWorkerClient {
+public class Approximation extends SwingWorker<Object, Message> implements SwingWorkerClient {
 
 	/**
 	 * Grundlegende Verknüpfungen
@@ -58,11 +58,11 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 		this.threshold = threshold;
 	}
 
-	private void calculate() throws TimeoutException{
+	private void calculate() throws TimeoutException {
 
 		// Berechnet aus den vorher berechneten Startwerten eine möglichst
 		// genaue Übertragungsfunktion.
-			PointValuePair optimum = StableFMinSearch.getUtfN(target, order, startValues, this, 3, threshold);
+		PointValuePair optimum = StableFMinSearch.getUtfN(target, order, startValues, this, 3, threshold);
 		utf = new UTFDatatype();
 		utf.ordnung = order;
 		utf.zaehler = optimum.getPoint()[0];
@@ -124,50 +124,39 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 		korrKoef = Korrelation.korrKoeff(stepFullNormed, stepResponse[1]);
 
 		// Den Benutzer informieren:
-		SwingWorkerInfoDatatype info2 = new SwingWorkerInfoDatatype();
-		info2.statusFehler = false;
-		info2.isStatus = true;
-		info2.statusText = "Berechnung abgeschlossen (Ordnung " + order + ").";
-		swingAction(info2);
+		swingAction(new Message("Berechnung abgeschlossen (Ordnung " + order + ").", false));
 
 	}
 
 	@Override
 	protected Object doInBackground() throws Exception {
-		SwingWorkerInfoDatatype info = new SwingWorkerInfoDatatype();
-		info.isStatus = true;
-		info.statusFehler = false;
-		info.statusText = "Berechnung gestarted (Ordnung " + order + ").";
-		swingAction(info);
+		swingAction(new Message("Berechnung gestarted (Ordnung " + order + ").", false));
 		try {
 			calculate();
 		} catch (TimeoutException e) {
-			SwingWorkerInfoDatatype info2 = new SwingWorkerInfoDatatype();
-			info2.statusFehler = true;
-			info2.isStatus = true;
-			info2.statusText = "Probleme bei der Berechnung (Ordnung "+order+").\nVersuchen Sie folgendes:\n1) Versichern Sie sich, dass die Messwerte korekt bearbeited wurden.\n2) Passen Sie den Threshold an und starten Sie dann die Berechnung neu.";
-			swingAction(info2);
+			swingAction(new Message(
+					"Probleme bei der Berechnung (Ordnung " + order
+							+ ").\nVersuchen Sie folgendes:\n1) Versichern Sie sich, dass die Messwerte korekt bearbeited wurden.\n2) Passen Sie den Threshold an und starten Sie dann die Berechnung neu.",
+					true));
 		}
 		return 0;
 	}
 
 	@Override
-	protected void process(List<SwingWorkerInfoDatatype> arg) {
+	protected void process(List<Message> arg) {
 		if (isCancelled() == false) {
 			super.process(arg);
 			for (int i = 0; i < arg.size(); i++) {
-				SwingWorkerInfoDatatype info = arg.get(i);
-				if (info.isStatus) {
-					if (info.statusFehler) {
-						StatusBar.showStatus(info.statusText, StatusBar.FEHLER);
-					} else {
-						StatusBar.showStatus(info.statusText, StatusBar.INFO);
-					}
+				Message message = arg.get(i);
 
+				if (message.isError) {
+					StatusBar.showStatus(message.message, StatusBar.FEHLER);
+				} else {
+					StatusBar.showStatus(message.message, StatusBar.INFO);
 				}
+
 			}
 		}
-
 	}
 
 	@Override
@@ -177,7 +166,7 @@ public class Approximation extends SwingWorker<Object, SwingWorkerInfoDatatype> 
 	}
 
 	@Override
-	public void swingAction(SwingWorkerInfoDatatype info) {
+	public void swingAction(Message info) {
 		publish(info);
 	}
 

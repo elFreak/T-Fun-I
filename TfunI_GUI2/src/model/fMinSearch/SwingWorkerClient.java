@@ -1,5 +1,5 @@
 package model.fMinSearch;
 
 public interface SwingWorkerClient {
-	public void swingAction(SwingWorkerInfoDatatype info);
+	public void swingAction(Message message);
 }
