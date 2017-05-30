@@ -37,10 +37,8 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 	private JLabel[] lB = new JLabel[10];
 
 	private JPanel panelButton = new JPanel(new GridBagLayout());
-	private JButton btLoeschen = new JButton("Zurücksetzen");
-
-	private JPanel panelKoeff = new JPanel(new GridBagLayout());
-	private JTextField tfThreshold = new JTextField("1.0e-8");
+	private JButton btLoeschen = new JButton("Neustart");
+	private JTextField tfThreshold = new JTextField("1.0E-8");
 
 	public InputCardBerechnen(Controller controller) {
 		this.controller = controller;
@@ -110,8 +108,11 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 
 		// Panel Button
 		panelButton.setBackground(GlobalSettings.colorBackground);
-		panelButton.setBorder(MyBorderFactory.createMyBorder("Berechnung verwalten"));
-		panelButton.add(btLoeschen, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+		panelButton.setBorder(MyBorderFactory.createMyBorder("Zurücksetzen"));
+		panelButton.add(btLoeschen, new GridBagConstraints(0, 1, 2, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(10, 10, 10, 10), 0, 0));
+		panelButton.add(new JLabel("Neuer Threshold: "),new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		panelButton.add(tfThreshold, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
 				GridBagConstraints.HORIZONTAL, new Insets(10, 10, 10, 10), 0, 0));
 
 		btLoeschen.addActionListener(new ActionListener() {
@@ -122,12 +123,7 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 			}
 		});
 
-		// Panel Koeff:
-		panelKoeff.setBackground(GlobalSettings.colorBackground);
-		panelKoeff.setBorder(MyBorderFactory.createMyBorder("Threshold"));
-		panelKoeff.add(tfThreshold, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
-				GridBagConstraints.HORIZONTAL, new Insets(10, 10, 10, 10), 0, 0));
-		
+	
 		// Anonymer ActionListener für Textfeld Thresholdn bei Enter
 		tfThreshold.addActionListener(new ActionListener() {
 			@Override
@@ -157,11 +153,9 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 		JPanel panelBackground2 = new JPanel();
 		panelBackground2.setBackground(GlobalSettings.colorBackground);
-		this.add(panelBackground2, new GridBagConstraints(0, 3, 1, 1, 1.0, 1.0, GridBagConstraints.FIRST_LINE_START,
+		this.add(panelBackground2, new GridBagConstraints(0, 2, 1, 1, 1.0, 1.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.BOTH, new Insets(10, 10, 10, 10), 0, 0));
-		this.add(panelKoeff, new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
-				GridBagConstraints.HORIZONTAL, new Insets(10, 10, 10, 10), 0, 0));
-
+		
 		btAll.addActionListener(new ActionListener() {
 
 			@Override
