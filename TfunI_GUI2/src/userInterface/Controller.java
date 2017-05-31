@@ -129,5 +129,6 @@ public class Controller {
 	
 	public void setVerifizierenOrder(int order) {
 		view.outputPanel.setVerifzizerenOrder(order);
+		model.notifyObservers(Model.NOTIFY_REASON_MEASUREMENT_CHANGED);
 	}
 }
