@@ -14,6 +14,7 @@ public class OutputCardEinlesen extends WindowContainer {
 
 		plotEinlesen.addTrace(outputPanel.traceStep);
 		plotEinlesen.addTrace(outputPanel.traceRaw);
+		plotEinlesen.setAxisLabel(Plot.XAXIS, "t", "", "s");
 	}
 
 	public void update(java.util.Observable obs, Object obj) {

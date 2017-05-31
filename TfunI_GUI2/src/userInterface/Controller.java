@@ -131,4 +131,8 @@ public class Controller {
 		view.outputPanel.setVerifzizerenOrder(order);
 		model.notifyObservers(Model.NOTIFY_REASON_MEASUREMENT_CHANGED);
 	}
+
+	public void setNorm(int norm) {
+		model.measurementData.setNorm(norm);
+	}
 }

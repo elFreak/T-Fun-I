@@ -28,6 +28,11 @@ public class OutputCardBearbeiten extends WindowContainer {
 		plotBearbeiten.addTrace(outputPanel.tracePreprocessed);
 		plotBearbeiten.setSubplot(0);
 		plotBearbeiten.addTrace(outputPanel.traceMean);
+		
+		plotBearbeiten.setSubplot(0);
+		plotBearbeiten.setAxisLabel(Plot.XAXIS, "t", "", "s");
+		plotBearbeiten.setSubplot(1);
+		plotBearbeiten.setAxisLabel(Plot.XAXIS, "t", "", "s");
 
 		plotBearbeiten.setSubplot(0);
 		plotBearbeiten.addSlider(Slider.HORIZONTAL, KEY_OFFSET);
@@ -41,7 +46,7 @@ public class OutputCardBearbeiten extends WindowContainer {
 	public void update(java.util.Observable obs, Object obj) {
 
 		plotBearbeiten.setSubplot(0);
-		plotBearbeiten.setSliderPosition(KEY_OFFSET, ((Model) obs).measurementData.getOffset());
+
 		plotBearbeiten.setSliderPosition(KEY_START, ((Model) obs).measurementData.getstepTime());
 		plotBearbeiten.setSliderPosition(KEY_END, ((Model) obs).measurementData.getTail());
 

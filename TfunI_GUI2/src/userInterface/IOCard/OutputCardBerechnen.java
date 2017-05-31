@@ -24,6 +24,10 @@ public class OutputCardBerechnen extends WindowContainer {
 		plotCompare.addTrace(outputPanel.traceKorKoeffCompare);
 		plotBerechnen.setSubplot(0);
 		plotBerechnen.addTrace(outputPanel.tracePreprocessed);
+		
+		plotCompare.setAxisLabel(Plot.XAXIS, "t", "", "s");
+		plotBerechnen.setAxisLabel(Plot.XAXIS, "t", "", "s");
+		plotPolstellen.setAxisLabel(Plot.XAXIS, "t", "", "s");
 
 		for (int i = 0; i < outputPanel.tracesSolution.length; i++) {
 			plotBerechnen.setSubplot(0);

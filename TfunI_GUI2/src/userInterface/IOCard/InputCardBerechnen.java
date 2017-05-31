@@ -7,22 +7,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.event.ChangeListener;
-
 import model.Model;
 import projectT_Fun_I.GlobalSettings;
 import userInterface.Controller;
 import userInterface.MyBorderFactory;
-import userInterface.Numbers;
 import userInterface.StatusBar;
 
 public class InputCardBerechnen extends JPanel implements ActionListener, MouseListener {
@@ -38,7 +32,8 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 
 	private JPanel panelButton = new JPanel(new GridBagLayout());
 	private JButton btLoeschen = new JButton("Neustart");
-	private JTextField tfThreshold = new JTextField("1.0E-8");
+	private JTextField tfThreshold = new JTextField("10E-8");
+	private JTextField tfNorm = new JTextField("200");
 
 	public InputCardBerechnen(Controller controller) {
 		this.controller = controller;
@@ -109,34 +104,39 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 		// Panel Button
 		panelButton.setBackground(GlobalSettings.colorBackground);
 		panelButton.setBorder(MyBorderFactory.createMyBorder("Zurücksetzen"));
-		panelButton.add(btLoeschen, new GridBagConstraints(0, 1, 2, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+		panelButton.add(btLoeschen, new GridBagConstraints(0, 2, 2, 1, 1.0, 0.0, GridBagConstraints.CENTER,
 				GridBagConstraints.HORIZONTAL, new Insets(10, 10, 10, 10), 0, 0));
-		panelButton.add(new JLabel("Neuer Threshold: "), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+		panelButton.add(new JLabel("Threshold: ", SwingConstants.LEFT), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 		panelButton.add(tfThreshold, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
 				GridBagConstraints.HORIZONTAL, new Insets(10, 10, 10, 10), 0, 0));
+		panelButton.add(new JLabel("Anzahl Werte: ", SwingConstants.LEFT), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		panelButton.add(tfNorm, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(10, 10, 10, 10), 0, 0));
 
 		btLoeschen.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				readTFNorm();
+				readTFThreshold();
 				controller.berechnungLoeschen();
 			}
 		});
 
-		// Anonymer ActionListener für Textfeld Thresholdn bei Enter
+		// Anonymer ActionListener für Textfeld Threshold und Textfeld Norm bei
+		// Enter
 		tfThreshold.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				try {
-					double tempValue = Double.parseDouble(tfThreshold.getText());
-					if (tempValue < 0) {
-						tempValue = 1e-12;
-					}
-					controller.setThreshold(tempValue);
-				} catch (NumberFormatException exp) {
-					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben", StatusBar.FEHLER);
-				}
+				readTFThreshold();
+			}
+		});
+
+		tfNorm.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				readTFNorm();
 			}
 		});
 
@@ -235,6 +235,32 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 		controller.setBerechnenCBActive(active);
 	}
 
+	private void readTFThreshold() {
+		try {
+			double tempValue = Double.parseDouble(tfThreshold.getText());
+			if (tempValue < 0) {
+				tempValue = 1e-12;
+				StatusBar.showStatus("Threshold kann muss grösser als 0 sein.", StatusBar.FEHLER);
+			}
+			controller.setThreshold(tempValue);
+		} catch (NumberFormatException exp) {
+			StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben", StatusBar.FEHLER);
+		}
+	}
+
+	private void readTFNorm() {
+		try {
+			int tempValue = Integer.parseInt(tfNorm.getText());
+			if (tempValue < 10) {
+				tempValue = 10;
+				StatusBar.showStatus("Anzahl Werte muss midestens 10 betragen.", StatusBar.FEHLER);
+			}
+			controller.setNorm(tempValue);
+		} catch (NumberFormatException exp) {
+			StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben", StatusBar.FEHLER);
+		}
+	}
+
 	/**
 	 * 
 	 * @param obs
@@ -242,6 +268,7 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 	 */
 	public void update(java.util.Observable obs, Object obj) {
 		int reason = (int) obj;
+		Model model = (Model) obs;
 
 		switch (reason) {
 		case Model.NOTIFY_REASON_NETWORK_START_VALUES:
@@ -249,8 +276,10 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 				cB[i].setEnabled(true);
 			}
 			break;
-		case Model.NOTIFY_REASON_THRESHOLD_CHANGED:
-			tfThreshold.setText(String.valueOf(((Model) obs).getNextThreshold()));
+		case Model.NOTIFY_REASON_THRESHOLD_OR_NORM_CHANGED:
+			tfThreshold.setText(String.valueOf(model.getNextThreshold()));
+			tfNorm.setText(String.valueOf(model.measurementData.getNormNumberOfData()));
+
 			break;
 		case Model.NOTIFY_REASON_UPDATE_NETWORK:
 			for (int i = 0; i < cB.length; i++) {
@@ -270,7 +299,6 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 

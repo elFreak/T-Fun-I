@@ -1,8 +1,7 @@
 package model;
 
 /**
- * Klasse MeasurementData:
- * Representiert eine gemessene Sprungantwort.
+ * Klasse MeasurementData: Representiert eine gemessene Sprungantwort.
  * 
  * @author Team 1
  *
@@ -33,7 +32,7 @@ public class MeasurementData {
 	private double[] timeFullNormed;
 	private double[] stepFullNormed;
 	private double[] timeLenghtNormed;
-	private static final int NORM_NUMBER_OF_DATA = 250;
+	private int normNumberOfData = 200;
 	// -------------------------------------------------------------------------------------------------------
 
 	// Konstruktor
@@ -102,6 +101,16 @@ public class MeasurementData {
 
 	// Set Methoden
 	// -------------------------------------------------------------------------------------------------------
+	/**
+	 * Setzt die Anzahl Datenpunkte auf, welche normiert werden soll.
+	 * 
+	 * @param norm
+	 */
+	public void setNorm(int norm) {
+		this.normNumberOfData = norm;
+		updateFinalData();
+		model.notifyObservers(Model.NOTIFY_REASON_THRESHOLD_OR_NORM_CHANGED);
+	}
 
 	/**
 	 * Gleitender Mittelwert der Daten berechnen und in meanData speichern.
@@ -360,23 +369,20 @@ public class MeasurementData {
 	}
 
 	/**
-	 * Normiert die gegeben Daten:
-	 * A) Normiert die Anzahl Datenwerte.
-	 * B) Normiert die "Zeitachse".
+	 * Normiert die gegeben Daten: A) Normiert die Anzahl Datenwerte. B)
+	 * Normiert die "Zeitachse".
 	 * 
-	 * Gibt folgende Vektoren zurück:
-	 * 1) Zeitachse normiert nach A und B.
-	 * 2) Zeitachse normiert nach A.
-	 * 3) Werteachse normiert nach A und B.
+	 * Gibt folgende Vektoren zurück: 1) Zeitachse normiert nach A und B. 2)
+	 * Zeitachse normiert nach A. 3) Werteachse normiert nach A und B.
 	 * 
 	 * @param stepResponseOriginal
 	 * @return
 	 */
-	private static double[][] scalingStepResponse(double[][] stepResponseOriginal) {
+	private double[][] scalingStepResponse(double[][] stepResponseOriginal) {
 
 		// Berechnet den Faktor um die Anzahl der Messpunkte zu normieren:
 		int originalLenght = stepResponseOriginal[0].length;
-		int factor = originalLenght / NORM_NUMBER_OF_DATA;
+		int factor = originalLenght / normNumberOfData;
 		factor = (int) Math.max(1.0, factor);
 
 		// Berechnet den Faktor um die Zeitachse zu normieren:
@@ -531,5 +537,14 @@ public class MeasurementData {
 	public double[] getTimeLenghtNormed() {
 		return timeLenghtNormed;
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getNormNumberOfData() {
+		return normNumberOfData;
+	}
 	// -------------------------------------------------------------------------------------------------------
+
 }

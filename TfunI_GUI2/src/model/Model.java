@@ -28,7 +28,7 @@ public class Model extends Observable {
 	public static final int NOTIFY_REASON_MEASUREMENT_CHANGED = 0;
 	public static final int NOTIFY_REASON_APPROXIMATION_UPDATE = 1;
 	public static final int NOTIFY_REASON_NETWORK_START_VALUES = 2;
-	public static final int NOTIFY_REASON_THRESHOLD_CHANGED = 3;
+	public static final int NOTIFY_REASON_THRESHOLD_OR_NORM_CHANGED = 3;
 	public static final int NOTIFY_REASON_UPDATE_NETWORK = 4;
 
 	// -----------------------------------------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ public class Model extends Observable {
 	 * Erstellt ein neues Model.
 	 */
 	public Model() {
-		notifyObservers(NOTIFY_REASON_THRESHOLD_CHANGED);
+		notifyObservers(NOTIFY_REASON_THRESHOLD_OR_NORM_CHANGED);
 	}
 
 	// -----------------------------------------------------------------------------------------------------------------
@@ -112,7 +112,7 @@ public class Model extends Observable {
 
 	public void setNextThreshold(double threshold) {
 		this.nextThreshold = threshold;
-		notifyObservers(Model.NOTIFY_REASON_THRESHOLD_CHANGED);
+		notifyObservers(Model.NOTIFY_REASON_THRESHOLD_OR_NORM_CHANGED);
 	}
 
 	public double getNextThreshold() {
