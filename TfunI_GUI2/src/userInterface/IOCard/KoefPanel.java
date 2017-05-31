@@ -8,20 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-
-import com.sun.prism.Image;
-
 import model.Model;
 import model.UTFDatatype;
 import projectT_Fun_I.GlobalSettings;
@@ -32,13 +22,9 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 	private static final long serialVersionUID = 1L;
 
 	private JPanel pnEquation = new JPanel();
-	private BufferedImage equation;
 	private JLabel lbKorel = new JLabel("null");
-
 	private JScrollPane spKoef;
-
 	private JPanel pnKoef = new JPanel();
-
 	private JLabel lbwp[] = new JLabel[5];
 	private JTextField tfwp[] = new JTextField[5];
 	private JLabel lbqp[] = new JLabel[5];
@@ -147,7 +133,7 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 	}
 
 	public void setOrdnung(int order) {
-		System.out.println("order"+order);
+		System.out.println("order" + order);
 		this.order = order;
 	}
 

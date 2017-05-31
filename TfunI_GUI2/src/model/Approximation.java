@@ -80,9 +80,16 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 		} else {
 			utf.koeffWQ = new double[optimum.getPoint().length - 2];
 			utf.sigma = optimum.getPoint()[optimum.getPoint().length - 1];
+
+			utf.sigma *= Math.pow(10.0, -network.getMeasurementData().getTimeScaleFactor());
+
 		}
 		for (int i = 0; i < utf.koeffWQ.length; i++) {
 			utf.koeffWQ[i] = optimum.getPoint()[i + 1];
+			// Zeitachse zurückskalieren:
+			if (i % 2 == 0) {
+				utf.koeffWQ[i] *= Math.pow(10.0, -network.getMeasurementData().getTimeScaleFactor());
+			}
 		}
 
 		// Dazugehörige Sprungantwort berechnen:
@@ -111,8 +118,8 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 			points[points.length - 1] = utf.sigma;
 		}
 
-		stepResponse = new double[][] { network.getMeasurementData().getTimeLenghtNormed(),
-				Target.omega2polstep(points, network.getMeasurementData().getTimeFullNormed()) };
+		stepResponse = new double[][] { network.getMeasurementData().getFinalData()[0],
+				Target.omega2polstep(points, network.getMeasurementData().getFinalData()[0]) };
 	}
 
 	private void calculatePole() {
@@ -146,7 +153,7 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 		try {
 			roots = Matlab.roots(nenner1);
 		} catch (Exception e) {
-			
+
 		}
 
 		// Den Wert der Polstellen in die entsprechende Variable schreiben:
@@ -161,7 +168,7 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 	}
 
 	private void calculateKorrKoeff() {
-		korrKoef = Korrelation.korrKoeff(network.getMeasurementData().getStepFullNormed(), stepResponse[1]);
+		korrKoef = Korrelation.korrKoeff(network.getMeasurementData().getFinalData()[1], stepResponse[1]);
 	}
 
 	/**
@@ -220,7 +227,7 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 	}
 
 	// -----------------------------------------------------------------------------------------------------------------
-	// Get-Methoden:
+	// Geter- und Seter-Methoden:
 	// -----------------------------------------------------------------------------------------------------------------
 	public double[][] getStepResponse() {
 		return stepResponse;

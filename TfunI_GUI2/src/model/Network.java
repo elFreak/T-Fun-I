@@ -8,6 +8,7 @@ import org.apache.commons.math3.optim.PointValuePair;
 import com.sun.corba.se.impl.orbutil.threadpool.TimeoutException;
 
 import model.fMinSearch.StableFMinSearch;
+import projectT_Fun_I.GlobalSettings;
 import userInterface.StatusBar;
 
 /**
@@ -213,7 +214,7 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 
 		// Nur falls die Startwerte auch berechnet wurden, wird dies den
 		// Observern mitgeteilt:
-		if (startValues != null && isCancelled()==false) {
+		if (startValues != null && isCancelled() == false) {
 			model.notifyObservers(Model.NOTIFY_REASON_NETWORK_START_VALUES);
 		}
 	}
@@ -240,17 +241,31 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 			if (approximations[i] != null) {
 				if (approximations[i].getKorrKoef() != 0) {
 					korrelationComparison[0][zaeler] = (double) (i + 1);
-					korrelationComparison[1][zaeler] = approximations[i].getKorrKoef();
+					korrelationComparison[1][zaeler] = Math.log10((1.0-approximations[i].getKorrKoef())/1000.0)*10.0;
 					zaeler++;
-					
-					korrelationComparisonPoins[i] = new double[][] { { (i + 1) },{ approximations[i].getKorrKoef() } };
+
+					korrelationComparisonPoins[i] = new double[][] { { (i + 1) }, { Math.log10((1.0-approximations[i].getKorrKoef())/1000.0)*10.0 } };
 				}
 			}
 		}
-		
-		
+
 		if (isCancelled() == false) {
 			model.notifyObservers(Model.NOTIFY_REASON_APPROXIMATION_UPDATE);
+
+			boolean oneOrderOk = false;
+			boolean allOrderDone = true;
+			for (int i = 0; i < approximations.length; i++) {
+				if (approximations[i].isDone() == true) {
+					if (approximations[i].getKorrKoef() >= GlobalSettings.korrKoeffMin) {
+						oneOrderOk = true;
+					}
+				} else {
+					allOrderDone = false;
+				}
+			}
+			if (oneOrderOk == false && allOrderDone == true) {
+				StatusBar.showStatus("Es wurden alle Ordnungen berechnet. Jedoch wurde keine Übertragungsfunktion gefunden, welche mit dem gemessenen Signal einen Korrelationskoeffizient von mindestens "+GlobalSettings.korrKoeffMin+" aufweist.\nMögliche Ursachen:\n1) Das Siganl kann nicht mit einer in diesem Programm möglichen Form beschrieben werden.\n2) Die Messwerte wurden nicht richtig bearbeited.\n3) Threshold oder Anzahl Werte sind ungünstig eingestellt.", StatusBar.FEHLER);
+			}
 		}
 	}
 

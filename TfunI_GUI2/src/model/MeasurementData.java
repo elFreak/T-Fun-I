@@ -32,6 +32,7 @@ public class MeasurementData {
 	private double[] timeFullNormed;
 	private double[] stepFullNormed;
 	private double[] timeLenghtNormed;
+	private double timeScaleFactor;
 	private int normNumberOfData = 200;
 	// -------------------------------------------------------------------------------------------------------
 
@@ -386,7 +387,7 @@ public class MeasurementData {
 		factor = (int) Math.max(1.0, factor);
 
 		// Berechnet den Faktor um die Zeitachse zu normieren:
-		double scalefactorTime = Math.log10(stepResponseOriginal[0][stepResponseOriginal[0].length - 1]) - 1;
+		timeScaleFactor = Math.log10(stepResponseOriginal[0][stepResponseOriginal[0].length - 1]) - 1;
 
 		// Erzeugt die Strucktur der normierten Daten:
 		int newLenght = originalLenght / factor;
@@ -394,7 +395,7 @@ public class MeasurementData {
 
 		// Erstellt die normierten Daten:
 		for (int i = 0; i < newLenght; i++) {
-			stepResponseNew[0][i] = stepResponseOriginal[0][i * factor] * Math.pow(10.0, -scalefactorTime); // Zeit
+			stepResponseNew[0][i] = stepResponseOriginal[0][i * factor] * Math.pow(10.0, -timeScaleFactor); // Zeit
 																											// normiert
 																											// und
 																											// Anzahl
@@ -537,13 +538,17 @@ public class MeasurementData {
 	public double[] getTimeLenghtNormed() {
 		return timeLenghtNormed;
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 */
 	public int getNormNumberOfData() {
 		return normNumberOfData;
+	}
+
+	public double getTimeScaleFactor() {
+		return timeScaleFactor;
 	}
 	// -------------------------------------------------------------------------------------------------------
 

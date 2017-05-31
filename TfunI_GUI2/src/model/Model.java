@@ -110,8 +110,9 @@ public class Model extends Observable {
 	// Get-/Set-Methoden:
 	// -----------------------------------------------------------------------------------------------------------------
 
-	public void setNextThreshold(double threshold) {
+	public void setNextThresholdandNorm(double threshold, int norm) {
 		this.nextThreshold = threshold;
+		measurementData.setNorm(norm);
 		notifyObservers(Model.NOTIFY_REASON_THRESHOLD_OR_NORM_CHANGED);
 	}
 

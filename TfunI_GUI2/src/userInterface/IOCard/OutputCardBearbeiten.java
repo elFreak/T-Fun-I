@@ -49,6 +49,7 @@ public class OutputCardBearbeiten extends WindowContainer {
 
 		plotBearbeiten.setSliderPosition(KEY_START, ((Model) obs).measurementData.getstepTime());
 		plotBearbeiten.setSliderPosition(KEY_END, ((Model) obs).measurementData.getTail());
+		plotBearbeiten.setSliderPosition(KEY_OFFSET, ((Model) obs).measurementData.getOffset());
 
 		plotBearbeiten.setSubplot(1);
 		plotBearbeiten.setRangeIdeal();

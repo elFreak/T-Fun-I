@@ -28,6 +28,8 @@ public class Controller {
 	public final static int VERIFIZIEREN = 3;
 	public final static String KEY_VERIFIZIEREN = "VERIFIZIEREN";
 
+	public int mode = EINLESEN;
+
 	public Controller(Model model) {
 		this.model = model;
 	}
@@ -39,19 +41,39 @@ public class Controller {
 	}
 
 	public void setActualMode(int mode) {
-		view.inputPanel.setActualMode(mode);
-		view.outputPanel.setActualMode(mode);
+		boolean doChange = true;
 
-		switch (mode) {
+		switch (this.mode) {
 		case EINLESEN:
+			if (mode != EINLESEN && model.measurementData == null) {
+				doChange = false;
+				StatusBar.showStatus("Lesen Sie zuerst Messwerte ein.", StatusBar.FEHLER);
+			}
 			break;
 		case BEARBEITEN:
 			break;
 		case BERECHNEN:
-			model.updateNetwork();
 			break;
 		case VERIFIZIEREN:
 			break;
+		}
+
+		if (doChange) {
+
+			this.mode = mode;
+			switch (mode) {
+			case EINLESEN:
+				break;
+			case BEARBEITEN:
+				break;
+			case BERECHNEN:
+				model.updateNetwork();
+				break;
+			case VERIFIZIEREN:
+				break;
+			}
+			view.inputPanel.setActualMode(mode);
+			view.outputPanel.setActualMode(mode);
 		}
 	}
 
@@ -123,16 +145,12 @@ public class Controller {
 		model.setBackNetwork();
 	}
 
-	public void setThreshold(double threshold) {
-		model.setNextThreshold(threshold);
+	public void setThresholdAndNorm(double threshold, int norm) {
+		model.setNextThresholdandNorm(threshold, norm);
 	}
-	
+
 	public void setVerifizierenOrder(int order) {
 		view.outputPanel.setVerifzizerenOrder(order);
 		model.notifyObservers(Model.NOTIFY_REASON_MEASUREMENT_CHANGED);
-	}
-
-	public void setNorm(int norm) {
-		model.measurementData.setNorm(norm);
 	}
 }

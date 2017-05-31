@@ -42,7 +42,7 @@ public class GlobalSettings {
 	
 	public static int traceThinkness = 4;
 	
-	public static double korrKoeffMin = 0.9;
+	public static double korrKoeffMin = 0.995;
 
 	public static void init() {
 		// Fonts:

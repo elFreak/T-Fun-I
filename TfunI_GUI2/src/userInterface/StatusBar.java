@@ -80,13 +80,13 @@ public class StatusBar extends JPanel implements ActionListener {
 	public static void showStatus(String text, int type) {
 		if (type == INFO) {
 			try {
-				document.insertString(0,""+ text + "\n", styleInfo);
+				document.insertString(0," "+ text + "\n\n", styleInfo);
 			} catch (Exception e) {
 			}
 		}
 		if (type == FEHLER) {
 			try {
-				document.insertString(0, "" + text + "\n", styleFehler);
+				document.insertString(0, " " + text + "\n\n", styleFehler);
 			} catch (Exception e) {
 			}
 		}

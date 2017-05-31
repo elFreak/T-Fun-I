@@ -32,7 +32,7 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 
 	private JPanel panelButton = new JPanel(new GridBagLayout());
 	private JButton btLoeschen = new JButton("Neustart");
-	private JTextField tfThreshold = new JTextField("10E-8");
+	private JTextField tfThreshold = new JTextField("1E-8");
 	private JTextField tfNorm = new JTextField("200");
 
 	public InputCardBerechnen(Controller controller) {
@@ -106,12 +106,12 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 		panelButton.setBorder(MyBorderFactory.createMyBorder("Zurücksetzen"));
 		panelButton.add(btLoeschen, new GridBagConstraints(0, 2, 2, 1, 1.0, 0.0, GridBagConstraints.CENTER,
 				GridBagConstraints.HORIZONTAL, new Insets(10, 10, 10, 10), 0, 0));
-		panelButton.add(new JLabel("Threshold: ", SwingConstants.LEFT), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		panelButton.add(new JLabel(" Threshold: ", SwingConstants.LEFT), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+				GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 		panelButton.add(tfThreshold, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
 				GridBagConstraints.HORIZONTAL, new Insets(10, 10, 10, 10), 0, 0));
-		panelButton.add(new JLabel("Anzahl Werte: ", SwingConstants.LEFT), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
-				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		panelButton.add(new JLabel(" Anzahl Werte: ", SwingConstants.LEFT), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+				GridBagConstraints.LINE_START, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 		panelButton.add(tfNorm, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
 				GridBagConstraints.HORIZONTAL, new Insets(10, 10, 10, 10), 0, 0));
 
@@ -242,7 +242,7 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 				tempValue = 1e-12;
 				StatusBar.showStatus("Threshold kann muss grösser als 0 sein.", StatusBar.FEHLER);
 			}
-			controller.setThreshold(tempValue);
+			controller.setThresholdAndNorm(tempValue, Integer.parseInt(tfNorm.getText()));
 		} catch (NumberFormatException exp) {
 			StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben", StatusBar.FEHLER);
 		}
@@ -255,7 +255,7 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 				tempValue = 10;
 				StatusBar.showStatus("Anzahl Werte muss midestens 10 betragen.", StatusBar.FEHLER);
 			}
-			controller.setNorm(tempValue);
+			controller.setThresholdAndNorm(Double.parseDouble(tfThreshold.getText()), tempValue);
 		} catch (NumberFormatException exp) {
 			StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben", StatusBar.FEHLER);
 		}
