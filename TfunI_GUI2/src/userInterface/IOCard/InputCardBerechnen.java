@@ -32,7 +32,7 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 
 	private JPanel panelButton = new JPanel(new GridBagLayout());
 	private JButton btLoeschen = new JButton("Neustart");
-	private JTextField tfThreshold = new JTextField("1E-8");
+	private JTextField tfThreshold = new JTextField("1E-10");
 	private JTextField tfNorm = new JTextField("200");
 
 	public InputCardBerechnen(Controller controller) {

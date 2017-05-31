@@ -32,6 +32,10 @@ public class OutputPanel extends JPanel {
 	public Trace[] tracesPole = new Trace[10];
 	public Trace traceKorKoeffCompare;
 	public Trace[] traceKorKoeffPoints = new Trace[10];
+	public Trace[] traceError = new Trace[10];
+	public Trace traceVerifizierenStep;
+	public Trace traceVerifizierenPole;
+	public Trace traceVerifizierenError;
 
 	/**
 	 * Cards:
@@ -71,6 +75,18 @@ public class OutputPanel extends JPanel {
 		traceKorKoeffCompare.usePreferedColor = true;
 		traceKorKoeffCompare.preferedColor = GlobalSettings.colorTraceGrey;
 
+		traceVerifizierenStep = new Trace();
+		traceVerifizierenStep.usePreferedColor = true;
+
+		traceVerifizierenPole = new Trace();
+		traceVerifizierenPole.usePreferedColor = true;
+		traceVerifizierenPole.lineType = Trace.LINE_NONE;
+		traceVerifizierenPole.pointType = Trace.POINT_CROSS;
+
+		traceVerifizierenError = new Trace();
+		traceVerifizierenError.usePreferedColor = true;
+		traceVerifizierenError.preferedColor = GlobalSettings.colorTraceGreen;
+
 		for (int i = 0; i < traceKorKoeffPoints.length; i++) {
 			traceKorKoeffPoints[i] = new Trace();
 			traceKorKoeffPoints[i].usePreferedColor = true;
@@ -88,6 +104,9 @@ public class OutputPanel extends JPanel {
 			tracesPole[i].preferedColor = GlobalSettings.colorsTraceSolution[i];
 			tracesPole[i].lineType = Trace.LINE_NONE;
 			tracesPole[i].pointType = Trace.POINT_CROSS;
+			traceError[i] = new Trace();
+			traceError[i].usePreferedColor = true;
+			traceError[i].preferedColor = GlobalSettings.colorsTraceSolution[i];
 		}
 
 		// Init Cards:
@@ -125,9 +144,19 @@ public class OutputPanel extends JPanel {
 			break;
 		}
 	}
-	
+
 	public void setVerifzizerenOrder(int order) {
 		cardVerifizieren.setVerifizierenOrder(order);
+		traceVerifizierenStep.data = tracesSolution[order - 1].data;
+		traceVerifizierenStep.preferedColor = tracesSolution[order - 1].preferedColor;
+
+		traceVerifizierenPole.data = tracesPole[order - 1].data;
+		traceVerifizierenPole.preferedColor = tracesPole[order - 1].preferedColor;
+
+		traceVerifizierenError.data = traceError[order - 1].data;
+		traceVerifizierenError.preferedColor = traceError[order - 1].preferedColor;
+
+		cardVerifizieren.setAllRangeIdeal();
 	}
 
 	public void update(java.util.Observable obs, Object obj) {
@@ -164,23 +193,26 @@ public class OutputPanel extends JPanel {
 						tracesPole[i].data = new double[][] { model.network.getApprox(i + 1).getPole()[0].getPoint(),
 								model.network.getApprox(i + 1).getPole()[1].getPoint() };
 						tracesPole[i].dataValid = true;
-					}
-					else {
-						traceKorKoeffPoints[i].dataValid = false;
-						tracesSolution[i].dataValid = false;
-					}
-					if (model.network.getApprox(i + 1).getPole()[0] != null) {
-						if (model.network.getApprox(i + 1).getPole()[0] != null) {
-							traceKorKoeffPoints[i].data = model.network.getKorrelationComparisonPoins()[i];
-							traceKorKoeffPoints[i].dataValid = true;
-						}
+						traceError[i].data = model.network.getApprox(i + 1).getError();
+						traceError[i].dataValid = true;
 					} else {
+						tracesSolution[i].dataValid = false;
+						traceError[i].dataValid = false;
 						tracesPole[i].dataValid = false;
 					}
+
+					if (model.network.getApprox(i + 1).getPole()[0] != null) {
+						traceKorKoeffPoints[i].data = model.network.getKorrelationComparisonPoins()[i];
+						traceKorKoeffPoints[i].dataValid = true;
+					} else {
+						traceKorKoeffPoints[i].dataValid = false;
+					}
+
 				} else {
 					traceKorKoeffPoints[i].dataValid = false;
 					tracesSolution[i].dataValid = false;
 					tracesPole[i].dataValid = false;
+					traceError[i].dataValid = false;
 				}
 			}
 			break;

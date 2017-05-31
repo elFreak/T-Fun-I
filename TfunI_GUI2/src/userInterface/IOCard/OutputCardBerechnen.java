@@ -47,7 +47,7 @@ public class OutputCardBerechnen extends WindowContainer {
 
 		if (reason == Model.NOTIFY_REASON_APPROXIMATION_UPDATE) {
 			plotCompare.setRangeIdeal();
-			plotCompare.setRange(Trace.XAXIS, 1.0, 11.0);
+			
 			plotPolstellen.setRangeIdeal();
 			plotBerechnen.setRangeIdeal();
 		}

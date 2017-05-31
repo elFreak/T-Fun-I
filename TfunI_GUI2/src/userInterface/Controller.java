@@ -60,7 +60,6 @@ public class Controller {
 
 		if (doChange) {
 
-			this.mode = mode;
 			switch (mode) {
 			case EINLESEN:
 				break;
@@ -70,17 +69,44 @@ public class Controller {
 				model.updateNetwork();
 				break;
 			case VERIFIZIEREN:
+				boolean oneOrderDone = false;
+				boolean[] orderDone = getBerechnenCBActive();
+				for(int i=0;i<orderDone.length;i++) {
+					if(orderDone[i]) {
+						view.inputPanel.setVerifizizerenOrder(i+1);
+						oneOrderDone = true;
+						break;
+					}
+				}
+				if(oneOrderDone==false) {
+					for(int i=0;i<10;i++) {
+						if(model.network.getApprox(i+1)!=null) {
+							if(model.network.getApprox(i+1).isDone()) {
+								view.inputPanel.setVerifizizerenOrder(i+1);
+								oneOrderDone = true;
+								break;
+							}
+						}
+					}
+				}
+				if(oneOrderDone==false) {
+					mode = this.mode;
+					StatusBar.showStatus("Keine Berechnungen vorhanden. Berechne zuerst mindestens eine Ordnung.", StatusBar.FEHLER);
+				}
 				break;
 			}
+			this.mode = mode;
 			view.inputPanel.setActualMode(mode);
 			view.outputPanel.setActualMode(mode);
 		}
 	}
 
 	public void setMesuredData(double[][] data) {
-		model.setMesuredData(data);
-		model.measurementData.autoLimits();
-		StatusBar.showStatus("Neue Sprungantwort wurde eingelesen.", StatusBar.INFO);
+		if (data != null) {
+			model.setMesuredData(data);
+			model.measurementData.autoLimits();
+			StatusBar.showStatus("Neue Sprungantwort wurde eingelesen.", StatusBar.INFO);
+		}
 	}
 
 	public void filterChanged(int n) {
@@ -139,6 +165,7 @@ public class Controller {
 
 	public void changeApproximation(UTFDatatype utf) {
 		model.network.getApprox(utf.ordnung).setUtf(utf);
+
 	}
 
 	public void berechnungLoeschen() {
@@ -151,6 +178,6 @@ public class Controller {
 
 	public void setVerifizierenOrder(int order) {
 		view.outputPanel.setVerifzizerenOrder(order);
-		model.notifyObservers(Model.NOTIFY_REASON_MEASUREMENT_CHANGED);
+		model.notifyObservers(Model.NOTIFY_REASON_APPROXIMATION_UPDATE);
 	}
 }

@@ -82,9 +82,14 @@ public class InputPanel extends JPanel {
 	public void update(java.util.Observable obs, Object obj) {
 		inputCardBearbeiten.update(obs, obj);
 		inputCardBerechnen.update(obs, obj);
+		inputCardVerifizieren.update(obs, obj);
 	}
 
 	public boolean[] getBerechneCB() {
 		return inputCardBerechnen.getCBState();
+	}
+
+	public void setVerifizizerenOrder(int i) {
+		inputCardVerifizieren.setOrder(i);		
 	}
 }

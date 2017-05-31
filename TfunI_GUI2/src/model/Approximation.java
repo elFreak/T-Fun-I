@@ -36,6 +36,7 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 	private double[][] stepResponse;
 	private PointValuePair[] pole = new PointValuePair[2];
 	private double korrKoef = 0;
+	private double[][] absolutError;
 
 	// -----------------------------------------------------------------------------------------------------------------
 	// Konstrucktor:
@@ -100,6 +101,9 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 
 		// Den Korelationskoeffizienten berechnen:
 		calculateKorrKoeff();
+
+		// Den Fehler berechnen:
+		calculateError();
 
 		// Den Benutzer informieren:
 		if (network.isCancelled() == false) {
@@ -171,6 +175,14 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 		korrKoef = Korrelation.korrKoeff(network.getMeasurementData().getFinalData()[1], stepResponse[1]);
 	}
 
+	private void calculateError() {
+		absolutError = new double[2][stepResponse[0].length];
+		for (int i = 0; i < stepResponse[0].length; i++) {
+			absolutError[0][i] = stepResponse[0][i];
+			absolutError[1][i] = stepResponse[1][i] - network.getMeasurementData().getFinalData()[1][i];
+		}
+	}
+
 	/**
 	 * Definiert, was im eigenen Thread gemacht werden soll.
 	 * 
@@ -207,7 +219,6 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 				} else {
 					StatusBar.showStatus(message.message, StatusBar.INFO);
 				}
-
 			}
 		}
 	}
@@ -253,4 +264,7 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 		network.approximationDone();
 	}
 
+	public double[][] getError() {
+		return absolutError;
+	}
 }

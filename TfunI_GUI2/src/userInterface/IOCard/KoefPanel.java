@@ -133,15 +133,13 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 	}
 
 	public void setOrdnung(int order) {
-		System.out.println("order" + order);
 		this.order = order;
 	}
 
-	public void update(Object obs) {
+	public void update(Object obs, Object obj) {
 		Model model = (Model) obs;
 		if (order < 1 || order > 10)
 			return;
-		// else
 		if (model.network.getApprox(order) == null) {
 			for (int i = 0; i < tfwp.length; i++) {
 				tfwp[i].setEditable(false);

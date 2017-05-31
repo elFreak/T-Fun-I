@@ -43,7 +43,7 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 	/**
 	 * Thread verwalten:
 	 */
-	public ExecutorService threadExecutor = Executors.newFixedThreadPool(1);
+	private ExecutorService threadExecutor = Executors.newFixedThreadPool(1);
 
 	// -----------------------------------------------------------------------------------------------------------------
 	// Konstrucktor:
@@ -241,10 +241,12 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 			if (approximations[i] != null) {
 				if (approximations[i].getKorrKoef() != 0) {
 					korrelationComparison[0][zaeler] = (double) (i + 1);
-					korrelationComparison[1][zaeler] = Math.log10((1.0-approximations[i].getKorrKoef())/1000.0)*10.0;
+					korrelationComparison[1][zaeler] = Math.log10((1.0 - approximations[i].getKorrKoef()) / 1000.0)
+							* 10.0;
 					zaeler++;
 
-					korrelationComparisonPoins[i] = new double[][] { { (i + 1) }, { Math.log10((1.0-approximations[i].getKorrKoef())/1000.0)*10.0 } };
+					korrelationComparisonPoins[i] = new double[][] { { (i + 1) },
+							{ Math.log10((1.0 - approximations[i].getKorrKoef()) / 1000.0) * 10.0 } };
 				}
 			}
 		}
@@ -255,16 +257,24 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 			boolean oneOrderOk = false;
 			boolean allOrderDone = true;
 			for (int i = 0; i < approximations.length; i++) {
-				if (approximations[i].isDone() == true) {
-					if (approximations[i].getKorrKoef() >= GlobalSettings.korrKoeffMin) {
-						oneOrderOk = true;
+				if (approximations[i] != null) {
+					if (approximations[i].isDone() == true) {
+						if (approximations[i].getKorrKoef() >= GlobalSettings.korrKoeffMin) {
+							oneOrderOk = true;
+						}
+					} else {
+						allOrderDone = false;
 					}
 				} else {
 					allOrderDone = false;
 				}
 			}
 			if (oneOrderOk == false && allOrderDone == true) {
-				StatusBar.showStatus("Es wurden alle Ordnungen berechnet. Jedoch wurde keine Übertragungsfunktion gefunden, welche mit dem gemessenen Signal einen Korrelationskoeffizient von mindestens "+GlobalSettings.korrKoeffMin+" aufweist.\nMögliche Ursachen:\n1) Das Siganl kann nicht mit einer in diesem Programm möglichen Form beschrieben werden.\n2) Die Messwerte wurden nicht richtig bearbeited.\n3) Threshold oder Anzahl Werte sind ungünstig eingestellt.", StatusBar.FEHLER);
+				StatusBar.showStatus(
+						"Es wurden alle Ordnungen berechnet. Jedoch wurde keine Übertragungsfunktion gefunden, welche mit dem gemessenen Signal einen Korrelationskoeffizient von mindestens "
+								+ GlobalSettings.korrKoeffMin
+								+ " aufweist.\nMögliche Ursachen:\n1) Das Siganl kann nicht mit einer in diesem Programm möglichen Form beschrieben werden.\n2) Die Messwerte wurden nicht richtig bearbeited.\n3) Threshold oder Anzahl Werte sind ungünstig eingestellt.",
+						StatusBar.FEHLER);
 			}
 		}
 	}
@@ -272,6 +282,17 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 	@Override
 	public void swingAction(Message message) {
 		publish(message);
+	}
+	
+	public void stop() {
+		this.cancel(true);
+		this.threadExecutor.shutdown();
+		for(int i=0;i<approximations.length;i++) {
+			if(approximations[i]!=null) {
+				approximations[i].cancel(true);
+			}
+		}
+		
 	}
 
 	// -----------------------------------------------------------------------------------------------------------------
@@ -304,4 +325,5 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 	public double[][][] getKorrelationComparisonPoins() {
 		return korrelationComparisonPoins;
 	}
+
 }

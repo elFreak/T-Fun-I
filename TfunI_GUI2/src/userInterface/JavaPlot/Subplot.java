@@ -898,10 +898,15 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 		y2Min = y2Min - deltaY2 / 50;
 		y2Max = y2Max + deltaY2 / 50;
 
-		if (trace[0].lineType == Trace.LINE_NONE) {
+		if (trace[0].pointType == Trace.POINT_CROSS) {
 			xMax = (xMax - xMin) * 0.2;
 			y1Min *= 1.2;
 			y1Max *= 1.2;
+		}
+
+		if (trace[1].pointType == Trace.POINT_BULLET) {
+			xMin = 1;
+			xMax = 11;
 		}
 
 		setRange(Y1AXIS, y1Min, y1Max);

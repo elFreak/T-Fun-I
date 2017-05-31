@@ -121,7 +121,6 @@ public class StableFMinSearch {
 					}
 					newTarget.isCanceled = true;
 					newTarget = target.copy();
-					System.out.println("" + newVerbesserungsKoeff);
 					break;
 				}
 

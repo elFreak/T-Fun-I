@@ -20,7 +20,7 @@ public class Model extends Observable {
 	 * Eigenschaften:
 	 */
 	private double nextThreshold = 1e-8;
-	public boolean networkChanged = false;
+	private boolean networkChanged = false;
 
 	/**
 	 * Obserververwaltung:
@@ -51,13 +51,12 @@ public class Model extends Observable {
 		if (networkChanged) {
 			if (network != null) {// Falls bereits ein Network besteht, wird
 									// dieses aufgelöst.
-				network.threadExecutor.shutdown();
-				network.cancel(true);
+				network.stop();
 			}
 			network = new Network(measurementData, this);
 			networkChanged = false;
+			notifyObservers(NOTIFY_REASON_UPDATE_NETWORK);
 		}
-		notifyObservers(NOTIFY_REASON_UPDATE_NETWORK);
 		notifyObservers(Model.NOTIFY_REASON_APPROXIMATION_UPDATE);
 	}
 
@@ -77,11 +76,6 @@ public class Model extends Observable {
 	 */
 	public void setMesuredData(double[][] data) {
 		measurementData = new MeasurementData(this, data);
-		if (network != null) {
-			network.cancel(true);
-			network.threadExecutor.shutdown();
-			network = null;
-		}
 		notifyObservers(NOTIFY_REASON_MEASUREMENT_CHANGED);
 	}
 
@@ -119,4 +113,5 @@ public class Model extends Observable {
 	public double getNextThreshold() {
 		return nextThreshold;
 	}
+
 }
