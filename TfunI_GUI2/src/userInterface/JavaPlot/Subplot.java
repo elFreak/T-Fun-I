@@ -72,8 +72,8 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	// --------------------------------------------------------------------
 	// Grid:
 	private Color gridColor = new Color(245, 245, 245); // @Approach
-	private int gridThickness = 1;
-	private int gridMainGridThickness = 5;
+	private int gridThickness = GlobalSettings.traceThinkness/2;
+	private int gridMainGridThickness = GlobalSettings.traceThinkness*2;
 	private Color gridHelpGridColor = new Color(150, 150, 150); // @Approach
 
 	// --------------------------------------------------------------------
@@ -95,7 +95,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	private final static int VALUE = 1;
 	private double[][] zoomTopLeft = new double[2][3];
 	private double[][] zoomDownRight = new double[2][3];
-	private int zoomFrameThickness = 2; // @Approach
+	private int zoomFrameThickness = GlobalSettings.traceThinkness; // @Approach
 
 	// --------------------------------------------------------------------
 	// Slider:
@@ -158,7 +158,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			FontMetrics fm = g2.getFontMetrics();
 			g2.setFont(GlobalSettings.fontTextSmall);
 			fm = g2.getFontMetrics();
-			int widthSymbol = (fm.stringWidth("00000"));
+			int widthSymbol = (fm.stringWidth("0000000"));
 			border = widthSymbol;
 		}
 
@@ -188,7 +188,8 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 		} else {
 			borderSouth = border / 2 + GlobalSettings.fontText.getSize();
 		}
-		borderWest = border / 2 + GlobalSettings.fontText.getSize();
+		
+		borderWest = border / 2 + GlobalSettings.fontText.getSize() * 2+axisRangeRoundFactor[Y1AXIS]*GlobalSettings.fontTextSmall.getSize()/2;
 
 		// calculate boardCorners:
 		boardCorner[0][X] = borderWest; // top-left (X)
@@ -343,7 +344,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 		// Paint Axes-Label (X):
 		if (axisLabelValid[XAXIS] && !(connected && !connectedLowSubplot)) {
 
-			String unitWithPrefix = " /" + getPrefix((int) (axisRangeScaleFactor[XAXIS])) + axisLabelUnit[XAXIS] + "";
+			String unitWithPrefix = axisLabelUnit[Y1AXIS] + " (" +getPrefix((int) (axisRangeScaleFactor[Y1AXIS]))+")";
 
 			g2.setColor(nummerationColor);
 			Font fontSymbol;
@@ -383,7 +384,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 		// Paint Y-Axes-Label:
 		if (axisLabelValid[Y1AXIS]) {
 
-			String unitWithPrefix = " /" + getPrefix((int) (axisRangeScaleFactor[Y1AXIS])) + axisLabelUnit[Y1AXIS] + "";
+			String unitWithPrefix = axisLabelUnit[Y1AXIS] + " (" +getPrefix((int) (axisRangeScaleFactor[Y1AXIS]))+")";
 
 			g2.setColor(nummerationColor);
 			Font fontSymbol;
@@ -410,16 +411,16 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			int YCenter = (boardCorner[1][Y] - boardCorner[0][Y]) / 2 + boardCorner[0][Y];
 
 			g2.setFont(fontSymbol);
-			g2.rotate(-Math.PI/2.0);
+			g2.rotate(-Math.PI / 2.0);
 			g2.drawString(axisLabelSymbol[Y1AXIS], -YCenter - widthLabel / 2,
-					boardCorner[1][X] - (int) (borderWest * 0.9));
+					boardCorner[1][X] - (int) (borderWest - fontSymbol.getSize()));
 			g2.setFont(fontIndex);
-			g2.drawString(axisLabelIndex[Y1AXIS], YCenter - widthLabel / 2 + widthSymbol,
-					boardCorner[1][Y] + (int) (borderSouth * 0.9));
+			g2.drawString(axisLabelIndex[Y1AXIS], -YCenter - widthLabel / 2 + widthSymbol,
+					boardCorner[1][X] - (int) (borderWest - fontSymbol.getSize()));
 			g2.setFont(fontSymbol);
-			g2.drawString(unitWithPrefix, YCenter - widthLabel / 2 + widthSymbol + widthIndex,
-					boardCorner[1][Y] + (int) (borderSouth * 0.9));
-			g2.rotate(0);
+			g2.drawString(unitWithPrefix, -YCenter - widthLabel / 2 + widthSymbol + widthIndex,
+					boardCorner[1][X] - (int) (borderWest - fontSymbol.getSize()));
+			g2.rotate(Math.PI / 2.0);
 		}
 
 		// Paint Slider:
@@ -605,9 +606,6 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			case 4:
 				df = new DecimalFormat("0.0000");
 				break;
-			case 5:
-				df = new DecimalFormat("0.00000");
-				break;
 			}
 
 			df.setDecimalFormatSymbols(s);
@@ -685,31 +683,31 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 		String k = "";
 		switch (potency) {
 		case -12:
-			k = "p";
+			k = "10E-12";
 			break;
 		case -9:
-			k = "n";
+			k = "10E-9";
 			break;
 		case -6:
-			k = "u";
+			k = "10E-6";
 			break;
 		case -3:
-			k = "m";
+			k = "10E-3";
 			break;
 		case 0:
-			k = "";
+			k = "10E+0";
 			break;
 		case 3:
-			k = "k";
+			k = "10E+3";
 			break;
 		case 6:
-			k = "M";
+			k = "10E+6";
 			break;
 		case 9:
-			k = "G";
+			k = "10E+9";
 			break;
 		case 12:
-			k = "T";
+			k = "10E+12";
 			break;
 		}
 		return k;
@@ -840,7 +838,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 						Math.abs(axisRangeSector[axis][0]))))) / 3)
 				* 3;
 
-		axisRangeRoundFactor[axis] = (int) Math.max(Math.min(axisRangeScaleFactor[axis] - scaleFactor10 + 1, 5), 0);
+		axisRangeRoundFactor[axis] = (int) Math.max(Math.min(axisRangeScaleFactor[axis] - scaleFactor10 + 1, 4), 0);
 
 		repaint();
 	}

@@ -20,6 +20,7 @@ import projectT_Fun_I.GlobalSettings;
 import userInterface.Controller;
 import userInterface.MyBorderFactory;
 import userInterface.Numbers;
+import userInterface.StatusBar;
 
 public class KoefPanel extends JPanel implements ActionListener, MouseWheelListener {
 	private static final long serialVersionUID = 1L;
@@ -141,15 +142,15 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 			utf = model.network.getApprox(order).getUtf();
 			korrKoef = model.network.getApprox(order).getKorrKoef();
 			Numbers koeff = new Numbers(korrKoef, 12);
-			lbKorel.setText("" + koeff.number + koeff.unit);
+			lbKorel.setText(" " + koeff.number + koeff.unit);
 			for (int i = 0; i < tfwp.length; i++) {
 				if (i < utf.ordnung / 2) {
 					tfwp[i].setEditable(true);
 					Numbers wp = new Numbers(utf.koeffWQ[i * 2], 3);
-					tfwp[i].setText("" + wp.number + wp.unit);
+					tfwp[i].setText(" " + wp.number + wp.unit);
 					tfqp[i].setEditable(true);
 					Numbers qp = new Numbers(utf.koeffWQ[i * 2 + 1], 3);
-					tfqp[i].setText("" + qp.number + qp.unit);
+					tfqp[i].setText(" " + qp.number + qp.unit);
 
 				} else {
 					tfwp[i].setEditable(false);
@@ -164,11 +165,11 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 			} else {
 				tfsigma.setEditable(true);
 				Numbers sigma = new Numbers(utf.sigma, 3);
-				tfsigma.setText("" + sigma.number + sigma.unit);
+				tfsigma.setText(" " + sigma.number + sigma.unit);
 			}
 			tfk.setEditable(true);
 			Numbers K = new Numbers(utf.zaehler, 3);
-			tfk.setText("" + K.number + K.unit);
+			tfk.setText(" " + K.number + K.unit);
 		}
 	}
 
@@ -180,7 +181,7 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 			tF.setText("0.0");
 
 		value += e.getWheelRotation() * value * 0.01;
-		
+
 		tF.setText(String.valueOf(value));
 
 		UTFDatatype new_utf = new UTFDatatype();
@@ -202,20 +203,30 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
 		UTFDatatype new_utf = new UTFDatatype();
-		new_utf.ordnung = order;
-		new_utf.zaehler = Double.parseDouble(tfk.getText());
-		new_utf.koeffWQ = new double[order / 2 * 2];
-		if (new_utf.ordnung % 2 == 1) {
-			new_utf.sigma = Double.parseDouble(tfsigma.getText());
-		}
-		for (int i = 0; i < order / 2; i++) {
-			if (tfwp[i].getText() != "") {
-				new_utf.koeffWQ[i * 2] = Double.parseDouble(tfwp[i].getText());
-				new_utf.koeffWQ[i * 2 + 1] = Double.parseDouble(tfqp[i].getText());
+		try {
+			if(Double.parseDouble(((JTextField)e.getSource()).getText())==0) {
+				throw new NumberFormatException();
 			}
+			new_utf.ordnung = order;
+			new_utf.zaehler = Double.parseDouble(tfk.getText());
+			new_utf.koeffWQ = new double[order / 2 * 2];
+			if (new_utf.ordnung % 2 == 1) {
+				new_utf.sigma = Double.parseDouble(tfsigma.getText());
+			}
+			for (int i = 0; i < order / 2; i++) {
+				if (tfwp[i].getText() != "") {
+					new_utf.koeffWQ[i * 2] = Double.parseDouble(tfwp[i].getText());
+					new_utf.koeffWQ[i * 2 + 1] = Double.parseDouble(tfqp[i].getText());
+				}
+			}
+			controller.changeApproximation(new_utf);
+		} catch (NumberFormatException b) {
+			StatusBar.showStatus("Ungültige Eingabe", StatusBar.FEHLER);
+			controller.changeApproximation(utf);
 		}
-		controller.changeApproximation(new_utf);
+		
 
 	}
 }

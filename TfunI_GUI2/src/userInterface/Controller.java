@@ -108,6 +108,7 @@ public class Controller {
 		if (data != null) {
 			model.setMesuredData(data);
 			model.measurementData.autoLimits();
+			model.measurementData.setMovingMean(0);
 			StatusBar.showStatus("Neue Sprungantwort wurde eingelesen.", StatusBar.INFO);
 		}
 	}

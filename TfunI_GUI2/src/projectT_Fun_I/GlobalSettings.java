@@ -20,50 +20,53 @@ public class GlobalSettings {
 	public static Color colorTextGrey = new Color(75, 75, 75);
 	public static Color colorTextInfo = colorTextGrey;
 	public static Color colorTextFehler = new Color(240, 20, 20);
-	
+
 	public static Color colorGridBright = new Color(250, 250, 250);
-	public static Color colorGridDark = new Color(70,70,70);
-	public static Color colorGridBlue = new Color(180,210,240);
-	public static Color colorGridYellow = new Color(250,250,20);
+	public static Color colorGridDark = new Color(70, 70, 70);
+	public static Color colorGridBlue = new Color(180, 210, 240);
+	public static Color colorGridYellow = new Color(250, 250, 20);
 
 	public static Font fontText;
 	public static Font fontTextSmall;
 	public static Font fontMath;
 
-	
-	public static Color colorTraceGreen = new Color(20,250,20);
+	public static Color colorTraceGreen = new Color(20, 250, 20);
 	public static Color colorTraceYellow = new Color(255, 217, 102);
 	public static Color colorTraceOrange = new Color(197, 90, 17);
 	public static Color[] colorsTraceSolution = new Color[10];
 	public static Color colorTraceGrey = new Color(200, 200, 250);
-	
+
 	public static Color colorSliderBlue = new Color(0, 180, 240);
 	public static Color colorSliderViolet = new Color(204, 153, 255);
-	
-	public static int traceThinkness = 4;
-	
+
+	public static int traceThinkness;
+
 	public static double korrKoeffMin = 0.995;
 
 	public static double startValueThreshold = 1E-12;
 	public static int startValueAnzahlWerte = 220;
-	
+
 	public static void init() {
 		// Fonts:
 		Font systemFont = UIManager.getDefaults().getFont("TextPane.font");
 		fontText = new Font(systemFont.getName(), Font.PLAIN, (int) (systemFont.getSize() * 1.3));
 		fontTextSmall = new Font(systemFont.getName(), Font.PLAIN, (int) (systemFont.getSize() * 1.1));
 		fontMath = new Font("Cambria Math", Font.ITALIC, (int) (systemFont.getSize() * 1.3));
-		
-		colorsTraceSolution[0] = new Color(255,140, 100);
-		colorsTraceSolution[1] = new Color(255,160, 0);
-		colorsTraceSolution[2] = new Color(255,255, 0);
-		colorsTraceSolution[3] = new Color(210,255, 50);
-		colorsTraceSolution[4] = new Color(102,255, 60);
-		colorsTraceSolution[5] = new Color(0,255, 155);
-		colorsTraceSolution[6] = new Color(0,255, 255);
-		colorsTraceSolution[7] = new Color(0,160, 255);
-		colorsTraceSolution[8] = new Color(155,100, 255);
-		colorsTraceSolution[9] = new Color(255,0, 255);
+
+		// Colors:
+		colorsTraceSolution[0] = new Color(255, 140, 100);
+		colorsTraceSolution[1] = new Color(255, 160, 0);
+		colorsTraceSolution[2] = new Color(255, 255, 0);
+		colorsTraceSolution[3] = new Color(210, 255, 50);
+		colorsTraceSolution[4] = new Color(102, 255, 60);
+		colorsTraceSolution[5] = new Color(0, 255, 155);
+		colorsTraceSolution[6] = new Color(0, 255, 255);
+		colorsTraceSolution[7] = new Color(0, 160, 255);
+		colorsTraceSolution[8] = new Color(155, 100, 255);
+		colorsTraceSolution[9] = new Color(255, 0, 255);
+
+		// Thickness:
+		traceThinkness = Math.max(fontText.getSize()/8,2);
 	}
 
 }

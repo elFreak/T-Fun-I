@@ -364,17 +364,21 @@ public class InputCardBearbeiten extends JPanel {
 	 * @param obj
 	 */
 	public void update(java.util.Observable obs, Object obj) {
-		if (((int) obj) == Model.NOTIFY_REASON_MEASUREMENT_CHANGED) {
-			Numbers offset = new Numbers(((Model) obs).measurementData.getOffset(),3);
+		int reason = (int) obj;
+
+		if (reason == Model.NOTIFY_REASON_MEASUREMENT_CHANGED) {
+			Numbers offset = new Numbers(((Model) obs).measurementData.getOffset(), 3);
 			tfOffset.setText(String.valueOf(offset.number) + offset.unit);
-			Numbers tail = new Numbers(((Model) obs).measurementData.getTail(),3);
+			Numbers tail = new Numbers(((Model) obs).measurementData.getTail(), 3);
 			tfTail.setText(String.valueOf(tail.number) + tail.unit);
-			Numbers stepHeight = new Numbers(((Model) obs).measurementData.getstepHeight(),3);
+			Numbers stepHeight = new Numbers(((Model) obs).measurementData.getstepHeight(), 3);
 			tfSprunghoehe.setText(String.valueOf(stepHeight.number) + stepHeight.unit);
-			Numbers stepTime = new Numbers(((Model) obs).measurementData.getstepTime(),3);
+			Numbers stepTime = new Numbers(((Model) obs).measurementData.getstepTime(), 3);
 			tfSprungzeit.setText(String.valueOf(stepTime.number) + stepTime.unit);
+			tfFilter.setText(String.valueOf(((Model) obs).measurementData.getFilter()));
+			sFilter.setValue(((Model) obs).measurementData.getFilter());
 		}
-		
+
 	}
 
 }

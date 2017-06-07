@@ -22,6 +22,7 @@ public class MeasurementData {
 	private double finalData[][]; // Data für weitere Berechnungen
 
 	private double offset = 0;
+	private int filter = 0;
 	private double tail = 0;
 	private double stepTime = 0;
 	private double originalStepTime = 0;
@@ -121,6 +122,7 @@ public class MeasurementData {
 	 */
 	public void setMovingMean(int n) {
 		// Kein Mittelwert bilden
+		filter = n;
 		if (n == 0) {
 			for (int i = 0; i < rawData[MEASUREMENTS].length; i++) {
 				meanData[MEASUREMENTS][i] = rawData[MEASUREMENTS][i];
@@ -549,6 +551,10 @@ public class MeasurementData {
 
 	public double getTimeScaleFactor() {
 		return timeScaleFactor;
+	}
+	
+	public int getFilter() {
+		return filter;
 	}
 	// -------------------------------------------------------------------------------------------------------
 

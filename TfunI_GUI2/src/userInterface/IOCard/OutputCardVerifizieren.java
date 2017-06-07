@@ -39,8 +39,9 @@ public class OutputCardVerifizieren extends JPanel {
 		// Insets(0, 0, 0, 0), 0, 0));
 		panelLeft.add(koefPanel, new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER,
 				GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-//		//panelLeft.add(panelBackground, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
-//				GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+		// //panelLeft.add(panelBackground, new GridBagConstraints(1, 0, 1, 1,
+		// 0.0, 0.0, GridBagConstraints.CENTER,
+		// GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
 		// add(new SplitPaneContainer(JSplitPane.HORIZONTAL_SPLIT, new
 		// SplitPaneContainer(JSplitPane.VERTICAL_SPLIT, plotPolstellen,
@@ -48,7 +49,6 @@ public class OutputCardVerifizieren extends JPanel {
 
 		setBackground(GlobalSettings.colorBackgroundWhite);
 		setLayout(new GridBagLayout());
-		
 
 		add(new SplitPaneContainer(JSplitPane.HORIZONTAL_SPLIT,
 				new SplitPaneContainer(JSplitPane.VERTICAL_SPLIT, plotPolstellen, panelLeft, 1.0, 0.05),
@@ -67,15 +67,17 @@ public class OutputCardVerifizieren extends JPanel {
 
 		plotPolstellen.addTrace(outputPanel.traceVerifizierenPole);
 
-		plotVerifizieren.setAxisLabel(Plot.XAXIS, "t", "", "s");
-		plotPolstellen.setAxisLabel(Plot.XAXIS, "t", "", "s");
+		plotVerifizieren.setAxisLabel(Plot.XAXIS, "t", "", " in s");
+		plotVerifizieren.setAxisLabel(Plot.Y1AXIS, "U", "", "  in V");
+		plotPolstellen.setAxisLabel(Plot.XAXIS, "Real(s)", "", "");
+		plotPolstellen.setAxisLabel(Plot.Y1AXIS, "Imag(s)", "", "");
 	}
 
 	public void update(Observable obs, Object obj) {
 		koefPanel.update(obs, obj);
-		
-		int reason = (int)obj;
-		if(reason == Model.NOTIFY_REASON_APPROXIMATION_UPDATE) {
+
+		int reason = (int) obj;
+		if (reason == Model.NOTIFY_REASON_APPROXIMATION_UPDATE) {
 			setAllRangeIdeal();
 		}
 	}
