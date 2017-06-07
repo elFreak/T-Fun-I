@@ -44,6 +44,9 @@ public class GlobalSettings {
 	
 	public static double korrKoeffMin = 0.995;
 
+	public static double startValueThreshold = 1E-12;
+	public static int startValueAnzahlWerte = 220;
+	
 	public static void init() {
 		// Fonts:
 		Font systemFont = UIManager.getDefaults().getFont("TextPane.font");

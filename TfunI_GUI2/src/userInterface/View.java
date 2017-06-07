@@ -9,8 +9,6 @@ import java.util.Observer;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
-
-import model.Model;
 import projectT_Fun_I.GlobalSettings;
 import projectT_Fun_I.Utility;
 import userInterface.IOCard.InputPanel;

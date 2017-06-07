@@ -253,6 +253,7 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 
 		if (isCancelled() == false) {
 			model.notifyObservers(Model.NOTIFY_REASON_APPROXIMATION_UPDATE);
+	
 
 			boolean oneOrderOk = false;
 			boolean allOrderDone = true;

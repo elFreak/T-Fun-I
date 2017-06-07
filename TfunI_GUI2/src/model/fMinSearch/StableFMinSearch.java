@@ -38,7 +38,7 @@ public class StableFMinSearch {
 			SwingWorkerClient client, int accuracy, double threshold) throws TimeoutException {
 
 		// Bestimme wie genau die Berechnung sein soll:
-		double verbesserungsKoeff = threshold;
+		double[] verbesserungsKoeff = new double[]{threshold};
 		double[] polySeiteLaenge = new double[ordnung + 1];
 		for (int i = 0; i < ordnung + 1; i++) {
 			polySeiteLaenge[i] = 0.1;
@@ -49,7 +49,7 @@ public class StableFMinSearch {
 		// Berechne
 		for (int i = 0; i <= accuracy; i++) {
 			koeffizienten = calculate(target, verbesserungsKoeff, koeffizienten.getPoint(), polySeiteLaenge, client);
-			// overwatchedVerbesserungskoeff[0] /= 10;
+			verbesserungsKoeff[0] /= 10;
 		}
 
 		return koeffizienten;
@@ -67,10 +67,10 @@ public class StableFMinSearch {
 	 * @return
 	 * @throws TimeoutException
 	 */
-	private static PointValuePair calculate(Target target, double verbesserungsKoeff, double[] startWert,
+	private static PointValuePair calculate(Target target, double[] verbesserungsKoeff, double[] startWert,
 			double[] polySeiteLaenge, SwingWorkerClient client) throws TimeoutException {
 		// Berechnung:
-		double newVerbesserungsKoeff = verbesserungsKoeff;
+		double newVerbesserungsKoeff = verbesserungsKoeff[0];
 		double[] newStartWert = new double[startWert.length];
 		Target newTarget = target.copy();
 		for (int i = 0; i < startWert.length; i++) {
@@ -112,6 +112,7 @@ public class StableFMinSearch {
 					problem = true;
 					client.swingAction(new Message("bitte warten ...", false));
 					newVerbesserungsKoeff = newVerbesserungsKoeff * 100;
+					verbesserungsKoeff[0] = newVerbesserungsKoeff;
 					// verbesserungsKoeff[0] = newVerbesserungsKoeff;
 					if (newVerbesserungsKoeff > 1) {
 						newVerbesserungsKoeff = 1;

@@ -40,8 +40,8 @@ public class ProgramFlow extends JPanel implements ActionListener {
 		setLayout(null);
 
 		this.setFont(GlobalSettings.fontText);
-		this.setMinimumSize(new Dimension(0, getFont().getSize() * 6));
-		this.setPreferredSize(new Dimension(0, getFont().getSize() * 6));
+		this.setMinimumSize(new Dimension(getFont().getSize()*60, getFont().getSize() * 6));
+		this.setPreferredSize(new Dimension(getFont().getSize()*60, getFont().getSize() * 6));
 		btEinlesen.setFont(getFont());
 		btBearbeiten.setFont(getFont());
 		btBerechnen.setFont(getFont());

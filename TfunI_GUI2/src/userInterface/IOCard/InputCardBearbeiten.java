@@ -47,7 +47,7 @@ public class InputCardBearbeiten extends JPanel {
 
 	private JPanel panelSprung = new JPanel(new GridBagLayout());
 	private JTextField tfSprungzeit = new JTextField("10");
-	private JTextField tfSprunghöhe = new JTextField("10");
+	private JTextField tfSprunghoehe = new JTextField("10");
 	private JButton btSprung = new JButton("Sprung zurücksetzen");
 	// ------------------------------------------------------------------------------------------------------
 
@@ -256,7 +256,7 @@ public class InputCardBearbeiten extends JPanel {
 					tempValue = 0;
 				}
 
-				controller.setStep(tempValue, Double.parseDouble(tfSprunghöhe.getText()));
+				controller.setStep(tempValue, Double.parseDouble(tfSprunghoehe.getText()));
 			}
 		});
 
@@ -270,7 +270,7 @@ public class InputCardBearbeiten extends JPanel {
 						tempValue = 0;
 					}
 
-					controller.setStep(tempValue, Double.parseDouble(tfSprunghöhe.getText()));
+					controller.setStep(tempValue, Double.parseDouble(tfSprunghoehe.getText()));
 				} catch (NumberFormatException exp) {
 					StatusBar.showStatus("Ungültige Eingabe:\nBitte nur Zahlen eingeben", StatusBar.FEHLER);
 				}
@@ -278,14 +278,14 @@ public class InputCardBearbeiten extends JPanel {
 			}
 		});
 
-		// Anonymer MouseWheelListener für Textfeld Sprunghöhe
-		tfSprunghöhe.addMouseWheelListener(new MouseWheelListener() {
+		// Anonymer MouseWheelListener für Textfeld Sprunghoehe
+		tfSprunghoehe.addMouseWheelListener(new MouseWheelListener() {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
-				if (tfSprunghöhe.getText().isEmpty())
-					tfSprunghöhe.setText("0");
+				if (tfSprunghoehe.getText().isEmpty())
+					tfSprunghoehe.setText("0");
 
-				double tempValue = Double.parseDouble(tfSprunghöhe.getText());
+				double tempValue = Double.parseDouble(tfSprunghoehe.getText());
 				tempValue = tempValue * Math.pow(1.1, e.getWheelRotation()) + 0.000001 * e.getWheelRotation();
 				if (tempValue < 0) {
 					tempValue = 0;
@@ -296,11 +296,11 @@ public class InputCardBearbeiten extends JPanel {
 		});
 
 		// Anonymer ActionListener für Textfeld bei Enter
-		tfSprunghöhe.addActionListener(new ActionListener() {
+		tfSprunghoehe.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					double tempValue = Double.parseDouble(tfSprunghöhe.getText());
+					double tempValue = Double.parseDouble(tfSprunghoehe.getText());
 					if (tempValue < 0) {
 						tempValue = 0;
 					}
@@ -330,9 +330,9 @@ public class InputCardBearbeiten extends JPanel {
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 		panelSprung.add(new JLabel("s"), new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
-		panelSprung.add(new JLabel("Sprunghöhe:"), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+		panelSprung.add(new JLabel("Sprunghoehe:"), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
-		panelSprung.add(tfSprunghöhe, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
+		panelSprung.add(tfSprunghoehe, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.FIRST_LINE_START,
 				GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
 		panelSprung.add(new JLabel("V"), new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL, new Insets(20, 10, 10, 10), 0, 0));
@@ -365,13 +365,13 @@ public class InputCardBearbeiten extends JPanel {
 	 */
 	public void update(java.util.Observable obs, Object obj) {
 		if (((int) obj) == Model.NOTIFY_REASON_MEASUREMENT_CHANGED) {
-			Numbers offset = new Numbers(((Model) obs).measurementData.getOffset());
+			Numbers offset = new Numbers(((Model) obs).measurementData.getOffset(),3);
 			tfOffset.setText(String.valueOf(offset.number) + offset.unit);
-			Numbers tail = new Numbers(((Model) obs).measurementData.getTail());
+			Numbers tail = new Numbers(((Model) obs).measurementData.getTail(),3);
 			tfTail.setText(String.valueOf(tail.number) + tail.unit);
-			Numbers stepHeight = new Numbers(((Model) obs).measurementData.getstepHeight());
-			tfSprunghöhe.setText(String.valueOf(stepHeight.number) + stepHeight.unit);
-			Numbers stepTime = new Numbers(((Model) obs).measurementData.getstepTime());
+			Numbers stepHeight = new Numbers(((Model) obs).measurementData.getstepHeight(),3);
+			tfSprunghoehe.setText(String.valueOf(stepHeight.number) + stepHeight.unit);
+			Numbers stepTime = new Numbers(((Model) obs).measurementData.getstepTime(),3);
 			tfSprungzeit.setText(String.valueOf(stepTime.number) + stepTime.unit);
 		}
 		

@@ -68,13 +68,13 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 
 		// Eigentliche Berechnung:
 		PointValuePair optimum = StableFMinSearch.getUtfN(network.getTarget(), order,
-				network.getStartWerte()[order - 1], this, 3, network.getThreshold());
+				network.getStartWerte()[order - 1], this, 2, network.getThreshold());
 
 		// Schreibe die berechnete Übertragungsfunktion in die entsprechende
 		// Variable:
 		utf = new UTFDatatype();
 		utf.ordnung = order;
-		utf.zaehler = optimum.getPoint()[0];
+		utf.zaehler = optimum.getPoint()[0]/network.getMeasurementData().getstepHeight();
 		if (optimum.getPoint().length % 2 == 1) {
 			utf.koeffWQ = new double[optimum.getPoint().length - 1];
 
@@ -121,7 +121,6 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 		if (utf.ordnung % 2 == 1) {
 			points[points.length - 1] = utf.sigma;
 		}
-
 		stepResponse = new double[][] { network.getMeasurementData().getFinalData()[0],
 				Target.omega2polstep(points, network.getMeasurementData().getFinalData()[0]) };
 	}
@@ -261,6 +260,7 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 		calculateStep();
 		calculatePole();
 		calculateKorrKoeff();
+		calculateError();
 		network.approximationDone();
 	}
 

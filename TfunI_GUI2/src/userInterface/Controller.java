@@ -71,27 +71,30 @@ public class Controller {
 			case VERIFIZIEREN:
 				boolean oneOrderDone = false;
 				boolean[] orderDone = getBerechnenCBActive();
-				for(int i=0;i<orderDone.length;i++) {
-					if(orderDone[i]) {
-						view.inputPanel.setVerifizizerenOrder(i+1);
+				for (int i = 0; i < orderDone.length; i++) {
+					if (orderDone[i]) {
+						view.inputPanel.setVerifizizerenOrder(i + 1);
 						oneOrderDone = true;
 						break;
 					}
 				}
-				if(oneOrderDone==false) {
-					for(int i=0;i<10;i++) {
-						if(model.network.getApprox(i+1)!=null) {
-							if(model.network.getApprox(i+1).isDone()) {
-								view.inputPanel.setVerifizizerenOrder(i+1);
-								oneOrderDone = true;
-								break;
+				if (oneOrderDone == false) {
+					if (model.network != null) {
+						for (int i = 0; i < 10; i++) {
+							if (model.network.getApprox(i + 1) != null) {
+								if (model.network.getApprox(i + 1).isDone()) {
+									view.inputPanel.setVerifizizerenOrder(i + 1);
+									oneOrderDone = true;
+									break;
+								}
 							}
 						}
 					}
 				}
-				if(oneOrderDone==false) {
+				if (oneOrderDone == false) {
 					mode = this.mode;
-					StatusBar.showStatus("Keine Berechnungen vorhanden. Berechne zuerst mindestens eine Ordnung.", StatusBar.FEHLER);
+					StatusBar.showStatus("Keine Berechnungen vorhanden. Berechne zuerst mindestens eine Ordnung.",
+							StatusBar.FEHLER);
 				}
 				break;
 			}

@@ -215,6 +215,15 @@ public class OutputPanel extends JPanel {
 					traceError[i].dataValid = false;
 				}
 			}
+
+			if (traceVerifizierenError.data != null) {
+				traceVerifizierenStep.data = tracesSolution[traceVerifizierenPole.data[0].length - 1].data;
+
+				traceVerifizierenPole.data = tracesPole[traceVerifizierenPole.data[0].length - 1].data;
+
+				traceVerifizierenError.data = traceError[traceVerifizierenPole.data[0].length - 1].data;
+			}
+
 			break;
 		}
 

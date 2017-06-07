@@ -12,6 +12,7 @@ public class SplitPaneContainer extends JSplitPane {
 		setLeftComponent(componentNorthWest);
 		setRightComponent(componentSouthEast);
 		setResizeWeight((weightNorthWest+(1-weightSouthEast))/2);
+		this.setContinuousLayout(true);
 	}
 
 }

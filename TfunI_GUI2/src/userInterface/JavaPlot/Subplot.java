@@ -1,6 +1,7 @@
 package userInterface.JavaPlot;
 
 import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -176,6 +177,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 		int borderSouth;
 		int borderNorth;
+		int borderWest;
 		if (connected && !connectedHighSubplot) {
 			borderNorth = markerDasheslenght;
 		} else {
@@ -184,14 +186,15 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 		if (connected && !connectedLowSubplot) {
 			borderSouth = markerDasheslenght;
 		} else {
-			borderSouth = border / 2;
+			borderSouth = border / 2 + GlobalSettings.fontText.getSize();
 		}
+		borderWest = border / 2 + GlobalSettings.fontText.getSize();
 
 		// calculate boardCorners:
-		boardCorner[0][X] = border; // top-left (X)
+		boardCorner[0][X] = borderWest; // top-left (X)
 		boardCorner[0][Y] = borderNorth; // top-left (Y)
 
-		boardCorner[1][X] = border; // down-left (X)
+		boardCorner[1][X] = borderWest; // down-left (X)
 		boardCorner[1][Y] = height - borderSouth; // down-left (Y)
 
 		boardCorner[2][X] = width - border; // down-left (X)
@@ -340,7 +343,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 		// Paint Axes-Label (X):
 		if (axisLabelValid[XAXIS] && !(connected && !connectedLowSubplot)) {
 
-			String unitWithPrefix = "[" + getPrefix((int) (axisRangeScaleFactor[XAXIS])) + axisLabelUnit[XAXIS] + "]";
+			String unitWithPrefix = " /" + getPrefix((int) (axisRangeScaleFactor[XAXIS])) + axisLabelUnit[XAXIS] + "";
 
 			g2.setColor(nummerationColor);
 			Font fontSymbol;
@@ -351,7 +354,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 				fontSymbol = new Font(Font.DIALOG_INPUT, Font.CENTER_BASELINE, heightSymbol);
 				fontIndex = new Font(Font.DIALOG_INPUT, Font.CENTER_BASELINE, heightIndex);
 			} else {
-				fontSymbol = GlobalSettings.fontTextSmall;
+				fontSymbol = GlobalSettings.fontText;
 				fontIndex = new Font(fontSymbol.getName(), fontSymbol.getStyle(), (int) (fontSymbol.getSize() * 0.8));
 			}
 
@@ -375,6 +378,48 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			g2.setFont(fontSymbol);
 			g2.drawString(unitWithPrefix, XCenter - widthLabel / 2 + widthSymbol + widthIndex,
 					boardCorner[1][Y] + (int) (borderSouth * 0.9));
+		}
+
+		// Paint Y-Axes-Label:
+		if (axisLabelValid[Y1AXIS]) {
+
+			String unitWithPrefix = " /" + getPrefix((int) (axisRangeScaleFactor[Y1AXIS])) + axisLabelUnit[Y1AXIS] + "";
+
+			g2.setColor(nummerationColor);
+			Font fontSymbol;
+			Font fontIndex;
+			if (doScale) {
+				int heightSymbol = (int) (nummerationTextHeight * 1.4 * scaleFactor);
+				int heightIndex = (int) (nummerationTextHeight * 1 * scaleFactor);
+				fontSymbol = new Font(Font.DIALOG_INPUT, Font.CENTER_BASELINE, heightSymbol);
+				fontIndex = new Font(Font.DIALOG_INPUT, Font.CENTER_BASELINE, heightIndex);
+			} else {
+				fontSymbol = GlobalSettings.fontText;
+				fontIndex = new Font(fontSymbol.getName(), fontSymbol.getStyle(), (int) (fontSymbol.getSize() * 0.8));
+			}
+
+			FontMetrics fm = g2.getFontMetrics();
+			g2.setFont(fontSymbol);
+			fm = g2.getFontMetrics();
+			int widthSymbol = (fm.stringWidth(axisLabelSymbol[Y1AXIS]));
+			int widthUnit = (fm.stringWidth(unitWithPrefix));
+			g2.setFont(fontIndex);
+			fm = g2.getFontMetrics();
+			int widthIndex = (fm.stringWidth(axisLabelIndex[Y1AXIS]));
+			int widthLabel = widthSymbol + widthIndex + widthUnit;
+			int YCenter = (boardCorner[1][Y] - boardCorner[0][Y]) / 2 + boardCorner[0][Y];
+
+			g2.setFont(fontSymbol);
+			g2.rotate(-Math.PI/2.0);
+			g2.drawString(axisLabelSymbol[Y1AXIS], -YCenter - widthLabel / 2,
+					boardCorner[1][X] - (int) (borderWest * 0.9));
+			g2.setFont(fontIndex);
+			g2.drawString(axisLabelIndex[Y1AXIS], YCenter - widthLabel / 2 + widthSymbol,
+					boardCorner[1][Y] + (int) (borderSouth * 0.9));
+			g2.setFont(fontSymbol);
+			g2.drawString(unitWithPrefix, YCenter - widthLabel / 2 + widthSymbol + widthIndex,
+					boardCorner[1][Y] + (int) (borderSouth * 0.9));
+			g2.rotate(0);
 		}
 
 		// Paint Slider:

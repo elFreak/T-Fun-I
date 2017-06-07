@@ -5,7 +5,7 @@ public class Numbers {
 	public double number;
 	public String unit;
 
-	public Numbers(double number) {
+	public Numbers(double number, int digits) {
 		int factor=0;
 		if (number == 0) {
 			number = 0;
@@ -15,16 +15,16 @@ public class Numbers {
 				negative = true;
 				number*=-1;
 			}
-			factor = (int)(Math.floor(Math.floor(Math.log10(number))/3)*3);
+			factor = (int)(Math.floor(Math.floor(Math.log10(number))/3.0)*3.0);
 			number *= Math.pow(10,-factor);
 			if (number >= 100) {
-				number = Math.floor(number * 1) / 1;
+				number = Math.floor(number * 1*Math.pow(10, digits/3)) / (1*Math.pow(10, digits/3));
 			}
 			if (number >= 10) {
-				number = Math.floor(number * 10) / 10;
+				number = Math.floor(number * 10*Math.pow(10, digits/3)) / (10*Math.pow(10, digits/3));
 			}
 			if (number >= 1) {
-				number = Math.floor(number * 100) / 100;
+				number = Math.floor(number * 100*Math.pow(10, digits/3)) / (100*Math.pow(10, digits/3));
 			}
 			if(negative == true){
 				number*=-1;
