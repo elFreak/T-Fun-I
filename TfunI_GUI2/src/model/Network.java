@@ -18,41 +18,51 @@ import userInterface.StatusBar;
  * @author Team 1
  *
  */
+
+/**
+ * 
+ * Representiert das Netzwerk, dessen Übertragungsfunktion ermittelt werden
+ * soll. Es beinhalted ein Objekt vom Typ {@link Approximation} für alle in
+ * diesem Programm möglichen Polstellenordnungen. Die Aufgabe des Netzwerk ist
+ * es zuerst die Startwerte für alle Approximationen zu berechnen und danach die
+ * Berechnung der einzelnen Approximationen zu verwalten. Für die Berechnung der
+ * Startwerte steht die Klasse {@link StableFMinSearch} zur Verfügung. Die
+ * Berechnung der einzelnen Übertragungsfunktionen wird der Klasse
+ * {@link Approximation} überlassen.
+ * 
+ * @author Team 1
+ *
+ */
 public class Network extends SwingWorker<Object, Message> implements SwingWorkerClient {
 
-	/**
-	 * Verknüpfungen zu anderen Objekten:
-	 */
+	// Verknüpfungen zu anderen Objekten:
 	private MeasurementData measurementData;
 	private Model model;
 
-	/**
-	 * Eigenschaften:
-	 */
+	// Eigenschaften:
 	private double threshold;
 	private Target target;
 
-	/**
-	 * Approximationen:
-	 */
+	// Approximationen:
 	private PointValuePair[] startValues;
 	private Approximation[] approximations = new Approximation[10];
 	private double[][] korrelationComparison;
 	private double[][][] korrelationComparisonPoins;
 
-	/**
-	 * Thread verwalten:
-	 */
 	private ExecutorService threadExecutor = Executors.newFixedThreadPool(1);
 
 	// -----------------------------------------------------------------------------------------------------------------
 	// Konstrucktor:
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
-	 * Erstellt ein neues Netzwerk, welches die verschiedenen
-	 * Annäherungsrechnungen verwalted. Beim erstellen dieses Netzwerkes werden
-	 * zu beginn in einem seperaten Thread Startwerte für alle
-	 * Annäherungsrechnungen berechnet.
+	 * Konstruiert das Network. Dabei wird das {@link Target} anhand der
+	 * Messdaten erstellt. Ausserdehm wird die Berechnung der Startwerte
+	 * ausgelöst. Die Startwerte werden wie folgt berechnet: Zuerst werden die
+	 * Startwerte für tiefe Ordnungen berechnet, indem versucht wird, eine
+	 * Approximation mit einer mittelmässigen Übereinstimmung zu berechnen.
+	 * Danach werden die Startwerte für höhere Ordnungen berechnet, wobei die
+	 * Startwerte aus den tieferen Ordnungen als ungefähre Richtwerte benutzt
+	 * werden um diese Berechnung stabil zu gestalten.
 	 * 
 	 * @param measurementData
 	 * @param model
@@ -70,17 +80,6 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 	// -----------------------------------------------------------------------------------------------------------------
 	// Berechnungs Methoden:
 	// -----------------------------------------------------------------------------------------------------------------
-	/**
-	 * In dieser Methode werden die Vorbereitungen für die Berechnungen der
-	 * einzelnen Übertragungsfunktionen gemacht. Diese Vorbereitung besteht aus
-	 * dem Berechnen von Startwerten für die später folgenden
-	 * Annäherungsberechnungen. Dabei wird so vorgegangen, dass für tiefe
-	 * Ordnungen zuerst Startwerte berechnet werden. Danach werden die
-	 * Startwerte für höhere Ordnungen berechnet, wobei die Startwerte aus den
-	 * tieferen Ordnungen als ungefähre Richtwerte benutzt werden um diese
-	 * Berechnung stabil zu gestalten.
-	 * 
-	 */
 	private void prepareCalculation() {
 
 		// Strucktur der Startwerte wird definiert.
@@ -161,8 +160,9 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 	}
 
 	/**
-	 * Diese Methode gibt dem Thread-Pool die Aufgabe die Übertragungsfunktion
-	 * der ausgewählten Ordnung in einem seperaten Thread zu berechnen.
+	 * Veranlasst die Berechnung einer Approximation der Ordnung order. Es wird
+	 * nur eine Approximation berechnet fall das Netzwerk nicht bereits eine
+	 * Approximation mit der gegebenen Ordnung beinhalted.
 	 * 
 	 * @param order
 	 */
@@ -174,19 +174,12 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 		}
 	}
 
-	/**
-	 * Definiert, was im eigenen Thread gemacht werden soll.
-	 * 
-	 */
 	@Override
 	protected Object doInBackground() throws Exception {
 		prepareCalculation();
 		return 0;
 	}
 
-	/**
-	 * Dient dazu den Benutzer mittels der StatusBar zu informieren.
-	 */
 	@Override
 	protected void process(List<Message> arg) {
 		if (isCancelled() == false) {
@@ -205,9 +198,6 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 
 	}
 
-	/**
-	 * Sobald der Thread beendet wird werden die Observer des Models informiert.
-	 */
 	@Override
 	protected void done() {
 		super.done();
@@ -221,9 +211,10 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 
 	/**
 	 * Diese Methode kann von den einzelnen Approximationen benutzt werden, um
-	 * dem Netzwerk mitzuteilen, dass eine neue Approxmation berechnet wurde.
-	 * Das Netzwerk passt darauf den Korrelationsvergleich der bereits
+	 * dem Netzwerk mitzuteilen, dass eine neue {@link Approximation} berechnet
+	 * wurde. Das Netzwerk passt darauf den Korrelationsvergleich der bereits
 	 * berechneten Ordnungen an und informiert die Observer.
+	 * 
 	 */
 	public void approximationDone() {
 		int anzahl = 0;
@@ -253,7 +244,6 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 
 		if (isCancelled() == false) {
 			model.notifyObservers(Model.NOTIFY_REASON_APPROXIMATION_UPDATE);
-	
 
 			boolean oneOrderOk = false;
 			boolean allOrderDone = true;
@@ -284,16 +274,19 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 	public void swingAction(Message message) {
 		publish(message);
 	}
-	
+
+	/**
+	 * Teilt allen laufenden Threads mit, dass sie ungültig sind. 
+	 */
 	public void stop() {
 		this.cancel(true);
 		this.threadExecutor.shutdown();
-		for(int i=0;i<approximations.length;i++) {
-			if(approximations[i]!=null) {
+		for (int i = 0; i < approximations.length; i++) {
+			if (approximations[i] != null) {
 				approximations[i].cancel(true);
 			}
 		}
-		
+
 	}
 
 	// -----------------------------------------------------------------------------------------------------------------

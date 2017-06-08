@@ -120,7 +120,6 @@ public class StableFMinSearch {
 					for (int i = 0; i < startWert.length; i++) {
 						newStartWert[i] = startWert[i];
 					}
-					newTarget.isCanceled = true;
 					newTarget = target.copy();
 					break;
 				}

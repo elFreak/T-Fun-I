@@ -10,28 +10,22 @@ import model.fMinSearch.StableFMinSearch;
 import userInterface.StatusBar;
 
 /**
- * Klasse Approximation: Verwalted eine Übertragungsfunktion
- * (Annäherungsrechnung). Diese Funktion hat eine feste Polstellenordnung
- * zwischen 1 und 10.
+ * 
+ * Representiert eine Übertragungsfunktion, welche durch ein
+ * Annäherungsverfahren möglichst genau an ein {@link Target} angepasst wurde.
  * 
  * @author Team 1
  *
  */
 public class Approximation extends SwingWorker<Object, Message> implements SwingWorkerClient {
 
-	/**
-	 * Verknüpfungen zu anderen Objekten:
-	 */
-	Network network;
+	// Verknüpfungen zu anderen Objekten:
+	private Network network;
 
-	/**
-	 * Eigenschaften:
-	 */
+	// Eigenschaften:
 	private int order;
 
-	/**
-	 * Resultat:
-	 */
+	// Resultat:
 	private UTFDatatype utf = new UTFDatatype();
 	private double[][] stepResponse;
 	private PointValuePair[] pole = new PointValuePair[2];
@@ -42,10 +36,10 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 	// Konstrucktor:
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
-	 * Erzeugt ein Objekt, welches eine Übertragungsfunktion von einer
-	 * Polstellenordnung representiert. Dieses Objekt kann diese
-	 * Übertragungsfunktion sowie die dazugehörigen Eigenschaften in einem
-	 * eigenen Thread berechnen.
+	 * Erzeugt die {@link Approximation}. Hierbei wird die Polstellenordnung der
+	 * Übertragungsfunktion, sowie das anzunähernde {@link Target} definiert.
+	 * Dafür muss beim Erzeugen das {@link Network}, welches die
+	 * {@link Approximation} erzeugt, sich selber als Argument übergeben.
 	 * 
 	 * @param order
 	 * @param network
@@ -58,12 +52,6 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 	// -----------------------------------------------------------------------------------------------------------------
 	// Berechnungs Methoden:
 	// -----------------------------------------------------------------------------------------------------------------
-	/**
-	 * Berechnet anhand des Netzwerkes eine Übertragungsfunktion der gegebenen
-	 * Polstellenordnung.
-	 * 
-	 * @throws TimeoutException
-	 */
 	private void calculate() throws TimeoutException {
 
 		// Eigentliche Berechnung:
@@ -74,7 +62,7 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 		// Variable:
 		utf = new UTFDatatype();
 		utf.ordnung = order;
-		utf.zaehler = optimum.getPoint()[0]/network.getMeasurementData().getstepHeight();
+		utf.zaehler = optimum.getPoint()[0] / network.getMeasurementData().getstepHeight();
 		if (optimum.getPoint().length % 2 == 1) {
 			utf.koeffWQ = new double[optimum.getPoint().length - 1];
 
@@ -182,11 +170,6 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 		}
 	}
 
-	/**
-	 * Definiert, was im eigenen Thread gemacht werden soll.
-	 * 
-	 * @throws Exception
-	 */
 	@Override
 	protected Object doInBackground() throws Exception {
 		swingAction(new Message("Berechnung gestarted (Ordnung " + order + ").", false));
@@ -203,9 +186,7 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 		return 0;
 	}
 
-	/**
-	 * Dient dazu den Benutzer mittels der StatusBar zu informieren.
-	 */
+
 	@Override
 	protected void process(List<Message> arg) {
 		if (network.isCancelled() == false) {
@@ -222,9 +203,6 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 		}
 	}
 
-	/**
-	 * Sobald der Thread beendet wird werden die Observer des Models informiert.
-	 */
 	@Override
 	protected void done() {
 		super.done();

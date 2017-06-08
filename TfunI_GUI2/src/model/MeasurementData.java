@@ -1,7 +1,8 @@
 package model;
 
 /**
- * Klasse MeasurementData: Representiert eine gemessene Sprungantwort.
+ * Representiert eine gemessene Sprungantwort. Diese kann auf verschiedene Arten
+ * in Echtzeit bearbeited werden.
  * 
  * @author Team 1
  *
@@ -40,12 +41,11 @@ public class MeasurementData {
 	// Konstruktor
 	// -------------------------------------------------------------------------------------------------------
 	/**
-	 * Initialisiert Attribute.
+	 * 
+	 * Erzeugt das Objekt anhand der übergebenen Daten.
 	 * 
 	 * @param model
 	 * @param data
-	 *            data[0] = X-AXIS(time), data[1] = MEASUREMENTS(measurement
-	 *            values), data[3] = STEP(step response values)
 	 * @throws IllegalArgumentException
 	 */
 	public MeasurementData(Model model, double data[][]) throws IllegalArgumentException {
@@ -104,7 +104,8 @@ public class MeasurementData {
 	// Set Methoden
 	// -------------------------------------------------------------------------------------------------------
 	/**
-	 * Setzt die Anzahl Datenpunkte auf, welche normiert werden soll.
+	 * Verändert die Länge auf welche das Signal zu berechnungszwecken
+	 * geschrumpft werden soll.
 	 * 
 	 * @param norm
 	 */
@@ -115,8 +116,9 @@ public class MeasurementData {
 	}
 
 	/**
-	 * Gleitender Mittelwert der Daten berechnen und in meanData speichern.
-	 * Parameter n bestimmt über wie viele Werte gemittelt wird.
+	 * Gleitender Mittelwert der Daten berechnen. Parameter n bestimmt über wie
+	 * viele Werte gemittelt wird. Falls n=0 dann ist der Filter deaktiviert.
+	 * Ändert das Signal in Echtzeit.
 	 * 
 	 * @param n
 	 */
@@ -150,9 +152,9 @@ public class MeasurementData {
 	}
 
 	/**
-	 * Setzt die jeweilige Parameter. Und aktualisiert finalData
+	 * Setzt den Offset und wieviel vom Signal hinten abgeschnitten wird. Ändert
+	 * das Signal in Echtzeit.
 	 * 
-	 * @param deadTime
 	 * @param offset
 	 * @param tail
 	 */
@@ -172,7 +174,8 @@ public class MeasurementData {
 	}
 
 	/**
-	 * Setzt den Rahmen automatisch. Und aktualisiert die jeweiligen Daten
+	 * Setzt den Offset und wieviel vom Signal hinten abgeschnitten wird
+	 * automatisch. Ändert das Signal in Echtzeit.
 	 * 
 	 */
 	public void autoLimits() {
@@ -278,7 +281,7 @@ public class MeasurementData {
 	}
 
 	/**
-	 * Erstellt einene neue Schrittantwort mit der gesetzten stepTime.
+	 * Setzt die Sprungzeit. Ändert das Signal in Echtzeit.
 	 * 
 	 * @param stepTime
 	 */
@@ -300,7 +303,7 @@ public class MeasurementData {
 	}
 
 	/**
-	 * Erstellt einene neue Schrittantwort mit der gesetzten stepHeight.
+	 * Setzt die Sprunghöhe. Ändert das Signal in Echtzeit.
 	 * 
 	 * @param stepHeight
 	 */
@@ -319,8 +322,9 @@ public class MeasurementData {
 	}
 
 	/**
-	 * Setzt den Schritt zurück mit der Anfangszeit. Wenn keine Anfangszeit
-	 * vorhanden ist wird der Schrit mit t = 0 gesetzt.
+	 * Setzt den Schritt zurück auf die ursprünglichen Werte. Falls kein Werte
+	 * vorhanden sind, wird die Sprungzeit auf 0s und die Sprunghöhe auf 1V
+	 * gesetzt.
 	 * 
 	 */
 	public void setOriginalStep() {
@@ -371,16 +375,6 @@ public class MeasurementData {
 
 	}
 
-	/**
-	 * Normiert die gegeben Daten: A) Normiert die Anzahl Datenwerte. B)
-	 * Normiert die "Zeitachse".
-	 * 
-	 * Gibt folgende Vektoren zurück: 1) Zeitachse normiert nach A und B. 2)
-	 * Zeitachse normiert nach A. 3) Werteachse normiert nach A und B.
-	 * 
-	 * @param stepResponseOriginal
-	 * @return
-	 */
 	private double[][] scalingStepResponse(double[][] stepResponseOriginal) {
 
 		// Berechnet den Faktor um die Anzahl der Messpunkte zu normieren:
@@ -413,16 +407,9 @@ public class MeasurementData {
 
 		return stepResponseNew;
 	}
-	// -------------------------------------------------------------------------------------------------------
 
 	// Get Methoden
 	// -------------------------------------------------------------------------------------------------------
-	/**
-	 * Gibt die Rohdaten zurück.
-	 * 
-	 * @return rawdata rawData[0][]: Measurement time (t), rawData[1][]:
-	 *         measurement values (y)
-	 */
 	public double[][] getRawData() {
 		double rawData[][] = new double[this.rawData.length][this.rawData[XAXIS].length];
 		for (int i = 0; i < rawData[0].length; i++) {
@@ -433,12 +420,6 @@ public class MeasurementData {
 		return rawData;
 	}
 
-	/**
-	 * Gibt die Finalen daten zurück.
-	 * 
-	 * @return The data ready for the calculations finalData[0][]: Measurement
-	 *         time (t), finalData[1][]: measurement values (y)
-	 */
 	public double[][] getFinalData() {
 		double finalData[][] = new double[this.finalData.length][this.finalData[XAXIS].length];
 		for (int i = 0; i < finalData[0].length; i++) {
@@ -449,12 +430,6 @@ public class MeasurementData {
 		return finalData;
 	}
 
-	/**
-	 * Gibt die gefilterten Daten zurück.
-	 * 
-	 * @return the moving average of the raw data meanData[0][]: Measurement
-	 *         time (t), meanData[1][]: averaged measurement values (y)
-	 */
 	public double[][] getMeanData() {
 		double meanData[][] = new double[this.meanData.length][this.meanData[XAXIS].length];
 		for (int i = 0; i < meanData[0].length; i++) {
@@ -464,29 +439,14 @@ public class MeasurementData {
 		return meanData;
 	}
 
-	/**
-	 * Gibt die Offset zurück.
-	 * 
-	 * @return offset
-	 */
 	public double getOffset() {
 		return offset;
 	}
 
-	/**
-	 * Gibt die Länge des uninteresanten Endes zurück.
-	 * 
-	 * @return tail
-	 */
 	public double getTail() {
 		return meanData[XAXIS][meanData[XAXIS].length - 1] - tail;
 	}
 
-	/**
-	 * Gibt den Schritt zurück.
-	 * 
-	 * @return step[0][]: Measurement time (t), step[1][]: Step value (s)
-	 */
 	public double[][] getstep() {
 		double stepData[][] = new double[this.stepData.length][this.stepData[XAXIS].length];
 		for (int i = 0; i < stepData[0].length; i++) {
@@ -496,55 +456,26 @@ public class MeasurementData {
 		return stepData;
 	}
 
-	/**
-	 * Gibt den Schrittzeitpunkt zurück.
-	 * 
-	 * @return step time
-	 */
 	public double getstepTime() {
 		return stepTime;
 	}
 
-	/**
-	 * Gibt die Schritthöhe zurück.
-	 * 
-	 * @return step height
-	 */
 	public double getstepHeight() {
 		return stepHeight;
 	}
 
-	/**
-	 * Gibt die vollnormierte Zeit zurück.
-	 * 
-	 * @return
-	 */
 	public double[] getTimeFullNormed() {
 		return timeFullNormed;
 	}
 
-	/**
-	 * Gibt die vollnormierte Schrittantort zurück (ohne Zeit).
-	 * 
-	 * @return
-	 */
 	public double[] getStepFullNormed() {
 		return stepFullNormed;
 	}
 
-	/**
-	 * Gibt die Zeit normiert zurück (nur Anzahl der Werte normiert).
-	 * 
-	 * @return
-	 */
 	public double[] getTimeLenghtNormed() {
 		return timeLenghtNormed;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public int getNormNumberOfData() {
 		return normNumberOfData;
 	}
@@ -552,7 +483,7 @@ public class MeasurementData {
 	public double getTimeScaleFactor() {
 		return timeScaleFactor;
 	}
-	
+
 	public int getFilter() {
 		return filter;
 	}

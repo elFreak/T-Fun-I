@@ -1,7 +1,9 @@
 package model;
 
 /**
- * Klasse Korrelation:
+ * 
+ * Stellt die statische Methode {@link #korrKoeff(double[], double[])} zur
+ * Verfügung.
  * 
  * @author Team 1
  *
@@ -9,11 +11,11 @@ package model;
 public class Korrelation {
 
 	/**
-	 * Dient dem Berechnen des Korrelations-Koeffizienten von zwei Vektoren.
+	 * Berechnet den Korrelationskoeffizienten der beiden Vektoren a und b.
 	 * 
 	 * @param a
 	 * @param b
-	 * @return
+	 * @return Korrelationskoeffizient
 	 */
 	public static double korrKoeff(double[] a, double[] b) {
 

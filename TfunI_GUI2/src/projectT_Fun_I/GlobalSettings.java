@@ -5,8 +5,18 @@ import java.awt.Font;
 
 import javax.swing.UIManager;
 
+/**
+ * Stellt alle Grundeinstellungen des Programms als public Attribute zur
+ * Verfügung. Diese Einstellungen müssen bei Programmstart durch die statische
+ * Methode {@link #init()} initialisiert werden. Die Einstellungen lassen sich in
+ * folgende Gruppen unterteilen: Farben, Fonts, Strichstärken und Initialwerte.
+ * 
+ * @author Team 1
+ *
+ */
 public class GlobalSettings {
 
+	// Farben:
 	public static Color colorBackground = UIManager.getColor("window");
 	public static Color colorBackgroundGrey = UIManager.getColor("menu");
 	public static Color colorBackgroundGreyBright = new Color(240, 240, 240);
@@ -15,38 +25,41 @@ public class GlobalSettings {
 	public static Color colorBackgroundGreen = new Color(170, 210, 140);
 	public static Color colorBackgroundBlack = new Color(100, 100, 100);
 	public static Color colorBackgroundWhite = new Color(250, 250, 250);
-
 	public static Color colorText = new Color(40, 40, 40);
 	public static Color colorTextGrey = new Color(75, 75, 75);
 	public static Color colorTextInfo = colorTextGrey;
 	public static Color colorTextFehler = new Color(240, 20, 20);
-
 	public static Color colorGridBright = new Color(250, 250, 250);
 	public static Color colorGridDark = new Color(70, 70, 70);
 	public static Color colorGridBlue = new Color(180, 210, 240);
 	public static Color colorGridYellow = new Color(250, 250, 20);
-
-	public static Font fontText;
-	public static Font fontTextSmall;
-	public static Font fontMath;
-
 	public static Color colorTraceGreen = new Color(20, 250, 20);
 	public static Color colorTraceYellow = new Color(255, 217, 102);
 	public static Color colorTraceOrange = new Color(197, 90, 17);
 	public static Color[] colorsTraceSolution = new Color[10];
 	public static Color colorTraceGrey = new Color(200, 200, 250);
-
 	public static Color colorSliderBlue = new Color(0, 180, 240);
 	public static Color colorSliderViolet = new Color(204, 153, 255);
 
+	// Fonts:
+	public static Font fontText;
+	public static Font fontTextSmall;
+	public static Font fontMath;
+
+	// Strichstärken:
 	public static int traceThinkness;
 
+	//Initialwerte:
 	public static double korrKoeffMin = 0.995;
-
 	public static double startValueThreshold = 1E-12;
 	public static int startValueAnzahlWerte = 220;
 
+	/**
+	 * Methode um diverse Einstellungen zu initialisieren. Muss bei
+	 * Programmstart einmal aufgerufen werden.
+	 */
 	public static void init() {
+		
 		// Fonts:
 		Font systemFont = UIManager.getDefaults().getFont("TextPane.font");
 		fontText = new Font(systemFont.getName(), Font.PLAIN, (int) (systemFont.getSize() * 1.3));
@@ -65,8 +78,8 @@ public class GlobalSettings {
 		colorsTraceSolution[8] = new Color(155, 100, 255);
 		colorsTraceSolution[9] = new Color(255, 0, 255);
 
-		// Thickness:
-		traceThinkness = Math.max(fontText.getSize()/8,2);
+		// Strichstärken:
+		traceThinkness = Math.max(fontText.getSize() / 8, 2);
 	}
 
 }

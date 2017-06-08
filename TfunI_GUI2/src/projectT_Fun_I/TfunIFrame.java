@@ -9,11 +9,18 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.metal.OceanTheme;
-
 import model.Model;
 import userInterface.Controller;
 import userInterface.View;
 
+/**
+ * Frame, welches das gesamte Programm beinhalted. Erzeugt die drei
+ * Grundbausteine nach dem MVC-Pattern und verknüpft diese miteinander.
+ * Beinhalted die Methode {@link #main(String[])}.
+ * 
+ * @author Team 1
+ *
+ */
 public class TfunIFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 
@@ -23,7 +30,7 @@ public class TfunIFrame extends JFrame {
 
 	private Mode mode = Mode.FIXEDRESIZABLE;
 	private int width = 1200, height = 800;
- 
+
 	private static enum LAF {
 		METAL, OCEAN, SYSTEM, WINDOWS_TFUNI
 	}
@@ -35,7 +42,8 @@ public class TfunIFrame extends JFrame {
 	private Controller controller;
 
 	/**
-	 * init
+	 * Initialisiert das Frame, erzeugt die drei Grundbausteine nach dem
+	 * MVC-Pattern und verknüpft diese miteinander.
 	 */
 	public void init() {
 		pack();
@@ -87,7 +95,9 @@ public class TfunIFrame extends JFrame {
 	}
 
 	/**
-	 * Main
+	 * Main-Methode des Projektes. Das Look and Feel wird definiert und dann die
+	 * Methode {@link #init()} aufgerufen.
+	 * 
 	 * @param args
 	 */
 	public static void main(String args[]) {

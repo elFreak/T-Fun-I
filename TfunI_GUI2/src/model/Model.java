@@ -3,28 +3,23 @@ package model;
 import java.util.Observable;
 
 /**
- * Klasse Model:
+ * Dient als Model nach dem MVC-Pattern. Verwalted in erster Line ein
+ * {@link Network} und ein {@link MeasurementData}.
  * 
  * @author Team 1
  *
  */
 public class Model extends Observable {
 
-	/**
-	 * Verknüpfungen zu anderen Objekten:
-	 */
+	// Verknüpfungen zu anderen Objekten:
 	public Network network;
 	public MeasurementData measurementData;
 
-	/**
-	 * Eigenschaften:
-	 */
+	// Eigenschaften:
 	private double nextThreshold = 1e-8;
 	private boolean networkChanged = false;
 
-	/**
-	 * Obserververwaltung:
-	 */
+	// Obserververwaltung:
 	public static final int NOTIFY_REASON_MEASUREMENT_CHANGED = 0;
 	public static final int NOTIFY_REASON_APPROXIMATION_UPDATE = 1;
 	public static final int NOTIFY_REASON_NETWORK_START_VALUES = 2;
@@ -35,17 +30,16 @@ public class Model extends Observable {
 	// Konstrucktor:
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
-	 * Erstellt ein neues Model.
+	 * Erzeugt das Objekt.
 	 */
 	public Model() {
-		notifyObservers(NOTIFY_REASON_THRESHOLD_OR_NORM_CHANGED);
 	}
 
 	// -----------------------------------------------------------------------------------------------------------------
 	// Diverse Methoden:
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
-	 * Erstellt ein neues Network, falls networkChanged = true ist.
+	 * Erstellt ein neues Network, falls sich die Daten vom {@link MeasurementData} geändert haben.
 	 */
 	public void updateNetwork() {
 		if (networkChanged) {
@@ -59,9 +53,17 @@ public class Model extends Observable {
 		}
 		notifyObservers(Model.NOTIFY_REASON_APPROXIMATION_UPDATE);
 	}
+	
+	/**
+	 * Erstellt auf jeden Fall ein neues Network.
+	 */
+	public void setBackNetwork() {
+		networkChanged = true;
+		updateNetwork();
+	}
 
 	/**
-	 * Leited den Befehl weiter an das Netzwerk.
+	 * Leited den Befehl weiter an das {@link Network}
 	 * 
 	 * @param order
 	 */
@@ -70,7 +72,7 @@ public class Model extends Observable {
 	}
 
 	/**
-	 * Speichert neue Messwerte ab.
+	 * Erstellt ein neues {@link MeasurementData} anhand der übergebenen Sprungantwort.
 	 * 
 	 * @param data
 	 */
@@ -79,11 +81,6 @@ public class Model extends Observable {
 		notifyObservers(NOTIFY_REASON_MEASUREMENT_CHANGED);
 	}
 
-	/**
-	 * Informiert die Observer über eine aktualisierung des Models.
-	 * 
-	 * @param object
-	 */
 	@Override
 	public void notifyObservers(Object object) {
 
@@ -93,11 +90,6 @@ public class Model extends Observable {
 
 		super.setChanged();
 		super.notifyObservers(object);
-	}
-
-	public void setBackNetwork() {
-		networkChanged = true;
-		updateNetwork();
 	}
 
 	// -----------------------------------------------------------------------------------------------------------------

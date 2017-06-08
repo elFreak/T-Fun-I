@@ -5,93 +5,105 @@ import org.apache.commons.math3.analysis.MultivariateFunction;
 import matlabfunction.Matlab;
 import matlabfunction.SVTools;
 
+/**
+ * Representiert eine Funktion, welche die Abweichung von einer
+ * Soll-Sprungantwort und einer Ist-Sprungantwort berechnet. Dieser Funktion
+ * wird beim erstellen ({@link #Target(double[], double[])}) eine
+ * Soll-Sprungantwort fest zugeordnet. Danach kann mittels der Methode
+ * {@link #value(double[])} die Abweichung berechnet werden. Zusätzlich
+ * beinhalted die Klasse eine die statische Methode
+ * {@link #omega2polstep(double[], double[])} mit welcher eine Sprungantwort
+ * anhand einer Übertragungsfunktion berechnet werden kann.
+ *
+ * @author Team 1
+ *
+ */
 public class Target implements MultivariateFunction {
 
-	public boolean isCanceled = false;
-	private double[] t;
+	private double[] shouldTime;
 	private double[] step_soll;
-	public double[] error = {};
 
-	public Target(double[] t, double[] step_soll) {
-		this.t = t;
+	/**
+	 * Konstruiert ein Objekt. Dabei wird die Soll-Sprungantwort mitgegeben.
+	 * 
+	 * @param shouldTime
+	 * @param step_soll
+	 */
+	public Target(double[] shouldTime, double[] step_soll) {
+		this.shouldTime = shouldTime;
 		this.step_soll = step_soll;
 	}
 
+	/**
+	 * Berechnet die zur Übertragungsfunktion (variables) gehörende
+	 * Sprungantwort und vergleicht diese mit der Soll-Sprungantwort des
+	 * Objekts. Dabei wird die Abweichung der beiden Sprungantworten zu einander
+	 * berechnet. Diese Berechnung basiert auf der Summe der quadrierten
+	 * Differenz der beiden Kurven.
+	 * 
+	 * @param variables
+	 * @return distance
+	 * @exception RuntimeException
+	 */
 	public double value(double[] variables) throws RuntimeException {
-
-		double error = 0.0;
-
-		error = failuresum(step_soll, omega2polstep(variables, t));
-		this.error = Matlab.concat(this.error, error / t.length);
-
-		// if(isCanceled) {
-		// try {
-		// Thread.sleep(0, 10);
-		// } catch (InterruptedException e) {
-		// // TODO: handle exception
-		// }
-		// }
-
-		return error;
+		double distance = 0.0;
+		distance = failuresum(step_soll, omega2polstep(variables, shouldTime));
+		return distance;
 
 	}
 
-	// x0=[K wp1 qp1 wp2 qp2 wp3 qp3] n=even
-	// x0=[K wp1 qp1 wp2 qp2 wp3 qp3 sig] n=odd
-
 	/**
-	 * Schrittanwort aus K, wp und qp berechnen.
+	 * Diese statische Methode berechnet anhand einer Übertragungsfunktion eine
+	 * Sprungantwort und gibt diese zurück.
 	 * 
-	 * @param ordnung
-	 * @param data
+	 * @param utf
 	 * @param time
-	 * @return
+	 * @return stepResponse
 	 */
-
-	public static double[] omega2polstep(double[] data, double[] time) {
+	public static double[] omega2polstep(double[] utf, double[] time) {
 		double[] zaehler1 = new double[1];
-		int ordnung = data.length - 1;
+		int ordnung = utf.length - 1;
 		double[] nenner1 = new double[ordnung + 1];
 		double[] nenner2 = new double[ordnung + 1];
-		double[] data2 = new double[time.length];
-		if(ordnung!=1) {
+		double[] stepResponse = new double[time.length];
+		if (ordnung != 1) {
 			if (ordnung % 2 == 0) {
-				zaehler1[0] = data[0] * Math.pow(data[1], 2.0);
-				nenner1 = new double[] { 1, data[1] / data[2], Math.pow(data[1], 2.0) };
+				zaehler1[0] = utf[0] * Math.pow(utf[1], 2.0);
+				nenner1 = new double[] { 1, utf[1] / utf[2], Math.pow(utf[1], 2.0) };
 				for (int i = 2; i < ordnung - 1; i += 2) {
-					nenner2 = new double[] { 1, data[i + 1] / data[i + 2], Math.pow(data[i + 1], 2.0) };
+					nenner2 = new double[] { 1, utf[i + 1] / utf[i + 2], Math.pow(utf[i + 1], 2.0) };
 					nenner1 = Matlab.conv(nenner1, nenner2);
-					zaehler1[0] = zaehler1[0] * Math.pow(data[i + 1], 2.0);
+					zaehler1[0] = zaehler1[0] * Math.pow(utf[i + 1], 2.0);
 				}
 			} else {
-				zaehler1[0] = data[0] * Math.pow(data[1], 2.0);
-				nenner1 = new double[] { 1, data[1] / data[2], Math.pow(data[1], 2.0) };
+				zaehler1[0] = utf[0] * Math.pow(utf[1], 2.0);
+				nenner1 = new double[] { 1, utf[1] / utf[2], Math.pow(utf[1], 2.0) };
 				for (int i = 2; i < ordnung - 1; i += 2) {
-					nenner2 = new double[] { 1, data[i + 1] / data[i + 2], Math.pow(data[i + 1], 2.0) };
+					nenner2 = new double[] { 1, utf[i + 1] / utf[i + 2], Math.pow(utf[i + 1], 2.0) };
 					nenner1 = Matlab.conv(nenner1, nenner2);
-					zaehler1[0] = zaehler1[0] * Math.pow(data[i + 1], 2.0);
+					zaehler1[0] = zaehler1[0] * Math.pow(utf[i + 1], 2.0);
 				}
-				nenner1 = Matlab.conv(new double[] { 1, -data[ordnung] }, nenner1);
-				zaehler1[0] = zaehler1[0] * Math.abs(data[ordnung]);
+				nenner1 = Matlab.conv(new double[] { 1, -utf[ordnung] }, nenner1);
+				zaehler1[0] = zaehler1[0] * Math.abs(utf[ordnung]);
 			}
-			data2 = (double[]) SVTools.step(zaehler1, nenner1, time)[0];
+			stepResponse = (double[]) SVTools.step(zaehler1, nenner1, time)[0];
 		} else {
-			zaehler1[0] = data[0]* Math.abs(data[ordnung]);
-			nenner1 = new double[]{1,-data[1]};
-			data2 = (double[]) SVTools.step(zaehler1, nenner1, time)[0];
+			zaehler1[0] = utf[0] * Math.abs(utf[ordnung]);
+			nenner1 = new double[] { 1, -utf[1] };
+			stepResponse = (double[]) SVTools.step(zaehler1, nenner1, time)[0];
 		}
 
-		return data2;
+		return stepResponse;
 	}
 
 	/**
-	 * Fehlersumme berechnen
+	 * Berechnet mit dem bei {@link #value(double[])} beschriebenen Verfahren die Abweichung zwischen zwei Vektoren.
 	 * 
 	 * @param should
 	 * @param is
-	 * @return
+	 * @return failuresum
 	 */
-	private static double failuresum(double[] should, double[] is) {
+	private double failuresum(double[] should, double[] is) {
 
 		double failuresum = 0;
 
@@ -106,22 +118,15 @@ public class Target implements MultivariateFunction {
 		failuresum /= is.length;
 		failuresum /= max;
 
-		// try {
-		// Thread.sleep(0,1);
-		// } catch (InterruptedException e) {
-		// // TODO: handle exception
-		// }
-
-		//System.out.println("fail: " + failuresum);
-
 		return failuresum;
 	}
 
-	public double[] getTime() {
-		return t;
-	}
-
+	/**
+	 * Gibt eine Kopie des Target zurück.
+	 * 
+	 * @return copyOfTarget
+	 */
 	public Target copy() {
-		return new Target(t, step_soll);
+		return new Target(shouldTime, step_soll);
 	}
 }
