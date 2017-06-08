@@ -238,9 +238,9 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 	private void readTFThreshold() {
 		try {
 			double tempValue = Double.parseDouble(tfThreshold.getText());
-			if (tempValue < 0) {
-				tempValue = 1e-12;
-				StatusBar.showStatus("Threshold kann muss grösser als 0 sein.", StatusBar.FEHLER);
+			if (tempValue <= 0) {
+				tempValue = 1e-20;
+				StatusBar.showStatus("Threshold muss grösser als 0 sein.", StatusBar.FEHLER);
 			}
 			controller.setThresholdAndNorm(tempValue, Integer.parseInt(tfNorm.getText()));
 		} catch (NumberFormatException exp) {

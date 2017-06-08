@@ -34,7 +34,7 @@ public class OutputCardBearbeiten extends WindowContainer {
 		plotBearbeiten.setAxisLabel(Plot.Y1AXIS, "U", "", "  in V");
 		plotBearbeiten.setSubplot(1);
 		plotBearbeiten.setAxisLabel(Plot.XAXIS, "t", "", " in s");
-		plotBearbeiten.setAxisLabel(Plot.Y1AXIS, "U", "Bearbeited", "  in V");
+		plotBearbeiten.setAxisLabel(Plot.Y1AXIS, "U", "", "  in V");
 
 
 		plotBearbeiten.setSubplot(0);

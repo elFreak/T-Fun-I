@@ -15,7 +15,7 @@ public class OutputCardEinlesen extends WindowContainer {
 		plotEinlesen.addTrace(outputPanel.traceStep);
 		plotEinlesen.addTrace(outputPanel.traceRaw);
 		plotEinlesen.setAxisLabel(Plot.XAXIS, "t", "", " in s");
-		plotEinlesen.setAxisLabel(Plot.Y1AXIS, "U", "Gemessen", "  in V");
+		plotEinlesen.setAxisLabel(Plot.Y1AXIS, "U", "", "  in V");
 	}
 
 	public void update(java.util.Observable obs, Object obj) {

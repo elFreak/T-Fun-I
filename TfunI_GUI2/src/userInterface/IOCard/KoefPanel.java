@@ -178,7 +178,7 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 		JTextField tF = (JTextField) e.getSource();
 		double value = Double.parseDouble(tF.getText());
 		if (tF.getText().isEmpty())
-			tF.setText("0.0");
+			tF.setText("1.0");
 
 		value += e.getWheelRotation() * value * 0.01;
 
@@ -206,8 +206,10 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 
 		UTFDatatype new_utf = new UTFDatatype();
 		try {
-			if(Double.parseDouble(((JTextField)e.getSource()).getText())==0) {
-				throw new NumberFormatException();
+			if(Double.parseDouble(((JTextField)e.getSource()).getText())<=0) {
+				if(!e.getSource().equals(tfsigma)) {
+					throw new NumberFormatException();
+				}
 			}
 			new_utf.ordnung = order;
 			new_utf.zaehler = Double.parseDouble(tfk.getText());

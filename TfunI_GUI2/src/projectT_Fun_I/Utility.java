@@ -8,10 +8,25 @@ import java.awt.Image;
 import java.awt.MediaTracker;
 import javax.swing.ImageIcon;
 
+/**
+ * Stellt diverse statische Methoden zur Verfügung. Diese Methoden lassen sich
+ * in zwei Gruppen einordnen. Erstens Methoden um Bildaten in das Programm zu laden und
+ * diese als Objekt zurückgeben. Zweitens Methoden um bestimmte Attribute von
+ * Componenten systematisch zu verändern.
+ * 
+ * @author Team 1
+ *
+ */
 public class Utility {
 
 	private static Container p = new Container();
 
+	/**
+	 * Gibt das Bild an der Stelle strBild als Image-Objekt zurück;
+	 * 
+	 * @param strBild
+	 * @return
+	 */
 	public static Image loadImage(String strBild) {
 		MediaTracker tracker = new MediaTracker(p);
 		Image img = (new ImageIcon(strBild)).getImage();
@@ -24,6 +39,13 @@ public class Utility {
 		return img;
 	}
 
+	/**
+	 * Gibt das Bild im Ordner bilder an der Stelle strBild als Image-Objekt
+	 * zurück;
+	 * 
+	 * @param strBild
+	 * @return
+	 */
 	public static Image loadResourceImage(String strBild) {
 		MediaTracker tracker = new MediaTracker(p);
 		Image img = (new ImageIcon(Utility.class.getResource("bilder" + "/" + strBild))).getImage();
@@ -36,6 +58,13 @@ public class Utility {
 		return img;
 	}
 
+	/**
+	 * Gibt das Icon im Ordner bilder an der Stelle strBild als ImageIcon-Objekt
+	 * zurück;
+	 * 
+	 * @param strBild
+	 * @return
+	 */
 	public static ImageIcon loadResourceIcon(String strBild) {
 		MediaTracker tracker = new MediaTracker(p);
 		ImageIcon icon = new ImageIcon(Utility.class.getResource("bilder" + "/" + strBild));
@@ -50,6 +79,13 @@ public class Utility {
 		return icon;
 	}
 
+	/**
+	 * Setzt den Font des Componenten comp und alle Fonts der Componenten die zu
+	 * comp gehören.
+	 * 
+	 * @param comp
+	 * @param font
+	 */
 	public static void setAllFonts(Component comp, Font font) {
 		Component[] comps = ((Container) comp).getComponents();
 		comp.setFont(font);
@@ -60,7 +96,14 @@ public class Utility {
 			}
 		}
 	}
-	
+
+	/**
+	 * Setzt die Fonts der Componenten comps und alle Fonts der Componenten die
+	 * zu einem der comps gehören.
+	 * 
+	 * @param comps
+	 * @param font
+	 */
 	public static void setAllFonts(Component[] comps, Font font) {
 		for (int i = 0; i < comps.length; i++) {
 			comps[i].setFont(font);
@@ -69,7 +112,14 @@ public class Utility {
 			}
 		}
 	}
-	
+
+	/**
+	 * Setzt den Foreground des Componenten comp und alle Foreground der
+	 * Componenten die zu comp gehören.
+	 * 
+	 * @param strBild
+	 * @return
+	 */
 	public static void setAllForegrounds(Component comp, Color color) {
 		Component[] comps = ((Container) comp).getComponents();
 		comp.setForeground(color);
@@ -81,6 +131,13 @@ public class Utility {
 		}
 	}
 
+	/**
+	 * Setzt die Foregrounds der Componenten comps und alle Foregrounds der
+	 * Componenten die zu einem der comps gehören.
+	 * 
+	 * @param comps
+	 * @param color
+	 */
 	public static void setAllForegrounds(Component[] comps, Color color) {
 		for (int i = 0; i < comps.length; i++) {
 			comps[i].setForeground(color);
@@ -90,7 +147,14 @@ public class Utility {
 			}
 		}
 	}
-	
+
+	/**
+	 * Setzt den Background des Componenten comp und alle Backgrounds der
+	 * Componenten die zu comp gehören.
+	 * 
+	 * @param comp
+	 * @param color
+	 */
 	public static void setAllBackgrounds(Component comp, Color color) {
 		Component[] comps = ((Container) comp).getComponents();
 		comp.setBackground(color);
@@ -102,6 +166,13 @@ public class Utility {
 		}
 	}
 
+	/**
+	 * Setzt die Backgrounds der Componenten comps und alle Backgrounds der
+	 * Componenten die zu einem der comps gehören.
+	 * 
+	 * @param comps
+	 * @param color
+	 */
 	public static void setAllBackgrounds(Component[] comps, Color color) {
 		for (int i = 0; i < comps.length; i++) {
 			comps[i].setBackground(color);
@@ -111,6 +182,5 @@ public class Utility {
 			}
 		}
 	}
-	
-	
+
 }

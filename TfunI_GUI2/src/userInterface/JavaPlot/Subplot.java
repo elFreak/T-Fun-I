@@ -189,7 +189,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			borderSouth = border / 2 + GlobalSettings.fontText.getSize();
 		}
 		
-		borderWest = border / 2 + GlobalSettings.fontText.getSize() * 2+axisRangeRoundFactor[Y1AXIS]*GlobalSettings.fontTextSmall.getSize()/2;
+		borderWest = border / 2 + GlobalSettings.fontText.getSize() * 2+axisRangeRoundFactor[Y1AXIS]*GlobalSettings.fontTextSmall.getSize()/3;
 
 		// calculate boardCorners:
 		boardCorner[0][X] = borderWest; // top-left (X)
@@ -413,13 +413,13 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			g2.setFont(fontSymbol);
 			g2.rotate(-Math.PI / 2.0);
 			g2.drawString(axisLabelSymbol[Y1AXIS], -YCenter - widthLabel / 2,
-					boardCorner[1][X] - (int) (borderWest - fontSymbol.getSize()));
+					boardCorner[1][X] - (int) (borderWest*0.95 - fontSymbol.getSize()));
 			g2.setFont(fontIndex);
 			g2.drawString(axisLabelIndex[Y1AXIS], -YCenter - widthLabel / 2 + widthSymbol,
-					boardCorner[1][X] - (int) (borderWest - fontSymbol.getSize()));
+					boardCorner[1][X] - (int) (borderWest*0.95 - fontSymbol.getSize()));
 			g2.setFont(fontSymbol);
 			g2.drawString(unitWithPrefix, -YCenter - widthLabel / 2 + widthSymbol + widthIndex,
-					boardCorner[1][X] - (int) (borderWest - fontSymbol.getSize()));
+					boardCorner[1][X] - (int) (borderWest*0.95 - fontSymbol.getSize()));
 			g2.rotate(Math.PI / 2.0);
 		}
 
@@ -838,7 +838,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 						Math.abs(axisRangeSector[axis][0]))))) / 3)
 				* 3;
 
-		axisRangeRoundFactor[axis] = (int) Math.max(Math.min(axisRangeScaleFactor[axis] - scaleFactor10 + 1, 4), 0);
+		axisRangeRoundFactor[axis] = (int) Math.max(Math.min(axisRangeScaleFactor[axis] - scaleFactor10 + 1, 3), 0);
 
 		repaint();
 	}
