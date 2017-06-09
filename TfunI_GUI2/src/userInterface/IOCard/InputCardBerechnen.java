@@ -30,7 +30,7 @@ import userInterface.StatusBar;
 public class InputCardBerechnen extends JPanel implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 
-	Controller controller;
+	private Controller controller;
 
 	private JPanel panelOrdnung = new JPanel(new GridBagLayout());
 	private JButton btAll = new JButton("Alle");

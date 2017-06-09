@@ -25,7 +25,7 @@ import userInterface.JavaPlot.Plot;
 public class OutputCardVerifizieren extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	JPanel panelLeft = new JPanel(new GridBagLayout());
+	private JPanel panelLeft = new JPanel(new GridBagLayout());
 
 	private Plot plotVerifizieren = new Plot();
 	private Plot plotPolstellen = new Plot();

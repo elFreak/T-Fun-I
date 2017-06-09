@@ -27,7 +27,7 @@ import userInterface.MyBorderFactory;
 public class InputCardVerifizieren extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
-	Controller controller;
+	private Controller controller;
 
 	private JPanel panelOrdnung = new JPanel(new GridBagLayout());
 	private JCheckBox[] cB = new JCheckBox[10];

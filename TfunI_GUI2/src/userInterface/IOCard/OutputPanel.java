@@ -27,7 +27,7 @@ public class OutputPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	// General
-	Controller controller;
+	private Controller controller;
 	private CardLayout cardLayout = new CardLayout();
 
 	// Traces
