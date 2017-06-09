@@ -349,7 +349,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 		// Paint Axes-Label (X):
 		if (axisLabelValid[XAXIS] && !(connected && !connectedLowSubplot)) {
 
-			String unitWithPrefix = axisLabelUnit[Y1AXIS] + " (" +getPrefix((int) (axisRangeScaleFactor[Y1AXIS]))+")";
+			String unitWithPrefix = axisLabelUnit[XAXIS] + " (" +getPrefix((int) (axisRangeScaleFactor[XAXIS]))+")";
 
 			g2.setColor(nummerationColor);
 			Font fontSymbol;
