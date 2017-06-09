@@ -1,8 +1,11 @@
 package userInterface.IOCard;
 
 import java.awt.CardLayout;
+import java.util.Observer;
 
 import javax.swing.JPanel;
+
+import com.sun.xml.internal.ws.api.server.Container;
 
 import model.Model;
 import projectT_Fun_I.GlobalSettings;
@@ -11,18 +14,23 @@ import userInterface.Controller;
 import userInterface.MyBorderFactory;
 import userInterface.JavaPlot.Trace;
 
+/**
+ * /** Ein {@link Container} für die verschiedenen Ausgabekarten.
+ * ({@link OutputCardEinlesen}, {@link OutputCardBearbeiten},
+ * {@link OutputCardBerechnen} und {@link OutputCardVerifizieren}). Organisiert
+ * nach einem {@link CardLayout}.
+ * 
+ * @author Team 1
+ *
+ */
 public class OutputPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * General
-	 */
+	// General
 	Controller controller;
 	private CardLayout cardLayout = new CardLayout();
 
-	/**
-	 * Traces
-	 */
+	// Traces
 
 	public Trace traceStep;
 	public Trace traceRaw;
@@ -37,14 +45,17 @@ public class OutputPanel extends JPanel {
 	public Trace traceVerifizierenPole;
 	public Trace traceVerifizierenError;
 
-	/**
-	 * Cards:
-	 */
+	// Cards:
 	private OutputCardEinlesen cardEinlesen;
 	private OutputCardBearbeiten cardBearbeiten;
 	private OutputCardBerechnen cardBerechnen;
 	private OutputCardVerifizieren cardVerifizieren;
 
+	/**
+	 * Erzeugt und initialisiert das Objekt.
+	 * 
+	 * @param controller
+	 */
 	public OutputPanel(Controller controller) {
 		this.controller = controller;
 
@@ -123,7 +134,13 @@ public class OutputPanel extends JPanel {
 		add(cardVerifizieren, Controller.KEY_VERIFIZIEREN);
 
 	}
-
+	
+	/**
+	 * Setzt den aktuellen Zustand und definiert damit, welche Oberfläche/Karte
+	 * angezeigt wird.
+	 * 
+	 * @param mode
+	 */
 	public void setActualMode(int mode) {
 		switch (mode) {
 		case Controller.EINLESEN:
@@ -145,6 +162,11 @@ public class OutputPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Setzt die Ordnung vom {@link OutputCardVerifizieren}.
+	 * 
+	 * @param order
+	 */
 	public void setVerifzizerenOrder(int order) {
 		cardVerifizieren.setVerifizierenOrder(order);
 		traceVerifizierenStep.data = tracesSolution[order - 1].data;
@@ -159,6 +181,13 @@ public class OutputPanel extends JPanel {
 		cardVerifizieren.setAllRangeIdeal();
 	}
 
+	/**
+	 * Updated das Objekt. 
+	 * @see Observer
+	 * 
+	 * @param obs
+	 * @param obj
+	 */
 	public void update(java.util.Observable obs, Object obj) {
 
 		if (!(obs instanceof Model) || !(obj instanceof Integer)) {
@@ -185,16 +214,17 @@ public class OutputPanel extends JPanel {
 
 			for (int i = 0; i < tracesSolution.length; i++) {
 				if (model.network.getApprox(i + 1) != null) {
-					if (model.network.getApprox(i + 1).getPole()[0] != null
-							&& controller.getBerechnenCBActive()[i] == true) {
-
+					if (model.network.getApprox(i + 1).getPole()[0] != null) {
+						if (controller.getBerechnenCBActive()[i] == true) {
+							tracesPole[i].dataValid = true;
+							traceError[i].dataValid = true;
+							tracesSolution[i].dataValid = true;
+						}
 						tracesSolution[i].data = model.network.getApprox(i + 1).getStepResponse();
-						tracesSolution[i].dataValid = true;
 						tracesPole[i].data = new double[][] { model.network.getApprox(i + 1).getPole()[0].getPoint(),
 								model.network.getApprox(i + 1).getPole()[1].getPoint() };
-						tracesPole[i].dataValid = true;
 						traceError[i].data = model.network.getApprox(i + 1).getError();
-						traceError[i].dataValid = true;
+
 					} else {
 						tracesSolution[i].dataValid = false;
 						traceError[i].dataValid = false;

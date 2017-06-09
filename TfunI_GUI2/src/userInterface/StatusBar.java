@@ -1,7 +1,6 @@
 package userInterface;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,18 +10,22 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.text.DefaultStyledDocument;
-import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
-
-
 
 import projectT_Fun_I.GlobalSettings;
 import projectT_Fun_I.Utility;
 
+/**
+ * Eine Statusbar, auf welcher mittels einer statischen Methode Text ausgegeben
+ * werde kann. Dabei kann zwischen einer Information und einer Fehlermeldung
+ * unterschieden werden.
+ * 
+ * @author Team 1
+ *
+ */
 public class StatusBar extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
@@ -37,6 +40,9 @@ public class StatusBar extends JPanel implements ActionListener {
 	// MouseMenu:
 	private static JPopupMenu popupMenue = new JPopupMenu();
 
+	/**
+	 * Erzeugt das Objekt.
+	 */
 	public StatusBar() {
 		setBorder(MyBorderFactory.createMyBorder("  Info  "));
 		this.setLayout(new BorderLayout());
@@ -45,8 +51,8 @@ public class StatusBar extends JPanel implements ActionListener {
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		add(scrollPane, BorderLayout.CENTER);
 		textPane.setEditable(false);
-		
-		setPreferredSize(new Dimension(getPreferredSize().width, getPreferredSize().height*3));
+
+		setPreferredSize(new Dimension(getPreferredSize().width, getPreferredSize().height * 3));
 
 		// Initzialise Styles:
 		StyleContext contextInfo = new StyleContext();
@@ -54,7 +60,7 @@ public class StatusBar extends JPanel implements ActionListener {
 		StyleConstants.setForeground(styleInfo, GlobalSettings.colorTextInfo);
 		StyleConstants.setFontFamily(styleInfo, GlobalSettings.fontText.getFamily());
 		StyleConstants.setFontSize(styleInfo, GlobalSettings.fontText.getSize());
-		
+
 		StyleContext contextFehler = new StyleContext();
 		styleFehler = contextFehler.addStyle("info", null);
 		StyleConstants.setForeground(styleFehler, GlobalSettings.colorTextFehler);
@@ -77,10 +83,17 @@ public class StatusBar extends JPanel implements ActionListener {
 
 	}
 
+	/**
+	 * Statische Methode um Informationen oder Fehlermeldungen auf der Statusbar
+	 * auszugeben.
+	 * 
+	 * @param text
+	 * @param type
+	 */
 	public static void showStatus(String text, int type) {
 		if (type == INFO) {
 			try {
-				document.insertString(0,""+ text + "\n\n", styleInfo);
+				document.insertString(0, "" + text + "\n\n", styleInfo);
 			} catch (Exception e) {
 			}
 		}
@@ -93,6 +106,9 @@ public class StatusBar extends JPanel implements ActionListener {
 		textPane.setCaretPosition(0);
 	}
 
+	/**
+	 * Löscht den Inhalt der Statusbar.
+	 */
 	public void clear() {
 		textPane.setText("");
 	}
@@ -104,7 +120,7 @@ public class StatusBar extends JPanel implements ActionListener {
 		}
 	}
 
-	class PopupListener extends MouseAdapter {
+	private class PopupListener extends MouseAdapter {
 
 		public void mousePressed(MouseEvent e) {
 			maybeShowPopup(e);

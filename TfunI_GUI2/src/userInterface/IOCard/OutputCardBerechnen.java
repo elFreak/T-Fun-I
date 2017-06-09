@@ -1,10 +1,17 @@
 package userInterface.IOCard;
 
+import java.util.Observer;
+
 import model.Model;
 import userInterface.WindowContainer;
 import userInterface.JavaPlot.Plot;
-import userInterface.JavaPlot.Trace;
 
+/**
+ * Oberfläche für Ausgaben im Zustand Berechnen.
+ * 
+ * @author Team 1
+ *
+ */
 public class OutputCardBerechnen extends WindowContainer {
 	private static final long serialVersionUID = 1L;
 
@@ -14,6 +21,11 @@ public class OutputCardBerechnen extends WindowContainer {
 
 	private Plot plotCompare = new Plot();
 
+	/**
+	 * Erzeugt und initialisiert das Objekt.
+	 * 
+	 * @param controller
+	 */
 	public OutputCardBerechnen(OutputPanel outputPanel) {
 
 		addComponent(plotBerechnen);
@@ -45,6 +57,13 @@ public class OutputCardBerechnen extends WindowContainer {
 
 	}
 
+	/**
+	 * Updated das Objekt. 
+	 * @see Observer
+	 * 
+	 * @param obs
+	 * @param obj
+	 */
 	public void update(java.util.Observable obs, Object obj) {
 		int reason = (int) obj;
 
@@ -57,6 +76,9 @@ public class OutputCardBerechnen extends WindowContainer {
 
 	}
 
+	/**
+	 * Skaliert alle Plots automatisch.
+	 */
 	public void setAllRangeIdeal() {
 		plotBerechnen.setRangeIdeal();
 		plotCompare.setRangeIdeal();

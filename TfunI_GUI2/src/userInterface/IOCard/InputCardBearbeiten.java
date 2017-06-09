@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -25,11 +26,11 @@ import userInterface.Numbers;
 import userInterface.StatusBar;
 
 /**
+ * Oberfläche für Eingaben im Zustand Bearbeiten.
  * 
- * @author Marc de Bever
+ * @author Team 1
  *
  */
-
 public class InputCardBearbeiten extends JPanel {
 	private static final long serialVersionUID = 1L;
 	// Attributte
@@ -54,7 +55,7 @@ public class InputCardBearbeiten extends JPanel {
 	// Konstruktor
 	// ------------------------------------------------------------------------------------------------------
 	/**
-	 * Konstructor
+	 * Erzeugt und initialisiert das Objekt.
 	 * 
 	 * @param controller
 	 */
@@ -359,6 +360,8 @@ public class InputCardBearbeiten extends JPanel {
 	}
 
 	/**
+	 * Updated das Objekt. 
+	 * @see Observer
 	 * 
 	 * @param obs
 	 * @param obj

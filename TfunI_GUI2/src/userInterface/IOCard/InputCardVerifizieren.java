@@ -6,6 +6,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -18,11 +19,11 @@ import userInterface.Controller;
 import userInterface.MyBorderFactory;
 
 /**
+ * Oberfläche für Eingaben im Zustand Verifizieren.
  * 
- * @author Simon Zoller
+ * @author Team 1
  *
  */
-
 public class InputCardVerifizieren extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
@@ -32,6 +33,11 @@ public class InputCardVerifizieren extends JPanel implements ActionListener {
 	private JCheckBox[] cB = new JCheckBox[10];
 	private JLabel[] lB = new JLabel[10];
 
+	/**
+	 * Erzeugt und initialisiert das Objekt.
+	 * 
+	 * @param controller
+	 */
 	public InputCardVerifizieren(Controller controller) {
 		this.controller = controller;
 
@@ -148,6 +154,13 @@ public class InputCardVerifizieren extends JPanel implements ActionListener {
 		cB[order-1].setSelected(true);
 	}
 
+	/**
+	 * Updated das Objekt. 
+	 * @see Observer
+	 * 
+	 * @param obs
+	 * @param obj
+	 */
 	public void update(Observable obs, Object obj) {
 		Model model = (Model) obs;
 		int reason = (int) obj;

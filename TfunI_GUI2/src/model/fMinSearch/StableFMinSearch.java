@@ -2,6 +2,9 @@ package model.fMinSearch;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import javax.swing.SwingWorker;
+
 import org.apache.commons.math3.optim.PointValuePair;
 import com.sun.corba.se.impl.orbutil.threadpool.TimeoutException;
 
@@ -10,8 +13,12 @@ import model.SwingWorkerClient;
 import model.Target;
 
 /**
- * Klasse welche einen stabilen FMinSearch für die Berechnung einer
- * Übertragungsfunktion zur Verfügung stellt.
+ * Klasse welche eine statische Methode
+ * {@link #getUtfN(Target, int, PointValuePair, SwingWorkerClient, int, double)}
+ * zur Berechnung einer Übertragungsfunktion zur Verfügung stellt. Die
+ * eigentliche Berechnung läuft dabei in einem seperaten {@link SwingWorker} ab
+ * und wird zeitlich überwacht. Dies ermöglicht es eine abgestürzte Berechnung
+ * zu erkennen und evtl. neu zu starten.
  * 
  * @author Team 1
  *
@@ -22,8 +29,15 @@ public class StableFMinSearch {
 	// Berechnungs Methoden:
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
-	 * Bereichnet eine möglichst genau mit dem Eingagnssignal übereinstimmende
-	 * Übertragungsfunktion für genau eine Polstellenordnung.
+	 * 
+	 * Berechnet anhand der Argumenten eine Übertragungsfunktion, welche
+	 * möglichst gut mit dem {@link Target} übereinstimmt. Die Berechnung läuft
+	 * dabei in einem {@link OverwatchedTask} ab. Sie wird zeitlich überwacht.
+	 * Bei einem Timeout wird zuerst die Berechnung neugestarted. Dabei wird die
+	 * Abbruchsbedingung für die Berechnung einwenig gelockert, so dass die
+	 * Wahrscheinlichkeit auf eine erfolgreiche Berechnung steigt. Falls nach
+	 * mehreren Timeous in Folge keine Lösung berechnet werden konnte, so wird
+	 * eine {@link TimeoutException} geworfen.
 	 * 
 	 * @param target
 	 * @param ordnung
@@ -31,14 +45,14 @@ public class StableFMinSearch {
 	 * @param client
 	 * @param accuracy
 	 * @param threshold
-	 * @return
+	 * @return utf
 	 * @throws TimeoutException
 	 */
 	public static PointValuePair getUtfN(Target target, int ordnung, PointValuePair startValue,
 			SwingWorkerClient client, int accuracy, double threshold) throws TimeoutException {
 
 		// Bestimme wie genau die Berechnung sein soll:
-		double[] verbesserungsKoeff = new double[]{threshold};
+		double[] verbesserungsKoeff = new double[] { threshold };
 		double[] polySeiteLaenge = new double[ordnung + 1];
 		for (int i = 0; i < ordnung + 1; i++) {
 			polySeiteLaenge[i] = 0.1;
@@ -55,18 +69,6 @@ public class StableFMinSearch {
 		return koeffizienten;
 	}
 
-	/**
-	 * Startet und überwacht die eigentliche Berechnung, welche in einem
-	 * überwachten Task stattfindet.
-	 * 
-	 * @param target
-	 * @param verbesserungsKoeff
-	 * @param startWert
-	 * @param polySeiteLaenge
-	 * @param client
-	 * @return
-	 * @throws TimeoutException
-	 */
 	private static PointValuePair calculate(Target target, double[] verbesserungsKoeff, double[] startWert,
 			double[] polySeiteLaenge, SwingWorkerClient client) throws TimeoutException {
 		// Berechnung:

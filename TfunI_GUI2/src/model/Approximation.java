@@ -13,6 +13,8 @@ import userInterface.StatusBar;
  * 
  * Representiert eine Übertragungsfunktion, welche durch ein
  * Annäherungsverfahren möglichst genau an ein {@link Target} angepasst wurde.
+ * Diese Annäherung läuft in einem eigenen SwingWorker ab und es wird die Klasse
+ * {@link StableFMinSearch} verwendet.
  * 
  * @author Team 1
  *
@@ -62,7 +64,7 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 		// Variable:
 		utf = new UTFDatatype();
 		utf.ordnung = order;
-		utf.zaehler = optimum.getPoint()[0] / network.getMeasurementData().getstepHeight();
+		utf.zaehler = optimum.getPoint()[0]/network.getMeasurementData().getstepHeight();
 		if (optimum.getPoint().length % 2 == 1) {
 			utf.koeffWQ = new double[optimum.getPoint().length - 1];
 
@@ -102,7 +104,7 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 
 	private void calculateStep() {
 		double[] points = new double[utf.ordnung + 1];
-		points[0] = utf.zaehler;
+		points[0] = utf.zaehler*network.getMeasurementData().getstepHeight();
 		for (int i = 0; i < utf.koeffWQ.length; i++) {
 			points[i + 1] = utf.koeffWQ[i];
 		}
@@ -185,7 +187,6 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 		}
 		return 0;
 	}
-
 
 	@Override
 	protected void process(List<Message> arg) {

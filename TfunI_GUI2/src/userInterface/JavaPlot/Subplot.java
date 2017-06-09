@@ -1,7 +1,6 @@
 package userInterface.JavaPlot;
 
 import java.awt.BasicStroke;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -21,6 +20,12 @@ import userInterface.JavaPlot.Trace;
 
 import javax.swing.JPanel;
 
+/**
+ * Stellt einen eigentlichen einzelnen Plot zur Verfügung.
+ * 
+ * @author Team 1
+ *
+ */
 public class Subplot extends JPanel implements MouseMotionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 
@@ -34,22 +39,22 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	private static final int traceColorsNumber = 3;
 	private static final Color[] traceColors = new Color[traceColorsNumber];
 	private Trace[] trace = new Trace[traceMaxNumber];
-	public static final int NOT_ENOUGHT_SPACE = -1;
+	protected static final int NOT_ENOUGHT_SPACE = -1;
 	private int traceThickness = GlobalSettings.traceThinkness;
 
 	// --------------------------------------------------------------------
 	// Axes:
-	public final static int XAXIS = Trace.XAXIS;
-	public final static int Y1AXIS = Trace.Y1AXIS;
-	public final static int Y2AXIS = Trace.Y2AXIS;
+	protected final static int XAXIS = Trace.XAXIS;
+	protected final static int Y1AXIS = Trace.Y1AXIS;
+	protected final static int Y2AXIS = Trace.Y2AXIS;
 
 	// --------------------------------------------------------------------
 	// Axis Range:
 	private int axisRangeTargetSectorNumber = 5; // @Approach
 	private int[] axisRangeActualSectorNumber = { 1, 1, 1 };
 	private int[] axisRangeSectorZeroPoint = new int[3];
-	public static final int ZERO_IN_RANGE = 0;
-	public static final int NO_ZERO_IN_RANGE = -1;
+	protected static final int ZERO_IN_RANGE = 0;
+	protected static final int NO_ZERO_IN_RANGE = -1;
 	private double[][] axisRangeSector = new double[3][axisRangeTargetSectorNumber + 2];
 
 	// --------------------------------------------------------------------
@@ -63,8 +68,8 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	// --------------------------------------------------------------------
 	// Board for the Plot:
 	private double boardBorderFactor = 9;
-	public static final int X = Trace.X;
-	public static final int Y = Trace.Y;
+	protected static final int X = Trace.X;
+	protected static final int Y = Trace.Y;
 	private int[][] boardCorner = new int[4][2];
 	private Color boardColor = new Color(45, 45, 45); // @Approach
 	private boolean doScale = false; // @Approach
@@ -110,9 +115,9 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 	// --------------------------------------------------------------------
 	// Axis Label:
 	private boolean axisLabelValid[] = { false, false, false };
-	public String axisLabelSymbol[] = { "", "", "" };
-	public String axisLabelIndex[] = { "", "", "" };
-	public String axisLabelUnit[] = { "", "", "" };
+	protected String axisLabelSymbol[] = { "", "", "" };
+	protected String axisLabelIndex[] = { "", "", "" };
+	protected String axisLabelUnit[] = { "", "", "" };
 
 	// --------------------------------------------------------------------
 	// Cursor:
@@ -120,7 +125,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 	// --------------------------------------------------------------------
 	// Initialize:
-	public Subplot() {
+	protected Subplot() {
 		setLayout(null);
 
 		// initialize -> traces
@@ -715,7 +720,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 	// --------------------------------------------------------------------
 	// Set Axis-Label:
-	public void setAxisLabel(int axis, String symbol, String index, String unit) {
+	protected void setAxisLabel(int axis, String symbol, String index, String unit) {
 		this.axisLabelValid[axis] = true;
 		this.axisLabelSymbol[axis] = symbol;
 		this.axisLabelIndex[axis] = index;
@@ -725,20 +730,20 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 	// --------------------------------------------------------------------
 	// Clear Axis-Label:
-	public void clearAxisLabel(int axis) {
+	protected void clearAxisLabel(int axis) {
 		this.axisLabelValid[axis] = false;
 		repaint();
 	}
 
 	// --------------------------------------------------------------------
 	// Set Cursor-X:
-	public void setCursorX(int x) {
+	protected void setCursorX(int x) {
 		cursorX = x;
 	}
 
 	// --------------------------------------------------------------------
 	// Add new trace:
-	public int addTrace(Trace trace) {
+	protected int addTrace(Trace trace) {
 		boolean vorhanden = false;
 		for (int i = 0; i < this.trace.length; i++) {
 			if (trace == this.trace[i]) {
@@ -763,13 +768,13 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 	// --------------------------------------------------------------------
 	// Delete trace:
-	public void clearTrace(int index) {
+	protected void clearTrace(int index) {
 		trace[index].dataValid = false;
 	}
 
 	// --------------------------------------------------------------------
 	// Set the range of the axes:
-	public void setRange(int axis, double low, double high) {
+	protected void setRange(int axis, double low, double high) {
 
 		// Calculate the size between the sections:
 		double deltaRange = Math.abs(high - low);
@@ -845,7 +850,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 	// --------------------------------------------------------------------
 	// Set the ideal range of the axes:
-	public void setRangeIdeal() {
+	protected void setRangeIdeal() {
 
 		int zaehler = 0;
 		for (int i = 0; i < trace.length; i++) {
@@ -963,7 +968,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 	// --------------------------------------------------------------------
 	// Connect all X-Axes of the Subplots:
-	public void setConnected(Plot plot, boolean lowSubplot, boolean highSubplot) {
+	protected void setConnected(Plot plot, boolean lowSubplot, boolean highSubplot) {
 		connected = true;
 		connectedLowSubplot = lowSubplot;
 		connectedHighSubplot = highSubplot;
@@ -972,7 +977,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 	// --------------------------------------------------------------------
 	// Disconnect all X-Axes of the Subplots:
-	public void setDisconnected() {
+	protected void setDisconnected() {
 		connected = false;
 	}
 
@@ -1062,7 +1067,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 	// --------------------------------------------------------------------
 	// Add new Slider:
-	public void addSlider(int orientation, String tag, Plot plot) {
+	protected void addSlider(int orientation, String tag, Plot plot) {
 		this.plot = plot;
 		if (sliderActualNumber < MAX_SLIDER) {
 			sliders[sliderActualNumber] = new Slider(orientation, this, tag);
@@ -1074,7 +1079,7 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 	// --------------------------------------------------------------------
 	// Update Value of Slider:
-	public void updateSliderValue(Slider slider) {
+	protected void updateSliderValue(Slider slider) {
 		double actualValue;
 		if (slider.orienation == Slider.HORIZONTAL) {
 			actualValue = axisRangeSector[Y1AXIS][0] + ((boardCorner[1][Y] - slider.positionPixel)
@@ -1119,13 +1124,13 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 
 	// // --------------------------------------------------------------------
 	// // Set Step Position:
-	// public void setStepPosition(double position) {
+	// protected void setStepPosition(double position) {
 	// stepTime = position;
 	// }
 
 	// --------------------------------------------------------------------
 	// Set Slider Position:
-	public void setSliderPosition(String tag, double value) {
+	protected void setSliderPosition(String tag, double value) {
 		for (int i = 0; i < sliderActualNumber; i++) {
 			if (sliders[i].tag == tag) {
 

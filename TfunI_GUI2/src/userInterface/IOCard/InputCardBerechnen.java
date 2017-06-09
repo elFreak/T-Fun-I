@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Observer;
+
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -19,6 +21,12 @@ import userInterface.Controller;
 import userInterface.MyBorderFactory;
 import userInterface.StatusBar;
 
+/**
+ * Oberfläche für Eingaben im Zustand Berechnen.
+ * 
+ * @author Team 1
+ *
+ */
 public class InputCardBerechnen extends JPanel implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 
@@ -35,6 +43,11 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 	private JTextField tfThreshold = new JTextField(String.valueOf(GlobalSettings.startValueThreshold));
 	private JTextField tfNorm = new JTextField(String.valueOf(GlobalSettings.startValueAnzahlWerte));
 
+	/**
+	 * Erzeugt und initialisiert das Objekt.
+	 * 
+	 * @param controller
+	 */
 	public InputCardBerechnen(Controller controller) {
 		this.controller = controller;
 
@@ -262,6 +275,9 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 	}
 
 	/**
+	 * Updated das Objekt.
+	 * 
+	 * @see Observer
 	 * 
 	 * @param obs
 	 * @param obj
@@ -320,6 +336,11 @@ public class InputCardBerechnen extends JPanel implements ActionListener, MouseL
 
 	}
 
+	/**
+	 * Gibt zurück welche {@link JCheckBox} aktiv sind.
+	 * 
+	 * @return state[boolean]
+	 */
 	public boolean[] getCBState() {
 		boolean[] state = new boolean[10];
 		for (int i = 0; i < cB.length; i++) {

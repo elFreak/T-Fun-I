@@ -14,12 +14,23 @@ import userInterface.Controller;
 import userInterface.DataRead;
 import userInterface.MyBorderFactory;
 
+/**
+ * Oberfläche für Eingaben im Zustand Einlesen.
+ * 
+ * @author Team 1
+ *
+ */
 public class InputCardEinlesen extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel panelEinlesen = new JPanel(new GridBagLayout());
 	private JButton btEinlesen = new JButton("Öffnen");
 
+	/**
+	 * Erzeugt und initialisiert das Objekt.
+	 * 
+	 * @param controller
+	 */
 	public InputCardEinlesen(Controller controller) {
 		btEinlesen.addActionListener(new ActionListener() {
 

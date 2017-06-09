@@ -2,6 +2,12 @@ package userInterface.JavaPlot;
 
 import java.awt.Color;
 
+/**
+ * Representiert einen Trace. Wird verwendet um einem {@link Plot} eine neue Kurve hinzuzufügen.
+ * 
+ * @author Team 1
+ *
+ */
 public class Trace {
 	// --------------------------------------------------------------------
 	// Data Management:

@@ -8,9 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.Observer;
+
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -22,12 +24,19 @@ import userInterface.MyBorderFactory;
 import userInterface.Numbers;
 import userInterface.StatusBar;
 
+/**
+ * Ein Panel, in welchem die Koeffizienten der berechnenten Übertragungsfunktion
+ * angezeigt werden.
+ * 
+ * @author Team 1
+ *
+ */
 public class KoefPanel extends JPanel implements ActionListener, MouseWheelListener {
 	private static final long serialVersionUID = 1L;
 
 	private JLabel lbKorel = new JLabel("null");
-	private JScrollPane spKoef;
 	private JPanel pnInfo = new JPanel();
+	private JPanel pnKoefbig = new JPanel(new GridBagLayout());
 	private JPanel pnKoef = new JPanel();
 	private JLabel lbwp[] = new JLabel[5];
 	private JTextField tfwp[] = new JTextField[5];
@@ -37,6 +46,7 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 	private JTextField tfsigma = new JTextField();
 	private JLabel lbk = new JLabel("K", SwingConstants.CENTER);
 	private JTextField tfk = new JTextField();
+	private JButton showUtf = new JButton("Formel anzeigen");
 
 	private UTFDatatype utf;
 	private int order = 0;
@@ -46,7 +56,9 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 	private Controller controller;
 
 	/**
+	 * Erzeugt und initialisiert das Objekt.
 	 * 
+	 * @param controller
 	 */
 	public KoefPanel(Controller controller) {
 		this.controller = controller;
@@ -67,8 +79,10 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 
 		// ------------------------------------------------------------------------------------------------------------------------------
 		// pnKoef
-		pnKoef.setLayout(new GridLayout(7, 2, 5, 5));
+
+		pnKoef.setLayout(new GridLayout(6, 2, 5, 5));
 		pnKoef.setBackground(GlobalSettings.colorBackgroundWhite);
+		pnKoefbig.setBackground(GlobalSettings.colorBackgroundWhite);
 
 		lbk.setFont(GlobalSettings.fontMath);
 		pnKoef.add(lbk);
@@ -87,7 +101,7 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 		pnKoef.add(tfsigma);
 
 		for (int i = 0; i < tfwp.length; i++) {
-			lbwp[i] = new JLabel("<html>&#x3c9;<sub>p" + i + "</sub> </html>", SwingConstants.CENTER);
+			lbwp[i] = new JLabel("<html>&#x3c9;<sub>p" + (i + 1) + "</sub> </html>", SwingConstants.CENTER);
 			lbwp[i].setFont(GlobalSettings.fontMath);
 			pnKoef.add(lbwp[i]);
 
@@ -98,7 +112,7 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 
 			pnKoef.add(tfwp[i]);
 
-			lbqp[i] = new JLabel("<html>q<sub>p" + i + "</sub> </html>", SwingConstants.CENTER);
+			lbqp[i] = new JLabel("<html>q<sub>p" + (i + 1) + "</sub> </html>", SwingConstants.CENTER);
 			lbqp[i].setFont(GlobalSettings.fontMath);
 			pnKoef.add(lbqp[i]);
 
@@ -111,18 +125,43 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 
 		// ------------------------------------------------------------------------------------------------------------------------------
 
-		pnKoef.setBorder(MyBorderFactory.createMyBorder("Übertragungsfunktion"));
-		add(pnKoef, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+		pnKoefbig.add(pnKoef, new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER,
+				GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+		pnKoefbig.add(showUtf, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+		pnKoefbig.setBorder(MyBorderFactory.createMyBorder("Übertragungsfunktion"));
+		add(pnKoefbig, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
 				GridBagConstraints.HORIZONTAL, new Insets(10, 10, 10, 10), 0, 0));
 		add(pnInfo, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
 				GridBagConstraints.HORIZONTAL, new Insets(10, 10, 10, 10), 0, 0));
 
+		showUtf.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new FormelFrame(order);
+			}
+		});
+
 	}
 
+	/**
+	 * Setzt die Ordnung, welche angezeigt werden soll.
+	 * 
+	 * @param order
+	 */
 	public void setOrdnung(int order) {
 		this.order = order;
 	}
 
+	/**
+	 * Updated das Objekt.
+	 * 
+	 * @see Observer
+	 * 
+	 * @param obs
+	 * @param obj
+	 */
 	public void update(Object obs, Object obj) {
 		Model model = (Model) obs;
 		if (order < 1 || order > 10)
@@ -206,8 +245,8 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 
 		UTFDatatype new_utf = new UTFDatatype();
 		try {
-			if(Double.parseDouble(((JTextField)e.getSource()).getText())<=0) {
-				if(!e.getSource().equals(tfsigma)) {
+			if (Double.parseDouble(((JTextField) e.getSource()).getText()) <= 0) {
+				if (!e.getSource().equals(tfsigma)) {
 					throw new NumberFormatException();
 				}
 			}
@@ -228,7 +267,6 @@ public class KoefPanel extends JPanel implements ActionListener, MouseWheelListe
 			StatusBar.showStatus("Ungültige Eingabe", StatusBar.FEHLER);
 			controller.changeApproximation(utf);
 		}
-		
 
 	}
 }

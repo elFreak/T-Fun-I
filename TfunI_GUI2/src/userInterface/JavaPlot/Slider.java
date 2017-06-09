@@ -13,6 +13,13 @@ import javax.swing.JPanel;
 
 import projectT_Fun_I.GlobalSettings;
 
+/**
+ * Representiert einen Slider welcher in einem {@link Subplot} verwendet werden
+ * kann.
+ * 
+ * @author alexs
+ *
+ */
 public class Slider extends JPanel {
 	private static final long serialVersionUID = 1L;
 
@@ -26,48 +33,54 @@ public class Slider extends JPanel {
 	public int orienation;
 	public String tag;
 	private boolean highlight = false;
-	
 
+	/**
+	 * Erzeugt das Objekt.
+	 * 
+	 * @param orientation
+	 * @param subplot
+	 * @param tag
+	 */
 	public Slider(int orientation, Subplot subplot, String tag) {
 		this.tag = tag;
 		this.orienation = orientation;
 		this.setOpaque(false);
 		this.slider = this;
-		
+
 		this.addMouseListener(new MouseListener() {
-			
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
 				highlight = false;
 				repaint();
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
 				highlight = true;
 				repaint();
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
+
 		this.addMouseMotionListener(new MouseMotionListener() {
 
 			@Override
@@ -82,7 +95,7 @@ public class Slider extends JPanel {
 				} else {
 					positionPixel += e.getX() - getWidth() / 2;
 				}
-				
+
 				repaint();
 				subplot.repaint();
 				subplot.updateSliderValue(slider);
@@ -93,13 +106,12 @@ public class Slider extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		
+
 		Stroke dashed;
-		if(highlight) {
-			dashed = new BasicStroke(GlobalSettings.traceThinkness*2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
+		if (highlight) {
+			dashed = new BasicStroke(GlobalSettings.traceThinkness * 2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
 					new float[] { GlobalSettings.traceThinkness * 3, GlobalSettings.traceThinkness }, 0);
-		}else
-		{
+		} else {
 			dashed = new BasicStroke(GlobalSettings.traceThinkness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
 					new float[] { GlobalSettings.traceThinkness * 3, GlobalSettings.traceThinkness }, 0);
 		}

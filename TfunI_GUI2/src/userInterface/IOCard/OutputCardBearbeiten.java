@@ -1,11 +1,19 @@
 package userInterface.IOCard;
 
+import java.util.Observer;
+
 import model.Model;
 import userInterface.Controller;
 import userInterface.WindowContainer;
 import userInterface.JavaPlot.Plot;
 import userInterface.JavaPlot.Slider;
 
+/**
+ * Oberfläche für Ausgaben im Zustand Bearbeiten.
+ * 
+ * @author Team 1
+ *
+ */
 public class OutputCardBearbeiten extends WindowContainer {
 	private static final long serialVersionUID = 1L;
 
@@ -15,6 +23,11 @@ public class OutputCardBearbeiten extends WindowContainer {
 
 	private Plot plotBearbeiten;
 
+	/**
+	 * Erzeugt und initialisiert das Objekt.
+	 * 
+	 * @param controller
+	 */
 	public OutputCardBearbeiten(OutputPanel outputPanel, Controller controller) {
 		plotBearbeiten = new Plot(controller);
 		addComponent(plotBearbeiten);
@@ -46,6 +59,13 @@ public class OutputCardBearbeiten extends WindowContainer {
 		plotBearbeiten.setSliderPosition(KEY_END, 1000);
 	}
 
+	/**
+	 * Updated das Objekt. 
+	 * @see Observer
+	 * 
+	 * @param obs
+	 * @param obj
+	 */
 	public void update(java.util.Observable obs, Object obj) {
 
 		plotBearbeiten.setSubplot(0);
@@ -58,6 +78,9 @@ public class OutputCardBearbeiten extends WindowContainer {
 		plotBearbeiten.setRangeIdeal();
 	}
 
+	/**
+	 * Skaliert alle Plots automatisch.
+	 */
 	public void setAllRangeIdeal() {
 		plotBearbeiten.setSubplot(0);
 		plotBearbeiten.setRangeIdeal();

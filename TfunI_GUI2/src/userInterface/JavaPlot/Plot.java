@@ -8,6 +8,13 @@ import javax.swing.JPanel;
 
 import userInterface.Controller;
 
+/**
+ * Stellt einen Plot zur Verfügung. Dieser Plot kann mehrere {@link Subplot}
+ * beinhalten, welche miteinander verknüpft werden können.
+ * 
+ * @author Team 1
+ *
+ */
 public class Plot extends JPanel {
 	private static final long serialVersionUID = 1L;
 
@@ -47,6 +54,9 @@ public class Plot extends JPanel {
 
 	// --------------------------------------------------------------------
 	// Initialize:
+	/**
+	 * Erzeugt einen leeren Plot.
+	 */
 	public Plot() {
 		super(new GridLayout());
 
@@ -54,6 +64,12 @@ public class Plot extends JPanel {
 		addSubplot();
 	}
 
+	/**
+	 * Erzeugt einen leeren Plot und gibt diesem einen {@link Controller} mit.
+	 * Dieser Plot kann später Informationen dem Controller übergeben.
+	 * 
+	 * @param controller
+	 */
 	public Plot(Controller controller) {
 		super(new GridLayout());
 		this.controller = controller;
@@ -72,6 +88,9 @@ public class Plot extends JPanel {
 
 	// --------------------------------------------------------------------
 	// Add new subplot:
+	/**
+	 * Fügt dem Plot einen neuen {@link Subplot} hinzu.
+	 */
 	public void addSubplot() {
 		subplot[subplotActualNumber] = new Subplot();
 		subplotSelected = subplotActualNumber;
@@ -91,12 +110,20 @@ public class Plot extends JPanel {
 
 	// --------------------------------------------------------------------
 	// Set current subplot:
+	/**
+	 * Wählt den aktuellen {@link Subplot} aus.
+	 * 
+	 * @param index
+	 */
 	public void setSubplot(int index) {
 		subplotSelected = index;
 	}
 
 	// --------------------------------------------------------------------
 	// Connect subplot X-Axis:
+	/**
+	 * Verbindet die X-Axen aller {@link Subplot} miteinander.
+	 */
 	public void connectSubplots() {
 		connected = true;
 		if (subplotActualNumber > 0) {
@@ -110,6 +137,9 @@ public class Plot extends JPanel {
 
 	// --------------------------------------------------------------------
 	// Disconnect subplot X-Axis:
+	/**
+	 * Löst die X-Axen aller {@link Subplot} voneinander.
+	 */
 	public void disconnectSubplots() {
 		connected = false;
 		for (int i = 0; i < subplotActualNumber; i++) {
@@ -119,18 +149,39 @@ public class Plot extends JPanel {
 
 	// --------------------------------------------------------------------
 	// Add new trace:
+	/**
+	 * Fügt dem aktuallen {@link Subplot} einen {@link Trace} hinzu, falls
+	 * dieser nicht bereits vorhanden ist.
+	 * 
+	 * @param trace
+	 * @return done
+	 */
 	public int addTrace(Trace trace) {
 		return subplot[subplotSelected].addTrace(trace);
 	}
 
 	// --------------------------------------------------------------------
 	// Delete trace:
+	/**
+	 * Entfernt vom aktuallen {@link Subplot} einen {@link Trace}.
+	 * 
+	 * @param index
+	 */
 	public void clearTrace(int index) {
 		subplot[subplotSelected].clearTrace(index);
 	}
 
 	// --------------------------------------------------------------------
 	// Set the range of the axes:
+	/**
+	 * Setzt den Achsenberech des aktuallen {@link Subplot}. Falls die
+	 * {@link Subplot} miteinander verbunden sind, werden alle X-Achsen zusammen
+	 * verändert.
+	 * 
+	 * @param axis
+	 * @param low
+	 * @param high
+	 */
 	public void setRange(int axis, double low, double high) {
 		if (connected && axis == XAXIS) {
 			for (int i = 0; i < subplotActualNumber; i++) {
@@ -143,6 +194,9 @@ public class Plot extends JPanel {
 
 	// --------------------------------------------------------------------
 	// Set the ideal range of the axes:
+	/**
+	 * Setzt den angezeigten Berech des aktuallen {@link Subplot} automatisch.
+	 */
 	public void setRangeIdeal() {
 		if (connected) {
 			for (int i = 0; i < subplotActualNumber; i++) {
@@ -155,6 +209,11 @@ public class Plot extends JPanel {
 
 	// --------------------------------------------------------------------
 	// Set X-Cursor:
+	/**
+	 * Setzt die Position von X-Cursor.
+	 * 
+	 * @param x
+	 */
 	public void setCursorX(int x) {
 		if (connected) {
 			for (int i = 0; i < subplotActualNumber; i++) {
@@ -165,20 +224,15 @@ public class Plot extends JPanel {
 	}
 
 	// --------------------------------------------------------------------
-	// Clear Axis-Label:
-	public void clearAxisLabel(int axis) {
-		if (connected && axis == XAXIS) {
-			for (int i = 0; i < subplotActualNumber; i++) {
-				subplot[i].clearAxisLabel(axis);
-			}
-			repaint();
-		} else {
-			subplot[subplotSelected].clearAxisLabel(axis);
-		}
-	}
-
-	// --------------------------------------------------------------------
 	// Set Axis-Label:
+	/**
+	 * Fügt dem aktuallen {@link Subplot} eine Achsenbeschriftung hinzu.
+	 * 
+	 * @param axis
+	 * @param symbol
+	 * @param index
+	 * @param unit
+	 */
 	public void setAxisLabel(int axis, String symbol, String index, String unit) {
 		if (connected) {
 			for (int i = 0; i < subplotActualNumber; i++) {
@@ -192,25 +246,44 @@ public class Plot extends JPanel {
 
 	// --------------------------------------------------------------------
 	// Add new Slider:
+	/**
+	 * Fügt dem aktuellen {@link Subplot} einen {@link Slider} hinzu.
+	 * 
+	 * @param orientation
+	 * @param tag
+	 */
 	public void addSlider(int orientation, String tag) {
 		subplot[subplotSelected].addSlider(orientation, tag, this);
 	}
 
 	// --------------------------------------------------------------------
 	// Update for Slider:
+	/**
+	 * Aktuallisiert die {@link Slider} vom aktuellen {@link Subplot}.
+	 * 
+	 * @param start
+	 * @param end
+	 * @param offset
+	 */
 	public void updateSliderValue(double start, double end, double offset) {
 		controller.setRange(end, offset);
 		controller.setStepTime(start);
 	}
 
-//	// --------------------------------------------------------------------
-//	// Set Step Position:
-//	public void setStepPosition(double position) {
-//		subplot[subplotSelected].setStepPosition(position);
-//	}
+	// // --------------------------------------------------------------------
+	// // Set Step Position:
+	// public void setStepPosition(double position) {
+	// subplot[subplotSelected].setStepPosition(position);
+	// }
 
 	// --------------------------------------------------------------------
 	// Set Slider Position:
+	/**
+	 * Aktuallisiert den Sprung-{@link Slider} vom aktuellen {@link Subplot}.
+	 * 
+	 * @param tag
+	 * @param value
+	 */
 	public void setSliderPosition(String tag, double value) {
 		subplot[subplotSelected].setSliderPosition(tag, value);
 	}

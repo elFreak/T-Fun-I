@@ -1,24 +1,27 @@
 package userInterface.IOCard;
 
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.util.Observable;
+import java.util.Observer;
+
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
-
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 
 import model.Model;
 import projectT_Fun_I.GlobalSettings;
 import userInterface.Controller;
 import userInterface.SplitPaneContainer;
-import userInterface.WindowContainer;
 import userInterface.JavaPlot.Plot;
 
+/**
+ * Oberfläche für Ausgaben im Zustand Verifizieren.
+ * 
+ * @author Team 1
+ *
+ */
 public class OutputCardVerifizieren extends JPanel {
 	private static final long serialVersionUID = 1L;
 
@@ -29,6 +32,11 @@ public class OutputCardVerifizieren extends JPanel {
 
 	private KoefPanel koefPanel;
 
+	/**
+	 * Erzeugt und initialisiert das Objekt.
+	 * 
+	 * @param controller
+	 */
 	public OutputCardVerifizieren(OutputPanel outputPanel, Controller controller) {
 
 		JPanel panelBackground = new JPanel(new GridLayout(1, 1));
@@ -73,6 +81,13 @@ public class OutputCardVerifizieren extends JPanel {
 		plotPolstellen.setAxisLabel(Plot.Y1AXIS, "Imag(s)", "", "");
 	}
 
+	/**
+	 * Updated das Objekt. 
+	 * @see Observer
+	 * 
+	 * @param obs
+	 * @param obj
+	 */
 	public void update(Observable obs, Object obj) {
 		koefPanel.update(obs, obj);
 
@@ -82,10 +97,18 @@ public class OutputCardVerifizieren extends JPanel {
 		}
 	}
 
+	/**
+	 * Setzt die aktuelle Ordnung.
+	 * 
+	 * @param order
+	 */
 	public void setVerifizierenOrder(int order) {
 		koefPanel.setOrdnung(order);
 	}
 
+	/**
+	 * Skaliert alle Plots automatisch.
+	 */
 	public void setAllRangeIdeal() {
 		plotVerifizieren.setSubplot(0);
 		plotVerifizieren.setRangeIdeal();

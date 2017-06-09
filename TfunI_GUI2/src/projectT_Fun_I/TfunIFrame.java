@@ -52,7 +52,7 @@ public class TfunIFrame extends JFrame {
 
 		model = new Model();
 		controller = new Controller(model);
-		view = new View(controller, this);
+		view = new View(controller);
 		model.addObserver(view);
 		controller.setView(view);
 

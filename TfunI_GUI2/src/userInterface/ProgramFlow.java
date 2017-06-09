@@ -16,6 +16,14 @@ import javax.swing.JPanel;
 import projectT_Fun_I.GlobalSettings;
 import projectT_Fun_I.Utility;
 
+/**
+ * Ein {@link JPanel} mit vier {@link JButton} mit welchen der Benutzer den
+ * aktuellen Zustand vom Programm ausgewählen kann. Verfügbare Zustände sind
+ * Einlesen, Bearbeiten, Berechnen und Verifizieren.
+ * 
+ * @author Team 1
+ *
+ */
 public class ProgramFlow extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
@@ -34,14 +42,19 @@ public class ProgramFlow extends JPanel implements ActionListener {
 
 	// --------------------------------------------------------------------
 	// Initialize:
+	/**
+	 * Erzeugt das Objekt.
+	 * 
+	 * @param controller
+	 */
 	public ProgramFlow(Controller controller) {
 		this.controller = controller;
 
 		setLayout(null);
 
 		this.setFont(GlobalSettings.fontText);
-		this.setMinimumSize(new Dimension(getFont().getSize()*60, getFont().getSize() * 6));
-		this.setPreferredSize(new Dimension(getFont().getSize()*60, getFont().getSize() * 6));
+		this.setMinimumSize(new Dimension(getFont().getSize() * 60, getFont().getSize() * 6));
+		this.setPreferredSize(new Dimension(getFont().getSize() * 60, getFont().getSize() * 6));
 		btEinlesen.setFont(getFont());
 		btBearbeiten.setFont(getFont());
 		btBerechnen.setFont(getFont());
@@ -49,7 +62,7 @@ public class ProgramFlow extends JPanel implements ActionListener {
 
 		Utility.setAllBackgrounds(this, GlobalSettings.colorBackgroundBlueDark);
 
-		// User-Interface:		
+		// User-Interface:
 		btEinlesen.setEnabled(true);
 		btBearbeiten.setEnabled(true);
 		btBerechnen.setEnabled(true);
@@ -127,24 +140,6 @@ public class ProgramFlow extends JPanel implements ActionListener {
 		polygon.addPoint(x2 - (int) (textHight * 2), y2 - (int) (textHight * 1));
 		polygon.addPoint(x2 - (int) (textHight * 2), y2 + (int) (textHight * 1));
 		g2.fillPolygon(polygon);
-	}
-
-	public void setActualMode(int mode) {
-		switch (mode) {
-		case Controller.EINLESEN:
-			break;
-		case Controller.BEARBEITEN:
-			break;
-
-		case Controller.BERECHNEN:
-
-			break;
-		case Controller.VERIFIZIEREN:
-
-			break;
-
-		}
-
 	}
 
 	@Override

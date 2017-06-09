@@ -8,15 +8,13 @@ import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.NelderMeadSimplex;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizer;
-
 import model.Target;
 
 /**
- * 
- * Klasse OverwatchesTask: Ermöglicht die Überwachung der Berechnung.
+ * Dient zur überwachten Berechnung mittels FMinSearch. Die Berechnung läuft
+ * dabei in einem eigenen {@link SwingWorker} ab.
  * 
  * @author Team 1
- *
  */
 public class OverwatchedTask extends SwingWorker<Object, double[]> {
 
@@ -41,7 +39,7 @@ public class OverwatchedTask extends SwingWorker<Object, double[]> {
 	// Konstrucktor:
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
-	 * Erstellt den Überwachbaren Task.
+	 * Erzeugt das Objekt und initialisiert alle Werte.
 	 * 
 	 * @param target
 	 * @param verbesserungsKoeff
@@ -66,10 +64,6 @@ public class OverwatchedTask extends SwingWorker<Object, double[]> {
 	// -----------------------------------------------------------------------------------------------------------------
 	// Berechnungs Methoden:
 	// -----------------------------------------------------------------------------------------------------------------
-	/**
-	 * Definiert, was im eigenen Thread gemacht werden soll.
-	 * 
-	 */
 	@Override
 	protected Object doInBackground() throws Exception {
 		SimplexOptimizer optimizer = new SimplexOptimizer(verbesserungsKoeff, verbesserungsKoeff);
@@ -81,15 +75,11 @@ public class OverwatchedTask extends SwingWorker<Object, double[]> {
 															// Compiler!
 	}
 
-	/**
-	 * Sobald der Thread beendet ist, wird der Status entsprechend gesetzt.
-	 */
 	@Override
 	protected void done() {
 		super.done();
 		status[0] = STATUS_FERTIG;
 	}
-
 
 	// -----------------------------------------------------------------------------------------------------------------
 	// Get-Methoden:

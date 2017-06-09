@@ -1,34 +1,41 @@
 package userInterface.IOCard;
 
 import java.awt.CardLayout;
-import javax.swing.JPanel;import projectT_Fun_I.GlobalSettings;
+import java.util.Observer;
+
+import javax.swing.JPanel;
+
+import com.sun.xml.internal.ws.api.server.Container;
+
+import projectT_Fun_I.GlobalSettings;
 import projectT_Fun_I.Utility;
 import userInterface.Controller;
 import userInterface.MyBorderFactory;
 
 /**
+ * Ein {@link Container} für die verschiedenen Eingabekarten.
+ * ({@link InputCardEinlesen}, {@link InputCardBearbeiten},
+ * {@link InputCardBerechnen} und {@link InputCardVerifizieren}). Organisiert
+ * nach einem {@link CardLayout}.
  * 
- * @author Alexander Stutz
+ * @author Team 1
  *
  */
 public class InputPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * General
-	 */
+	// General
 	private Controller controller;
 	private CardLayout cardLayout = new CardLayout();
 
-	/**
-	 * Cards
-	 */
+	// Cards
 	private InputCardEinlesen inputCardEinlesen;
 	private InputCardBearbeiten inputCardBearbeiten;
 	private InputCardBerechnen inputCardBerechnen;
 	private InputCardVerifizieren inputCardVerifizieren;
 
 	/**
+	 * Erzeugt und initialisiert das Objekt.
 	 * 
 	 * @param controller
 	 */
@@ -59,6 +66,8 @@ public class InputPanel extends JPanel {
 	}
 
 	/**
+	 * Setzt den aktuellen Zustand und definiert damit, welche Oberfläche/Karte
+	 * angezeigt wird.
 	 * 
 	 * @param mode
 	 */
@@ -79,6 +88,13 @@ public class InputPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Updated das Objekt. 
+	 * @see Observer
+	 * 
+	 * @param obs
+	 * @param obj
+	 */
 	public void update(java.util.Observable obs, Object obj) {
 		inputCardBearbeiten.update(obs, obj);
 		inputCardBerechnen.update(obs, obj);
@@ -90,6 +106,6 @@ public class InputPanel extends JPanel {
 	}
 
 	public void setVerifizizerenOrder(int i) {
-		inputCardVerifizieren.setOrder(i);		
+		inputCardVerifizieren.setOrder(i);
 	}
 }

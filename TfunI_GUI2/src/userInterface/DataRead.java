@@ -7,7 +7,23 @@ import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import javafx.stage.FileChooser;
+
+/**
+ * Stellt die statische Methode {@link #csvread()} zur Verfügung.
+ * 
+ * @author Team 1
+ *
+ */
 public class DataRead {
+
+	/**
+	 * Öffnet einen {@link FileChooser}. Sobal der Benutzer eine csv-Datei
+	 * ausgewählt hat, werden die darin enthaltenen Daten eingelesen. Bei
+	 * Problemen wird der Benutzer mittels der {@link StatusBar} informiert.<s
+	 * 
+	 * @return data
+	 */
 	public static double[][] csvread() {
 		JFileChooser chooser = new JFileChooser(new File(".\\"));
 		BufferedReader eingabeDatei = null;
@@ -40,9 +56,10 @@ public class DataRead {
 				int t = s.length;
 				eingabeDatei.close();
 				eingabeDatei = new BufferedReader(new FileReader(Filepath));
-				
-				//Je nachdem, ob es sich bei der csv Datei um Spalten oder Zeilenvektoren handelt, 
-				//wird die Datei anders eingelesen.
+
+				// Je nachdem, ob es sich bei der csv Datei um Spalten oder
+				// Zeilenvektoren handelt,
+				// wird die Datei anders eingelesen.
 				if (t <= 3) {
 					nColumns = s.length;
 					while (eingabeDatei.readLine() != null) {
@@ -55,7 +72,7 @@ public class DataRead {
 					data = new double[nColumns][nLines];
 					for (int i = 0; i < nLines; i++) {
 						s = eingabeDatei.readLine().split("[, ]+");
-						//Abfrage, ob alle Vektoren dieselbe Länge besitzten.
+						// Abfrage, ob alle Vektoren dieselbe Länge besitzten.
 						if (s.length != nColumns) {
 							lengtherror = true;
 						}
@@ -63,8 +80,9 @@ public class DataRead {
 							data[k][i] = Double.parseDouble(s[k]);
 						}
 					}
-					//Je nachdem, ob es sich bei der csv Datei um Spalten oder Zeilenvektoren handelt, 
-					//wird die Datei anders eingelesen.
+					// Je nachdem, ob es sich bei der csv Datei um Spalten oder
+					// Zeilenvektoren handelt,
+					// wird die Datei anders eingelesen.
 				} else {
 					nLines = s.length;
 					while (eingabeDatei.readLine() != null) {
@@ -77,7 +95,7 @@ public class DataRead {
 					data = new double[nColumns][nLines];
 					for (int i = 0; i < nColumns; i++) {
 						s = eingabeDatei.readLine().split("[, ]+");
-						//Abfrage, ob alle Vektoren dieselbe Länge besitzten.
+						// Abfrage, ob alle Vektoren dieselbe Länge besitzten.
 						if (s.length != nLines) {
 							lengtherror = true;
 						}
@@ -92,29 +110,29 @@ public class DataRead {
 					negativetime = true;
 				}
 			}
-			
-		//Fehler werden abgefangen.
+
+			// Fehler werden abgefangen.
 		} catch (IOException exc) {
 
-		} 
-		catch (NumberFormatException exc) {
+		} catch (NumberFormatException exc) {
 			if (f.getName().endsWith(".csv")) {
 				String s = exc.toString();
 				System.out.println(s);
-				StatusBar.showStatus("Datei enthällt nicht nur Zahlen. Fehler bei Dateipunkt " + s.substring(50) + ".",StatusBar.FEHLER);
+				StatusBar.showStatus("Datei enthällt nicht nur Zahlen. Fehler bei Dateipunkt " + s.substring(50) + ".",
+						StatusBar.FEHLER);
 			}
 		} catch (NullPointerException exc) {
-			StatusBar.showStatus("Datei enthällt keine Daten.",StatusBar.FEHLER);
+			StatusBar.showStatus("Datei enthällt keine Daten.", StatusBar.FEHLER);
 		}
 
 		if (lengtherror) {
-			StatusBar.showStatus("Die Vektoren besitzen nicht dieselbe Länge.",StatusBar.FEHLER);
+			StatusBar.showStatus("Die Vektoren besitzen nicht dieselbe Länge.", StatusBar.FEHLER);
 		} else if (negativetime) {
-			StatusBar.showStatus("Der Zeitvektor darf keine negativen Werte beinnhalten.",StatusBar.FEHLER);
+			StatusBar.showStatus("Der Zeitvektor darf keine negativen Werte beinnhalten.", StatusBar.FEHLER);
 		} else {
 			returndata = data;
 		}
-		//Daten werden zurückgegeben.
+		// Daten werden zurückgegeben.
 		return returndata;
 	}
 
