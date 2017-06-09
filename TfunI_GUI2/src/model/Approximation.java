@@ -181,7 +181,7 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 			if (network.isCancelled() == false) {
 				swingAction(new Message(
 						"Probleme bei der Berechnung (Ordnung " + order
-								+ ").\nVersuchen Sie folgendes:\n1) Versichern Sie sich, dass die Messwerte korekt bearbeited wurden.\n2) Passen Sie den Threshold an und starten Sie dann die Berechnung neu.",
+								+ ").\nVersuchen Sie folgendes:\n1) Versichern Sie sich, dass die Messwerte korrekt bearbeited wurden.\n2) Passen Sie den Threshold an und starten Sie dann die Berechnung neu.",
 						true));
 			}
 		}

@@ -86,7 +86,8 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 		PointValuePair utf[] = new PointValuePair[10]; // Ordnung 1-10 ...
 
 		try {
-			for (int i = 1; i <= 10&&!isCancelled(); i++) { // Ordnung 1-10 ...
+			for (int i = 1; i <= 10 && !isCancelled(); i++) { // Ordnung 1-10
+																// ...
 
 				// Kopiere Werte von kleineren Ordnungen. Nur falls die Ordnung
 				// höher als 3 ist.
@@ -152,7 +153,7 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 		} catch (TimeoutException e) { // Bei einem Timeout wird die Berechnung
 										// der Startwerte nicht durchgeführt.
 			swingAction(new Message(
-					"Probleme bei der Berechnung (Startwerte).\nVersuchen Sie folgendes:\n1) Versichern Sie sich, dass die Messwerte korekt bearbeited wurden.\n2) Passen Sie den Threshold an und starten Sie dann die Berechnung neu.",
+					"Probleme bei der Berechnung (Startwerte).\nVersuchen Sie folgendes:\n1) Versichern Sie sich, dass die Messwerte korrekt bearbeited wurden.\n2) Passen Sie den Threshold an und starten Sie dann die Berechnung neu.",
 					true));
 		}
 
@@ -264,7 +265,7 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 				StatusBar.showStatus(
 						"Es wurden alle Ordnungen berechnet. Jedoch wurde keine Übertragungsfunktion gefunden, welche mit dem gemessenen Signal einen Korrelationskoeffizient von mindestens "
 								+ GlobalSettings.korrKoeffMin
-								+ " aufweist.\nMögliche Ursachen:\n1) Das Siganl kann nicht mit einer in diesem Programm möglichen Form beschrieben werden.\n2) Die Messwerte wurden nicht richtig bearbeited.\n3) Threshold oder Anzahl Werte sind ungünstig eingestellt.",
+								+ " aufweist.\nMögliche Ursachen dafür sind:\n1) Das Siganl kann nicht mit einer in diesem Programm möglichen Form beschrieben werden.\n2) Die Messwerte wurden nicht richtig bearbeited.\n3) Threshold oder Anzahl Werte sind ungünstig eingestellt.",
 						StatusBar.FEHLER);
 			}
 		}
@@ -276,7 +277,7 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 	}
 
 	/**
-	 * Teilt allen laufenden Threads mit, dass sie ungültig sind. 
+	 * Teilt allen laufenden Threads mit, dass sie ungültig sind.
 	 */
 	public void stop() {
 		this.cancel(true);
