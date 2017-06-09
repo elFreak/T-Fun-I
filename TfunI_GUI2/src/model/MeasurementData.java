@@ -33,7 +33,7 @@ public class MeasurementData {
 	private double[][] originalStep;
 	private double[] timeFullNormed;
 	private double[] stepFullNormed;
-	private double[] timeLenghtNormed;
+	private double[] timeLengthNormed;
 	private double timeScaleFactor;
 	private int normNumberOfData = 200;
 	// -------------------------------------------------------------------------------------------------------
@@ -371,26 +371,26 @@ public class MeasurementData {
 		double[][] stepResponseMeasurement = scalingStepResponse(getFinalData());
 		timeFullNormed = stepResponseMeasurement[0];
 		stepFullNormed = stepResponseMeasurement[1];
-		timeLenghtNormed = stepResponseMeasurement[2];
+		timeLengthNormed = stepResponseMeasurement[2];
 
 	}
 
 	private double[][] scalingStepResponse(double[][] stepResponseOriginal) {
 
 		// Berechnet den Faktor um die Anzahl der Messpunkte zu normieren:
-		int originalLenght = stepResponseOriginal[0].length;
-		int factor = originalLenght / normNumberOfData;
+		int originalLength = stepResponseOriginal[0].length;
+		int factor = originalLength / normNumberOfData;
 		factor = (int) Math.max(1.0, factor);
 
 		// Berechnet den Faktor um die Zeitachse zu normieren:
 		timeScaleFactor = Math.log10(stepResponseOriginal[0][stepResponseOriginal[0].length - 1]) - 1;
 
 		// Erzeugt die Strucktur der normierten Daten:
-		int newLenght = originalLenght / factor;
-		double[][] stepResponseNew = new double[3][newLenght];
+		int newLength = originalLength / factor;
+		double[][] stepResponseNew = new double[3][newLength];
 
 		// Erstellt die normierten Daten:
-		for (int i = 0; i < newLenght; i++) {
+		for (int i = 0; i < newLength; i++) {
 			stepResponseNew[0][i] = stepResponseOriginal[0][i * factor] * Math.pow(10.0, -timeScaleFactor); // Zeit
 																											// normiert
 																											// und
@@ -473,7 +473,7 @@ public class MeasurementData {
 	}
 
 	public double[] getTimeLenghtNormed() {
-		return timeLenghtNormed;
+		return timeLengthNormed;
 	}
 
 	public int getNormNumberOfData() {
