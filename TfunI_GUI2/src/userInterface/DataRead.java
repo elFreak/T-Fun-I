@@ -128,7 +128,7 @@ public class DataRead {
 		if (lengtherror) {
 			StatusBar.showStatus("Die Vektoren besitzen nicht dieselbe Länge.", StatusBar.FEHLER);
 		} else if (negativetime) {
-			StatusBar.showStatus("Der Zeitvektor darf keine negativen Werte beinnhalten.", StatusBar.FEHLER);
+			StatusBar.showStatus("Der Zeitvektor darf keine negativen Werte beinhalten.", StatusBar.FEHLER);
 		} else {
 			returndata = data;
 		}

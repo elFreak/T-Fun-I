@@ -174,14 +174,14 @@ public class Approximation extends SwingWorker<Object, Message> implements Swing
 
 	@Override
 	protected Object doInBackground() throws Exception {
-		swingAction(new Message("Berechnung gestarted (Ordnung " + order + ").", false));
+		swingAction(new Message("Berechnung gestartet (Ordnung " + order + ").", false));
 		try {
 			calculate();
 		} catch (TimeoutException e) {
 			if (network.isCancelled() == false) {
 				swingAction(new Message(
 						"Probleme bei der Berechnung (Ordnung " + order
-								+ ").\nVersuchen Sie folgendes:\n1) Versichern Sie sich, dass die Messwerte korrekt bearbeited wurden.\n2) Passen Sie den Threshold an und starten Sie dann die Berechnung neu.",
+								+ ").\nVersuchen Sie folgendes:\n1) Versichern Sie sich, dass die Messwerte korrekt bearbeitet wurden.\n2) Passen Sie den Threshold an und starten Sie dann die Berechnung neu.",
 						true));
 			}
 		}

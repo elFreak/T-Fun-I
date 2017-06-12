@@ -35,7 +35,6 @@ public class InputCardBearbeiten extends JPanel {
 	private static final long serialVersionUID = 1L;
 	// Attributte
 	// ------------------------------------------------------------------------------------------------------
-	private Controller controller;
 
 	private JPanel panelFiltern = new JPanel(new GridBagLayout());
 	private JTextField tfFilter = new JTextField("0");
@@ -60,7 +59,6 @@ public class InputCardBearbeiten extends JPanel {
 	 * @param controller
 	 */
 	public InputCardBearbeiten(Controller controller) {
-		this.controller = controller;
 
 		// Filtern
 		// -----------------------------------------------------

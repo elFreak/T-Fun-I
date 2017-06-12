@@ -125,7 +125,7 @@ public class Controller {
 				}
 				if (oneOrderDone == false) {
 					mode = this.mode;
-					StatusBar.showStatus("Keine Berechnungen vorhanden. Berechne zuerst mindestens eine Ordnung.",
+					StatusBar.showStatus("Keine Berechnungen vorhanden. Berechnen Sie zuerst mindestens eine Ordnung.",
 							StatusBar.FEHLER);
 				}
 				break;

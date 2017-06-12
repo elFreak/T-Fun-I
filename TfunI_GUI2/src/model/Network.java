@@ -153,7 +153,7 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 		} catch (TimeoutException e) { // Bei einem Timeout wird die Berechnung
 										// der Startwerte nicht durchgeführt.
 			swingAction(new Message(
-					"Probleme bei der Berechnung (Startwerte).\nVersuchen Sie folgendes:\n1) Versichern Sie sich, dass die Messwerte korrekt bearbeited wurden.\n2) Passen Sie den Threshold an und starten Sie dann die Berechnung neu.",
+					"Probleme bei der Berechnung (Startwerte).\nVersuchen Sie folgendes:\n1) Versichern Sie sich, dass die Messwerte korrekt bearbeitet wurden.\n2) Passen Sie den Threshold an und starten Sie dann die Berechnung neu.",
 					true));
 		}
 
