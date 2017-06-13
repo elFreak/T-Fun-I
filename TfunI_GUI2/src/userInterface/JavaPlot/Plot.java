@@ -51,6 +51,7 @@ public class Plot extends JPanel {
 	// --------------------------------------------------------------------
 	// Connecting:
 	private boolean connected = false;
+	private int borderWest;
 
 	// --------------------------------------------------------------------
 	// Initialize:
@@ -286,5 +287,13 @@ public class Plot extends JPanel {
 	 */
 	public void setSliderPosition(String tag, double value) {
 		subplot[subplotSelected].setSliderPosition(tag, value);
+	}
+
+	int getBorderWest() {
+		return borderWest;
+	}
+
+	void setBorderWest(int borderWest) {
+		this.borderWest = borderWest;
 	}
 }

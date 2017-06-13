@@ -48,7 +48,8 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 	private Approximation[] approximations = new Approximation[10];
 	private double[][] korrelationComparison;
 	private double[][][] korrelationComparisonPoins;
-
+	private boolean koeffChangedExt = false;
+	
 	private ExecutorService threadExecutor = Executors.newFixedThreadPool(1);
 
 	// -----------------------------------------------------------------------------------------------------------------
@@ -261,11 +262,11 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 					allOrderDone = false;
 				}
 			}
-			if (oneOrderOk == false && allOrderDone == true) {
+			if (oneOrderOk == false && allOrderDone == true && !koeffChangedExt) {
 				StatusBar.showStatus(
 						"Es wurden alle Ordnungen berechnet. Jedoch wurde keine Übertragungsfunktion gefunden, welche mit dem gemessenen Signal einen Korrelationskoeffizient von mindestens "
 								+ GlobalSettings.korrKoeffMin
-								+ " aufweist.\nMögliche Ursachen dafür sind:\n1) Das Siganl kann nicht mit einer in diesem Programm möglichen Form beschrieben werden.\n2) Die Messwerte wurden nicht richtig bearbeited.\n3) Threshold oder Anzahl Werte sind ungünstig eingestellt.",
+								+ " aufweist.\nMögliche Ursachen dafür sind:\n1) Das Signal kann nicht mit einer in diesem Programm möglichen Form beschrieben werden.\n2) Die Messwerte wurden nicht richtig bearbeitet.\n3) Threshold oder Anzahl Werte sind ungünstig eingestellt.",
 						StatusBar.FEHLER);
 			}
 		}
@@ -288,6 +289,10 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 			}
 		}
 
+	}
+	
+	public void setUtfChangedExt() {
+		koeffChangedExt = true;
 	}
 
 	// -----------------------------------------------------------------------------------------------------------------
@@ -320,5 +325,4 @@ public class Network extends SwingWorker<Object, Message> implements SwingWorker
 	public double[][][] getKorrelationComparisonPoins() {
 		return korrelationComparisonPoins;
 	}
-
 }

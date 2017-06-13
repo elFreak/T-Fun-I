@@ -260,6 +260,7 @@ public class Controller {
 	 * @param utf
 	 */
 	public void changeApproximation(UTFDatatype utf) {
+		model.network.setUtfChangedExt();
 		model.network.getApprox(utf.ordnung).setUtf(utf);
 
 	}

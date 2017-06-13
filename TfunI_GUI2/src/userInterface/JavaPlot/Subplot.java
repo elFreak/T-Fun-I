@@ -194,7 +194,16 @@ public class Subplot extends JPanel implements MouseMotionListener, MouseListene
 			borderSouth = border / 2 + GlobalSettings.fontText.getSize();
 		}
 		
-		borderWest = border / 2 + GlobalSettings.fontText.getSize() * 2+axisRangeRoundFactor[Y1AXIS]*GlobalSettings.fontTextSmall.getSize()/3;
+		if(connected) {
+			if(plot.getBorderWest()<border / 2 + GlobalSettings.fontText.getSize() * 2+axisRangeRoundFactor[Y1AXIS]*GlobalSettings.fontTextSmall.getSize()/3)
+			{
+				plot.setBorderWest(border / 2 + GlobalSettings.fontText.getSize() * 2+axisRangeRoundFactor[Y1AXIS]*GlobalSettings.fontTextSmall.getSize()/3);
+			}
+			borderWest = plot.getBorderWest();
+		} else 
+		{
+			borderWest = border / 2 + GlobalSettings.fontText.getSize() * 2+axisRangeRoundFactor[Y1AXIS]*GlobalSettings.fontTextSmall.getSize()/3;
+		}
 
 		// calculate boardCorners:
 		boardCorner[0][X] = borderWest; // top-left (X)
